@@ -1,0 +1,201 @@
+#
+# FBB Set-up file
+#
+# default is /usr/local/etc/ax25/fbb.conf
+#
+# may be changed using the $FBBCONF environment variable
+#
+
+##################################################################
+
+#
+# The following lines are mandatory
+#
+
+version = FBB7.05
+
+# Callsign of BBS with hierarchical information
+callsign = F6FBB.FMLR.FRA.EU
+
+# SSID of BBS
+ssid = 1
+
+# Qra Locator of BBS
+qraloc = JN03QL
+
+# Qth of BBS
+city = Toulouse
+
+# First name of SYSOP
+name = Jean-Paul
+
+# Callsign of SYSOP
+sysop = F6FBB
+
+##################################################################
+
+#
+# Optional lines
+#
+
+# Callsign (and route if needed) that will have copy of SYSOP messages
+sysmail = F6XXX F5XXX@F6XXX.FMLR.FRA.EU
+
+# Line to send WP messages
+wpcalls = F1XXX
+
+# BBS-UP batch or program
+upbatch =
+
+# BBS-DW batch or program
+dwbatch =
+
+#
+# Servers will be searched and run in the "server" directory
+#
+# REQCFG, REDIST and WP are already built-in
+#
+
+#        Name    Filename   Information
+server = REQDIR  reqdir     Directory request
+
+##################################################################
+
+#
+# The rest of lines overwrites defaults. Here are the default values
+#
+
+# Directory of data files
+data = /usr/local/var/ax25/fbb
+
+# Directory of config files
+config = /usr/local/etc/ax25/fbb
+
+# Directory of message files
+messages = /usr/local/var/ax25/fbb/mail
+
+# Directory of compressed files
+compressed = /usr/local/var/ax25/fbb/binmail
+
+# Directory of users
+fbbdos = *,*,/usr/local/var/ax25/fbb/fbbdos,*,*,*,*,*
+
+# Directory of YAPP files
+yapp = /usr/local/var/ax25/fbb/fbbdos/yapp
+
+# Directory of documentation files
+docs = /usr/local/var/ax25/fbb/docs
+
+# Directory of the pg programs
+pg = /usr/local/lib/fbb/pg
+
+# Directory of the filter programs
+fdir = /usr/local/lib/fbb/filter
+
+# Directory of the server programs
+sdir = /usr/local/lib/fbb/server
+
+# Directory of the tool programs (fbbdos, forward, cron...)
+tdir = /usr/local/lib/fbb/tool
+
+# Path and filename for import file
+import = /usr/local/var/ax25/fbb/mail/mail.in
+
+# Full log
+logs = OK
+
+# Test mode
+test = NO
+
+# Use (when possible) forward type FBB
+fbbfwd = OK 160
+
+# Use (when possible) compressed forward
+fbbcomp = OK 3
+
+# Wait for informations (Name, HomeBBS, Qth, ZIP)
+askinfo = OK
+
+# First connection mask :
+# 0  : Disable
+# 1  : Excluded
+# 2  : Local
+# 4  : Expert
+# 8  : Sysop
+# 16 : BBS
+# 32 : Pagination
+# 64 : Guest
+# 128: Modem
+# 256: See-all-messages
+# 512: Unproto list asking is allowed
+# 1024: Liste des messages nouveaux.
+# 2048: 
+mask = 3616
+
+# Security codes.
+# Users can :
+# 1  : Read all messages, including private messages
+# 2  : Kill all messages
+# 4  : Send SYS command
+# 8  : Use remote sysop commands (edit, forward, etc...)
+# 16 : Edit labels in YAPP, FBBDOS, DOCS
+# 32 : Can delete files in YAPP, FBBDOS
+# 64 : Have access to all gateways
+# 128: Run DOS commands
+# 256: Have access to the entire hard disk
+# 512: Have access to commands /A (stop) and /R (Reboot)
+# All:   Sysop: Sysop after successful SYS-command:
+security = 0 4 59  
+
+# WARNING messages to sysop
+# 1  : Less than 1MB in disk
+# 2  : Error in system file (FORWARD, BBS, REJECT...)
+# 4  : Server error/warning
+# 8  : Ping-Pong warning
+# 16 : Unknown route warning
+# 32 : Unknown NTS warning
+# 64 : Message file not found
+# 128: Error in proposal
+# 256: Message rejected in remote BBS
+# 512: Message held in remote BBS
+#
+warning = 255
+
+# Time (hour) for housekeeping (cleanup of messages)
+housekeeping = 2
+
+# Time-out for normal users / forward
+timeout = 10 20
+
+# Download size YAPP / MODEM
+maxdownload  = 0 0
+
+# Hours +/- in relation with UTC
+localtime = 0
+
+# Number of callsigns in mail beacon
+beacon = 8
+
+# Number of lines in scroll buffers
+#
+# User  Console  Monitoring
+scroll = 1500 1500 1500
+
+# Text for forward header (Do not change !)
+fwdheader = [$c] $$:$R
+
+# Number of saved BIDs
+maxbids = 30000
+
+# Lifetime for bulletins (days)
+lifetime = 30
+
+# Zip code of the BBS
+zipcode = 00000
+
+# Number of back messages in unproto lists
+unprotoes = 500 5 P
+
+#
+# End of fbb.conf file
+#

@@ -1,0 +1,312 @@
+<HTML>
+<HEAD>
+  <TITLE>Using FBB with PE1CHL NET and the BPQ Hostmode Emulator  (Appendix
+  27)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<CENTER>
+  <BIG><BIG><B>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <FONT SIZE=+2>Using FBB with PE1CHL NET and the BPQ Hostmode
+  Emulator</FONT></B></BIG></BIG>
+</CENTER>
+<CENTER>
+  <FONT SIZE=+2>&nbsp;</FONT>(Appendix 27)
+</CENTER>
+<P>
+PE1CHL NET and FBB work together under DESQview (or other Multi-Tasker's)
+with the "G8BPQ Hostmode Emulator" package. The setup is very similar to
+the method for using the regular BPQ code. Setup your .SYS files in the same
+and&nbsp; read the appendix on using BPQ mode as well for details.
+<P>
+&nbsp;
+<P>
+The following differences should noted.
+<P>
+&nbsp;
+<P>
+In INITTNCx.SYS,&nbsp; monitoring is available but you may prefer to use
+the more comprehensive monitoring within NET instead.
+<P>
+&nbsp;
+<P>
+In FORWARD.SYS,&nbsp; "C C SWITCH"&nbsp; will connect the BBS to the NET/ROM
+in NET, after this point the syntax is specific to NET and the options are
+:-
+<PRE>A LA2D
+&nbsp;&nbsp; #
+&nbsp;&nbsp; P B
+&nbsp;&nbsp; #
+&nbsp;&nbsp; C C SWITCH&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Connect to the switch (Net/Rom in NET)
+&nbsp;&nbsp; V P 70cm&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Select the "70cm" port
+&nbsp;&nbsp; C LA2D&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Connect LA2D on the port we have just defined
+&nbsp;&nbsp; #
+&nbsp;&nbsp; B LA2D
+&nbsp;&nbsp; F LA2D
+&nbsp;&nbsp; #
+&nbsp;---------
+</PRE>
+<P>
+Alternately, you could predefine the downlink to LA2D in AUTOEXEC.NET with
+the command :-
+<UL>
+  <DT>
+    &nbsp;netrom downlink LA2D 70cm
+</UL>
+<P>
+You would then omit the "port select" line in the above example and the
+"downlink" would be selected by NET on whatever port you have predefined.
+This could be any valid NET portname, whether it is an Ethernet or AX/IP
+encapsulated portname or just another regular port.
+<P>
+&nbsp;
+<CENTER>
+  <FONT SIZE=+2>Setting up the G8BPQ Hostmode Emulator with FBB</FONT>
+</CENTER>
+<P>
+&nbsp;
+<P>
+You must edit and use BPQCFG.TXT from the G8BPQEMU package and compile it
+with BPQCFG.EXE which should result in a 3072 byte BPQCFG.BIN file.
+<P>
+&nbsp;
+<P>
+You should load G8BPQ.COM (from the emulator) from AUTOEXEC.BAT and this
+can be loaded high with your favourite memory manager.
+<P>
+You will need to exercise the usual tricks to get the maximum memory from
+each DESQview window. NET should be started first, to setup the G8BPQ Emulator
+port mappings, so that Unproto (for TPK users) broadcasts are setup before
+FBB is booted.
+<P>
+&nbsp;
+<P>
+In the autoexec.net file, the emulator will need to be started and the port
+mapping setup. You should choose port names that differ from the internal
+names of FBB or BPQ types to avoid confusion, an example is given below.
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; FREQ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; USAGE&nbsp;&nbsp;&nbsp; NET-PORT&nbsp;&nbsp; BPQ-PORT&nbsp;&nbsp;&nbsp; FBB-PORT
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; RS232&nbsp;&nbsp;&nbsp; 38400bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 432.675&nbsp;&nbsp; 4800bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 70f&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; B
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 432.675&nbsp;&nbsp; 1200bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 70s&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 3&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; C
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 144.625&nbsp;&nbsp; 1200bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2ms&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; D
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 144.625&nbsp;&nbsp; 4800bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 2mf&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; E
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 70.3125&nbsp;&nbsp; 1200bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; F
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 50.650&nbsp;&nbsp;&nbsp; 1200bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6m&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; G
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Exp.&nbsp;&nbsp;&nbsp;&nbsp; 76800bd&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; exp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 8&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; H
+</PRE>
+<P>
+Then you would use the following in autoexec.net :-
+<UL>
+  <DT>
+    ax25 start g8bpq
+  <DT>
+    g8bpq ports A1 70f 70s 2ms 2mf 4m 6m exp
+</UL>
+<P>
+This will then map all the above ports to FBB and UI broadcasts will be available
+on those ports. If you want only selected ports, you could have an INITTNCx.SYS
+for them and specify if you want UI broadcasts or not. Alternately, an easier
+method is to specify only those ports you want to map to UI broadcasts as
+in the above example for NET and only ports setup this way will broadcast
+UI frames, ports not specified will not broadcast.
+<P>
+&nbsp;
+<CENTER>
+  <FONT SIZE=+2>DESQview Window Management</FONT>
+</CENTER>
+<P>
+&nbsp;
+<P>
+The object is to get the maximum memory for FBB and this will always be available
+in the first DV window. The trick here is to open a dummy window first, as
+a place holder (a regular DOS one will do fine). Now you should start NET
+(which will automatically open in window 2) and once this has booted, you
+will need to switch to the 1st window, close it and then boot FBB. This will
+release the place holder and give the 1st DV window slot to FBB.
+<P>
+A script that does this automatically is called DESQVIEW.DVS and should be
+made with the script&nbsp; tools (see DV manual) from this ASCII file :-
+<PRE>{Learn {Shift-F12} "!Startup"}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Name the startup script
+obd{Enter}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open BIG DOS Window
+{DESQ}ont&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open NET window
+{Delay 5}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Wait 5 seconds
+{DESQ}s1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Switch to the 1st window
+{DESQ}cy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Close that window
+{DESQ}ofb&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Open FBB window
+{Finish}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; End of script
+</PRE>
+<P>
+This assumes you have the following two letter assignments for windows in
+DESQview :-
+<UL>
+  <DT>
+    BD = Big DOS
+  <DT>
+    NT = PE1CHL NET
+  <DT>
+    FB = FBB
+</UL>
+<P>
+Note there is a delay of 5 seconds to allow NET to boot fully before switching
+windows and starting FBB, this may need adjusting to suit the speed of your
+machine.
+<P>
+You will need to make some .PIF files for NET and FBB and the following examples
+will give you a good starting point :-
+<P>
+You will also set your DMPI allocation for FBB here too. Make sure you allocate
+at least 2048KB, otherwise FBB may load it's own and waste memory.
+<P>
+&nbsp;
+<CENTER>
+  <FONT SIZE=+2>Setting up PIF file options in DESQview for FBB and NET</FONT>
+</CENTER>
+<PRE>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Standard Options
+
+&nbsp;Program Name............: FBB 7.00b41
+
+&nbsp;Keys to Use on Open Menu: FB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Memory Size (in K): 536
+
+&nbsp;Program...: c:\FBB\APPEL.BAT
+
+&nbsp;Parameters:
+
+&nbsp;Directory.: C:\FBB
+
+&nbsp;Options:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Writes text directly to screen.......: [Y]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Displays graphics information........: [Y]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Virtualize text/graphics (Y,N,T).....: [N]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Uses serial ports (Y,N,1,2)..........: [N]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Requires floppy diskette.............: [N]
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Advanced Options
+
+System Memory (in K).......:&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; Maximum Program Memory Size (in K): 600
+
+Script Buffer Size.......:&nbsp; 1000&nbsp;&nbsp;&nbsp;&nbsp; Maximum EMS/XMS/VCPI/DPMI (in K):&nbsp; 2048
+
+Text Pages: 4&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Graphics Pages: 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Initial Video Mode:
+
+Window Position:
+&nbsp;&nbsp; Maximum Height:&nbsp; 25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starting Height:&nbsp; 25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starting Row...:&nbsp;&nbsp; 0
+&nbsp;&nbsp; Maximum Width.:&nbsp; 80&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starting Width.:&nbsp; 80&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starting Column:&nbsp;&nbsp; 0
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Shared Program
+Pathname..:
+Data......:
+
+Close on exit (Y,N,blank)......: [ ]&nbsp; Uses its own colors..............: [Y]
+Allow Close Window command.....: [Y]&nbsp; Runs in background (Y,N,blank)...: [Y]
+Uses math coprocessor..........: [Y]&nbsp; Keyboard conflict (0-F)..........: [0]
+Share CPU when foreground......: [Y]&nbsp; Share EGA when foreground/zoomed.: [N]
+Can be swapped out (Y,N,blank).: [N]&nbsp; Protection level (0-3)...........: [0]
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Standard Options
+
+Program Name............: NET
+
+Keys to Use on Open Menu: NT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Memory Size (in K): 230
+
+Program...: net.bat
+
+Parameters:
+
+Directory.: C:\
+
+Options:
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Writes text directly to screen.......: [Y]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Displays graphics information........: [N]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Virtualize text/graphics (Y,N,T).....: [Y]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Uses serial ports (Y,N,1,2)..........: [N]
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Requires floppy diskette.............: [N]
+
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Advanced Options
+
+System Memory (in K).......:&nbsp;&nbsp; 0&nbsp;&nbsp;&nbsp;&nbsp; Maximum Program Memory Size (in K): 700
+
+Script Buffer Size.......:&nbsp; 1000&nbsp;&nbsp;&nbsp;&nbsp; Maximum EMS/XMS/VCPI/DPMI (in K):
+
+Text Pages: 1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Graphics Pages: 0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Initial Video Mode:
+
+Window Position:
+&nbsp;&nbsp; Maximum Height:&nbsp; 50&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starting Height:&nbsp; 50&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starting Row...:&nbsp;&nbsp; 0
+&nbsp;&nbsp; Maximum Width.:&nbsp; 80&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starting Width.:&nbsp; 80&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Starting Column:&nbsp;&nbsp; 0
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Shared Program
+Pathname..:
+Data......:
+
+Close on exit (Y,N,blank)......: [Y]&nbsp; Uses its own colors..............: [Y]
+Allow Close Window command.....: [N]&nbsp; Runs in background (Y,N,blank)...: [Y]
+Uses math coprocessor..........: [Y]&nbsp; Keyboard conflict (0-F)..........: [0]
+Share CPU when foreground......: [Y]&nbsp; Share EGA when foreground/zoomed.: [N]
+Can be swapped out (Y,N,blank).: [N]&nbsp; Protection level (0-3)...........: [0]
+</PRE>
+<P>
+&nbsp;
+<CENTER>
+  <FONT SIZE=+2>&nbsp;Adjusting memory size window for NET</FONT>
+</CENTER>
+<P>
+&nbsp;
+<P>
+1. Open the NET window and then check from the command line to see how much
+memory is available in NET with the "mem" command.
+<P>
+2. Close NET and allocate another 10KB to the window repeat step 1.
+<P>
+&nbsp;
+<P>
+When the amount of free memory does NOT increase, you have reached the maximum
+and should backoff until you reach the exact point where the free memory
+starts to drop and add a few KB to that value. (Note this may need adjusting
+as you upgrade to new NET releases).
+<P>
+&nbsp;
+<CENTER>
+  <FONT SIZE=+2>Adjusting memory size window for FBB</FONT>
+</CENTER>
+<P>
+&nbsp;
+<P>
+1. Open FBB with a large value, say 600KB and reduce in 10KB increments until
+APPEL.BAT starts to run. Cancel&nbsp; and close the window.
+<P>
+2. Increase the memory by 1KB and repeat step 1 until APPEL.BAT will no longer
+run then back it off to the&nbsp;previous value.
+<P>
+&nbsp;
+<CENTER>
+  <FONT SIZE=+2>BPQ type Ethernet frames</FONT>
+</CENTER>
+<P>
+&nbsp;
+<P>
+As with the regular BPQ switch, NET can be setup to handle BPQ ethernet frame
+mapping. This is achieved through the normal packet driver (for your card)
+and you need to attach this mapping BEFORE any other mappings to the packet
+driver in AUTOEXEC.NET :-
+<UL>
+  <DT>
+    attach packet 0x60 g8bpq bpq 8 256 GB7OSP-14 ff:ff:ff:ff:ff:ff
+  <DT>
+    attach packet 0x60 0 eth0 8 1500 anytype
+</UL>
+<P>
+&nbsp;
+<P>
+<P>
+<PRE><A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

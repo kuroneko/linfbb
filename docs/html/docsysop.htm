@@ -1,0 +1,258 @@
+<HTML>
+<HEAD>
+  <TITLE>Sysop commands</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  <SMALL>SYSOP COMMANDS.</SMALL>
+</H1>
+<PRE>
+<FONT COLOR="#000000"><B>Commands available under the BBS menu.</B></FONT>
+
+<FONT COLOR="#ff0000">DU callsign </FONT>: Displays the information related to the given callsign.
+
+<FONT COLOR="#ff0000">DB</FONT> : Lists the BBS callsigns.
+
+<FONT COLOR="#ff0000">DE</FONT> : Lists the EXCLUDED callsigns.
+
+<FONT COLOR="#ff0000">DF</FONT> : Lists all PMS-users.
+
+<FONT COLOR="#ff0000">DL</FONT> : Lists the callsigns with LOCAL status.
+
+<FONT COLOR="#ff0000">DM</FONT> : Lists the callsigns with modem acces.
+
+<FONT COLOR="#ff0000">DP</FONT> : Lists callsigns which are using the page scroll.
+
+<FONT COLOR="#ff0000">DS </FONT>: Lists the SYSOPS callsigns.
+
+<FONT COLOR="#ff0000">DX</FONT> : Lists the EXPERT callsigns.
+
+<FONT COLOR="#ff0000">E msg# :</FONT>
+ Edits the message # header. The message header is first displayed, then a
+string of options will allow you to edit the various fields of this header. A
+"return" terminates the edit.
+
+<FONT COLOR="#ff0000">EM msg#<FONT COLOR="#000000"> : </FONT></FONT>
+<FONT COLOR="#ff0000"><FONT COLOR="#000000"> Edits the body of a message.  During edit the message is not being </FONT></FONT>
+<FONT COLOR="#ff0000"><FONT COLOR="#000000">forwarded.</FONT></FONT>
+
+<FONT COLOR="#ff0000">EU callsign </FONT>:
+ Edits the main parameters of a user. The user's parameters are first
+displayed, then a string of options will allow you to edit the various
+parameters. A "return" terminates the edit. Most of fields can be cleared
+with a point. A user can be edited while connected and then action is
+immediate. Flags are :
+
+  R : All mail (included personal) can be read
+  P : Paging validated
+  B : BBS
+  S : Sysop
+  X : Expert
+  L : Local (Allowed to all commands on guest access).
+  E : Excluded (cannot connect to the BBS)
+  M : Modem access
+  U : Unproto (Allows unproto list requests).
+  I : Give list of new messages on logon.
+  F : PMS forwarding (allows forward but texts are like normal user).
+
+
+ Other commands must be followed with information :
+
+  G number   : selected language
+  N name     : name of the user
+  W password : password of the user
+  V directory: private directory of the user (12 characters max)
+  H home-bbs : home-bbs of the user
+  Z zip-code : zip-code of the user
+
+<FONT COLOR="#ff0000">FA msg# BBS</FONT> :
+ Specifies that the message defined by its number will be forwarded to the
+specified adjacent BBS.
+
+<FONT COLOR="#ff0000">FB BBS </FONT>: Gives the list of messages waiting for forward to this BBS.
+
+<FONT COLOR="#ff0000">FC Route </FONT>:
+ Gives the list of BBSs that will receive the messages with the specified
+route. If the route is a possible callsign, the BBS will look for BBS 
+routing, if composed with digits will look for NTS routing, otherwise
+will look for bulletins (group) routing.
+
+<FONT COLOR="#ff0000">FD msg# BBS </FONT>:
+ Removes the message # from the forward to the specified adjacent BBS.
+
+<FONT COLOR="#ff0000">FG</FONT> : Shows the partly received messages (may be resumed in next forward).
+
+<FONT COLOR="#ff0000">FH BBS</FONT> : Gives the hierarchical extension for BBS.
+
+<FONT COLOR="#ff0000">FI BID command</FONT>:
+ BID maintenance.
+ Command = ? : Gives message number and the message type of the BID/MID.
+           + : Adds the BID/MID to the list.
+           - : Deletes the BID/MID from the list.
+
+<FONT COLOR="#ff0000">FL [BBS] </FONT>: Lists the messages in the forward-queue [for BBS if specified].
+
+<FONT COLOR="#ff0000">FN Msg#</FONT> :
+ List of the BBSs which are in the waiting list for this message number, and
+the BBSs already forwarded or named in the preamble.
+
+<FONT COLOR="#ff0000">FP command callsign</FONT>:
+ Swap test.
+ Command = @ : Gives the swap (if existing) for the via callsign.
+           &gt; : Gives the swap (if existing) for the to callsign.
+           &lt; : Gives the swap (if existing) for the from callsign.
+
+<FONT COLOR="#ff0000">FR Argument</FONT> :
+ Forces reverse forwarding to BBS (or port), even if there is no pending
+mail. If the argument is a callsign of known BBS, reverse forwarding to
+this BBS will start. The argument can be a portnumber, in this case the
+reverse forwarding will start on that port, if 9 is specified then the
+reverse forwarding will start for all the ports.
+
+<FONT COLOR="#ff0000">FS Argument</FONT> :
+ Stops the forwarding. If the argument is a callsign of known BBS, the
+forwarding to this BBS will be stopped. The argument can be a portnumber,
+in this case the forwarding will be stopped on that port, if 9 is
+specified then the forwarding will be stopped for all the ports.
+
+<FONT COLOR="#ff0000">FT [BBS] </FONT>:
+ Lists the volume of the messages which are waiting for forward to all
+BBSs, or to only one BBS if the callsign of that BBS is specified. 
+The command shows the volumes in real-time.
+
+<FONT COLOR="#ff0000">FU Channel</FONT> :
+ Immediately disconnects the specified channel.
+
+<FONT COLOR="#ff0000">FV</FONT> :
+ Recompiles <A HREF="fmtforwa.htm">FORWARD.SYS</A> and its include files, <A HREF="fmtswapp.htm">SWAPP.SYS</A> and <A HREF="fmtbbs.htm">BBS.SYS</A> and then
+starts scanning the messages to update the forwarding list. This may be
+necessary after a FORWARD file change.
+
+<FONT COLOR="#ff0000">FW Argument</FONT> :
+ Starts forwarding to BBS (or port). If the argument is a callsign of 
+known BBS, forwarding to this BBS will start. The argument can be a 
+portnumber, in this case the forwarding will start on that port, if 9
+is specified then the forwarding will start for all the ports.
+
+<FONT COLOR="#ff0000">HO msg#<FONT COLOR="#000000"> : Puts a message in the HOLD-list.</FONT></FONT>
+
+<FONT COLOR="#ff0000">IE Callsign</FONT> :
+ Gives first the WP information using IL format (see below), and then prompts
+the deletion of the record. If the answer is Y, the record will be deleted,
+else you enter the edition mode. Type return to exit edition mode. The
+commands are :
+ U          : Updates primary part with the temporary part (2 -&gt; 1).
+ N  name    : Changes the name of the user.
+ 1H Route   : Changes the primary route.
+ 1Q Qth     : Changes the primary Qth.
+ 1Z Zipcode : Changes the primary ZipCode.
+ 2H Route   : Changes the temporary route.
+ 2Q Qth     : Changes the temporary Qth.
+ 2Z Zipcode : Changes the temporary ZipCode.
+
+<FONT COLOR="#ff0000">IL Callsign</FONT> :
+ Gives all the information of a callsign from the white pages database.
+
+<FONT COLOR="#ff0000">Kx </FONT>:
+ The fact that a leading K is entered before a kill command with the
+letter K (I.E. KK, KK&lt;, ...) triggers immediate killing of the specified
+message. The archiving will be done at the next epurmess process according to
+epurmess parameters. The status of the message becomes "A". The syntax is
+identical to the command "K".
+
+<FONT COLOR="#ff0000">K&gt; callsign </FONT>: Deletion of any message to this callsign.
+
+<FONT COLOR="#ff0000">K&lt; callsign</FONT> : Deletion of any message sent from this callsign.
+
+<FONT COLOR="#ff0000">K@ route</FONT> : Suppresses all the messages which have the specified route.
+
+<FONT COLOR="#ff0000">KF </FONT>: Suppresses all the messages already forwarded.
+
+<FONT COLOR="#ff0000">$ msg#</FONT> :
+ Information about msg# forwarding: lists the BBS which have not yet
+received the message #.
+
+<FONT COLOR="#ff0000">LU (RU) </FONT>:
+ Lists (or displays) all the personnal messages which have not yet
+been read by their addressee.
+
+<FONT COLOR="#ff0000">Mx </FONT>:
+ Same as the command "L", with the same syntax, but the BID is inserted
+at the beginning of the "SUBJECT"-field. This command allows you to do some
+search or to visualize BIDs in the message lists (commands MS, ML, etc...).
+
+<FONT COLOR="#ff0000">PR </FONT>:
+ Enables or disables the printer from the console. The printer is
+automatically disabled on disconnect.
+
+<FONT COLOR="#ff0000">PR&gt; filename </FONT><FONT COLOR="#000000">: validates and redirects the printing to a filename.</FONT>
+<FONT COLOR="#000000">               (Works only in DosFBB)</FONT>
+<FONT COLOR="#000000"></FONT>
+<FONT COLOR="#ff0000">PR&gt; -</FONT><FONT COLOR="#000000">        : validates and redirects the printing to the standard printer.</FONT>
+<FONT COLOR="#000000">               (Works only in DosFBB)</FONT>
+<FONT COLOR="#000000"></FONT>
+<FONT COLOR="#ff0000">RE <FONT COLOR="#000000">: Releases HELD messages.</FONT></FONT>
+
+<FONT COLOR="#ff0000">SR [#msg] [+filename] [subject]</FONT>
+ Reply to a message already read or formerly suppressed, or to a message
+matching the specified number and appends the contents of filename. If the
+subject is not stated, it will be the title of the read message, with the
+"Re:" placed ahead.
+
+<FONT COLOR="#ff0000">SYS :</FONT>
+<FONT COLOR="#ff0000"> </FONT>Enables remote Sysop mode. A callsign validated as SYSOP is permitted
+to access messages and files in the BBS according to the settings in
+PASSWD.SYS file.  The  SYS  command  will  return  a  string  of numbers
+corresponding to the position of a letter in a sentence located in the
+PASSWD.SYS file. If you send back the 5 letters (without any space) matching
+the 5 numbers, an OK will be sent out to confirm that the SYSOP mode is
+granted.
+
+<FONT COLOR="#ff0000">YL file</FONT> : Modifies the description of an existing YAPP file.
+
+
+<B>Other commands:</B>
+
+<FONT COLOR="#ff0000">M :</FONT>
+ In the <A HREF="doctraje.htm">SATELLITE ORBITAL COMPUTATION</A> menu, manual modification of the
+orbital parameters of the satellites.
+
+<FONT COLOR="#ff0000">N Callsign </FONT>:
+ In  the  <A HREF="docnomen.htm">"Call-book"</A>  menu,  this  command  allows  to  edit/modify
+call-book information of a user.
+
+<FONT COLOR="#ff0000">S file </FONT>:
+ In the <A HREF="docgate.htm">gateway</A> and in command mode, send an ascii file.
+
+<FONT COLOR="#ff0000">W file </FONT>:
+ In the <A HREF="docgate.htm">gateway</A>, opens a capture file. The file is closed with another W
+command.
+
+<FONT COLOR="#ff0000">YU Filename</FONT> :
+ In <A HREF="docgate.htm">gateway</A> mode and only from the console send a binary file to a remote
+system under the YAPP protocol.
+
+<FONT COLOR="#ff0000">YD Filename</FONT> :
+ In <A HREF="docgate.htm">gateway</A> mode and only from the console receive a binary file from a
+remote system under the YAPP protocol.
+
+<FONT COLOR="#ff0000">/R</FONT> : Reboot PC
+<FONT COLOR="#ff0000">/A</FONT> : Stop BBS-program
+<FONT COLOR="#ff0000">/K</FONT> : Reboot BBS, including housekeeping.
+<FONT COLOR="#ff0000">/L</FONT> : Reboot BBS, wait till all users have disconnected.
+<FONT COLOR="#ff0000">/M</FONT> : Reboot BBS, immediately.
+
+You will also find a list of all function-keys in the <A HREF="docfunck.htm">Console Commands</A>
+chapter.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

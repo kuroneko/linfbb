@@ -1,0 +1,710 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of FORWARD.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  FORWARD.SYS
+</H1>
+<P>
+<PRE>
+
+<BIG><B>FORWARD.SYS (\FBB\SYSTEM).</B></BIG>
+
+I have divided this section in two parts:
+1   :  <A HREF="#Simple">Simple instruction (for first-time setup).</A>
+
+2   :  <A HREF="#Advanced">Advanced setup, with more details.</A>
+2.1 :  <A HREF="#Line">Line types.</A>
+2.2 :  <A HREF="#Definition">Definition of a forward-file.</A>
+2.3 :  <A HREF="#Include">Include-files.</A>
+2.4 :  <A HREF="#Automatic">Automatic forward to a file.</A>
+2.5 :  <A HREF="#End">End-of-file DOS-command specific to a port.</A>
+
+<A NAME="Simple"><!-- --></A><B><BIG>Simple instruction (for first-time setup).</BIG></B>
+
+ This file is in SYSTEM directory. In this file all necessary data for
+forwarding of messages are held. First I will give an example of a file that
+contains the minimum of data that MUST be in FORWARD.SYS if you have forward
+to only 1 other BBS, called LA2D in this example.
+
+ The file is organised in blocks, one block for each BBS we forward directly
+to. A block starts with A (callsign) and ends with -------- We can have as
+many blocks as we want in FORWARD.SYS.
+
+ A LA2D
+   #
+   P C
+   #
+   C C LA2D
+   #
+   B LA2D
+   F LA2D
+   #
+ ---------
+
+ All lines starting with a '#' are comments-lines, and are ignored by the
+BBS. The first line must always start with the letter A, and next the
+callsign of the BBS we want to forward to. Here: A LA2D
+
+ Then there must be a line telling on which port to start the forward.
+This line must be there even if we only have 1 port.
+
+ In this example I use port C, which is the same as TNC 3 in my <A HREF="fmtport.htm">PORT.SYS</A>.
+Command: P C
+
+ So I will send the connect-command to the TNC. That line must start with a C
+before the actual connect-command. So if I call LA2D directly, I need to
+write C C LA2D. (Only one C will not work). And lastly I must write which
+messages I shall forward to that BBS. In this case I type only B LA2D, which
+means all messages with @ LA2D, and F LA2D, which means all messages TO LA2D.
+The forward-file must end with a string of -------. If you have more than one
+BBS to forward to, you write all data for that BBS in a similar block in this
+same FORWARD-SYS-file (starting with A, and ending with ----) right after
+this block for LA2D.
+
+ You can also use one include-file for every BBS, but we will look at that
+later in this sysop-documentation.
+
+ Well. I expect you do not want to forward only those messages that are TO
+LA2D or @ LA2D (in this example), I expect you want to forward bulletins
+also. Just include some lines starting with G, like G EU, G ALL, G WW etc in
+the file. G EU means all bulletins addressed to @ EU. So may want to add this
+in each file, like this:
+
+ A LA2D
+   #
+   P C
+   #
+   C C LA2D
+   #
+   B LA2D
+   F LA2D
+   #
+   G EU
+   G ALL
+   G WW
+ ---------
+
+ OK. Next you may want to forward messages through LA2D, that is not really
+for LA2D, but that LA2D can forward on to this other BBS. These other BBSs
+can be included in lines starting with a B, like B LA1G, B LA4O, B LA5G etc.
+like this:
+
+ A LA2D
+   #
+   P C
+   #
+   C C LA2D
+   #
+   B LA2D
+   F LA2D
+   #
+   B LA1G
+   B LA4O
+   B LA5G
+   #
+   G EU
+   G ALL
+   G WW
+ ---------
+
+
+ Also, if you want to forward ALL messages for other SM-BBSs this way, you
+can use wildcards (as in DOS) like B SM*, B SK*, B OH* etc. like this:
+
+ A LA2D
+   #
+   P C
+   #
+   C C LA2D
+   #
+   B LA2D
+   F LA2D
+   #
+   B LA1G
+   B LA4O
+   B LA5G
+   #
+   B SM*
+   B SK*
+   B OH*
+   #
+   G EU
+   G ALL
+   G WW
+ ---------
+
+
+ Well. Now the file is almost complete for most needs. We may want to add the
+possibility to forward (on VHF or UHF) via several nodes. This is very easy,
+as we just add another C C (callsign) line for each node we have to call. If
+I must call first my local node LA7QR, next the local node of LA2D (LA1EAX-
+7), and lastly LA2D, the complete file for LA2D will now look like this:
+
+ A LA2D
+   #
+   P C
+   #
+   C C LA7QR
+   C C LA1EAX-7
+   C C LA2D
+   #
+   B LA2D
+   F LA2D
+   #
+   B LA1G
+   B LA4O
+   B LA5G
+   #
+   B SM*
+   B SK*
+   B OH*
+   #
+   G EU
+   G ALL
+   G WW
+   #
+   R
+   #
+ ---------
+
+ I put in an R at the end. This forces my BBS to call LA2D BBS and ask him
+for forward from him to me (reverse forward), even if I have nothing to
+forward to him.
+
+ Well, this was a simple forward-file. There is a lot more we can do with
+this file, so you should read <A HREF="#Advanced">Advanced setup</A> very carefully, I think you
+will find all you need there.  But you now have learnt the basics..
+
+
+<A NAME="Advanced"><!-- --><!-- --></A><BIG><B>Advanced setup (with more details).</B></BIG>
+
+ The FORWARD.SYS file defines the setup of the various adjacent BBS's to
+which we will route the mail. The file is organized in blocks, each block
+being specific to a BBS. Only the adjacent BBS's should be defined.
+
+ This file and its includes are compiled at the BBS start-up and after
+editing with the built-in editor, or return from the DOS Shell (AltF9 in
+DosFBB) if one of the files has been modified.
+
+ If the FORWARD.SYS file or one of its includes has been modified all the
+active messages are scanned, and new routings will be set according to the
+updated file(s). The scanning can be stopped with AltF3. (Can be convenient
+if the modification does not impact the routing.)
+
+ Every line of the file begins with a letter which defines the function of
+the line. Any line beginning with a # is regarded as a comment and is
+ignored.
+
+<A NAME="Line"><!-- --></A><BIG><B>Line types :</B></BIG>
+
+A (callsign)
+ All blocks must start with a line like this. The callsign is the callsign of
+the BBS we will forward to.
+
+B (callsign)
+ All blocks must include at least one line like this. Personal messages
+addressed to somebody with address '@ (callsign)' will be forwarded.
+
+C C (callsign1) [V DIGI1 DIGI2 ETC...]
+ The complete line of connection (C callsign V digi1 digi2) must follow the
+letter C. In most cases, there will be two letters C successively, with a
+space between them. The letter V, specifying a string of repeaters is
+optional if PROMs TF4 (or equivalent) are used - see WA8DED.DOC. There may be
+several lines C, in the case of cascaded connections (use of THENET, as per
+an example). A line of conditional connection (enclosed between an IF and an
+ENDIF) allows calls on preset times. Up to 8 lines are allowed, each line can
+hold up to 80 characters.
+
+ In case of KA-node and X-connect, we can send C X (callsign). When connected
+to a node, all command after the first C is actually sent to that node. Like
+here, the X is sent too.
+
+<FONT COLOR="#ff0000">Only for LinFBB and WinFBB</FONT>:
+To forward with Telnet the syntax is:
+C C &lt;callsign&gt; &lt;IP address&gt; [port]
+IP-address is required, port is optional (default 23).
+
+D (command)
+ Command to be performed by the DOS (transceiver frequency set, for example).
+<FONT COLOR="#ff0000">For WinFBB:</FONT>
+A separate DOS-window is opened, and the command performed there.  The window
+is closed when the command has been executed.  In WinFBB the D (command) and
+X (command) is identical.
+
+<FONT COLOR="#ff0000">For DosFBB and LinFBB:</FONT>
+The screen is saved before the command, and restored when done, thus enabling
+screen access for this command. When running BAT files, a COMMAND.COM is
+automatically first sent. That needs some more memory.
+
+DC (command)
+ Same as D-command above, but executed when the connection is done.
+This allows to change parameters or program a function when
+the other BBS is connected. When the connection is made from another
+BBS, the LC, DC and XC are executed if the BBS exists in forward file.
+
+ELSE
+ Complementary conditional lines to the previous IF.
+
+ENDIF
+ End of conditional lines defined by an IF.
+
+F (callsign)
+ Callsign which will be automatically routed (except if a routing has been
+specified) to the BBS which has been previously stated by a B line (must
+follow a B line). There may be several F lines following a B line. If this
+line is not preceded with a B line, then the bulletins will be routed on
+their destination.
+
+ G (route)
+ Group routing  indicator  for  bulletins  (EU  for  example).  This 
+indicator  applies  only  to  bulletins.  The  private  messages  are sent
+according to the BBS indicator (see line B). There may be several routing
+indication lines per adjacent BBS.
+
+H (route)
+ Route definition using the hierarchical addressing mode. The wildcards (* or
+?) must be used to replace the missing part of the address as a function of
+the destination.  H-routing should be used as much as possible.
+
+IF C1 ... IF C9
+ Conditional test of the route selection. The value for "n" is a figure, from
+1 to 9, depending upon the selection. The first selection is 1, and the
+maximum is 9. The lines located between the IF Cn and the ENDIF will be taken
+into account only if the current selection is n. If the connection has not
+been successful (remote BBS prompt not received), the selection number will
+be incremented, and the block will be tested again if the port is still the
+same. If the port is different, the block will be tested during the tests
+related to the new port. If the connection is successful, the selection
+number is reset at 1 for the next call, otherwise the selection number is
+incremented. If all the selections failed, the selection number is reset at
+1, the call is given up, and the system manages the next block.
+
+IF D xx
+ Conditional test of the days of the week. This line defines a set of lines
+which will be taken into account if the expression which defines the day(s)
+following the IF is true. 0 corresponds to Sunday and six to Saturday. The
+expression 'IF D 0,2,4-6' is true for Sunday, Tuesday, and Thursday to
+Saturday. There can be several embedded IF's (indentation recommended), they
+shall never expand outside a block. The ENDIF defines the end of the
+conditional block.
+
+IF H xx
+ Conditional test of the hour (IF). This line defines a set of lines which
+will be taken into account only if the hour period following the IF is TRUE.
+The hour period written in the format 0,4,12-23 is true at 0h, 4h, and for
+the hours from 12h to 23h. There may be several IF conditions embedded
+(indentation should be used), but never outside of the blocks.
+
+IF FREE
+ Conditional test for the availability of a port. The test will be true if
+none of the channels for the port is in use. This test can be a necessity
+before the autoqsy of a transceiver as for an example. There can be several
+embedded IF's (indentation is recommended), they shall never expand outside a
+block. The ENDIF, defines the end of the conditional block.
+
+IF MAN
+ Conditional test only true if forward has been asked manually by F4, FR or
+FW commands.
+
+IF N (number)
+ Tests on number-of-day in the month (1-31)
+
+J        (data means 7+ here)
+  J 0 : no data sent
+  J 1 : data is sent (default)
+  J 2 : personal data is sent
+  J 3 : only data is sent (exclusive)
+
+K Channel
+ Forces forwarding to start on the specified channel. If the channel is busy,
+forwarding will not start.
+
+L (command) [value]
+ Parametres programming for the TNC. The parameters will be assigned to the
+related channel. The syntax is the one of the TNC hostmode. Only the command
+B (Paclen = packet size) has been supplied in all cases. B parameter must be
+used with all TNCs (including KAM) to specify a paclen. The paclen is always
+managed by the BBS software, as the different host modes are transparent to
+the paclen. The PACLEN of the KAM should be 0/0 (256) to make the BBS paclen
+work in all circumstances.
+
+LC (command) [value]
+ Same as L-command above, but are executed when the connection is done.
+This allows to change parameters or program a function when
+the other BBS is connected. When the connection is made from another
+BBS, the LC, DC and XC are executed if the BBS exists in forward file.
+
+N (number)
+ Assigns the standard forward protocol (MBL/RLI) for the specified BBS.
+  1 = FBB forwarding allowed
+  2 = FBB+BIN forwarding
+  4 = FBB+BIN+Resume
+  8 = XFWD
+  Ex: N 15 = Sum of all protocols (default)
+
+O (minutes)
+ Defines a timeout for the specified BBS. Timeout is expressed in minutes.
+
+P (port)
+ Selects the port on which the connection is to take place. The port is
+defined by a letter from A to H for the ports 1 to 8.
+
+Q
+ Prevents the reverse forwarding from my BBS to take place.
+
+R
+ Specifies that a call should be made to the adjacent BBS even if there is no
+mail in queue, so as to trigger the reverse forwarding.
+
+S Connect Failure Busy
+ It is a set of supplementary test in the case of sequential connections
+(TheNet network for example). The 3 tests should be defined. The tests
+"Connect" "Failure" and "Busy" are already defined in the software.  Ex.:
+S Conne Echec Occup. The software will interpret "Conne" like Connect,
+"Echec" like Failure, and "Occup" like Busy. This allows to comply with nodes
+messages which are not those commonly used by TheNet.
+ Up to 4 S lines (set of tests) can be defined in a forwarding block.
+S line (choices of forward) now checks default as a last choice. Up to four
+previous choices are checked as declared before. Warning, these tests are
+case dependent.
+
+T options
+ Definition of the maximum size for a file authorized to be forwarded, type
+of messages and strategy. This line can be made conditional (between an IF
+and an ENDIF).
+
+ T P : Send only personal messages
+ T S : Send smaller first (instead of older first)
+ T 2 : Send only messages less than, or equal to, 2 KB.
+ T D : Disable the feature of sending only 1 message from each 
+       callsign in each forward-block
+
+ It is possible to combine one or more of these option like :
+
+ T P S 2 : means only private less or equal to 2 KB, smallest first.
+
+ In all cases, personal messages are forwarded first, bulletins next.
+
+U ROUTE1 ROUTE2 ... (up to eight routes)
+ Give the priority when forwarding bulletins. Bulletins @ROUTE1 will be
+forwarded first, then bulletins @ROUTE2, then other bulletins. It may be up
+to eight specified routings. Private mail (including P, T and A messages) are
+always forwarded first.
+
+V (text)
+ Text sent on connection of the called BBS. (Mandatory on some TCPIP BBS to
+declare the protocol in use). Allows sending callsign and password when
+connecting to a phone BBS.
+
+W
+ Command W allows to skip one or more prompts (default one) before starting
+a forward session (mainly used when "Linked to ..." gives more than 
+one prompt)
+
+X (command)
+ Command to be executed by DOS (Selection of a frequency, as for an example).
+
+<FONT COLOR="#ff0000">For WinFBB:</FONT>
+A separate DOS-window is opened, and the command performed there.  The window
+is closed when the command has been executed.  In WinFBB the D (command) and
+X (command) is identical.
+
+<FONT COLOR="#ff0000">For DosFBB and LinFBB:</FONT>
+The screen is not saved before the command, thus, the latter should not
+access the screen. This command is identical to the D command, but it is
+transparent and faster. When running BAT files, a COMMAND.COM is automatically
+first sent. That needs some more memory.
+
+XC (command)
+ Same as X-command above, but executed when the connection is done.
+This allows to change parameters or program a function when
+the other BBS is connected. When the connection is made from another
+BBS, the LC, DC and XC are executed if the BBS exists in forward file.
+
+Y
+ Automatic time update of PMS having the clock ability. (if SID looks like
+[PMS-3.0-C$]). PMS is set with the local time.
+
+Z route
+ NTS routing indicator for NTS messages. This routing indicator applies only
+to messages of "T" type. Wildcards can be used to define masks. There may be
+several routing indication lines per adjacent BBS.
+
+------ (string of dashes)
+ Defines the end of the block for the adjacent BBS. The block begins with an
+A line.
+
+! Line
+ Defines an exception. Will be used with lines of types B, F, G, H. The
+exception should always be set <B>before</B> the true condition statement. An
+exception is always from the same type statement (you cannot have a !F
+exception to a B line).
+ Ex:
+ ! B F6FBB Except for F6FBB BBS
+ B F* Forward to all the BBS which begin with an F
+ The number of the exceptions is not limited.
+
+&lt; File
+ Include the file specified. The name of the file should be in the directory
+SYSTEM or in one of its subdirectories.
+
+#
+ Comment line.
+
+
+<A NAME="Definition"><!-- --></A><BIG><B>Definition of the forward file :</B></BIG>
+
+ A forward file is made of a main file including a set of blocks, each block
+corresponds to an adjacent BBS, that is to say that can be connected.
+
+ Definition of the minimum block :
+
+ A block will be an included file in the FORWARD.SYS file. It is always made
+with a first line beginning with an A, defining the name of the adjacent BBS,
+and of a last line made of a string of dashes. Inside this block, there will
+be at least one P line (port used) a C line (connection request), and a B
+line (destination BBS). An F line with the SYSOP callsign may follow the B,
+enabling the automatic routing for his mail.
+
+ A FC1CDC
+   P A                      Port A
+   C C FC1CDC-1 F6FBB-5     connection line
+   B FC1CDC BBS             desserved by FC1CDC
+   F FC1CDC                 callsign automatically forwarded to FC1CDC
+ --------
+
+ This type of block is well suited for PMS of BBS which do not support
+automatic mail forwarding.
+
+
+Example of a more complex block :
+
+ A FC1HAQ
+   #
+   G EU                     FC1HAQ will receive
+   G FRA                    the bulletins for those
+   G WW                     various routings.
+   G AMSAT
+   F AMSAT                  bulletins to AMSAT are also marked.
+   #
+   H *.NA                   All the H. routes which end
+   H *.SA                   with .NA, .SA
+   H *.EU                   and .EU
+   #
+   O 5                      5 minutes timeout.
+   #
+   IF C1                    1st choice parameters
+     P C
+     L B 250                Paclen is 250 bytes
+     L N 4                  Retry 4
+     C C FC1HAQ-1 F6FBB-7 019301
+   ENDIF
+   IF C2                    2nd choice parameters
+     P C
+     IF 8-17                from 8h to 17h
+       T 5                  files of 5 kb Max.
+     ENDIF
+     L B 250                Paclen is 250 bytes
+     L N 4                  Maxframe is 4
+     C C FC1HAQ-1 F6FBB-7 019002
+   ENDIF
+   IF C3                    3rd choice parameters
+     P A                    port A is used
+     T P                    private mail only
+     C C F6FBB-2            Connection of the 1st Thenet.
+     C C FF6KUB-2           Connection of the 2nd Thenet.
+     C C FC1HAQ-1           Final connection.
+   ENDIF
+   #
+   B FC1HAQ                 Definition of the various
+   F FC1HAQ                 BBS routed by FC1HAQ and
+   F F6CQU                  of its SYSOPs and /or direct
+   #                        specified users.
+   B F6ABJ
+   F F6ABJ                  Other BBS and miscellaneous
+   #                        callsigns forwarded by FC1HAQ.
+   B F5LO
+   F F5LO
+   #
+   B G*                     other BBSs.
+   B ON*
+   B D*
+   B HB*
+   #
+ ------                     End of the FC1HAQ block
+
+
+<A NAME="Include"><!-- --></A><BIG><B>Include-files.</B></BIG>
+
+ It is possible to use include-files with FBB. In this way we can have a
+very small FORWARD.SYS, with only the callsign of the BBSs to forward to, and
+then we have another directory with all the forward-blocks. One file for each
+BBS, for example. Just transfer one whole block (starting with A (callsign)
+and ending with ------) to file, and put the filename in FORWARD.SYS with a
+'&lt;' in front of it, like  this:
+
+ Example of FORWARD.SYS file with include-files.
+
+ #
+ # FORWARD FILE F6FBB
+ # ------------------------
+ #
+ # UHF
+ #
+ &lt; FWD\FE6BIG
+ &lt; FWD\FC1GJC
+ &lt; FWD\FF6KNI
+ &lt; FWD\FC1HAQ
+ &lt; FWD\F1EBV
+ &lt; FWD\FD1JGK
+ &lt; FWD\EA3BKZ
+ #
+ # PMS
+ #
+ &lt; FWD\FD1CDC
+ &lt; FWD\FD1MEU
+ &lt; FWD\FD1OAC
+ &lt; FWD\F8PD
+ &lt; FWD\F6HED
+ &lt; FWD\FE1JYH
+ &lt; FWD\F1LMI
+ #
+ # HF
+ #
+ &lt; FWD\LA1B
+ &lt; FWD\LA6CU
+ &lt; FWD\SV1IW
+ &lt; FWD\4X1RU
+ &lt; FWD\RS3A
+ &lt; FWD\I7XGL
+ &lt; FWD\EA8AML
+ &lt; FWD\EA8RT
+ #
+ # VHF
+ #
+ &lt; FWD\F6CDD
+ #
+ # FILES
+ #
+ &lt; FWD\AMSAT
+ &lt; FWD\MAIL
+ #
+ # Back to the park frequency.
+ #
+ P B
+ IF 0-3,21-23
+   X ICOM A2E8 M14
+ ELSE
+   X ICOM A2E8 M4
+ ENDIF
+
+ 
+ Example of an include file FWD\EA8RT
+ ------------------------------------
+
+ A EA8RT
+   #
+   G EU
+   G ALL
+   G AMSAT
+   G WW
+   G EA
+   G EANET
+   G LATNET
+   #
+   P B
+   #
+   O 2
+   #
+   L T 20
+   L B 80
+   L O 2
+   L P 100
+   L F 2
+   L @T2 20
+   #
+   #
+   IF 7-22
+     X ICOM A2E8 M6
+     C C EA8RT-2
+   ENDIF
+   #
+   B EA8RT
+   F EA8RT
+   F E?1*
+   F E?4*
+   F E?7*
+   F E?8*
+   #
+   B E?1*
+   #
+   B E?4*
+   #
+   B E?7*
+   #
+   B E?8*
+   #
+ ----
+
+
+
+<A NAME="Automatic"><!-- --></A><BIG><B>Automatic forward to a file.</B></BIG>
+
+ It is interesting to allow automatic routing of messages or bulletins to a
+file, for further processing, archive, or communication between BBSs which
+co-exist in the same computer. The communication can be made through files.
+The incoming mail file (see <A HREF="fmtinit.htm">INIT.SRV</A>) is tested once every minute; in case of
+existence, the mail it contains is imported into the BBS.
+
+ On the other hand, a file can be defined in a forward block and updated once
+every 15 minutes. This file is defined in a block of forward identical to the
+forward between BBSs, the port being @ and the connection line given the name
+of the file created or updated. The name of the BBS (possibly dummy) used
+will be declared in <A HREF="fmtbbs.htm">BBS.SYS</A>, of course.
+
+ Example of a forward to a file (forward to the file B:MAIL.FBB of my own
+private mail) :
+
+ A MAIL
+   P @
+   C B:\MAIL.FBB
+   B F6FBB
+   F F6FBB
+ ------
+
+
+<A NAME="End"><!-- --><!-- --></A><BIG><B>End-of-file DOS command specific to a port.</B></BIG>
+
+ Each DOS command (D or X line) defined out of a forward block will be run
+only if the forwarding port matches with the last port selection.
+
+ Example :
+
+ You use the autoqsy capabilities of your HF transceiver with a special
+program named "ICOM". To be sure to return to your standby frequency, you
+must set your frequency at the end of the forward file, only if the forward
+applies to the HF port. You only have to select the port before running the
+DOS command.
+
+   B xxxxxx
+   #
+ -------                   End of last forward block
+ #
+ P D                       Select HF port (port D)
+ X ICOM A3E8 M12           Send the DOS command ICOM with its
+ #                         arguments if the file is scanned for
+ #                         D port. IF and ENDIF are allowed.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

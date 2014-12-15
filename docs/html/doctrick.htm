@@ -1,0 +1,130 @@
+<HTML>
+<HEAD>
+  <TITLE>Tricks and tips (Appendix 8)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Tricks and tips<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 8)
+<P>
+<PRE>
+ This rubric is yours, more than mine. I'll try to insert there all tricks
+you will tell me.
+
+
+<FONT COLOR="#ff0000">Only for DosFBB:</FONT>
+<B>Using DesqView (c).</B>
+-------------------
+ There is no particular problem when using DesqView. The minimum window size
+is 500 KB. You MUST use communication drivers, like ESS, COMBIOS or MBBIOS,
+as the software does not dispose of the whole process time.
+
+
+<B>Communication errors displaying.</B>
+ -------------------------------
+ An error counter can be displayed 
+<FONT COLOR="#ff0000">in WinFBB:</FONT> after the word "Resync" on the screen
+<FONT COLOR="#ff0000">in DosFBB:</FONT> just right of the date, on the first line of the screen.
+If you are using TNC2 with WA8DED software, these errors can be minor, but
+with PK232, error recovery is more difficult, and the system may reboot.
+
+ With a correct operation of your system, this counter will not appear, or
+exceptionally. If errors are displayed, they can result from :
+
+ - Using DOS 4.0 or 5.0 : The keyboard driver of these versions is very slow.
+You must use the ESS driver for RS232 (or COMBIOS).
+
+ - A too hight baudrate, or RS232 defective cables. The baudrate can be
+selected down to 4800 Bds. It is not a good idea to go down 4800 Bds, as the
+performance of the software should be lower.
+
+ - Change the LM324 fitting out some TNC RS232 line drivers by a TL074 or
+TL084.
+
+ - HF detection in the TNC. Errors and resynchronizations will appear when
+the transmitter is running. There is no real cure, you must investigate.
+
+ You can also use communication drivers like ESS, COMBIOS or MBBIOS if you
+are not still using them.
+
+
+<B>Repeat the last message number.</B>
+--------------------------------
+ The last message number displayed, read, killed, etc... can be utilized
+again with the # (pound) character. This short-cut allows as for an example
+to read a message after a list or to suppress it just after its reading.
+
+ Example :
+
+ F6FBB BBS &gt; R 12351
+ The message is displayed ...
+ F6FBB BBS &gt; K #
+ Message #12351 killed.
+ F6FBB BBS &gt;
+
+
+<B>Problems with BPQ running as a Node !</B> (OZ1CBQ)
+-------------------------------------
+
+If you are using BPQ running as a node together with FBB you may have problems
+if your node ar linked to other nodesystems as TheNet, TheNetNode, X-net,
+RMNC, FlexNet, etc.
+
+BPQ seems to have a compatibility problem with these nodesystems causing some
+hangups during incoming connects via the nodesystem.
+The problem starts with lowering the available buffers and at last the 
+system is hanging until a reboot has been done.
+Only cure for the time being is to run BPQ as a SWITCH only without nodeupdate
+(NODE=0 in BPQCFG.TXT) only allowing level_2 traffic.
+
+This brings another problem:
+When FBB runs together with BPQ running as a level_2 switch, it is only 
+possible to have outgoing forward on two channels at the time.
+One channel using the callsign and one channel using the alias as first call
+in the forwardfile.
+
+Example 1.st outgoing forward channel:
+
+C C SWITCH
+C C 1 OZ7BOX-2    ; Callsign of the BPQ-switch
+C C ....          ; Other connects
+
+Example 2.nd outgoing forward channel:
+
+C C SWITCH
+C C 1 ESBOX       ; Alias_name of the BPQ-switch
+C C ....          ; Other connects
+
+
+<B>PMS forwarding:</B>
+<B></B>---------------
+
+In INIT.SRV there is a flag 128 in the FBB-type-forward section.  If this flag
+is set, only PMS-users that have been declared with the F-flag in the EU-command
+(Edit User) will be able to up/download messages to/from the BBS.  The same
+users should also have the U flag set (in EU-command) to enable them to send
+unproto resync requests to the BBS.
+
+
+<B>Display looks wrong (Only WinFBB):</B>
+----------------------------------
+
+If you get a wrong display of the windows of WinFBB, halt the software,
+delete windows\winfbb.ini and rerun the software.
+
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

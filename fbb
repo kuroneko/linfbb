@@ -1,0 +1,529 @@
+#!/bin/sh
+DESTDIR=/usr/local
+FBBCONF=$DESTDIR/etc/ax25
+CONFDIR=$DESTDIR/etc/ax25/fbb
+DATADIR=$DESTDIR/var/ax25/fbb
+FBBDIR=$DESTDIR/var/ax25/fbb
+LIBDIR=$DESTDIR/lib/fbb
+SBINDIR=$DESTDIR/sbin
+
+DOSDIR=$DATADIR/fbbdos
+MAILIN=$FBBDIR/mail/mail.in
+FBB=$SBINDIR/xfbbd
+
+FBBLOG=/dev/null
+
+#
+# Do not change following lines
+#
+
+export CONFDIR DATADIR FBBDIR LIBDIR SBINDIR DOSDIR FBB MAILIN FBBLOG
+
+# declare -a gives sometime problems...
+# declare -a PORT_NAME NB_CH PORT_FREQ
+
+VERSION=7.05
+
+# run batches from the housekeeping directory
+housekeeping()
+{
+	echo "Running $1"
+	if [ -d $LIBDIR/script/$1 ] ; then
+		for i in $LIBDIR/script/$1/*; do
+    		test -x "$i" || continue
+			echo "  script = $i"
+			$i
+		done
+	fi
+}
+
+# send a mail to sysop
+segv()
+{
+	MAIL_IN=`fbbgetconf import`
+	SYSOP=`fbbgetconf sysop`
+	cat << EOF >> $MAIL_IN
+SP $SYSOP
+Segmentation error
+FBB gave a segmentation violation on `date`
+/EX
+EOF
+}
+		
+replace()
+{
+	if [ ! -f $1 ] ; then
+		return 0
+	else
+		echo -n "file `basename $1` already exists. Replace (Y/N) ? "
+		read REP
+		if [ "$REP" = "N" -o "$REP" = "n" ] ; then
+	   		return 1
+		else
+			return 0
+		fi
+	fi
+}
+
+make_fbb_conf()
+{
+	echo "#"
+	echo "# FBB Set-up file"
+	echo "#"
+	echo "version = FBB$VERSION"
+	echo "# Callsign of BBS"
+	echo "callsign = $CALL.$ROUTE"
+	echo "# SSID of BBS"
+	echo "ssid = $SSID"
+	echo "# Qra Locator of BBS"
+	echo "qraloc = $QRALOC"
+	echo "# Qth of BBS"
+	echo "city = $CITY"
+	echo "# First name of SYSOP"
+	echo "name = $SYSOP_NAME"
+	echo "# Callsign of SYSOP"
+	echo "sysop = $SYSOP_CALL"
+	echo "# Local time"
+	echo "loca = $LOCALTIME"
+	echo "# servers"
+	echo "server = REQDIR reqdir Directory request"
+}
+
+make_epurmess_ini()
+{
+    cat <<EOF
+#
+# FBB epurmess configuration file
+#
+$DATADIR/mail/
+$DATADIR/binmail/
+$DATADIR/oldmail/
+$DATADIR/dirmes.sys
+$DATADIR/dirmes.old
+$DATADIR/dirmes.new
+$DATADIR/epurmess.res
+#
+# Priv Bull (0=erased 1=archived)"
+1 0
+#
+# Cleaning parameters for private mail (in days)
+#
+# PN -> PX
+60
+#
+# PY -> PX
+5
+#
+# PF -> PK
+1
+#
+# PX -> PK
+2
+#
+# PK -> PA
+2
+#
+# Cleaning parameters for bulletins (in days)
+#
+# BN -> BX
+7
+#
+# B$ -> BX
+7
+#
+# BY -> BX
+7
+#
+# BX -> BK
+4
+#
+# BF -> BX
+7
+#
+# BK -> BA
+1
+#
+# Automatic messages for not-forwarded messages. Days = 0 disables the message.
+# 255 characters maximum for the line.
+#
+# Private messages returned : Timeout link default. (Days + text, $W=new line).
+10 Sorry, the following message could not be routed due to link default.$W
+#
+# Private messages returned : Unknown route. (Days + text, $W=new line).
+2 No defined route for the following message. Please check the h-address.$W
+#
+# Nb of lines max in a returned message
+10
+#
+------
+#
+# Special tests
+#
+# Type To  Number_of_days
+  @  ALL    1
+  >  ALL    1
+#
+# End of file
+#
+EOF
+}
+
+get_fbb_conf()
+{
+	echo ""
+	echo -n "Configuration files does not exist. Create them (Y/N) ?"
+	read REP
+	if [ "$REP" = "N" -o "$REP" = "n" ] ; then
+		echo "Cannot run FBB without conf files"
+	   	exit 0
+	fi
+	
+	while true ; do
+		echo
+		echo -n "Callsign of the BBS without ssid   (Ex: F6FBB)        : "
+		read CALL
+		echo -n "SSID of the BBS                    (Ex : 1)           : "
+		read SSID
+		echo -n "Hierarchical address               (Ex : FMLR.FRA.EU) : "
+		read ROUTE
+		echo -n "QRA-Locator of the BBS             (Ex : JN03QL)      : "
+		read QRALOC
+		echo -n "City of the BBS                    (Ex : Toulouse)    : "
+		read CITY
+		echo -n "Name of the SysOp                  (Ex : Jean-Paul)   : "
+		read SYSOP_NAME
+		echo -n "Callsign of the SysOp without SSID (Ex : F6FBB)       : "
+		read SYSOP_CALL
+		echo -n "Difference with GMT time           (Ex : +1)          : "
+		read LOCALTIME
+
+		echo
+		echo "BBS     : $CALL.$ROUTE"
+		echo "SSID    : $SSID"
+		echo "LOCATOR : $QRALOC ($CITY)"
+		echo "SYSOP   : $SYSOP_CALL ($SYSOP_NAME)"
+		echo "TIME    : GMT $LOCALTIME"
+		while true ; do
+			echo
+			echo -n "Correct (Y/N) ? "
+			read REP
+
+			if [ "$REP" = "Y" -o "$REP" = "y" ] ; then
+				break 2
+			elif [ "$REP" = "N" -o "$REP" = "n" ] ; then
+		    	break 1
+			fi
+		done
+	done
+	
+	# Create fbb.conf file
+	make_fbb_conf > $FBBCONF/fbb.conf
+
+	# Create epurmess.ini file
+	if replace $CONFDIR/epurmess.ini ; then
+		make_epurmess_ini > $CONFDIR/epurmess.ini
+	fi
+}
+
+make_port_fbb()
+{
+	NB=1
+
+	echo "# FBB$VERSION"
+	echo "#"
+	echo "#Ports TNCs"
+	echo " 1     $(( $NUMPORT - 1 ))"
+	echo "#"
+	echo "#Com Interface Adress (Hex) Baud"
+	echo " 1   9         0            9600"
+	echo "#"
+	echo "#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode  Freq"
+	echo " 0   0    0   0      0     0     0     0      00/01   ----  File-fwd."
+	while [ $NB -lt $NUMPORT ] ; do
+		printf " %-2s  %-2s   1   %-6s 250   2     1     10     00/15   XUWYL %s\n"\
+			$NB ${NB_CH[$NB]} ${PORT_NAME[$NB]} ${PORT_FREQ[$NB]}
+		NB=$(( $NB + 1 ))
+	done
+	echo "#"
+	echo "# End of file."
+	echo "#"
+}
+
+get_fbb_port()
+{
+	if replace $CONFDIR/port.sys ; then
+
+		NUMPORT=1
+
+		while true ; do
+			while true ; do
+				echo
+				echo -n "Name of the port #$NUMPORT as named in axport (<CR> to end) : "
+				read REP
+				if [ -z "$REP" ] ; then
+					break;
+				fi
+				PORT_NAME[$NUMPORT]=$REP
+				echo -n "Number of channels                                   : "
+				read REP
+				NB_CH[$NUMPORT]=$REP
+				echo -n "Frequency                                            : "
+				read REP
+				PORT_FREQ[$NUMPORT]=$REP
+				NUMPORT=$(( $NUMPORT + 1 ))
+			done
+
+			NB=1
+
+			echo
+			while [ $NB -lt $NUMPORT ] ; do
+				echo "Port $NB on axport ${PORT_NAME[$NB]} (${NB_CH[$NB]} channels) Freq=${PORT_FREQ[$NB]}"
+				NB=$(( $NB + 1 ))
+			done
+
+			while true ; do
+				echo
+				echo -n "Correct (Y/N) ? "
+				read REP
+
+				if [ "$REP" = "Y" -o "$REP" = "y" ] ; then
+					break 2
+				elif [ "$REP" = "N" -o "$REP" = "n" ] ; then
+		    		break 1
+				fi
+			done
+		done
+
+		# Create port.sys file
+		echo "Creating port.sys ... Ok"
+		make_port_fbb > $CONFDIR/port.sys
+
+		# Create beaconN.sys files
+		NB=1
+		while [ $NB -lt $NUMPORT ] ; do
+			FILE=$CONFDIR/beacon$NB.sys
+			if replace $FILE ; then
+				echo "Creating beacon$NB.sys ... Ok"
+				echo "% 15"   > $FILE
+				echo "! MAIL" >> $FILE
+				echo "\$d \$Tz Mailbox \$O-\$o (LINUX version)" >> $FILE
+			fi
+			NB=$(( $NB + 1 ))
+		done
+
+	fi
+}
+
+check_dir()
+{
+	if [ ! -d $1 ] ; then
+		echo
+		echo "Error : directory $1 does not exist."
+		echo "FBB software was not correctly installed or configured"
+		echo "Giving up !"
+		exit 1;
+	fi
+}
+
+fbb_tree()
+{
+	echo -n "Checking fbb tree."
+
+	check_dir $CONFDIR
+	check_dir $CONFDIR/lang
+	echo -n "."
+
+	check_dir $DATADIR
+	check_dir $DATADIR/mail
+	for n in 0 1 2 3 4 5 6 7 8 9 ; do
+		check_dir $DATADIR/mail/mail$n
+	done
+	echo -n "."
+
+	check_dir $DATADIR/binmail
+	for n in 0 1 2 3 4 5 6 7 8 9 ; do
+		check_dir $DATADIR/binmail/mail$n
+	done
+	echo -n "."
+
+	check_dir $DATADIR/oldmail
+	check_dir $DATADIR/docs
+	check_dir $DATADIR/log
+	check_dir $DATADIR/sat
+	check_dir $DATADIR/wp
+	check_dir $DOSDIR
+	check_dir $DOSDIR/yapp
+	check_dir $LIBDIR/pg
+	check_dir $LIBDIR/filter
+	check_dir $LIBDIR/server
+	check_dir $LIBDIR/script
+	check_dir $LIBDIR/tool
+	
+	echo " Ok"
+}
+
+fbb_conf()
+{
+	echo "Checking fbb configuration :"
+	if [ -x $FBB ] ; then
+		cd $FBBDIR
+		$FBB -i
+		if [ $? -ne 2 ] ; then
+			echo "Configuration error ! Giving up."
+			exit 1
+		fi
+	else
+		echo "Program $FBB is not found or not executable ! Giving up."
+		exit 1
+	fi
+}
+
+fbb_end()
+{
+	echo "Received TERM signal"
+	echo "killproc -TERM $FBB"
+	killproc -TERM $FBB
+	exit 1
+}
+
+fbb_return()
+{
+	echo
+	
+	case $1 in
+	1)	# SIGTERM received
+		housekeeping end_session
+		exit 0
+		;;
+	2)	# /L and /M sysop commands
+		housekeeping rerun
+		;;
+	3)	# /K sysop command and normal housekeeping
+		housekeeping maintenance
+		;;
+	4)	# /A sysop command
+		housekeeping stop_system
+		exit 0
+		;;
+	5)	# "Segmentation violation" or "bus error"
+		segv
+		housekeeping sig_segv
+		;;
+	6)	# /R sysop command
+		housekeeping reset
+		exit 0
+		;;
+	*)	echo "Unknown return value $1"
+		housekeeping error_return $ret
+		;;
+	esac
+}
+
+fbb_loop()
+{
+	PATH=$LIBDIR/tool:$SBINDIR:$PATH
+	export PATH
+	trap fbb_end TERM
+
+	while true ; do
+
+		cd $FBBDIR
+
+		$FBB $FBB_PARAM &
+		wait $!
+
+		fbb_return $?
+
+	done
+}
+
+fbb_run()
+{
+	echo
+	echo -n "FBB options :"
+	if [ -n "$FBB_PARAM" ] ; then
+		echo "$FBB_PARAM"
+	else
+		echo " (none)"
+	fi
+	
+	if [ $FBB_FG -eq 1 ] ; then
+		echo "Running XFBB in foreground mode ^C to abort"
+		sleep 5
+		echo "Starting XFBB (pwd = `pwd`)..."
+		fbb_loop > $FBBLOG 2>&1
+	else
+		echo "Running XFBB in background mode ^C to abort"
+		sleep 5
+		FBB_BACKGROUND=1
+		export FBB_BACKGROUND
+		echo "Starting XFBB (pwd = `pwd`)..."
+		(cd $LOCALDIR ; $MY_SHELL $FBB_PARAM > $FBBLOG 2>&1 & )
+		exit 0
+	fi
+}
+
+fbb_help()
+{
+	echo "format : fbb [-f] [-h] [-s] [-l log_file]"
+	echo "-f : run fbb in foreground"
+	echo "-h : this help information"
+	echo "-l : log debug info to log_file"
+	echo "-q : run fbb silently"
+	
+	exit 0
+}
+
+fbb_opt()
+{
+	MY_SHELL=$0
+	FBB_FG=0
+	RUN_BG=0
+	FBB_SILENT=0
+
+	while [ $# -gt 0 ]; do
+		case "$1" in
+		-h)
+			fbb_help
+			;;
+		-f) 
+			FBB_FG=1 
+			;;
+		-q) 
+			FBB_SILENT=1 
+			;;
+		-l) 
+			FBBLOG=$2
+			shift
+			;;
+		*)
+			FBB_PARAM="$FBB_PARAM $1"
+			;;
+		esac
+		shift
+	done
+
+	if [ -n "$FBB_BACKGROUND" ] ; then
+		fbb_loop
+		exit 0
+	fi
+}
+
+LOCALDIR=`pwd`
+
+if [ ! -f $FBBCONF/fbb.conf ] ; then
+	get_fbb_conf
+	get_fbb_port
+fi
+fbb_opt $*
+if [ $FBB_SILENT -eq 1 ] ; then
+	fbb_tree > /dev/null 2>&1
+	fbb_conf > /dev/null 2>&1
+	fbb_run  > /dev/null 2>&1
+else
+	fbb_tree
+	fbb_conf
+	fbb_run
+fi
+
+exit 0

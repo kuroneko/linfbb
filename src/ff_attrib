@@ -1,0 +1,26 @@
+ibm.c:	blk->ff_attrib = 0;
+ibm.c:	if (strcmp (blk->ff_base, "/") == 0)
+ibm.c:		sprintf (filename, "%s/%s", blk->ff_base, dir->d_name);
+ibm.c:		blk->ff_attrib |= FA_LINK;
+ibm.c:			blk->ff_attrib |= FA_DIREC;
+ibm.c:		blk->ff_attrib |= FA_DIREC;
+ibm.c:		blk->ff_attrib |= FA_RDONLY;
+ibm.c:	blk->ff_fsize = st.st_size;
+ibm.c:	blk->ff_ftime =
+ibm.c:	blk->ff_fdate =
+ibm.c:	strcpy (blk->ff_name, base);
+ibm.c:		strcat (blk->ff_name, ext);
+ibm.c:		strcpy (blk->ff_mask, "*");
+ibm.c:			strcpy (blk->ff_mask, ptr);
+ibm.c:			strcpy (blk->ff_mask, path);
+ibm.c:	strcpy (blk->ff_base, path);
+ibm.c:	blk->ff_dir = opendir (path);
+ibm.c:	if (blk->ff_dir)
+ibm.c:		while ((dirent = readdir (blk->ff_dir)) != NULL)
+ibm.c:			if (!strmatch (dirent->d_name, blk->ff_mask))
+ibm.c:		closedir (blk->ff_dir);
+ibm.c:		blk->ff_dir = NULL;
+ibm.c:	while ((dirent = readdir (blk->ff_dir)) != NULL)
+ibm.c:		if (!strmatch (dirent->d_name, blk->ff_mask))
+ibm.c:	closedir (blk->ff_dir);
+ibm.c:	blk->ff_dir = NULL;

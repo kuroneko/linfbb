@@ -1,0 +1,112 @@
+<HTML>
+<HEAD>
+  <TITLE>Full screen mini edit (DosFBB)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  <SMALL>Full screen mini editor.</SMALL>
+</H1>
+<P ALIGN=Center>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+&nbsp;<FONT COLOR="#ff0000">(Only for DosFBB, WinFBB has another
+editor)</FONT>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+<P>
+<PRE> The editor is validated for answering messages, with Alt-F6.
+ 
+ The Tiny-Edit is started with the Alt-F5 command. Normal operation of the
+BBS is maintained, the editing takes place in the console window, above the
+monitoring area of the display.
+
+ Most of the text files can be edited with this editor despite of its
+simplicity. The most concerning drawback is the fact that the line length can
+not be longer than 79 characters. The language files (xxxx.TXT) therefore
+cannot be edited.
+
+ Tabs are not generated and are presented on the display with a special
+character.
+
+ During the editing, the usual BBS command set are no longer available, they
+are replaced by the tiny-edit commands.
+
+ Upon activation of the editor, a dialog window ask for the filename to edit.
+
+ The default directory is the directory "SYSTEM" as defined in INIT.SRV.
+
+ Examples: FORWARD.SYS will edit SYSTEM\FORWARD.SYS
+           FWD\F6FBB will edit SYSTEM\FWD\F6FBB
+
+ It will be necessary to specify the full path for a file outside of the
+default directory root or located on another disk drive. If only the drive
+name is specified, the current directory on this drive is searched for the
+filename.
+
+ Example: C:INIT.SRV will edit C:\FBB\INIT.SRV (while the current directory
+is c:\FBB).
+
+ To edit a message, one should give the message number with a leading pound
+sign ('#').
+
+ Example : #42645 will edit the message number 42645.
+
+ In case the edited file is a compiled one (I.E. FORWARD.SYS) it will be
+compiled again after the termination of tiny-edit
+
+
+<BIG><B>Function-keys :</B></BIG>
+
+<FONT COLOR="#ff0000">F1</FONT>  : Help windows.
+<FONT COLOR="#ff0000">F2</FONT>  : The edited file is appended to the incoming mail file of the BBS
+     (MAIL.IN).
+<FONT COLOR="#FF0000">F3</FONT>  : Insert file.
+<FONT COLOR="#ff0000">F8</FONT>  : Save current file.
+<FONT COLOR="#ff0000">F9</FONT>  : Save current file and exit.
+<FONT COLOR="#ff0000">F10</FONT> : Exit Tiny-Edit without saving ! Caution : No confirmation
+      requested before closure of the current edit session.
+
+<BIG><B>Edit Commands :</B></BIG>
+
+Almost all commands are available from the numeric key-pad.
+<FONT COLOR="#ff0000">Up-arrow</FONT>        : The cursor moves up one line
+<FONT COLOR="#ff0000">Down-arrow</FONT>      : The cursor moves to next line
+<FONT COLOR="#ff0000">Right-arrow</FONT>     : The cursor moves forward one character. At the end of the
+                  line it moves to the beginning of the next line.
+<FONT COLOR="#ff0000">Left-arrow</FONT>      : The cursor moves backward one character position. At the
+                  beginning of the line it moves back to the end of the 
+                  former line.
+<FONT COLOR="#ff0000">Page-down</FONT>       : The cursor moves toward the end of the current page. If it
+                  is already at the end of page position, then the next page
+                  will be displayed.
+<FONT COLOR="#ff0000">Page-up</FONT>         : The cursor goes back to the first line of the current page.
+                  If it is already at the first line, the former page will be
+                  displayed.
+<FONT COLOR="#ff0000">Home</FONT>            : The cursor moves to the first character of the current line.
+<FONT COLOR="#ff0000">End</FONT>             : The cursor moves to the character position next after the 
+                  last character of the line.
+<FONT COLOR="#ff0000">Insert</FONT>          : Toggle the insert editing mode. The cursor is an underscore 
+                  while in insert mode. It is a cursor block in overwrite mode.
+<FONT COLOR="#ff0000">Delete</FONT>          : Erase the character at cursor position, the cursor is not 
+                  moved.
+<FONT COLOR="#ff0000">Back-space</FONT>      : The character preceding is deleted and the cursor moves 
+                  backwards one position.
+<FONT COLOR="#ff0000">Ctl right-arrow</FONT> : The cursor moves to the first character of the next word.
+<FONT COLOR="#ff0000">Ctl left-arrow</FONT>  : The cursor moves to the first character of the previous
+                  word.
+<FONT COLOR="#ff0000">Ctl home</FONT>        : The first page of the file is displayed and the cursor 
+                  moves to the first line.
+<FONT COLOR="#ff0000">Ctl end</FONT>         : The last page is displayed and the cursor goes to the 
+                  last line of the file.
+<FONT COLOR="#ff0000">Ctl Y</FONT>           : The current line is deleted.
+<FONT COLOR="#ff0000">Ctl Q</FONT>           : The current line is deleted from the cursor position up 
+                  to the end.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

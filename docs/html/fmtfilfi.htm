@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+  <TITLE>File filtering (Appendix 21)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  File filtering<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 21)
+<P>
+<PRE>
+ There is a possibility to filter files that are uploaded to the BBS.  This
+is done by a F_FILTER program.
+
+ The F_FILTER may also be created as a DLL.  Both for WinFBB and DosFBB (!!).
+The filter must be installed in the path (\FBB\BIN) of Dos.
+
+ If the F_FILTER exists, the temporary file is no longer deleted by WinFBB 
+(unless return value from F_FILTER is 0), the filter must decide what to do. 
+
+ F_FILTER receives as parameter a file in which are given information such 
+as asked filename and label. If F_FILTER returns 0, then the file is normally
+recorded (and the temporary file is deleted), else nothing is done by FBB. 
+The text returned by F_FILTER will be sent to the user. So an archive may be 
+compressed, scanned, and a report may be sent to the user. This can be done 
+in real time or delayed. 
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

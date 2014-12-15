@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of SWAPP.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  SWAPP.SYS
+</H1>
+<P>
+<PRE><BIG><B>SWAPP.SYS (\FBB\SYSTEM).</B></BIG>
+
+
+ This file will reside in SYSTEM-directory. This file is used for
+automatically re-route messages. This file normally changes the @BBS-address,
+but can also change the TO-field. You might not need so many callsigns etc.
+here, but you should make one line with only your callsign after the @. In
+that case the @BBS will be removed from messages to users in your own BBS.
+For the first tries, it is enough to have one line starting with @, and then
+your BBS-callsign. You can fill in the rest later.
+
+##########################
+# SWAPP.SYS for FBB 7.00 #
+#  for LA6CU by LA6CU    #
+##########################
+#
+# File SWAPP.SYS is used to change @BBS-adresses, to-adresses etc
+# &gt; changes to-callsign
+# &lt; changes from-callsign
+# @ changes @BBS
+# Combinations also allowed, like      &gt; LA8AK @ OZ2PAC.
+#
+# Other possibillities (recommended) is to delete own  @BBS.  That is done
+# by putting own BBS-call in first column.
+#
+# Swapping may use hierarchy. For instance :
+# @ F6FBB.FRA.EU @ F6FBB.FMLR.FRA.EU
+#	Only the first full address will be swapped to the other
+# @ F6FBB @ F6FBB.FMLR.FRA.EU
+#	All F6FBB addresses will be swapped to the other
+#
+@ LA8AK LA9K
+@ LA5IV LA9K
+@ LA6XXX
+@ HF EU
+@ WWW WW
+@ HFNET WW
+@ LA9WO LA9H
+@ TEST
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

@@ -1,0 +1,55 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of PASSWD.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  PASSWD.SYS
+</H1>
+<P>
+<PRE><BIG><B>PASSWD.SYS (\FBB\SYSTEM).</B></BIG>
+
+ This file is in SYSTEM directory.
+
+ The first line in this file is the generic password. That is, this password
+will be used for all sysops that do NOT have a special password of his own.
+Be adviced to change this to your own, secret password !
+
+ The next line is a special password for one special sysop. In this case
+LA6CU. The two first numbers correspond to the same "security-numbers" in
+<A HREF="fmtinit.htm">INIT.SRV</A> (check this). So in this case of LA6CU, I will have the security-
+number 69 before a successful SYS-command, and 1023 after. In the next line
+the numbers for LA6IM is 123 and 1023.
+
+ jkshdfkjasdfuweiuryiusdfashdfabsmfzmxncvbiouweqyriuyweruyasjhf
+ LA6CU 69 1023 jkasdhfiuweyiruyasidkasfuiweriuoasdfkjlahsdfjlha
+ LA6IM 123 1023 uiwyejhaskjdfhasdfiuyaiuowyeruakjsdfhkjahfdlkja
+
+ Each line in PASSWD.SYS can have a maximum of 255 characters.  For the first
+tests with the BBS-program, you will only need the first line. Write whatever
+you like in it, and have a copy of it an paper. And let nobody else see that
+paper (hi).
+
+To get priviliges as a remote sysop, you must first have been declared as a
+sysop with the EU-command.  Set flag S for Sysop.
+Next you must send the command SYS to the BBS.  The BBS will answer like:
+LA1B-5&gt;  12 53 45 28 92  [0852415395]
+You will have to respond by 5 characters, the 5 corresponding to the 5
+numbers you have received from the BBS.  The extra numbers in brackets, the
+[0852415395], is for an automatic MD2 password decoding system, which has
+been implemented in TPK and some other terminal-programs (I believe..).
+You may ignore the numbers in the brackets.
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

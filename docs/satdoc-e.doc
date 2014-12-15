@@ -1,0 +1,118 @@
+Documentation for SATDOC program
+Linux version 2.8.6 - 2009 september 29
+
+The most recent version of this program and ANS files can be downloaded from
+http://f6bvp.free.fr/logiciels/satdoc/
+
+SATDOC is primarily designed as an utility for F6FBB's BBS application.
+However it can be used independantly.
+
+If satdoc executable file is not present, you need to compile the source file :
+
+Gcc -o satdoc satdoc.c
+
+Then you can check if the program works correctly after making a copy of ans.txt
+file provided into the same directory as satdoc and type 
+
+./satdoc ans.txt 
+
+or type
+
+./satdoc -i ans.txt
+
+ans.txt file comprises AMSAT NEWS SERVICE bulletins with usefull informations
+about active satellites distributed via Internet or packet radio.
+
+With the first command line syntax SATDOC will create nnnnn.sat files with the 
+NASA number of each satellite as file name.
+
+If option -i is used, SATDOC will name the files after each satellite name.
+This option is more usefull for local consultation of documentation files.
+
+
+INTRODUCTON
+===========
+
+Thanks to Mike N1JEZ for kindly accepting my proposition to make a modification
+into ANS bulletins starting with ANS-292 that you may have noticed.
+
+I asked Mike to introduce the catalogue number on a line after the satellites name.
+These objects catalog numbers allow automatic processing
+of satellite information by procedures or programs in order to update
+satellite documentation files present in F6FBB's BBS servers.
+
+SATDOC will check AMSAT.TXT files exported by F6FBB's BBS mail system
+for the presence of any AMSAT News Service and capture the relevant
+information of each satellite.
+
+Each object in orbit has a unique catalog number given by NASA.
+This allows to build a non equivocal reference file, given this number plus a
+.sat extention.
+
+HOW SYSOPs MAY INSTALL AND CONFIGURE THIS SATELLITE AUTO DOCUMENTATION SYSTEM
+=============================================================================
+
+If you have already installed SATUPDAT program for satellit keplerian
+parameters update, you can skip this paragraph.
+
+You must create a dummy BBS named AMSAT in your BBS.SYS file.
+The FORWARD file for this AMSAT BBS could look like:
+
+A AMSAT
+*
+   G KEPLER
+   G AMSAT
+   P @
+   c /usr/local/var/ax25/fbb/sat/amsat.txt
+   B AMSAT
+   F AMSAT
+   F KEP
+   F KEPS
+   F KEPLER
+   F SAT
+   F SATTV
+   F SATELL
+-----------
+
+Thus AMSAT.TXT will collect all messages with interesting documentation on
+satellites (frequencies, mode changes, launch information etc...)
+SYSOPs should add a call to this program into maintenance script 
+named 20_epursat before the call to SATUPDAT with argument AMSAT.TXT.
+The result of processed satellite documentation will be written into SATDOC.RES
+....
+
+if [ -e $FBBDIR/sat/amsat.txt ]
+	then
+    cd $FBBDIR/sat/
+    /usr/local/sbin/satdoc amsat.txt > $FBBDIR/satdoc.res
+    /usr/local/sbin/satdoc -i amsat.txt >> $FBBDIR/satdoc.res
+    /usr/local/sbin/satupdat amsat.txt /n /d60 > $FBBDIR/satupdat.res
+    /usr/local/sbin/satupdat amsat.txt /a /d60 >> $FBBDIR/satupdat.res
+  	rm amsat.txt
+fi
+
+...
+
+Thus, each time an ANS bulletin is sent, satellite news and documentation
+will automatically go into the corresponding satellite documentation file.
+
+A BBS user can then get this information on request by connecting to the BBS.
+When connected, the set of commands for consulting satellite menus is :
+F for entering into server mode and
+T for entering satellite submenu.
+
+Then the available choice are :
+C for individual satellite documentation and news
+P for keplerian parameters
+T for tracking an object
+
+If a documentation file is present for a specific satellite, an "*"
+will be displayed near the satellite name.
+
+In my own system fbb executable files are in /usr/local/sbin/ directory.
+Please configure your maintenance file according to your own implementation.
+Same for your fbb sat directory in amsat.fwd forward file.
+
+73 de Bernard, f6bvp.
+f6bvp@amsat.org
+

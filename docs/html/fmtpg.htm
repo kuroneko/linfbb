@@ -1,0 +1,122 @@
+<HTML>
+<HEAD>
+  <TITLE>PG programs (Appendix 17)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  PG programs<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 17)
+<P>
+<PRE><BIG><B>PG programs development.</B></BIG>
+
+ PG programs are in the PG subdirectory. They are small programs allowing
+interactivity with the user.
+
+ COM or EXE programs can be called.
+
+ PG programs must be little as the amount of memory is limited and fast
+because the multitasking is stopped during its activity.
+
+ To run a PG program and start a session, the user must type the command PG
+followed by the name of the program. The PG command alone gives the content
+of the PG subdirectory. The PG program is particularly developed for FBB
+software but can be an interface to a standard program.
+
+ Each time a complete line (up to the return character) is received, the PG
+program is called with some arguments including a level number. This number
+is incremented each time the program is called in the same PG session. The
+first time the level number will be 0.
+
+ The line arguments given to the PG program are :
+
+- Callsign (format as F6FBB-8).
+- Level number (0 is the first time, up to 99).
+- Flags of the user (binary number as user's mask of <A HREF="fmtinit.htm">INIT.SRV</A>).
+- Record number of the user in <A HREF="fmtinf.htm">INF.SYS</A>.
+- Received data (each word is a new argument).
+
+ The PG program ends with an exit value. This value is very important and
+tells the BBS what to do :
+
+ 0 : end of session and return to the BBS menu.
+ 1 : the program will be called again and the level number is incremented.
+ 2 : the user will be disconnected.
+ 3 : the receive data will be sent as a BBS command and return to BBS.
+ 4 : the receive data will be sent as a BBS command, level incremented.
+ 5 : the program will be called again, but the level is not incremented.
+
+ The data sent by the PG program to the standard output will be sent to the
+user. This allows a real interactivity between the user and the PG program.
+
+  Here is an example of a small program :
+
+/*
+ * TST_PG.C
+ *
+ * Little test program of "PG" command for FBB BBS software.
+ *
+ * (C) F6FBB 1991.
+ *
+ * FBB software 5.14 and up.
+ *
+ *
+ * This program echoes to the user what he types
+ * or executes a BBS command preceded by "CMD"
+ * until "BYE" is received
+ */
+
+#include &lt;stdio.h&gt;
+
+main(int argc, char **argv)
+{
+  int  i;
+  int  level = atoi(argv[2]);        /* Get level from argument list   */
+
+                                     /* and transform it to integer    */
+  if (level == 0) {                  /* Is level equal to 0 ?          */
+                                     /* This is the first call         */
+    printf("Hello %s, type BYE when you want to stop !\n", argv[1]);
+    return(1);                       /* program will be called again   */
+  }
+  else {
+    strupr(argv[5]);                 /* Capitalise the first word      */
+    if (strcmp(argv[5], "BYE") == 0) {       /* is BYE received ?      */
+      printf("Ok, bye-bye\n");
+      return(0);                     /* Yes, go on BBS                 */
+    }
+    else if (strcmp(argv[5], "CMD") == 0) {  /* is CMD received ?      */
+      for (i = 6 ; i &lt; argc ; i++)   /* List line arguments            */
+      printf("%s ", argv[i]);        /* sent by user                   */
+      putchar('\n');
+      for (i = 6 ; i &lt; argc ; i++)   /* List line arguments            */
+        printf("%s ", argv[i]);      /* sent by user                   */
+      putchar('\n');
+      return(4);                     /* Yes, send command              */
+    }
+    else {
+      printf("You told me : ");      /* These are other lines          */
+      for (i = 5 ; i &lt; argc ; i++)   /* List line arguments            */
+      printf("%s ", argv[i]);        /* sent by user                   */
+      putchar('\n');
+      return(1);                     /* No, call again program         */
+    }
+  }
+}
+
+
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

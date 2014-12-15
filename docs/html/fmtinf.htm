@@ -1,0 +1,75 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of INF.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  INF.SYS
+</H1>
+<P>
+<PRE><BIG><B>INF.SYS file (\FBB\SYSTEM).</B></BIG>
+
+ This binary file holds the information on all users of the BBS. This file
+is very important and must not be edited or changed otherwise the list of the
+users could be lost. This file can only be opened for reading.
+
+ It is organized with records, each record containing information on a user.
+Never modify this file while the BBS is running.
+
+ Structure of one record (C language) :
+
+#define uchar unsigned char
+
+typedef struct {        /* Callsign structure used in info  */
+
+  char callsign[7]   ;
+  char ssid          ;
+
+} indicat            ;
+
+typedef struct {
+
+  indicat  indic     ;  /* 8   Callsign                     */
+  indicat  relai[8]  ;  /* 64  Digis path                   */
+  long     lastmes   ;  /* 4   Last L number                */
+  long     nbcon     ;  /* 4   Number of connexions         */
+  long     hcon      ;  /* 4   Last connexion date          */
+  long     lastyap   ;  /* 4   Last YN date                 */
+  unsigned flags     ;  /* 2   Flags                        */
+  unsigned on_base   ;  /* 2   ON Base number               */
+  uchar    nbl       ;  /* 1   Lines paging                 */
+  uchar    lang      ;  /* 1   Language                     */
+  long     newbanner ;  /* 4   Date of new banner (lang.NEW)*/
+  ushort   download  ;  /* 2   Download size in KB          */
+  char     free[20]  ;  /* 20  Reserved                     */
+  char     thema     ;  /* 1   Current thema selection      */
+  char     nom[18]   ;  /* 18  1st Name                     */
+  char     prenom[13];  /* 13  Christian name               */
+  char     adres[61] ;  /* 61  Address                      */
+  char     ville[31] ;  /* 31  City                         */
+  char     teld[13]  ;  /* 13  home phone                   */
+  char     telp[13]  ;  /* 13  job phone                    */
+  char     home[41]  ;  /* 41  home BBS                     */
+  char     qra[7]    ;  /* 7   Qth Locator                  */
+  char     priv[13]  ;  /* 13  PRIV directory               */
+  char     filtre[7] ;  /* 7   LC choice filter             */
+  char     pass[13]  ;  /* 13  Password                     */
+  char     zip[9]    ;  /* 9   Zipcode                      */
+
+} info               ;  /* 360 bytes = lenght of one record */
+
+Dates are given as the number of seconds since january 1st, 1970 00:00.
+
+In C language, all strings are ended with a NULL (00 hex) character.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

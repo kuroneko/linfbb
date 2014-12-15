@@ -1,0 +1,82 @@
+<HTML>
+<HEAD>
+  <TITLE>Yapp-protocols extension (Appendix 19)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Extensions to YAPP-protocol<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 19)
+<P>
+<PRE>
+ These extensions are used in TPK 1.65a (and up) and FBB 5.14 and up.
+
+HEADER extension.
+
+ The header now carries the DATE and TIME of the file being transmitted.
+[SOH] [Len] [Filename] [NUL] [File Size] [NUL] [Date] [Time] [NUL]
+
+ The Date and Time are the values reported by DOS, coded in 4 hexadecimal
+digits and are sent in ASCII (8 characters).
+
+ The receiver has the choice of using either extended Yapp with checksum or
+normal Yapp.
+
+ The normal Yapp reply is RF, as before and the receiver can keep the date
+and time information .
+
+ The extended Yapp reply is : RT  Receive_TPK  and is coded : [ACK] [ACK]
+
+ If the receiver reply is RT the protocol used will be what I have called
+YappC for Yapp with checksum. When the sender gets this packet he MUST use
+YappC.
+
+Data Packets extension.
+
+ If the receivers reply is RT the protocol used will be YappC. The checksum
+allows detection of packets corrupted along the link, particularly on the
+RS232 lines where there is no error control or correction (or it's very
+poor!)
+
+Data packets : [STX] [Len] [Data] [Checksum]
+
+ Checksum is the sum of all data bytes anded with FF in 8 bits like Xmodem.
+
+ If the checksum is bad then the receiver must send a Cancel and enters CW
+state.
+
+Crash Recovery.
+
+ A new field has been added to the resume reply to tell the sender if the
+receiver can use YappC or not. Resume is sent instead of RF (or RT).
+
+ Resume reply for Yapp: (as used before by TPK and FBB)
+
+    [NAK] [Len] [R] [NUL] [Received Length] [NUL]
+            I    I                I
+            I    I                +-- in ASCII as in the header
+            I    +-- as Resume !
+            I
+            +------- len of the following bytes
+
+Resume reply for YappC:
+
+    [NAK] [Len] [R] [NUL] [Received Length] [NUL] [C] [NUL]
+                                                   I
+                 Tells sender I can use YappC -----+
+
+ When the sender gets this packet then he must also use YappC.
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

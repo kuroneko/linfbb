@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of INITTNCx.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  INITTNCx.SYS
+</H1>
+<P>
+<PRE>
+
+<BIG><B>INITTNCx.SYS (\FBB\SYSTEM).</B></BIG>
+
+ This file is also in the SYSTEM-directory. When the BBS starts, it sends
+some standard parametres to the TNC, like PACLEN, MAXFRAME etc. These
+parametres are in <A HREF="fmtport.htm">PORT.SYS</A>. But in addition to this we may send some more
+parametres to each TNC. We send parametres to TNC 1 with the INITTNC1.SYS, to
+TNC 2 with INITTNC2.SYS etc. Here is just one example from LA1B BBS : (you do
+not need to use the same parametres)
+
+ C MAIL v LA7QR
+ U 0
+ N 10
+ M IU
+ P 64
+ T 40
+
+ C MAIL V LA7QR means that unproto mail-beacon will be sent to MAIL via the
+digipeater with callsign LA7QR. You may use just C MAIL if you do not want to
+send via digipeaters. U 0 means that the TNC will not send any TNC-message to
+user when he connects to the BBS. You should use this parametre.
+
+ N 10 means that RETRY will be set to 10.
+
+ M IU means that that all I and UI frames will be shown in monitor-windows. P
+64 means a p-persistence value of 64. This is normal.
+
+ T 40 sets a TXDELAY of 40. This value depends on Transceiver in use. So, you
+can use any suitable parametres in this file. You need one file for each TNC.
+
+ The commands sent to the TNC, are the commands described in the
+documentation for the firmware you use, or in the documentation for PK*-232,
+DRSI, BPQ etc.
+
+ If you are using <A HREF="fbpq.htm">BPQ</A>, <A HREF="fdrsi.htm">DRSI</A>, <A HREF="fpk232.htm">PK-232</A>, <A HREF="fkam.htm">KAM</A> or <A HREF="ftfpcx.htm">TFPCX/TFPCR</A>, look in the appendix
+for special commands for them.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

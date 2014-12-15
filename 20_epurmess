@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo
+echo "--- Running epurmess"
+echo
+
+epurmess
+ret=$?
+
+exit $ret

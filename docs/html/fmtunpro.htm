@@ -1,0 +1,118 @@
+<HTML>
+<HEAD>
+  <TITLE>Unproto messages (Appendix 18)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Unproto message lists<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 18)
+<P>
+<PRE>
+
+ FBB software allows sending unproto lists of message. This is validated
+separately on each port (letter L in <A HREF="fmtport.htm">PORT.SYS</A>). Unproto address is FBB with
+the following header :
+
+fm F6FBB-1 to FBB ctl UI
+
+ An unproto list line is sent on every validated port each time a message is
+recorded. The line is in the form :
+
+12345 B 2053 TEST@ALL F6FBB 920325 This is the subject
+
+ If a message number is missing or does not exist the line will be :
+
+12346 #
+
+ This allows a system listening to the UI packets on a frequency to create a
+list identical to the one of the BBS, and then the user will not have to
+connect the BBS to know the list of messages and bulletins.
+
+ A control can be done on the number of the messages to check if a line is
+missing.
+
+ If the remote system receives a new line, and a line is missing, it only has
+to send an unproto frame addressed to the BBS callsign like this :
+
+fm FC1EBN-3 to F6FBB-1 ctl UI
+? 00002EE00E
+
+ This will be taken in account only if the user has the U flag validated (EU
+command).
+
+ If the user has not his flag validated in the BBS, he will receive a line
+like :
+
+fm F6FBB-1 to FBB ctl UI
+12200 / callsign
+
+ In this case, the the remote software MUST stop asking unprotoes.
+
+ The first 8 digits are the hexadecimal number of the requested start of the
+list (here 00002EE0 -&gt; 12000) and the last two digits are the sum of the four
+bytes anded with FF (0E).
+
+ The BBS will then starts sending lines from the requested number up to the
+last message number.
+
+ If the number requested seems to be too far from the current line, the BBS
+can readjust the request of "callsign" while sending :
+
+fm F6FBB-1 to FBB ctl UI
+12200 ! CALLSIGN
+12201 B 2040    TEST@FRA    F6FBB  920325 This is a bulletin
+12202 #
+12203 P 206    F6ABJ@F6ABJ  F6FBB  920325 Hello Remy.
+etc...
+
+and then starts sending lines from 12201. The remote system must change its
+base number to 12201.
+
+  If the number requested is greater than the last message received in the
+BBS, the BBS will send a line like :
+
+ 12300 !!
+
+ This indicates that the list in the remote system is up to date. The last
+received message in the BBS is 12300.
+
+
+ The remote system can also connect the BBS and ask for messages in binary
+compressed mode using the following sequence :
+
+
+     BBS                                    Remote system
+--------------------------------------------------------------------------
+                                            Connection request
+Connection.
+
+[FBB-5.14-ABFHM$]
+Welcome in Toulouse, Gerard.
+F6FBB BBS&gt;
+                                            [TPK-1.80-$]
+1&gt;
+                                            F&lt; #Msg
+Binary compressed message #Msg
+is sent using format described
+in appendix 7
+1&gt;
+                                            Disconnect.
+
+ From TPK version 1.80 (packet communication program developed by FC1EBN),
+this protocol is implemented.
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

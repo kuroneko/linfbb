@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+  <TITLE>Process (Appendix 6)</TITLE>
+</HEAD>
+<BODY BACKGROUND="back_fbb.jpg">
+<P>
+<IMG WIDTH="32" HEIGHT="32" SRC="fbb.gif">
+<H1 ALIGN=Center>
+  <SMALL>Process numbers and help.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 6)
+<P>
+<PRE>
+<BIG><B>Process number and on-line help identification.</B></BIG>
+
+ The various processing functions contained in the software are identified by
+three numbers displayed in the status banner. The first of those three
+numbers  is  the  main  process  system  (BBS,  FBBDOS,  Satellite
+Computation, etc...), the second number is the process function (in the BBS,
+list, message sending, etc..) and the third number is a sub-function (record
+of the message title, message, etc..)
+
+ A complete description of these numbers would be useless and time consuming.
+They are mainly used for debugging purpose. The first number is also used to
+identify the help block out of the x.HLP file. Upon receipt of the "?" or the
+"H", the  software  searches  the  x.HLP  file  for  a  line  of  
+corresponding to the language in use, and of the format @@ number word in
+which "number" stands for the current processing level, and "word" stands for
+the word following the command "?" or "H".
+
+ Example : you are inside FBBDOS, and you type in the command "? EDIT", the
+help block searched for must begin with the line:
+
+ @@ 9 EDIT
+
+ It may happen that a block matches several search keywords. It is enough to
+specify the various words separated by the character "|" (vertical bar), WITH
+NO SPACE.
+
+ @@ 9 EDIT|EDITEUR
+
+ List of the processing levels :
+
+ 0 Connection.
+ 2 Qra-Locator.
+ 3 Statistics.
+ 4 Information.
+ 5 Nomenclature.
+ 6 Satellite Orbital Computation.
+ 9 FbbDos.
+ 11 Telephone Modem
+ 14 BBS.
+ 15 Forward.
+ 16 Gateway Sysop page.
+ 17 YAPP.
+ 18 Conference.
+
+
+
+<A HREF="doc.htm"><IMG WIDTH="108" HEIGHT="28" SRC="contents.gif"></A>
+
+<A HREF="/"><IMG SRC="/button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

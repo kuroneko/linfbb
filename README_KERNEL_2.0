@@ -1,0 +1,7 @@
+This version should work with the "old" 2.0 kernel and axutils.
+
+The Makefile checks the presence of the "OLD AX25" include files 
+in /usr/src/ax25. This has to be changed in the Makefile in case of 
+other installation path of AX25.
+
+Jean-Paul ROUBELAT - F6FBB

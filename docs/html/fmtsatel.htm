@@ -1,0 +1,64 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of SATEL.DAT</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  SATEL.DAT
+</H1>
+<P>
+<PRE>
+<BIG><B>SATEL.DAT file (\FBB\SYSTEM\SAT).</B></BIG>
+
+ This binary file holds the information on the satellite data base of the
+BBS. This file is very important and must not be edited or changed otherwise
+the list of the satellites could be lost. This file can only be opened for
+reading.
+
+ It is organized with records, each record containing information on a
+satellite. Never modify this file while the BBS is running.
+
+ Structure of one record (C language) :
+
+typedef struct {
+
+  char   sat_name[18];  /* 18  Name of the satellite           */
+  int    year        ;  /* 2   Year of reference               */
+  double day         ;  /* 8   Day of reference                */
+  int    month       ;  /* 2   Month of reference              */
+  int    hour        ;  /* 2   Hour of reference               */
+  int    minute      ;  /* 2   Minute of reference             */
+  int    second      ;  /* 2   Second of reference             */
+  double inclination ;  /* 8   Inclination                     */
+  double raan        ;  /* 8   R.A.A.N.                        */
+  double excentricity;  /* 8   Excentricity                    */
+  double a_perigee   ;  /* 8   Argument of perigee             */
+  double mean_anomaly;  /* 8   Mean anomaly                    */
+  double a           ;  /* 8   must be 0.0                     */
+  double mean_motion ;  /* 8   mean motion                     */
+  double dec_rate    ;  /* 8   Decay rate                      */
+  long   revolution  ;  /* 4   Epoch revolution                */
+  double frequency   ;  /* 8   Frequency for doppler computing */
+  double v           ;  /* 8   must be 0.0                     */
+  int    step        ;  /* 2   Step of processing (minutes)    */
+  long   last_upd    ;  /* 4   Date of last update             */
+  long   catalog     ;  /* 4   NASA Catalog Number             */
+  int    free[4]     ;  /* 8   Unused                          */
+
+} satel              ;  /* 138 bytes : lenght of one record    */
+
+In C language, all strings are ended with a NULL (00 hex) character.
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

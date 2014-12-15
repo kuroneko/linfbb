@@ -1,0 +1,328 @@
+<HTML>
+<HEAD>
+  <TITLE>BBS commands</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  <SMALL>BBS<SMALL> </SMALL>COMMANDS.</SMALL>
+</H1>
+<PRE>
+
+<B>Here is an overview of what the BBS-commands do:</B>
+
+<A NAME="?"><!-- --></A><FONT COLOR="#ff0000">? </FONT>:
+ Reading the help file. Type  ?[COMMAND]  to obtain help on a basic
+command.
+
+<FONT COLOR="#ff0000">&gt;</FONT> :
+
+ "Break" between channels. Type   &gt; [CALLSIGN] [TEXT]  to send a text to a
+connected callsign on another channel. The BBS will advice you that the text
+has been delivered. This text cannot be longer than one line.
+This command is not allowed in read-only mode.
+
+<FONT COLOR="#ff0000">= </FONT>:
+ Connection between two channels. Type  = [CALLSIGN] to get connected to a
+callsign on another channel. The callsign can be connected only if it is not
+busy in a command; the BBS should be idle (waiting for a command). If the
+callsign is not available, you may either wait or you may cancel your 
+request. The callsign currently busy in forwarding tasks cannot be 
+connected. Use Ctrl-Z to leave this mode.
+This command is not allowed in read-only mode.
+
+<FONT COLOR="#ff0000">! </FONT>: Provide a short and minimal information on the BBS usage.
+
+<FONT COLOR="#ff0000">%</FONT> : Use this command to see the status of all channels right now.
+
+<FONT COLOR="#ff0000">A </FONT>: Abort the BBS output at any time.
+    When reading messages with paging, the commands N and C are available, too.
+    Use N to skip the reading of the rest of current message, and start on the
+    next message.
+    Use C to read the rest of the message(s) without paging. 
+
+<FONT COLOR="#ff0000">B </FONT><FONT COLOR="#400040">or</FONT><FONT COLOR="#ff0000"> Bye </FONT>:
+     Disconnects the BBS.  Note that the "last listed" parametre is updated.
+    When the user does a "hard disconnect", the last-listed parametre is
+    NOT updated.
+
+<FONT COLOR="#ff0000">C </FONT>: Enters the <A HREF="docconf.htm">conference mode</A>, multiconnection. 
+<FONT COLOR="#ff0000">CW</FONT>: Shows a list of the callsigns involved in the current conference.
+
+<FONT COLOR="#ff0000">D </FONT>:
+ Invokes the <A HREF="docfbbd.htm">FBBDOS</A>, or receives a file from the BBS if the command is followed
+by a file name.
+
+<FONT COLOR="#ff0000">F</FONT> : Switches to <A HREF="docserv.htm">Server mode</A>, and access to special commands.
+
+<FONT COLOR="#ff0000">G</FONT> : Accesses the <A HREF="docgate.htm">Gateway mode</A>, if gateway is allowed in the BBS.
+
+<FONT COLOR="#ff0000">H </FONT>: Shows short help.  For help with specific commands, see the <A HREF="#?">? command</A>.
+
+<FONT COLOR="#ff0000">I</FONT> :
+ Information about this BBS. This command displays the file <A HREF="fmttxt.htm#INF">FRANCAIS.INF</A> (or
+another language depending upon the configuration and the language attributed
+to the involved channel).
+
+<FONT COLOR="#ff0000">I callsign</FONT> :
+ Gives the information on callsign taken from the white pages database.
+Callsign can include <A HREF="docwild.htm">wildcards</A>.
+
+<FONT COLOR="#ff0000">ID</FONT> : Shows how many records there are in the <A HREF="docwp.htm#DataDesc">WP database</A>.
+
+<FONT COLOR="#ff0000">I@ bbs</FONT> : Gives the users of BBS found in the  <A HREF="docwp.htm#DataDesc">WP database</A>.
+
+<FONT COLOR="#ff0000">IH route</FONT> :
+ Gives the users of the hierarchical route area from  <A HREF="docwp.htm#DataDesc">WP database</A> 
+(<A HREF="docwild.htm">wildcards</A> allowed).
+
+<FONT COLOR="#ff0000">IZ Zip</FONT> :
+ Gives the users of the ZIP code area from WP database (<A HREF="docwild.htm">wildcards</A> are
+allowed).
+
+J-commands list the callsigns heard by or connected on the BBS.
+<FONT COLOR="#ff0000">JK</FONT> : Shows the last 20 connected callsigns.
+<FONT COLOR="#ff0000">JA</FONT> : Connected callsigns on port A.
+<FONT COLOR="#ff0000">JB</FONT> : Connected callsigns on port B, etc...
+<FONT COLOR="#ff0000">J1</FONT> : Heard callsigns on port A.
+<FONT COLOR="#ff0000">J2</FONT> : Heard callsigns on port B, etc...
+
+K-commands delete messages sent by you or to you.
+<FONT COLOR="#ff0000">K msg#</FONT> : Deletes a message identified by its number.
+<FONT COLOR="#ff0000">KM</FONT>     : Deletes all the messages addressed to you, that you don't yet 
+         read. The messages not read will not be deleted.
+
+<FONT COLOR="#ff0000">L</FONT> : Lists the new messages since the last usage of this command.
+
+<FONT COLOR="#ff0000">LA <FONT COLOR="#000000">: List messages with status A.</FONT></FONT>
+
+<FONT COLOR="#ff0000">LB</FONT> : Lists bulletins.
+
+<FONT COLOR="#ff0000">LC [mask]</FONT> : 
+ List the messages which "TO" filed matches with mask. * (star) allows to
+list all the messages and should be the default value. Type "LC *" to see
+all messages. LC alone gives the current mask. Mask is recorded for each
+user while disconnecting.
+
+<FONT COLOR="#ff0000">LD&gt; YYMMDD</FONT> : Lists the messages received after the specified date.
+
+<FONT COLOR="#ff0000">LD&lt; YYMMDD</FONT> : Lists the messages received before the specified date.
+
+<FONT COLOR="#ff0000">LE</FONT> : List messages that could not be forwarded.
+
+<FONT COLOR="#ff0000">LF <FONT COLOR="#000000">: List FORWARDED messages.</FONT></FONT>  
+
+<FONT COLOR="#ff0000">LH</FONT> : List HELD messages.
+
+<FONT COLOR="#ff0000">LK <FONT COLOR="#000000">: List KILLED messages.</FONT></FONT>      
+
+<FONT COLOR="#ff0000">LM</FONT> : Lists the messages TO YOU.
+
+<FONT COLOR="#ff0000">LN</FONT> : Lists the NEW messages TO YOU.
+
+<FONT COLOR="#ff0000">LP <FONT COLOR="#000000">: List PRIVATE messages.</FONT></FONT>    
+
+<FONT COLOR="#ff0000">LU</FONT> : Lists all unread messages to/from the user.
+
+<FONT COLOR="#ff0000">LX <FONT COLOR="#000000">: List messages with status X.</FONT></FONT>
+
+<FONT COLOR="#ff0000">LY</FONT> : List messages that have been read (status Y).
+
+<FONT COLOR="#ff0000">LL 10</FONT>: Lists the last 10 messages.
+
+<FONT COLOR="#ff0000">LR</FONT> : Equivalent to L but the messages are listed in reverse order.
+
+<FONT COLOR="#ff0000">LS text</FONT> : 
+ Searches for a text in the messages titles. Usage of <A HREF="docwild.htm">wildcards</A> is allowed.
+
+<FONT COLOR="#ff0000">LT</FONT> : List Traffic (for NTS-messages).
+
+<FONT COLOR="#ff0000">L$</FONT> : List bulletins with status $.
+
+<FONT COLOR="#ff0000">L&lt; Callsign</FONT> :
+ Lists the message originated from [Callsign]. The <A HREF="docwild.htm">wildcards</A> are allowed.
+
+<FONT COLOR="#ff0000">L&gt; Callsign</FONT> :
+ Lists the messages destinated to [Callsign]. <A HREF="docwild.htm">Wildcards</A> are allowed.
+
+<FONT COLOR="#ff0000">L@ [BBS]</FONT> :
+ Lists the messages VIA BBS if specified. L@ alone lists the message without
+route. The <A HREF="docwild.htm">wildcards</A> are allowed.
+
+<FONT COLOR="#ff0000">L msg#-</FONT> : Lists all messages, starting from msg#
+
+<FONT COLOR="#ff0000">L msg#-msg#</FONT> : Lists messages between the given numbers.
+
+<FONT COLOR="#ff0000">M msg# File</FONT> :
+ Transfers the text of the message msg# to the file File. This file will be
+placed in the directory USERS or from the root in case of a SYSOP user.
+
+<FONT COLOR="#ff0000">MH msg# File</FONT> : Identical, but the format is the R command.
+
+<FONT COLOR="#ff0000">MV msg# File</FONT> : Identical, but the format is the V command.
+
+<FONT COLOR="#ff0000">MA msg# File</FONT> :
+ Transfers the text of the message msg# to the file File. This file will be
+placed in the directory USERS or from the root in case of a SYSOP user. The
+message is appended to the existing file.
+
+<FONT COLOR="#ff0000">MHA msg# File</FONT> :
+ Identical, but the format is the R command. The message is appended to the
+file.
+
+<FONT COLOR="#ff0000">MVA msg# File</FONT> :
+ Identical, but the format is the V command. The message is appended to the
+file.
+
+<FONT COLOR="#ff0000">N</FONT> : Enters or modifies the name (max 12 characters allowed).
+
+<FONT COLOR="#ff0000">NH</FONT> :
+ Enters or modifies the Home BBS. A point deletes the current Home BBS.
+
+<FONT COLOR="#ff0000">NL</FONT> : Enters or modifies the QRA locator.
+
+<FONT COLOR="#ff0000">NP</FONT> : Modifies the password for the access via telephone modem.
+
+<FONT COLOR="#ff0000">NQ</FONT> : Enters or modifies the city (Qth).
+
+<FONT COLOR="#ff0000">NZ</FONT> : Enters or modifies the Zip Code.
+
+<FONT COLOR="#ff0000">O</FONT> : Displays the setting of various options.
+
+<FONT COLOR="#ff0000">OL</FONT> : Lists the available languages.
+
+<FONT COLOR="#ff0000">OL number</FONT> : Selects a language.
+
+<FONT COLOR="#ff0000">ON</FONT> :  Shows the number-base for messages.  See also ON number below.
+
+<FONT COLOR="#ff0000">ON number</FONT> :
+ Defines the number of the thousand base for the messages. Example: ON 37
+defines number 37000 as being the base for numbering the messages. Then the
+command R 25 will cause the message 37025 to be read, although R 36025 will
+actually read the message nr 36025.
+
+<FONT COLOR="#ff0000">OP</FONT> : Validates or disables the scrolling of pages.
+
+<FONT COLOR="#ff0000">OP nbr of lines</FONT> : Initializes the page scrolling
+
+<FONT COLOR="#ff0000">OR</FONT> :
+ Validates or disables the ability to list all messages, if the user has 
+access to the whole list of messages by default <A HREF="fmtinit.htm#LIST/READ">(See security code 256 of</A>
+<A HREF="fmtinit.htm#LIST/READ">INIT.SRV)</A>.
+
+<FONT COLOR="#ff0000">PG [program]</FONT>:
+ PG alone gives the list of PG programs available in the BBS. If followed by
+a program name gives the control to this program. The PG program can also be
+called by its name. If the name is the same that an existing command, the
+existing command will be replaced with the PG program.
+
+<FONT COLOR="#ff0000">PS</FONT> : Gives the list of <A HREF="fmtserv.htm">servers</A> available in the BBS.
+
+R-commands are for reading messages.  Note:
+When reading messages with paging, the commands N and C are available, too.
+Use N to skip the reading of the rest of current message, and start on the
+next message.
+Use C to read the rest of the message(s) without paging. 
+
+<FONT COLOR="#ff0000">R msg# msg#</FONT> : Reads the messages by their numbers.
+
+<FONT COLOR="#ff0000">RM</FONT> : Reads all the messages to you.
+
+<FONT COLOR="#ff0000">RN</FONT> : Reads all the NEW messages to you.
+
+<FONT COLOR="#ff0000">RU</FONT> : Read all unread messages to/from you.
+
+<FONT COLOR="#ff0000">R&gt; callsign</FONT> : Read all messages to a callsign.
+
+<FONT COLOR="#ff0000">R&lt; callsign</FONT> : Read all messages from a callsign.
+
+<FONT COLOR="#ff0000">S[type] callsign </FONT>:
+ Sends a message or a bulletin. If the type is not specified, it will be
+processed as a private, provided the destination callsign is a valid one,
+otherwise it will be considered as a bulletin.
+
+<FONT COLOR="#ff0000">SP callsign</FONT> : Sends a private message.
+
+<FONT COLOR="#ff0000">S callsign @ BBSCALLSIGN</FONT> :
+ Sends  a  message  to  a  station  AT  another  BBS  through forward.
+BBSCALLSIGN  can  be  an  address  of  hierarchical  type,  for example
+F6FBB.FRA.EU. Type "SB ALL" to send a bulletin addressed to ALL. The
+message must be terminated by a Ctl Z or /EX followed by a return. Warning:
+the /EX must be in the first column.
+
+<FONT COLOR="#ff0000">SC Msg# Callsign @ BBSCALLSIGN</FONT> :
+ Copies a message or bulletin to the specified callsign. Such a copy will
+always be of the "personal" type.
+
+<FONT COLOR="#ff0000">SR [Msg# [title]]</FONT> :
+ Replies to a message already read or formerly suppressed, or to a message
+matching the specified number. If the title is not stated, it will be the
+title of the read message, with the mention "Re:" placed ahead.
+
+<FONT COLOR="#ff0000">T</FONT> :
+ Pages the SysOp. Should the SysOp not be available within a minute, you
+will be advised accordingly and automatically returned to the normal BBS
+menu.
+
+<FONT COLOR="#ff0000">TH</FONT> : Gives access to the themes-zone.  Lists messages by themes, as setup
+     in the file THEMES.SYS.  Available commands in this zone, are
+     H (list themes)
+     L (list messages in current theme)
+     R msg# (read message in current theme)
+     number (change to theme#)
+<FONT COLOR="#ff0000">U</FONT> :
+ Uploads a file from the user to the server of the BBS. The file will be
+written in the root directory of the <A HREF="docfbbd.htm">FBBDOS</A>. The U command is to be typed
+at the BBS prompt, it is not necessary to go to FBBDOS first.
+
+<FONT COLOR="#ff0000">V</FONT> :
+ Version number of this BBS software. It gives also the number of active
+messages, and the next message number.
+
+<FONT COLOR="#ff0000">V msg# msg#</FONT> :
+ Reads the messages by their numbers, including the headers.
+
+<FONT COLOR="#ff0000">VM</FONT> : Reads all the messages TO you, including the headers.
+
+<FONT COLOR="#ff0000">VN</FONT> : Reads all the NEW messages TO you, including the headers.
+
+<FONT COLOR="#ff0000">W</FONT> :
+ Lists the files which are within the user directory. This command can be
+followed by a mask specifying search criteria or a directory name; in the
+latter case, the directory contents will be listed.
+
+<FONT COLOR="#ff0000">X</FONT> :
+ Toggles "normal" or "expert" status. "Normal" grants the extended menus,
+"expert" provides only minimal information.
+
+<FONT COLOR="#ff0000">Y</FONT> :
+ Binary transfer program using the YAPP protocol. As a user, you should also
+have the YAPP protocol available your end, in order to be able to transfer
+binary data.
+
+<FONT COLOR="#ff0000">YD File</FONT> : Downloads a file FROM the BBS TO you.
+
+<FONT COLOR="#ff0000">YI [mask]</FONT> : Lists the available binary files, and their description.
+
+<FONT COLOR="#ff0000">YN [mask] </FONT>: Lists the NEW binary files since your last connection.
+
+<FONT COLOR="#ff0000">YU File</FONT> :
+ Uploads a binary file from you TO the BBS. You cannot replace or
+modify an already existing file.
+
+<FONT COLOR="#ff0000">YW [mask]</FONT> : Lists the available binary files.
+
+<FONT COLOR="#ff0000">YZ Filename</FONT> : Deletes the specified filename in the YAPP directory.
+
+<FONT COLOR="#ff0000">Z Filename</FONT> : Deletes the specified filename in the user directory.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

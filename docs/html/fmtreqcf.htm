@@ -1,0 +1,103 @@
+<HTML>
+<HEAD>
+  <TITLE>REQCFG-server</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  REQCFG server<SMALL>.</SMALL>
+</H1>
+<P>
+<PRE> REQCFG server allows to send back the current configuration of the software.
+
+ The message sent to REQCFG has a well defined syntax. The text of the
+message is not used. The message should be of the private type and addressed
+to the BBS which we want to ask.
+
+ SP REQCFG @ bbs-destination
+
+ The title of the message contains the @ sign followed by the return BBS,
+that is to say yours. The return message will be addressed to the originator
+of the request to the return bbs.
+
+ @ bbs-return
+
+ The text of the message is not necessary, its content will not be taken into
+account by the service.
+
+ Example :
+
+ F6FBB BBS &gt;
+ SP REQCFG @ FD1CDC.FMLR.FRA.EU
+ Title of message :
+ @ F6FBB.FMLR.FRA.EU
+ Text of message :
+ /EX
+
+ The answer of the remote mailbox will be of the form :
+
+SP F6FBB @ F6FBB.FMLR.FRA.EU &lt; F6ABJ
+ReqCfg V 1.2 (C) F6FBB 1992 - BBS F6FBB
+
+
+Software F6FBB Version 5.15 compiled on Feb 07 1993
+
+Mem Us:14620  Mem Ok:148288  Bid:30000  Ports:4  Ch:12  FBB Ok  BIN Ok
+
+Available volumes : C: D: E:
+
+EMS V4.0
+
+     MSG : 29 pages (464 KB)
+     BID : 17 pages (272 KB)
+     HIE : No
+     FWD :  1 pages ( 16 KB)
+     REJ :  1 pages ( 16 KB)
+     OVR : 11 pages (176 KB)
+     SCR : 45 pages (720 KB)
+     WPG :  5 pages ( 80 KB)
+   Total : 109 pages (1744 KB)
+
+Languages
+
+       1 : ENGLISH
+       2 : FRANCAIS
+       3 : ESPAGNOL
+       4 : ITALIANO
+       5 : NEDERLAN
+       6 : DEUTSCH
+       7 : CATALA
+       8 : NORSK
+       9 : PORTUGUE
+      10 : DANSK
+      11 : SVENSK
+      12 : HRVATSKI
+      13 : FRANC8
+
+Servers
+
+  REQDIR : Request directory-listings
+  REQFIL : Request ASCII-files
+  NEWDOC : Add to documentation
+  REQCFG : Request configuration from BBS
+  AUTO7P : 7plus server
+  7PSERV : Server for 7PLUS files
+   MULTI : Multi-addresses
+
+Port Interface Emulat. Ch Mode  Frequency
+1    DRSI      WA8DED  9  UYWL  NODE
+2    ESS/COM.  KAM     1  GYW   15M/20M
+3    FBBIOS    FBBIOS  1  UYM   MODEM
+4    ESS/COM.  KAM     1  GYW   HF-PSK
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

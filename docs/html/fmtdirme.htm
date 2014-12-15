@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of DIRMES.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  DIRMES.SYS
+</H1>
+<P>
+<PRE>
+
+<BIG><B>DIRMES.SYS (\FBB\SYSTEM).</B></BIG>
+
+ This binary file holds the information on all active messages. This file is
+very important and must not be edited or changed otherwise the list of the
+messages could be lost. This file can only be opened for reading.
+
+ It is organized with records, each record containing information on a
+message. The first record of the file only contains the number of the last
+message. Never modify this file while the BBS is running.
+
+ Structure of one record (C language) :
+
+ #define NBBBS 80
+ #define NBMASK NBBBS/8
+
+ typedef struct {
+
+   char type         ;  /* 1   Type of message (A,B,P,T)       */
+   char status       ;  /* 1   Status of message ($,A,F,K,N,Y) */
+   long numero       ;  /* 4   Number of the message           */
+   long taille       ;  /* 4   Size of message in characters   */
+   long date         ;  /* 4   Date of message                 */
+   char bbsf[7]      ;  /* 7   Adjacent BBS giving the message */
+   char bbsv[41]     ;  /* 41  Route                           */
+   char exped[7]     ;  /* 7   Destination of the message      */
+   char desti[7]     ;  /* 7   To field                        */
+   char bid[13]      ;  /* 13  BID or MID                      */
+   char titre[61]    ;  /* 61  Title of message                */
+   char free[16]     ;  /* 16  Reserved bytes                  */
+   long datesd       ;  /* 4   Date of the message creation    */
+   long datech       ;  /* 4   Date of last status change      */
+   char fbbs[NBMASK] ;  /* 10  Mask of BBSes to forward to     */
+   char forw[NBMASK] ;  /* 10  Mask of BBSes already forwarded */
+
+} bullist            ;  /* 194 bytes = length of one record    */
+
+ A null type of message (00 hex) invalidates the record.
+
+ Dates are given as the number of seconds since january 1st, 1970 00:00.
+
+ Masks are bit fields, number of bit corresponds to the number of the BBS in
+the BBS.SYS file.
+
+In C language, all strings are ended with a NULL (00 hex) character.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

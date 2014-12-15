@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+  <TITLE>Message filtering (Appendix 16)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Message filtering<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 16)
+<P>
+<PRE>
+
+ FBB software allows filtering messages. Filtering is not done by the BBS
+software but by external programs developed by users.
+
+ When the BBS starts, the M_FILTER does not really need to be there.  But at
+the first message, it must exist.  If it does not exist at THAT time, it will
+not be checked again.  So if a M_FILTER is added after that, the BBS must be
+rebooted for the filter to take effect.
+
+M_FILTER may be interactive and allows to incorporate some features like 
+dedicated information for predefined callsigns, password filtering, etc...
+
+ I did not develop such programs, but this is an open door to many
+applications.
+
+ The M_FILTER program must be found by the PATH of MsDos. Its extension can
+be COM or EXE, and it must be little and fast as multitasking is stopped
+during the activity of this program. If this program is not found, it will
+not be called until the BBS is rebooted.
+
+ The M_FILTER may also be created as a DLL.  Both for WinFBB and DosFBB (!!).
+The filter must be installed in the path (\FBB\BIN) of Dos.
+
+ The message filter is called (if found) each time a message is ready to be
+recorded (when Ctrl Z or /EX is received). The decision to validate or not
+the message is function of the exit value of the M_FILTER program.
+
+ The M_FILTER program (if found) is called with some arguments including a
+level number. This number is incremented each time the program is called in
+the same connection session. The first time the level number will be 0.
+
+ The line arguments given to the M_FILTER program are :
+
+- File name including the text of the message.
+- Type of the message (P, B, T).
+- Sender.
+- "To" field.
+- Record number of DIRMES.SYS file.
+
+ The M_FILTER program ends with an exit value. This value is very important
+and tells the BBS what to do :
+
+ 0 : Message is recorded.
+ 1 : Message is killed   (status = K).
+ 2 : Message is archived (status = A).
+ 3 : Message is held     (status = H).
+
+
+/*
+ * M_FILTER.C
+ *
+ * The message filter MUST be named M_FILTER (COM or EXE).
+ *
+ * This example only writes its call arguments in the TEST.MES file.
+ *
+ * It is called with 5 arguments :
+ *   File name of the message.
+ *   Type .
+ *   Sender.
+ *   To.
+ *   Number of the record in the DIRMES.SYS file.
+ *
+ * If it returns 0 : The message is accepted.
+ *               1 : The message is killed (status K).
+ *               2 : The message is archived (status A).
+ *
+ */
+
+#include &lt;stdio.h&gt;
+main(argc, argv)
+int  argc;
+char **argv;
+{
+  int  i;
+  FILE * fptr = fopen("TEST.MES", "at");
+
+  for (i = 0 ; i &lt; argc ; fprintf(fptr, "%s ", argv[i++]));
+  fputc('\n', fptr);
+
+  fclose(fptr);
+
+  return(0);
+}
+
+
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

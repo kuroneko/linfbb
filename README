@@ -1,0 +1,85 @@
+
+These are the sources of xfbbd (daemon version for LINUX) and their utilities.
+
+1/ Compiling xfbbd, xfbbC client and its utilities with 2.6 kernel:
+----------------------------------------------------
+Do not run install.sh script directly. It is called by make.
+To compile and install xfbbd you need to run a session as root
+for writing privilege reasons.
+
+- cd into fbbsrc.70?? directory
+- update the variables at the beginning of, depending of your
+  configuration. This must point to the ax25-utils include and librairies.
+  Be sure to use at least the version 2.1.37b of ax25-utils.
+
+AX25LIBPATH = /usr/local/lib
+AX25INCPATH = /usr/src/linux/include/netax25
+
+Enter command "make" without quotes ""
+
+Be sure that an FBB daemon is not already running. Then 
+
+Enter command "make install" without quotes ""
+
+For the first installation start the BBS software using fbb script
+with command
+./fbb
+It will check validity of FBB files tree and create missing files including configuration files.
+
+For next BBS start use fbb.sh script. 
+
+2/ Compiling the xfbbX X11 client :
+-------------------------------
+- this is only possible if you have a version of Motif installed.
+- in Makefile uncomment the line :
+
+all : client xfbbX_cl
+
+- first, compile xfbbd daemon as indicated above.
+- cd into X11 directory.
+- run "make", this will build a xfbbX_cl binary. 
+- xfbbX is a shell script which creates the resource file and runs xfbbX_cl.
+- If you don't have Motif, xfbbX cannot be compiled.
+
+
+3/ Fixes and evolutions :
+-------------------------
+Please, do not create new versions of code, this will make us impossible
+to maintain and know what is the current version. Instead help us to develop
+the code and fix the bugs. All fixes and evolutions will be welcome.
+
+Please again, do not delete the copyright and author headers in the files.
+
+If you didn't do it already, subscribe to the xfbb mailing list by sending a 
+email to majordomo@f6fbb.org without title and with "subscribe xfbb" as the 
+first line of text.
+
+Then you will be able to send your fix, evolutions proposals and remarks to 
+the mailing list.
+
+
+4/ xfbbd exit values :
+----------------------
+0 : Error (configuration...)
+1 : Sigterm received
+2 : re-run (no housekeeping)
+3 : housekeeping
+4 : Software stop
+5 : Segv or BusError
+6 : System Reboot asked
+
+
+
+5/ Good luck with "fbb"... 
+--------------------------
+
+   Jean-Paul ROUBELAT jpr@f6fbb.org
+   6 rue George Sand
+   31120 ROQUETTES - France
+
+and since years 2000
+
+ Bernard Pidoux
+ f6bvp@free.fr
+ f6bvp@amsat.org
+

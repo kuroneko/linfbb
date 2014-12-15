@@ -1,0 +1,84 @@
+<HTML>
+<HEAD>
+  <TITLE>Format of APPEL.BAT</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG WIDTH="32" HEIGHT="32" SRC="/fbb.gif">
+<H1 ALIGN=Center>
+  <SMALL>APPEL.BAT</SMALL>
+</H1>
+<P ALIGN=Center>
+<FONT COLOR="#ff0000"><BIG><B>Only for DosFBB !</B></BIG></FONT>
+<P>
+<PRE><BIG><B>APPEL.BAT (\FBB\BIN).</B></BIG>
+
+ This is the very first file that DosFBB will use. You will find it in 
+\FBB\BIN-directory. You don't really need to do any changes in this file,
+unless you did some changes during the installation-process.  If you did, 
+you must change the pathnames in APPEL.BAT exactly the same as you did 
+during the installation.
+This is very important ! So look for the lines that I have marked with 
+an     <FONT COLOR="#ff0000">&lt;---</FONT>      here :
+
+
+   set fbb=C:\FBB        <FONT COLOR="#ff0000">&lt;--</FONT> Defines the base of the FBB file system.
+   echo off
+   cd %fbb%                                                     <FONT COLOR="#ff0000"> &lt;---</FONT>
+   break off
+   echo Program will start, use ^C to interrupt within 3 seconds
+   sleep 3
+   serv %1
+   if errorlevel 2 goto direct
+   if errorlevel 1 goto suite
+   goto fin
+ :suite
+   cls
+   echo
+   echo Sorting HROUTE.SYS...
+   copy %fbb%\system\hroute.sys temp.$$$                         <FONT COLOR="#ff0000">&lt;---</FONT>
+   type temp.$$$ | sort | find /v "# " &gt; %fbb%\system\hroute.sys <FONT COLOR="#ff0000">&lt;---</FONT>
+   del temp.$$$
+   echo
+   echo Backup of important files...
+   copy %fbb%\system\dirmes.sys %fbb%\backup\dirmes.s1           <FONT COLOR="#ff0000">&lt;---</FONT>
+   copy %fbb%\system\inf.sys %fbb%\backup\inf.s1                 <FONT COLOR="#ff0000">&lt;---</FONT>
+   echo Cleaning up message-file...
+   del epurmess.res
+   epurmess
+   echo Cleaning up white pages database...
+   del epurwp.res
+   epurwp
+   cd %fbb%\system
+   maintinf 3 /a
+   copy %fbb%\system\INF.NEW %fbb%\system\INF.SYS
+   del dirmes.new
+   cd %fbb%
+ :direct
+   if not exist c:%fbb%\system\sat\amsat.txt goto appel          <FONT COLOR="#ff0000">&lt;---</FONT>
+   cd %fbb%\system\sat
+   satupdat amsat.txt /n &gt; satupdat.res
+   satupdat amsat.txt &gt;&gt; satupdat.res
+   del amsat.txt
+  :appel
+   cd %fbb%                                                      <FONT COLOR="#ff0000">&lt;---</FONT>
+   echo Program will start, use ^C to interrupt within 3 seconds
+   sleep 3
+   serv -t
+   if errorlevel 2 goto direct
+   if errorlevel 1 goto suite
+ :fin
+   echo Program is terminated..
+   break on
+   Echo on
+
+
+
+<A HREF="doc.htm"><IMG WIDTH="108" HEIGHT="28" SRC="/contents.gif"></A>
+
+<A HREF="/"><IMG WIDTH="90" HEIGHT="29" SRC="/button_home.gif"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

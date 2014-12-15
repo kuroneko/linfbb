@@ -1,0 +1,220 @@
+<HTML>
+<HEAD>
+  <TITLE>Connection filtering (Appendix 15)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Connections filtering<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 15)
+<P>
+FBB software allows filtering on connection. Filtering is not done by the
+<PRE>BBS software but by external programs developed by users.
+
+ When the BBS starts, the C_FILTER does not really need to be there.  But at
+the first connect it must exist.  If it does not exist at THAT time, it will
+not be checked again.  So if a C_FILTER is added after that, the BBS must be
+rebooted for the filter to take effect.
+
+ Connection filter may be interactive and allows to incorporate some features
+like dedicated information for predefined callsigns, password filtering,
+etc...
+
+ The C_FILTER program must be found by the PATH of MsDos. Its extension can
+be COM or EXE, and it must be little and fast as multitasking is stopped
+during the activity of this program. If this program is not found, it will
+not be called until the BBS is rebooted.
+
+ The C_FILTER may also be created as a DLL.  Both for WinFBB and DosFBB (!!).
+The filter must be installed in the path (\FBB\BIN) of Dos.
+
+ When receiving the connection, the C_FILTER program (if found) is called
+with some arguments including a level number. This number is incremented each
+time the program is called in the same connection session. The first time the
+level number will be 0.
+
+ The line arguments given to the C_FILTER program are :
+
+- Callsign (format as F6FBB-8).
+- Level number (0 is the first time, up to 99).
+- Flags of the user (binary number as user's mask of INIT.SRV).
+- New : Flag indicating if the user is unknown in the BBS database.
+- Record number of the user in INF.SYS.
+- New: one more parameter before the optional text. It indicates the
+  port where was connected the user.
+- Received data (in one argument).
+
+
+ The C_FILTER program ends with an exit value. This value is very important
+and tells the BBS what to do :
+
+ Return value (for C_FILTER):
+ 0 : Connection is accepted
+ 1 : C_FILTER will called again, level is incremented
+ 2 : Connection is refused, user is disconnected
+ 3 : Connection is accepted, but in read-only mode
+ 4 : Connection is accepted, but messages will be hold.
+ 100 and up
+   : C_FILTER will called again, next level is equal to the return value.
+
+
+
+
+Example of C_FILTERs.  First C_FILTER.EXE, next C_FILTER.DLL:
+
+<BIG><B>Example C_FILTER.EXE:</B></BIG>
+
+/*
+ * C_FILTER.C
+ *
+ * Connection filter for FBB BBS software. (C) F6FBB 1991.
+ *
+ */
+
+#include &lt;stdio.h&gt;
+
+/*
+ * Connexion filter called for each connection.
+ * All datas sent to stdout will be sent to the user.
+ *
+ * Filter is called with some arguments on the command line :
+ * C_FILTER CallSign Level Flags New Record ReceivedData....
+ *
+ * The return value tells the BBS if C_FILTER must be called again or not
+ * 0 if the BBS can go on,
+ * 1 if the C_FILTER must be called again
+ * 2 if the user must be disconnected.
+ *
+ * Callsign is in the FORM CALLSIGN-SSID (F6FBB-0).
+ *
+ * The first time C_FILTER is called Level=0, and then will be incremented
+ * each time it is called for the same connection.
+ *
+ * Flags give the flags of the user (MGPBSXLE) in a bit field. as defined
+ * in the INIT.SRV user's mask. (0x80=Modem, 0x40=Guest, etc...)
+ *
+ * If New=1, then this is the first connection of the user on the BBS.
+ * Record is the record number in the INF.SYS file.
+ *
+ * All other arguments are the words sent by the user
+ * (password for instance).
+ *
+ * The number of arguments is variable and depends of the number of words
+ * in the answer of the user.
+ *
+ */
+
+
+/*
+ * This is only a little example to test the system. It will be called
+ * four times and will give the list of arguments.
+ *
+ * The fourth time, the hand will be given back to the BBS.
+ */
+
+main(int ac, char **av)
+{
+  int i;
+  int level = atoi(av[2]);            /* Get level from argument list  */
+                                      /* and transform it to integer   */
+
+  if (level == 0) {                   /* Is level equal to 0 ?         */
+    printf("Connection line :\n");    /* This is the first call        */
+    for (i = 0 ; i &lt; ac ; i++)        /* List line arguments           */
+    printf("%s ", av[i]);
+    putchar('\n');
+    return(1);                        /* C_FILTER must be called again */
+  }
+  else {
+    printf("Following line  :\n");    /* These are other lines         */
+    for (i = 0 ; i &lt; ac ; i++)        /* List line arguments           */
+      printf("%s ", av[i]);
+    putchar('\n');
+    if (level == 4)                   /* Is it the last time ?         */
+      return(0);                      /* Yes, go on BBS                */
+    else
+      return(1);                      /* No, call once more C_FILTER   */
+  }
+}
+
+
+<BIG><B>Next example, C_FILTER.DLL:</B></BIG>
+
+#define STRICT
+#include &lt;stdio.h&gt;
+#include &lt;windows.h&gt;
+
+/*
+ *    Code (C) F6FBB 1995-1996
+ *
+ *  C_FILTER example
+ *
+ *  svc_main is the only exported function. It must exist as WFBB will
+ *  look for it. All filters are in the same format. If not NULL,
+ *  r_buf allow to give a direct text back to the BBS
+ * The size of the buffer is given by the parameter len.
+ *
+ *  Answers may also go to stdout (slower...).
+ *
+ *  This code is only an example and was not fully tested. It could
+ *  give problems as I am not an expert !
+ *
+ * The used compiler is a Borland C++ 4.5
+ *
+ *  The DLL is not linked with the code, but checked and loaded when
+ *  needed by WFBB.
+ *
+ * This is an example of the C_FILTER.DEF file :
+ *
+ *  LIBRARY        C_FILTER
+ *  DESCRIPTION    'C_FILTER DLL for FBB'
+ *  EXETYPE        WINDOWS
+ *  CODE           PRELOAD MOVEABLE DISCARDABLE
+ *  DATA           PRELOAD MOVEABLE SINGLE
+ *  HEAPSIZE       1024
+ *
+ *
+ * Parameters are (for C_FILTER):
+ * ac[0] : The name of the filter (C_FILTER)
+ * ac[1] : The callsign and SSID
+ * ac[2] : Level number (from 0)
+ * ac[3] : Flags
+ * ac[4] : Boolean for new user
+ * ac[5] : Recordnumber in INF.SYS
+ * ac[6] : Port number
+ * ac[7] : Optionnal Command received
+ * r_buf : The buffer to put an answer
+ * len   : The size of the answer buffer
+ *
+ * Return value (for C_FILTER):
+ * 0 : Connection is accepted
+ * 1 : C_FILTER will called again, level is incremented
+ * 2 : Connection is refused, user is disconnected
+ * 3 : Connection is accepted, but in read-only mode
+ * 4 : Connection is accepted, but messages will be hold.
+ * 100 and up
+ *   : C_FILTER will called again, next level is equal to the return value.
+ *
+ */
+
+int _export FAR PASCAL svc_main (int ac, char FAR ** av, char FAR * r_buf, int len)
+{
+	if (len &gt; 20)
+	{
+		sprintf (r_buf, "Inside the C_FILTER\r");
+	}
+	return (0);
+}
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+</PRE>
+<PRE>
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

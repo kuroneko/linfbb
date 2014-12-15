@@ -1,0 +1,53 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of HEARD.BIN</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  HEARD.BIN
+</H1>
+<P>
+<P>
+<BIG><B>HEARD.BIN (\FBB\SYSTEM)</B></BIG>
+<PRE>
+This file holds the callsigns of stations heard on each port.
+
+ This binary file holds the information on heard callsigns. This file 
+must not be edited or changed. This file can only be opened for reading.
+
+ It is organized with records, each record containing information on a
+heard callsign. Never modify this file while the BBS is running.
+
+ Structure of one record (C language) :
+
+typedef struct 
+{
+	char	call[7]  ;  /* 7  Callsign                        */
+	char	num      ;  /* 1  SSID                            */
+
+} indicat ;
+
+typedef struct {
+
+  indicat  callsign  ;  /* 8   Callsign + SSID                 */
+  long     first     ;  /* 4   Date of first heard             */
+  long     last      ;  /* 4   Date of last heard              */
+  ushort   nb        ;  /* 2   number of heards                */
+
+} Heard              ;  /* 18  bytes = length of one record    */
+
+Date is given as the number of seconds since january 1st, 1970 00:00.
+
+In C language, all strings are ended with a NULL (00 hex) character.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

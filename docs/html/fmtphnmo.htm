@@ -1,0 +1,483 @@
+<HTML>
+<HEAD>
+  <TITLE>Telephone-modem (Appendix 20)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Telephone-modem<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 20)
+<P>
+<PRE> The FBB software allows the connection of a telephone modem on a serial
+port.
+
+This section is split into these parts:
+<A HREF="#Driver">Driver</A>
+<A HREF="#Type">Type of modem</A>
+<A HREF="#Protocol">Protocol</A>
+<A HREF="#Wiring">Wiring for external modem</A>
+<A HREF="#Usage">Usage</A>
+<A HREF="#XDOSPORT">Example of PORT.SYS for DosFBB</A>
+<A HREF="#XWINPORT">Example of PORT.SYS for WinFBB</A>
+<A HREF="#XXPORT">Example of PORT.SYS for LinFBB</A>
+<A HREF="#INITTNC">Example of INITTNCx.SYS for modem</A>
+<A HREF="#FORWARD">Example of FORWARD.SYS</A>
+
+<IMG SRC="../cyan.gif" WIDTH="14" HEIGHT="14"><A NAME="Driver"><!-- --></A><BIG><B>Driver:</B></BIG>
+
+The modem must be declared in PORT.SYS.
+
+<FONT COLOR="#ff0000">In WinFBB</FONT> the necessary driver is in <A HREF="fmtdriv.htm#FBBCOM">FBBCOMM.DRV</A>.  This driver replaces
+the original COMM.DRV supplied by WIndows.  
+
+<FONT COLOR="#ff0000">In DosFBB</FONT> it is necessary to use the <A HREF="fmtdriv.htm#FBBIOS">FBBIOS.COM</A> program. This driver 
+performs BBS to Modem interfacing. It is therefore necessary to load FBBIOS
+prior to BBS start up. A line FBBIOS will be added ahead of APPEL.BAT file.
+See below an example of the APPEL.BAT file.
+Of course, the FBBIOS used will have to match the serial port on which the
+modem is to be connected (address and IRQ).
+
+<FONT COLOR="#ff0000">In LinFBB</FONT> it is necessary to compile the Linux Kernel with SLIP 
+(serial line).
+
+The modem-driver will modify the RS232 speed according to the CONNECT info
+received from the modem :
+
+ CONNECT 1200 set the driver to 1200 Baud.
+ CONNECT 2400 set the driver to 2400 Baud.
+
+ The driver is reset to the default speed rate (specified in <A HREF="fmtport.htm">PORT.SYS</A>) at
+disconnect.
+
+ At connect, the text ; "xxxx BBS. Phone Access" is sent by default. This can
+be modified by creating a file <A HREF="fmttxt.htm">MODEM.ENT</A> in the SYSTEM directory.
+
+ You can specify in the PORT.SYS file that you accept connections, even if
+the user is not registered. In this case, the connection will be "read-only",
+the user has only a read only-access, he cannot download files or write
+messages, except to the sysop.
+
+ When a non-registered user is connected, he will be signified that he only
+has a "read only access", and will be prompted to go on. If he answers "Y",
+he will go to the BBS menu, else he will be asked again for a callsign.
+
+
+<IMG SRC="../red.gif" WIDTH="14" HEIGHT="14"><A NAME="Type"><!-- --></A><BIG><B>Type of modem:</B></BIG>
+
+ Various experiments have been carried out with several different kinds of
+(external, or internal cards) modems. If possible, modems at 14.400 or
+better 28.800 bps should be used; the modem speed is to be declared in
+PORT.SYS. Some modems can work different speeds, with an internal
+speed conversion between the modem and the computer. For example, the modem
+can transmit and receive on the telephone line at 14400 bps and talk to the
+PC at 19200 bps.
+
+ If the modem uses the HAYES protocol, the INITTNCx.SYS file must hold the
+correct HAYES init lines for the modem.
+
+
+<IMG SRC="../yellow.gif" WIDTH="14" HEIGHT="14"><A NAME="Protocol"><!-- --></A><BIG><B>Protocol:</B></BIG>
+
+ The configuration used is 1 start bit, 8 data bits, 0 parity, 1 stop bit,
+that is to say 10 bits words during the transmission.
+
+ The Minitel standard is not supported (7 bits, even parity).
+
+ The software being parametered by default in 8 bits, it was not possible to
+modify this protocol, as the binary file transfers are carried out on 8 bits.
+
+ NB.: FBBIOS/FBBCOMM.DRV handles XON/XOFF protocol during the transmissions.
+
+<IMG SRC="../green.gif" WIDTH="14" HEIGHT="14"><A NAME="Wiring"><!-- --></A><B><BIG>Wiring for external modems:</BIG></B>
+
+ The modem must be able to tell the BBS that a call has been detected with
+the remote modem carrier detection. This is the reason why all the RS232
+signals are used by the BBS. The RS232 cable has to be wired up pin to pin
+with no inversion: pins 2, 3, 4, 5, 6, 7, 8, 20, and 22 of the DB25
+connector.
+
+
+<IMG SRC="../grey.gif" WIDTH="14" HEIGHT="14"><A NAME="Usage"><!-- --></A><BIG><B>Usage:</B></BIG>
+
+ BBS users are not authorized to connect the BBS through a modem as per the
+default settings.
+
+ The SysOp must declare the modem users. To do it, perform a user edition (EU
+call) and put M (for Modem) then W pass_word. A password made of the three
+last letters of the callsign can be attributed for the first connect. Then
+the user will be able to change it through the NP command. The authorized
+callsigns can be listed by the DM command.
+
+ When a modem call occurs, once the modulations have been detected, the modem
+advises the BBS that a connection is effective on the telephone line. Then
+the BBS asks for the caller's call sign and password.
+
+ The user is granted three tries before being disconnected. If everything is
+all right, the user can access the same commands like connected on a radio
+channel, he will have to disconnect using the B command.
+
+ The log file is maintained for the connections through the modem channel.
+Keep in mind to add a line in the LOGFBB.CNF file for the modem calls to be
+processed in the stats analysis by LOGSTAT.
+
+<FONT COLOR="#ff0000">For WinFBB:</FONT>
+<A HREF="fmtdriv.htm#FBBCOMM">FBBCOMM.DRV</A> is already installed when Windows is started.  So there is no
+more driver to install for the modem.
+
+<FONT COLOR="#ff0000">For LinFBB:</FONT>
+Make sure you have compiled the Linux kernel with SLIP (serial line),
+or if you compiled SLIP as module you must load this.
+
+<FONT COLOR="#ff0000">For DosFBB:</FONT>
+ Example of APPEL.BAT with FBBIOS for a modem connected to COM3/IRQ4 :
+ echo off
+ break off
+ echo Press ^C to interrupt !
+ sleep 3
+ fbbios 3 03E8 4
+ serv %1
+ etc........
+
+
+<B> Example of PORT.SYS file with 3 serial port used:</B>
+<B> COM1 for a TNC, COM2 for a TNC, COM3 for the modem.</B>
+
+<A NAME="XDOSPORT"><!-- --></A><FONT COLOR="#ff0000">Example for DosFBB:</FONT>
+
+ FBBIOS will have been previously configured for COM3 (3E8, IRQ 4).
+
+# File for programming of channels and TNCs.
+#
+# Ports : How many ports (COM1, COM2, Etc...)
+# TNCs : How many TNCs and modems in use. With multiplexer
+# there can be up to 4 TNCs per port.
+#
+#Ports TNCs
+3      3
+#
+#<FONT COLOR="#ff0000">In WinFBB ONLY THESE interfaces are available:</FONT>
+# Interface : 2 = BPQ-node (BPQ in AA4RE-mode)
+#             4 = DRSI
+#             5 = TFPCR/TFPCX interface.  Interrupt MUST be 0xFD or the same
+#                 as stated in INIT.SRV, if any..
+#             6 = Windows-driver, replaces both ESS and FBBIOS.
+#             7 = TCP/IP.  Needs WINSOCK.DLL.  Put port-address as 17.
+#                 TNC-emulation is T (see below) 
+#             8 = TFWin.dll
+# BEWARE: The old interface 1 and 3 will NOT be used in WinFBB.  Interface 6
+#         replaces both.  (FBBCOMM.DRV).  Neither ESS nor FBBIOS can be
+#         used with WinFBB !
+#
+<FONT COLOR="#000000">#</FONT><FONT COLOR="#ff0000">In LinFBB ONLY this interface is available:</FONT>
+# Interface   9 = Linux.  Can work via serial port (D),via AX25 domain
+#                 socket (X) or via Telnet port (T).
+#
+#<FONT COLOR="#ff0000">In DosFBB ONLY THESE interfaces are available:</FONT>
+# Interface : 1 = Use external COMBIOS-driver (MBBIOS, ESS etc)
+#             2 = BPQ-node v 4.05 and up (BPQ in AA4RE-mode)
+#             3 = Telephone-modem with FBBIOS
+#             4 = DRSI card with driver
+#             5 = TFPCR/TFPCX interface.  Interrupt MUST be 0xFD or the same
+#                 as stated in INIT.SRV, if any..
+# Address   : Address of port in hexadecimal (Needed for multiplexer).
+#             <FONT COLOR="#ff0000">In LinFBB:</FONT>
+<FONT COLOR="#000000">#</FONT><FONT COLOR="#ff0000"> </FONT>            Address is the device name (/dev/cua0).
+#             Be sure you have the rights to access to the device (rw-rw-rw-).
+#             When using kernel AF_AX25 socket, address is not used.
+#             When using Telnet, address is the Telnet port in Hex (Hex 17 = Telnet port 23)
+# Baud      : Ports baud rate. Ignored by BPQ, kernel AF_AX25 socket and Telnet.
+#
+# Use same number of lines as number of ports.
+#
+#Com Interface Address (Hex) Baud
+1    1         3F8           9600
+2    1         2F8           9600
+3    3         3E8           1200
+#
+# TNC     : Number on TNC in use.  Use 0 for file-forward !
+# NbCh    : Number of channels I want to use in the TNC.
+#           Maximum available channels depend on firmware.
+# Com     : Number of the COM-port. Com1, Com2 etc.
+# MultCh  : Number of channel if port-multiplexer is used, otherwise 1.
+#           In DRSI use values from 0 to 7, by KAM use 1/VHF and 2/HF.
+# Paclen  : PACLEN on this TNC.
+# Maxframe: The maximum nb of frames the TNC will send at a time.
+# NbFwd   : Number of channels for OUTGOING forward at same time.
+# MxBloc  : Size of forward-block in kb.
+# M/P-Fwd : Minute of the hour for start of forward, and period
+#           (how many minutes between each forward-start).
+# Port mode, one of these:
+#           B : BBS-mode.
+#           G : "Guest"-mode.
+#           U : Normal-mode.
+# Type host-mode, one of these:
+#           D : WA8DED
+#           K : KAM hostmode.
+#           P : PK-232
+#           Q : BPQ v 4.x
+#           T : Ethernet/TCP-IP
+#           X : AX25 domain socket (for Linux)
+# Addition: One or more of these letters can be used too:
+#           L : Send unproto beacon after each arriving mail.
+#           M : Telephone-modem.
+#           Y : Yapp allowed on this QRG.
+#           W : Gateway allowed TO this QRG.
+#           R : Modem port allowed in Read-only mode.
+# Freq.   : Text to describe this port (max 9 characters, no space)
+#
+# Same number of lines as TNCs:
+#
+#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode Freq
+1    5    1   1      230   2      1      10   10/60   UDW  144.675
+2    4    2   1      250   3      2       5   12/30  UDYW  430.675
+3    1    3   1      128   2      0       5   00/60    UM  MODEM
+#
+# Special callsigns and modes for some channels.
+#
+#TNC Nbs Callsign-SSID Mode
+1    1   LA1B-1        B
+#
+# End of file.
+#
+
+
+<A NAME="XWINPORT"><!-- --></A><FONT COLOR="#ff0000">Same example for WinFBB:</FONT>
+
+ FBBCOMM.DRV is already loaded by Windows.
+
+# File for programming of channels and TNCs.
+#
+# Ports : How many ports (COM1, COM2, Etc...)
+# TNCs : How many TNCs and modems in use. With multiplexer
+# there can be up to 4 TNCs per port.
+#
+#Ports TNCs
+3      3
+#
+#<FONT COLOR="#ff0000">In WinFBB ONLY THESE interfaces are available:</FONT>
+# Interface : 2 = BPQ-node (BPQ in AA4RE-mode)
+#             4 = DRSI
+#             5 = TFPCR/TFPCX interface.  Interrupt MUST be 0xFD or the same
+#                 as stated in INIT.SRV, if any..
+#             6 = Windows-driver, replaces both ESS and FBBIOS.
+#             7 = TCP/IP.  Needs WINSOCK.DLL.  Put port-address as 17.
+#                 TNC-emulation is T (see below) 
+#             8 = TFWin.dll
+# BEWARE: The old interface 1 and 3 will NOT be used in WinFBB.  Interface 6
+#         replaces both.  (FBBCOMM.DRV).  Neither ESS nor FBBIOS can be
+#         used with WinFBB !
+#
+<FONT COLOR="#000000">#</FONT><FONT COLOR="#ff0000">In LinFBB ONLY this interface is available:</FONT>
+# Interface   9 = Linux.  Can work via serial port (D),via AX25 domain
+#                 socket (X) or via Telnet port (T).
+#
+#<FONT COLOR="#ff0000">In DosFBB ONLY THESE interfaces are available:</FONT>
+# Interface : 1 = Use external COMBIOS-driver (MBBIOS, ESS etc)
+#             2 = BPQ-node v 4.05 and up (BPQ in AA4RE-mode)
+#             3 = Telephone-modem with FBBIOS
+#             4 = DRSI card with driver
+#             5 = TFPCR/TFPCX interface.  Interrupt MUST be 0xFD or the same
+#                 as stated in INIT.SRV, if any..
+# Address   : Address of port in hexadecimal (Needed for multiplexer).
+#             <FONT COLOR="#ff0000">In LinFBB:</FONT>
+<FONT COLOR="#000000">#</FONT><FONT COLOR="#ff0000"> </FONT>            Address is the device name (/dev/cua0).
+#             Be sure you have the rights to access to the device (rw-rw-rw-).
+#             When using kernel AF_AX25 socket, address is not used.
+#             When using Telnet, address is the Telnet port in Hex (Hex 17 = Telnet port 23)
+# Baud      : Ports baud rate. Ignored by BPQ, kernel AF_AX25 socket and Telnet.
+#
+# Use same number of lines as number of ports.
+#
+#Com Interface Address (Hex) Baud
+1    6         3F8           9600
+2    6         2F8           9600
+3    6         3E8           1200
+#
+# TNC     : Number on TNC in use.  Use 0 for file-forward !
+# NbCh    : Number of channels I want to use in the TNC.
+#           Maximum available channels depend on firmware.
+# Com     : Number of the COM-port. Com1, Com2 etc.
+# MultCh  : Number of channel if port-multiplexer is used, otherwise 1.
+#           In DRSI use values from 0 to 7, by KAM use 1/VHF and 2/HF.
+# Paclen  : PACLEN on this TNC.
+# Maxframe: The maximum nb of frames the TNC will send at a time.
+# NbFwd   : Number of channels for OUTGOING forward at same time.
+# MxBloc  : Size of forward-block in kb.
+# M/P-Fwd : Minute of the hour for start of forward, and period
+#           (how many minutes between each forward-start).
+# Port mode, one of these:
+#           B : BBS-mode.
+#           G : "Guest"-mode.
+#           U : Normal-mode.
+# Type host-mode, one of these:
+#           D : WA8DED
+#           K : KAM hostmode.
+#           P : PK-232
+#           Q : BPQ v 4.x
+#           T : Ethernet/TCP-IP
+#           X : AX25 domain socket (for Linux)
+# Addition: One or more of these letters can be used too:
+#           L : Send unproto beacon after each arriving mail.
+#           M : Telephone-modem.
+#           Y : Yapp allowed on this QRG.
+#           W : Gateway allowed TO this QRG.
+#           R : Modem port allowed in Read-only mode.
+# Freq.   : Text to describe this port (max 9 characters, no space)
+#
+# Same number of lines as TNCs:
+#
+#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode Freq
+1    5    1   1      230   2      1      10   10/60   UDW  144.675
+2    4    2   1      250   3      2       5   12/30  UDYW  430.675
+3    1    3   1      128   2      0       5   00/60    UM  MODEM
+#
+# Special callsigns and modes for some channels.
+#
+#TNC Nbs Callsign-SSID Mode
+1    1   LA1B-1        B
+#
+# End of file.
+#
+
+
+<A NAME="XXPORT"><!-- --></A><FONT COLOR="#ff0000">Same example for LinFBB:</FONT>
+<B> Example of PORT.SYS file with 3 serial port used:</B>
+<B> COM1 (/dev/cua0) for a TNC, COM2 (/dev/cua1) for a TNC,</B>
+<B> COM3 (/dev/cua2) for the modem.</B>
+
+# File for programming of channels and TNCs.
+#
+# Ports : How many ports (COM1, COM2, Etc...)
+# TNCs : How many TNCs and modems in use. With multiplexer
+# there can be up to 4 TNCs per port.
+#
+#Ports TNCs
+3      3
+#
+#<FONT COLOR="#ff0000">In WinFBB ONLY THESE interfaces are available:</FONT>
+# Interface : 2 = BPQ-node (BPQ in AA4RE-mode)
+#             4 = DRSI
+#             5 = TFPCR/TFPCX interface.  Interrupt MUST be 0xFD or the same
+#                 as stated in INIT.SRV, if any..
+#             6 = Windows-driver, replaces both ESS and FBBIOS.
+#             7 = TCP/IP.  Needs WINSOCK.DLL.  Put port-address as 17.
+#                 TNC-emulation is T (see below) 
+#             8 = TFWin.dll
+# BEWARE: The old interface 1 and 3 will NOT be used in WinFBB.  Interface 6
+#         replaces both.  (FBBCOMM.DRV).  Neither ESS nor FBBIOS can be
+#         used with WinFBB !
+#
+<FONT COLOR="#000000">#</FONT><FONT COLOR="#ff0000">In LinFBB ONLY this interface is available:</FONT>
+# Interface   9 = Linux.  Can work via serial port (D),via AX25 domain
+#                 socket (X) or via Telnet port (T).
+#
+#<FONT COLOR="#ff0000">In DosFBB ONLY THESE interfaces are available:</FONT>
+# Interface : 1 = Use external COMBIOS-driver (MBBIOS, ESS etc)
+#             2 = BPQ-node v 4.05 and up (BPQ in AA4RE-mode)
+#             3 = Telephone-modem with FBBIOS
+#             4 = DRSI card with driver
+#             5 = TFPCR/TFPCX interface.  Interrupt MUST be 0xFD or the same
+#                 as stated in INIT.SRV, if any..
+#
+# Address   : Address of port in hexadecimal (Needed for multiplexer).
+#             <FONT COLOR="#ff0000">In LinFBB:</FONT>
+<FONT COLOR="#000000">#</FONT><FONT COLOR="#ff0000"> </FONT>            Address is the device name (/dev/cua0).
+#             Be sure you have the rights to access to the device (rw-rw-rw-).
+#             When using kernel AF_AX25 socket, address is not used.
+#             When using Telnet, address is the Telnet port in Hex (Hex 17 = Telnet port 23)
+# Baud      : Ports baud rate. Ignored by BPQ, kernel AF_AX25 socket and Telnet.
+#
+# Use same number of lines as number of ports.
+#
+#Com Interface Address (Hex) Baud
+1    9         /dev/cua0        9600
+2    9         /dev/cua1        9600
+3    9         /dev/cua2        1200
+#
+# TNC     : Number on TNC in use.  Use 0 for file-forward !
+# NbCh    : Number of channels I want to use in the TNC.
+#           Maximum available channels depend on firmware.
+# Com     : Number of the COM-port. Com1, Com2 etc.
+# MultCh  : Number of channel if port-multiplexer is used, otherwise 1.
+#           In DRSI use values from 0 to 7, by KAM use 1/VHF and 2/HF.
+# Paclen  : PACLEN on this TNC.
+# Maxframe: The maximum nb of frames the TNC will send at a time.
+# NbFwd   : Number of channels for OUTGOING forward at same time.
+# MxBloc  : Size of forward-block in kb.
+# M/P-Fwd : Minute of the hour for start of forward, and period
+#           (how many minutes between each forward-start).
+# Port mode, one of these:
+#           B : BBS-mode.
+#           G : "Guest"-mode.
+#           U : Normal-mode.
+# Type host-mode, one of these:
+#           D : WA8DED
+#           K : KAM hostmode.
+#           P : PK-232
+#           Q : BPQ v 4.x
+#           T : Ethernet/TCP-IP
+#           X : AX25 domain socket (for Linux)
+# Addition: One or more of these letters can be used too:
+#           L : Send unproto beacon after each arriving mail.
+#           M : Telephone-modem.
+#           Y : Yapp allowed on this QRG.
+#           W : Gateway allowed TO this QRG.
+#           R : Modem port allowed in Read-only mode.
+# Freq.   : Text to describe this port (max 9 characters, no space)
+#
+# Same number of lines as TNCs:
+#
+#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode Freq
+1    5    1   1      230   2      1      10   10/60   UDW  144.675
+2    4    2   1      250   3      2       5   12/30  UDYW  430.675
+3    1    3   1      128   2      0       5   00/60    UM  MODEM
+#
+# Special callsigns and modes for some channels.
+#
+#TNC Nbs Callsign-SSID Mode
+1    1   LA1B-1        B
+#
+# End of file.
+#
+
+
+<A NAME="INITTNC"><!-- --></A><B>Example of INITTNCx.SYS file for HAYES modem :</B>
+
+ #
+ ATZ
+ ATS0=1
+
+<A NAME="FORWARD"><!-- --></A><B>Example of  FORWARD.SYS  file</B>  to  forward  via  modem.  A  protocol with
+correction (like MNP) must be used to avoid any modifications of texts. The
+HAYES command ATDT dials the line, and when the connection is established,
+the callsign (preceded with a "." to avoid echoing) is sent twice and then
+the password. The callsign is sent twice in case of a problem the first time.
+^M is the &lt;return&gt; variable.
+
+ A LA1B
+   #
+   P C                                &lt;-- Modem port.
+   #
+   C C F6FBB ATDT19~~~12345678^M      &lt;-- Connects F6FBB using HAYES.
+   V .F6FBB^M~~~.F6FBB^M~~~PASSWORD^M &lt;--sends callsigns and password.
+   #
+   B LA1B
+   F LA6CU
+   #
+ ------
+
+ In the <A HREF="fmtport.htm">PORT.SYS</A> file, the number of forward channels for the TNC (modem)
+must be 1.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

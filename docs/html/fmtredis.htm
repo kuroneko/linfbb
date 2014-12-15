@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of REDIST.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  REDIST.SYS
+</H1>
+<P>
+<PRE><BIG><B>REDIST.SYS (\FBB\SYSTEM).</B></BIG>
+
+REDIST is a built-in server for resending personal messages as bulletins.
+May be used for sending a bulletin in another area than the users own area.
+
+
+#
+# Configuration of the REDIST server
+#
+# Route for the local BBS (SP LOCBBS)
+LOCBBS=LA1B
+# Name of the BBS coverage
+LOCBBS_DESC=LA1B BBS
+#
+#Route(s) for local bulletins (SP LOCAL)
+LOCAL=LA6CU,LA1B
+# Coverage of the local BBS
+LOCAL_DESC=Bergen, LA1B and LA6CU BBSs
+#
+# Route(s) for regional bulletins (SP REGION)
+REGION=VEST
+# Name of the region
+REGION_DESC=Hordaland, Rogaland (Western Norway)
+#
+# Route(s) for national bulletins (SP NATION)
+NATION=NOR
+# Name of the country
+NATION_DESC=Norway
+#
+# Default destination
+DEFAULT_TO=ALLE
+#
+# Send a mail to the sysop
+MAIL_SYSOP=YES
+#
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

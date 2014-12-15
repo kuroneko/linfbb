@@ -1,0 +1,216 @@
+<HTML>
+<HEAD>
+  <TITLE>MULTI-server</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  MULTI server<SMALL>.</SMALL>
+</H1>
+<P>
+<PRE>MULTI.EXE, server for FBB-BBS.
+(By LA6CU, Per)
+
+This server is used to send personal copies of special messages.  The 
+original is addressed to a special "call", and then there is automatically
+made personal copies to everyone that shall have one.
+
+MULTI may work in 2 ways.  You may use one of them, or both.  I use both at
+the same time.
+
+New in version 3.00:
+The server may use different languages.  There is a new file MULTI.TXT (reside
+in SYSTEM-directory) that holds all languages.  There is one "module" for
+each language.  See the text in MULTI.TXT for more info.
+
+
+1:  WITH DAT-FILES:
+-------------------
+
+Installation:
+
+MULTI.EXE is put in the same directory as SERV.EXE.   MULTI will read from
+<A HREF="fmtinit.htm">INIT.SRV</A>...
+
+In INIT.SRV, MULTI is included together with <A HREF="fmtreqfi.htm">REQFIL</A>, <A HREF="fmtreqdi.htm">REQDIR</A> etc.  Example:
+#
+------
+#
+REQFIL  REQFIL
+REQDIR  REQDIR
+CLUB    MULTI
+TEST    MULTI
+#
+
+In this example all messages sent to
+SP CLUB
+will be copied to all callsigns in the file CLUB.DAT, while messages sent to
+SP TEST
+will be copied to all callsigns in the file TEST.DAT.
+
+CLUB.DAT and TEST.DAT (in this example) must stay in the FBB-directory.
+You must make one such .DAT-file for every to-field you define in INIT.SRV.
+
+The .DAT-files must consist of callsigns (@BBS and H-addresses allowed) for 
+all those that shall have a copy.
+
+There are 4 different copy-types.
+A (action)      :  This is the callsign that will receive the message, or
+                   perform the action described in the message.
+C (copy)        :  This callsign receives a copy of the message.
+I (information) :  This callsign receives a copy for information.
+H (hidden)      :  This callsign receives a copy, but his callsign will not
+                   appear in the footnotes of the message, telling who has
+                   received a copy.
+                   
+There may be more than one callsign on each line (starting with A, I, C or H)
+separated by a comma.  There may be maximum 100 callsigns altogether.  
+Comment-lines are extras, they MUST start with a #
+
+From version 3.00 there will also be a separate line with a letter 
+corresponding to the language the server will use.  What letter corresponds
+to what language, is explained in MULTI.TXT.
+
+Example of CLUB.DAT:
+
+E                           &lt;-----  Use ENGLISH language for CLUB-server
+A LA6CU, LA1B, LA2D         &lt;-----  Copies to the people doing the job
+A LA6GDA                    &lt;-----    "     "   "   "    "     "     "
+                                    May be several lines if there is not 
+                                    enough room in one line. 
+I LA5RBA                    &lt;-----  LA5RBA is informed on the matter
+C LA6IM @ LA6IM             &lt;-----  LA6IM receives a copy for updating his
+                                    node-lists
+H LA2GIA                    &lt;-----  LA2GIA receives a copy, but will not appear
+                                    in the list of callsigns at the end of
+                                    each message.
+
+Beware:  The .DAT-files shall consist of callsigns and comments, nothing 
+         else !  No /EX, no * and no *** end of file.
+
+MULTI will NOT send a copy back to the originator, even if he also is in
+the .DAT-file.  This to avoid "looping" of messages.
+MULTI will send an acknowledge-message back to the originator, telling 
+him that the copying was successful, and show him a list of all callsigns
+that will receive such a copy.
+
+R:lines on incoming messages are removed, until there has arrived 2 lines
+without R:  After that. R:lines are accepted again.  This is done to make it
+possible also to forward messages back the same route, and at the same time
+make it possible to include R:lines in the message itself.
+
+R:lines are NOT checked to prevent forward to BBSs that are already in
+these R:lines, because a message to a MULTI-server only will be processed
+at the end-BBS anyway.
+
+MULTI needs very little memory (I have not checked how much..), but I have
+been told that it needs less than 35k.  MULTI does not write to screen.
+
+MULTI.EXE must be in the same directory as SERV.EXE.
+From version 3.00 the .DAT-files must be in the SYSTEM-directory.
+MULTI.TXT must also be in SYSTEM-directory.
+
+MULTI makes a temporary file MULTI.TMP on disk, and delete it afterwards.
+Everything else is done in memory, and the result is placed in MAIL.IN, as
+all servers do.
+
+
+2:  WITH ALL CALLSIGNS DIRECTLY IN THE ORIGINAL-MESSAGE.
+--------------------------------------------------------
+
+MULTI still works exactly as before, with the same installation.  But after
+a request from F6ABJ and F6FBB I have made a modification so that users
+themselves can decide what callsigns will receive a copy.  This is done
+by including the callsigns in the message itself.
+
+In INIT.SRV, MULTI is still included like before (see further up).  But
+in addition, you now must have 1 extra line, like this:
+
+#
+------
+#
+REQFIL  REQFIL
+REQDIR  REQDIR
+CLUB    MULTI
+TEST    MULTI
+MULTI   MULTI               &lt;----  This line is new.
+#
+
+From version 3.00 SP MULTI uses the default language (see MULTI.TXT).
+Other languages may be configured.  For example you may have:
+MULTI   MULTI   (for default language)
+MULTIE  MULTI   (for english language)
+MULTIF  MULTI   (for french language)
+MULTIH  MULTI   (for netherlands language)
+MULTIN  MULTI   (for norwegian language)
+So, you may send the same message SP MULTI, SP MULTIE, SP MULTIF, SP MULTIH,
+SP MULTIN etc.  The first 5 letters must always be MULTI, when used without
+DAT-file.  Default language will typically be english (SP MULTI), but the
+users will have the possibility to use others, as configured.
+
+Users will now be able to send messages to MULTI, like this:
+SP MULTI     The program will now collect the info on who will receive a 
+copy, from the message itself, and not from a seperat .DAT-file like 
+SP CLUB or SP TEST still will do.
+
+There are 4 different copy-types.
+A (action)      :  This is the callsign that will receive the message, or
+                   perform the action described in the message.
+C (copy)        :  This callsign receives a copy of the message.
+I (information) :  This callsign receives a copy for information.
+H (hidden)      :  This callsign receives a copy, but his callsign will not
+                   appear in the footnotes of the message, telling who has
+                   received a copy.
+(In addition one may use CC: instead of only C for Copy.  Special request..)
+
+There may be more than one callsign on each line (starting with A, I, C or H)
+separated by a comma.  There may be maximum 100 callsigns altogether.  
+Comment-lines are extras, they MUST start with a #
+
+Example:
+SP MULTI
+Digipeater upgrade          &lt;-----  Title of message
+A LA6CU, LA1B, LA2D         &lt;-----  Copies to the people doing the job
+A LA6GDA                    &lt;-----    "     "   "   "    "     "     "
+I LA5RBA                    &lt;-----  LA5RBA is informed on the matter
+C LA6IM @ LA6IM             &lt;-----  LA6IM receives a copy for updating his
+                                    node-lists
+H LA2GIA                    &lt;-----  LA2GIA receives a copy, but will not appear
+                                    in the list of callsigns at the end of
+                                    each message.
+---------                   &lt;-----  After the last callsign, there must be a
+                                    string of at least 5 '-' before the
+                                    actual message.
+                                    
+Then follows the contents of the message, and end with Ctrl-Z or /EX.
+
+As usual, the sender will receive a message saying that the copies were
+made.  The messages to all the other callsigns will be identical, and look
+like this:
+
+Message via LA6CU MULTI-server (v3.00) :
+
+Contents of message
+
+============================================================================
+For action       : LA6GDA, LA6CU, LA1B, LA2D.
+For copy         : LA6IM.
+For information  : LA5RBA.
+============================================================================
+
+All copies are identical, but A, C and I determines in which line in the
+footnotes the callsigns will appear.  A callsign after an H will not 
+appear in the footnotes.
+
+73 de Per, LA6CU.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+  <TITLE>REQDIR-server</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  REQDIR server<SMALL>.</SMALL>
+</H1>
+<P>
+<PRE> The REQDIR server sends back to origin of the special message the list of
+files (total or partial) of a directory.
+
+ The standard command line of the message is used. The message should be of
+the private type and addressed to the BBS that we want to ask :
+
+ SP REQDIR @ bbs-destination
+
+ The title of the message contains two information, the mask of the
+selection (*.EXE, *.*, etc...) and the @ sign followed the return bbs, that
+is to say yours. The return message will be addressed to the sender of the
+request via the return BBS. The mask can not be specified. In this case, all
+the files will be listed.
+
+ Mask @ bbs-return &lt;- mask of the selection
+
+ The text of the message is not necessary, its content will be ignored by the
+server.
+
+ Example :
+
+ F6FBB BBS &gt;
+ SP REQDIR @ F6ABJ.FRA.EU
+ Title of message :
+ YAPP\*.ZIP @ F6FBB.FMLR.FRA.EU
+ Text of message :
+ /EX
+
+ We assume with this example that YAPP is a sub-directory of the USERS
+directory (this a suggested configuration).
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

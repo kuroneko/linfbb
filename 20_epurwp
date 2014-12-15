@@ -1,0 +1,10 @@
+#!/bin/sh
+
+echo
+echo "--- Running epurwp"
+echo
+
+epurwp 40 90
+ret=$?
+
+exit $ret

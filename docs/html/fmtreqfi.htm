@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+  <TITLE>REQFIL-server</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  REQFIL server<SMALL>.</SMALL>
+</H1>
+<P>
+<PRE>
+ REQFIL server allows to send back the ascii file requested to the originator
+of the message.
+
+ The message sent to REQFIL has a well defined syntax. The standard command
+line of message is utilized. The message should be of the private type and
+addressed to the BBS which we want to ask.
+
+ SP REQFIL @ bbs-destination
+
+ The title of the message contains two information, the name of the
+requested file and the @ sign followed by the return BBS, that is to say
+yours. The return message will be addressed to the originator of the request
+to the return bbs.
+
+ filename @ bbs-return
+
+ The text of the message is not necessary, its content will not be taken into
+account by the service.
+
+ Example :
+
+ F6FBB BBS &gt;
+ SP REQFIL @ F6ABJ.FRA.EU
+ Title of message :
+ DEMOS\ESSAI.TXT @ F6FBB.FMLR.FRA.EU
+ Text of message :
+ /EX
+
+ This example makes the assumption that DEMO is a sub-directory of the USERS
+directory.
+
+ The answer of the remote mailbox will be of the form :
+
+ SP F6FBB @ F6FBB.FMLR.FRA.EU &lt; F6ABJ
+ Req File: DEMOS/ESSAI.TXT
+ Contents of ESSAI.TXT file
+ ...
+ /EX
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

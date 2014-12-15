@@ -1,0 +1,169 @@
+<HTML>
+<HEAD>
+  <TITLE>FBBDOS commands</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  <SMALL>FBBDOS<SMALL> </SMALL>COMMANDS.</SMALL>
+</H1>
+<P>
+<PRE>The syntax of the various FBBDOS commands is very close to that of 
+MsDos(R).
+
+Several specific commands have been added: PUT and GET for ASCII file
+transfers. XPUT, YPUT and XGET, YGET for binary file transfers.
+
+EDIT command for ASCII files editing.
+
+When entering FBBDOS, the prompt shows the virtual directory in which the
+user is located. There is no physical drive concept (A, C, etc...), the user
+is situated in a directory defined in the <A HREF="fmtinit.htm">INIT.SRV</A> file; this directory
+becomes the root of the available directory tree. Should the user be a SYSOP,
+and if he successfully validated his privileges using the SYS command, the
+root of FBBDOS will be the root of the current drive.
+
+A file created by a user belongs to this user.
+Only the owner of the file, or a SYSOP granted writing privileges (SYS
+command) are permitted to delete or modify this file.
+
+<FONT COLOR="#ff0000">BGET file </FONT>:
+ A binary file is downloaded from the BBS. The Autobin protocol is used.
+
+<FONT COLOR="#ff0000">BPUT file</FONT> :
+ A binary file is uploaded to the BBS. The Autobin protocol is used. 
+
+<FONT COLOR="#ff0000">CD directory</FONT> :
+ Changes the active directory. This command allows you to move within the
+directory tree by changing the active directory. "CD.." changes back by one
+directory "upstream" towards the root.
+
+<FONT COLOR="#ff0000">COPY Origin Destination</FONT> :
+ Copies a file into another file. If the destination file already exists, it
+must belong to the user.
+
+<FONT COLOR="#ff0000">DEL file</FONT> :
+ Deletes a file. A file cannot be deleted if it does not belong to the user.
+
+<FONT COLOR="#ff0000">DIR [mask]</FONT> :
+ Displays all the files contained in the directory or these corresponding to
+the mask if it is specified. If the mask matches a directory name, the
+content of this directory will be listed.
+
+<FONT COLOR="#ff0000">DOS Program Arguments</FONT> :
+ Allows a remote SYSOP (after SYS command) to run a DOS program. This program
+can not expect keyboard input. A list of arguments can be specified. The
+output to the screen will be send to the remote SYSOP at the completion of
+the program. If the program expects inputs, after a time-out of 2'45, it will
+be aborted (if possible) and the normal operation will resume.
+
+<FONT COLOR="#ff0000">DU [mask]</FONT> : Gives the size of the tree, and local used disk.
+
+<FONT COLOR="#ff0000">EDIT file</FONT> :
+ Edition of a text file, using the line editor. If the file already exists,
+ it must belong to the user. <A HREF="doclined.htm">Instructions on how to use the line editor</A> is
+ in a seperat section of this documentation.
+
+<FONT COLOR="#ff0000">EXIT</FONT> : Exit FBBDOS and return to the BBS or server.
+
+<FONT COLOR="#ff0000">GET file</FONT> :
+ Displays the content of an ASCII file. Such a display is never scrolled by
+pages, and ends with a Ctrl-Z, thus allowing ASCII file transfers from the
+BBS to the user.
+
+<FONT COLOR="#ff0000">LIST mask</FONT> :
+ Displays all the files contained in the directory or these matching the mask
+specified. if the mask matches a directory name, the content of this
+directory will be listed. Each line displays the filename and a descriptive
+comment (cf YI command).
+
+<FONT COLOR="#ff0000">MD directory</FONT> :
+ Creates a new directory. The new directory is appended next to the current
+directory.
+
+<FONT COLOR="#ff0000">O</FONT> : Display various options.
+
+<FONT COLOR="#ff0000">OL</FONT> : Lists the available languages.
+
+<FONT COLOR="#ff0000">OL number</FONT> : To select a language.
+
+<FONT COLOR="#ff0000">OP</FONT> : Validates or disables the scrolling of pages.
+
+<FONT COLOR="#ff0000">OP nbr of lines</FONT> : Set how many lines per page in page scrolling.
+
+<FONT COLOR="#ff0000">PRIV</FONT> :
+ Access to a private directory (or return to Fbb-Dos directories). Each user
+can have access to a private directory provided it has been defined by the
+SYSOP (I.E. EU command). Several users may share a private directory.
+
+<FONT COLOR="#ff0000">PUT file</FONT> :
+ Accepts an ASCII file from a user. The file must end with a Ctrl-Z to be
+validated. If the file already exists, it should belong to the user.
+
+<FONT COLOR="#ff0000">RD directory</FONT> :
+ Deletes a directory. A directory cannot be deleted as long as it is not
+empty.
+
+<FONT COLOR="#ff0000">TYPE file</FONT> :
+ Displays the content of an ASCII file. Eventually, this list can be scrolled
+by pages.
+
+<FONT COLOR="#ff0000">VIEW mask</FONT> :
+ Displays the content of all the archive files contained in the directory and
+corresponding to the specified mask. 
+<FONT COLOR="#ff0000">For DosFBB and WinFBB</FONT>: This function uses the <A HREF="toolfv.htm">FV.COM</A> shareware.
+Thanks to the authors of this last one.
+<FONT COLOR="#ff0000">In LinFBB</FONT>: VIEW command of LINUX version calls <A HREF="toolview.htm">FBB_VIEW</A> program. (or any 
+program defined by the variable $FBB_VIEW). fbb_view may be a shell script.
+
+
+<FONT COLOR="#ff0000">WHERE filename</FONT> :
+Command to find one or more files in FBBDos.  Wildcards are allowed.
+
+<FONT COLOR="#ff0000">XGET file [offset]</FONT>:
+Only via telephone-modem:
+A binary file is downloaded from the BBS. The Xmodem protocol is used. This command
+works only on a PSTN modem port. If offset is specified, download will start
+from offset.
+
+<FONT COLOR="#ff0000">X1GET file </FONT>: Same as above, with 1K-Xmodem protocol.
+
+<FONT COLOR="#ff0000">XPUT file</FONT> :
+Only via telephone-modem:
+A binary file is uploaded to the BBS. The Xmodem protocol is used. This command
+works only on a PSTN modem port.
+
+<FONT COLOR="#ff0000">YGET file</FONT> :
+A binary file is downloaded from BBS. 
+Via radio:
+Both YAPP and YAPC protocols may be used.  
+Via telephone-modem:
+YGET starts the YMODEM, YMODEM-batch or YMODEM-G protocols.
+
+<FONT COLOR="#ff0000">YPUT file</FONT> :
+A binary file is uploaded to the BBS. 
+Via radio:
+Both YAPP and YAPC protocols may be used.
+Via telephone-modem:
+YPUT starts the YMODEM protocole.  This is NOT available if the BBS is
+running DosFBB !
+
+<FONT COLOR="#ff0000">ZGET file</FONT> :
+Only via telephone-modem:
+ZGET starts download from the BBS using the YMODEM, YMODEM-batch or 
+YMODEM-G protocols.
+
+<FONT COLOR="#ff0000">ZPUT file</FONT> :
+Only via telephone-modem:
+YPUT starts upload to the BBS using the YMODEM protocole.  This is NOT 
+available if the BBS is running DosFBB !
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

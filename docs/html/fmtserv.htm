@@ -1,0 +1,67 @@
+<HTML>
+<HEAD>
+  <TITLE>Servers (menu)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Servers<SMALL>.</SMALL>
+</H1>
+<P>
+<PRE>
+ The BBS software offers various servers which are triggered when machinable
+messages are received. The number of offered servers is is without limit.
+
+ The servers are activated when receiving a message whose destination had
+been given at the end of the <A HREF="fmtinit.htm">INIT.SRV</A> file.
+
+
+<BIG><B>Declaration of servers at the end of INIT.SRV :</B></BIG>
+
+ ------
+ #
+ # List of servers :
+ #
+ # Destination  Name of program
+ #
+ REQDIR REQDIR.COM
+ REQFIL REQFIL.COM
+ NEWDOC NEWDOC.EXE
+ #
+ # End of file INIT.SRV
+ #
+
+ Servers are exec programs whose behaviour is explained in appendix 9. They
+should be found in the directory containing the exec program SERV.EXE and the
+configuration file INIT.SRV.
+
+ When a private message is received, whose destination is defined in the
+INIT.SRV file, the corresponding program to the destination is called with
+the name of a temporary file on the command line. This temporary file
+contains a message function of the requested server (see description of
+servers below).
+
+ At the completion of the server program, the incoming mail file is checked
+to import an answer, should there be one. The message addressed to the server
+is erased after this processing.  The temporary file must be erased by the
+server-program.
+
+ Various services can be developped, time available has its limits, but the
+imagination has not !
+
+<A HREF="fmtreqdi.htm">REQDIR</A> : Request directory-listing from a BBS's files-area.
+<A HREF="fmtreqfi.htm">REQFIL</A> : Request an ASCII-file from a remote BBS.
+<A HREF="fmtnewdo.htm">NEWDOC</A> : Update DOC-area of the BBS.
+<A HREF="fmtreqcf.htm">REQCFG</A> : Request a list of the BBS's configuration.
+<A HREF="fmtmulti.htm">MULTI</A>  : Send multippel identical messages to different adressees.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

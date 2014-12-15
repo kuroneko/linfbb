@@ -1,0 +1,298 @@
+   /****************************************************************
+    Copyright (C) 1986-2000 by
+
+    F6FBB - Jean-Paul ROUBELAT
+    6, rue George Sand
+    31120 - Roquettes - France
+	jpr@f6fbb.org
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+    Parts of code have been taken from many other softwares.
+    Thanks for the help.
+    ****************************************************************/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#define FBBCONFFILE "/usr/local/etc/ax25/fbb.conf"
+
+
+/* Default values for the fbb.conf file */
+
+static char *defstr[] = {
+	"conf",	"/usr/local/etc/ax25/fbb",
+	"data",	"/usr/local/var/ax25/fbb",
+	"mess",	"/usr/local/var/ax25/fbb/mail",
+	"comp",	"/usr/local/var/ax25/fbb/binmail",
+	"fbbd",	"*,*,/usr/local/var/ax25/fbb/fbbdos,*,*,*,*,*",
+	"yapp",	"/usr/local/var/ax25/fbb/fbbdos/yapp",
+	"docs",	"/usr/local/var/ax25/fbb/docs",
+	"sysm", "",
+	"impo",	"/usr/local/var/ax25/fbb/mail/mail.in",
+	"logs",	"OK",
+	"test",	"NO",
+	"fbbf",	"OK 160",
+	"fbbc",	"OK 3",
+	"aski",	"OK",
+	"mask",	"3616",
+	"secu",	"0 4 59",
+	"warn",	"255",
+	"hous",	"2",
+	"time",	"10 20",
+	"maxd",	"0 0",
+	"loca",	"0",
+	"beac", "8",
+	"scro",	"1500 1500 1500",
+	"fwdh",	"[$c] $$:$R",
+	"maxb",	"30000",
+	"life",	"30",
+	"wpca",	"",
+	"zipc",	"000000",
+	"unpr",	"500 5 P",
+	"upba",	"",
+	"dwba",	"",
+	"pg",	"/usr/local/lib/fbb/pg",
+	"fdir",	"/usr/local/lib/fbb/filter",
+	"sdir",	"/usr/local/lib/fbb/server",
+	"tdir",	"/usr/local/lib/fbb/tool",
+	"poph",	"",
+	NULL
+};
+
+/* a keyword has a maximum of 4 characters */
+
+typedef struct conf_list {
+	char key[5];
+	char *value;
+	struct conf_list *next;
+} ConfList;
+
+static ConfList *conf_head = NULL;
+
+/* Creates a list of keyword = value */
+
+int read_fbb_conf(char *pathname)
+{
+	int i;
+	int len;
+	FILE *fp;
+	char *ptr;
+	char *scan;
+	char line[256];
+	ConfList *conf;
+	
+	if (pathname == NULL)
+		if ((pathname = getenv("FBBCONF")) == NULL)
+			pathname = FBBCONFFILE;
+		
+	if ((fp = fopen (pathname, "r")) == NULL)
+		return 1;
+		
+	while (fgets (line, sizeof(line), fp))
+	{
+		scan = line;
+
+		/* Eats spaces */
+		while (isspace(*scan))
+			++scan;
+
+		if (*scan == '#' || *scan == '\0')
+			continue;
+
+		/* remove the leading \n */
+		len = strlen(scan);
+		if (len && (scan[len-1] == '\n'))
+			scan[len-1] = '\0';
+				
+		/* allocate a new structure */
+		conf = malloc(sizeof(ConfList));
+		if (conf == NULL)
+			return 2;	/* Not enough memory */
+			
+		conf->value = NULL;
+		conf->next  = conf_head;
+		conf_head   = conf;
+		
+		/* extract the keyword */
+		i = 0;	
+		ptr = conf->key;
+		while (isgraph(*scan))
+		{
+			if (i++ < 4)
+			{
+				*ptr++ = *scan;
+			}
+			++scan;
+			if (*scan == '=')
+				break;
+		}
+		*ptr = '\0';
+
+		/* finds the '=' */
+		scan = strchr(scan, '=');
+		
+		/* Copy the value */
+		if (scan)
+		{
+			++scan;
+
+			while (isspace(*scan))
+				++scan;
+
+			/* if the first character is '"' then string ends with '"' */
+			if (*scan == '"')
+			{
+				++scan;
+				ptr = strrchr(scan, '"');
+				if (ptr)
+					*ptr = '\0';
+			}
+			conf->value = strdup(scan);
+		}
+		else
+		{
+			conf->value = strdup("");
+		}
+	
+	}
+	
+	fclose(fp);
+	return 0;
+}
+
+/* returns the value of a keyword. If unknown return NULL */
+
+char *find_fbb_conf(char *key, int next)
+{
+	static	ConfList *conf_next = NULL;
+	ConfList *conf = conf_head;
+	
+	if (next)
+		conf = conf_next;
+	
+	while (conf)
+	{
+		if (strncasecmp(key, conf->key, 4) == 0)
+		{
+			conf_next = conf->next;
+			return strdup(conf->value);
+		}
+		conf = conf->next;
+	}
+	
+	return NULL;
+}
+
+/* returns the default value of a keyword. If unknown return NULL */
+
+char *def_fbb_conf(char *key)
+{
+	int pos;
+	
+	for (pos = 0 ; defstr[pos] ; pos += 2)
+	{
+		if (strncasecmp(key, defstr[pos], 4) == 0)
+		{
+			return strdup(defstr[pos+1]);
+		}
+	}
+	
+	return NULL;
+}
+
+/* free the list of keywords */
+
+void free_fbb_conf(void)
+{
+	ConfList *conf;
+	
+	while (conf_head)
+	{
+		conf = conf_head;
+		conf_head = conf_head->next;
+		
+		free(conf->value);
+		free(conf);
+	}
+}
+
+/* get the list of default values */
+
+char *get_fbb_def(int next)
+{
+	static int pos = 0;
+	char str[512];
+	
+	if (next == 0)
+		pos = 0;
+	
+	if (defstr[pos])
+	{
+		sprintf(str, "%s\t%s", defstr[pos], defstr[pos+1]);
+		pos += 2;
+		return strdup(str);
+	}
+	
+	return NULL;
+}
+
+/* get the list of all values */
+
+char *get_fbb_all(int next)
+{
+	static int first = 1;
+	static int pos = 0;
+	static	ConfList *conf_next = NULL;
+	char str[512];
+	
+	if (first)
+	{
+		first = 0;
+		pos = 0;
+		conf_next = conf_head;
+	}
+	
+	if (next == 0)
+	{
+		pos = 0;
+		conf_next = conf_head;
+	}
+	
+	if (conf_next)
+	{
+		sprintf(str, "s %s\t%s", conf_next->key, conf_next->value);
+		conf_next = conf_next->next;
+		return strdup(str);
+	}
+	
+	while (defstr[pos])
+	{
+		if (!find_fbb_conf(defstr[pos], 0))
+		{
+			sprintf(str, "d %s\t%s", defstr[pos], defstr[pos+1]);
+			pos += 2;
+			return strdup(str);
+		}
+		else
+		{
+			pos += 2;
+		}
+	}
+	
+	return NULL;
+}

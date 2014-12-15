@@ -1,0 +1,168 @@
+<HTML>
+<HEAD>
+  <TITLE>Console-commands FBB BBS.</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Console commands
+</H1>
+<P ALIGN=Center>
+(Function-keys and other).
+<P ALIGN=Center>
+<PRE>There are a few differences in <A HREF="docfunck.htm#WinFBB">WinFBB</A> from <A HREF="docfunck.htm#DosFBB">DosFBB</A>.
+
+<FONT COLOR="#ff0000"><A NAME="WinFBB"><!-- --></A><BIG><B>For WinFBB:</B></BIG></FONT>
+
+ Most of these commands will open a window. The server operation is NOT
+suspended while these windows stay open.
+
+<FONT COLOR="#ff0000">F1</FONT>     -  Help.
+<FONT COLOR="#ff0000">F2</FONT>     -  Connect to the BBS locally with the console-callsign.
+<FONT COLOR="#ff0000">F3</FONT>     -  Disconnect a channel.
+<FONT COLOR="#ff0000">F4</FONT>     -  Start or stop forwarding.  Shows how many/big messages are waiting
+          for forward right now (real-time).  Click on the BBS(s) you want to
+          start forward to, and click "Start Fwd". There are also buttons for
+          "Start All" and "StopFwd", as well as import and export.
+<FONT COLOR="#ff0000">F5</FONT>     -  Toggle monitoring on/off. 
+<FONT COLOR="#ff0000">F6</FONT>     -  Change console-callsign.  That callsign is used when connecting to
+          the BBS with F2 or via gateway F9.  The callsign have sysop-status.
+<FONT COLOR="#ff0000">F7</FONT>     -  Program TNC directly. This allows a dynamic modification of the
+          parameters which will be affected as default to the channels of 
+          the related port. These parameters will not be taken into account
+          for the channels already connected, and will be transferred to the
+          channel upon disconnect. The commands are specific to the TNC in
+          use: WA8DED with a TNC2, HostMode PK232 with a PK232, or the BPQ
+          node.
+<FONT COLOR="#ff0000">F8</FONT>     -  Not used
+<FONT COLOR="#ff0000">F9</FONT>     -  <A HREF="docgate.htm">Gateway</A>, using console-callsign.
+<FONT COLOR="#ff0000">F10</FONT>    -  Initiate a chat with a user (click on the user first).
+
+<FONT COLOR="#ff0000">ALT-F1</FONT> -  Not used
+<FONT COLOR="#ff0000">ALT-F2</FONT> -  Not used
+<FONT COLOR="#ff0000">ALT-F3</FONT> -  Start or stop forward-scan. Before starting scanning, <A HREF="fmtforwa.htm">FORWARD.SYS</A>
+          and its include-files, <A HREF="fmtbbs.htm">BBS.SYS</A> and <A HREF="fmtswapp.htm">SWAPP.SYS</A> are recompiled.
+<FONT COLOR="#ff0000">ALT-F4</FONT> -  Quit FBB.
+<FONT COLOR="#ff0000">ALT-F5</FONT> -  Start a text-editor.
+<FONT COLOR="#ff0000">ALT-F6</FONT> -  Not used
+<FONT COLOR="#ff0000">ALT-F7</FONT> -  Show last connections.
+<FONT COLOR="#ff0000">ALT-F8</FONT> -  Not used
+<FONT COLOR="#ff0000">ALT-F9</FONT> -  Not used
+<FONT COLOR="#ff0000">ALT-F10</FONT>-  Not used
+
+<FONT COLOR="#ff0000">ALT-B</FONT>  -  Not used
+<FONT COLOR="#ff0000">ALT-D</FONT>  -  Not used
+<FONT COLOR="#ff0000">ALT-R</FONT>  -  Not used
+<FONT COLOR="#ff0000">ALT-N</FONT>  -  Not used
+<FONT COLOR="#ff0000">ALT-S</FONT>  -  Not used
+<FONT COLOR="#ff0000">ALT-X</FONT>  -  Not used
+
+<FONT COLOR="#ff0000">CTRL-F1 to CTRL-F10</FONT> hold pre-defined texts, that are sent when pressing
+          that key.  The texts are in the file <A HREF="fmtmemo.htm">MEMO.SYS</A>.  Works only in
+          the editor.
+          Exceptions:
+          CTRL-F1 and CTRL-10 are captured by Windows.
+          CTRL-F4 exits the editor.
+
+In addition to the function-keys, there are quite a few push-buttons on
+the screen in WinFBB, in standard Windows-fashion.  Click on them to get 
+the wanted result.  This should be self-explanatory.  Much information may
+be retrieved this way, and many things may be configured this way.
+
+In addition to the main FBB-window, you may want to have open at the same
+time the DISPLAY ALL CHANNELS and MONITOR windows (I do, hi).  They may
+be re-sized to fit beside and under the main FBB-window.  The windows
+position and size and saved if you stop the BBS.
+
+
+<A NAME="XFBB"><!-- --></A><FONT COLOR="#ff0000"><A NAME="DosFBB"><!-- --></A><BIG><B>For LinFBB:</B></BIG></FONT>
+No function-keys are available in LinFBB.
+
+
+<FONT COLOR="#ff0000"><A NAME="DosFBB"><!-- --></A><BIG><B>For DosFBB:</B></BIG></FONT>
+
+ Most of these commands will open a window. The server operation is
+suspended while these windows stay open, but the user requests are queued and
+will not be lost. If no reply is given, the window will close down after a
+few seconds, and the default reply will not be taken into account. Do not
+forget to validate your replies with "Enter".
+
+<FONT COLOR="#ff0000">F1</FONT>     -  General help on all function-keys.
+<FONT COLOR="#ff0000">F2</FONT>     -  Connect to the BBS locally with the console-callsign.
+<FONT COLOR="#ff0000">F3</FONT>     -  Disconnect a channel.
+<FONT COLOR="#ff0000">F4</FONT>     -  Start or stop forwarding.
+          Manual forwarding request, or cancellation of current 
+          forwarding. If a number up to 8 is specified, the corresponding 
+          port will be scanned for forwarding. If the number 9 is specified,
+          all ports will be scanned. If a callsign is specified, it will be
+          scanned for forwarding. Preceding the callsign with + will force
+          reverse even if there is no waiting mail, preceding the callsign
+          with - will stop the forwarding and disconnect.
+<FONT COLOR="#ff0000">F5</FONT>     -  Toggle monitoring on/off.  With monitor on, the lower part of
+          the screen displays the monitored traffic, while the upper part of
+          the screen shows traffic in the BBS.  Number of lines in upper/lower
+          part of the screen, can be adjusted with the arrow-up or arrow-down
+          keys.
+<FONT COLOR="#ff0000">F6</FONT>     -  Change console-callsign.  That callsign is used when connecting to
+          the BBS with F2 or via gateway F9.  The callsign have sysop-status.
+<FONT COLOR="#ff0000">F7</FONT>     -  Program TNC directly. This allows a dynamic modification of the
+          parameters which will be affected as default to the channels of 
+          the related port. These parameters will not be taken into account
+          for the channels already connected, and will be transferred to the
+          channel upon disconnect. The commands are specific to the TNC in
+          use: WA8DED with a TNC2, HostMode PK232 with a PK232, or the BPQ
+          node.
+<FONT COLOR="#ff0000">F8</FONT>     -  Reboot PC.  Can be done at once, or when all channels are free.
+<FONT COLOR="#ff0000">F9</FONT>     -  <A HREF="docgate.htm">Gateway</A>, using console-callsign.
+<FONT COLOR="#ff0000">F10</FONT>    -  Talk to a user (that have sent a T) or initiate a chat with a user.
+
+<FONT COLOR="#ff0000">ALT-F1</FONT> -  Shows pending forward(s).  Shows number of personal messages,
+          bulletins, and the total amount of kB waiting to be forwarded.
+<FONT COLOR="#ff0000">ALT-F2</FONT> -  Shows all callsigns connected to the BBS.
+<FONT COLOR="#ff0000">ALT-F3</FONT> -  Start or stop forward-scan. Before starting scanning, <A HREF="fmtforwa.htm">FORWARD.SYS</A>
+          and its include-files, <A HREF="fmtbbs.htm">BBS.SYS</A> and <A HREF="fmtswapp.htm">SWAPP.SYS</A> are recompiled.
+<FONT COLOR="#ff0000">ALT-F4</FONT> -  Shows the last connected callsigns.
+<FONT COLOR="#ff0000">ALT-F5</FONT> -  Starts a very simple text-editor (use F1 for help there).
+<FONT COLOR="#ff0000">ALT-F6</FONT> -  Various "options" :  Sysop is in ?  Enables T-command.
+                               Beep at connect ? 
+                               Show callsigns etc. on every channel ?
+                               Gateway allowed ?
+                               Justification on text typed from console ?
+                               Use screen editor ?
+<FONT COLOR="#ff0000">ALT-F7</FONT> -  Import messages from file.
+<FONT COLOR="#ff0000">ALT-F8</FONT> -  Export messages to file.  Messages that are waiting to be 
+          forwarded to one BBS.  These messages can be forwarded to a file.
+<FONT COLOR="#ff0000">ALT-F9</FONT> -  Exit to DOS.  WARNING: the BBS operation is suspended all this
+          time long. The users will not be disconnected, and their commands
+          will be queued.  Return to BBS by typing EXIT.
+<FONT COLOR="#ff0000">ALT-F10</FONT>-  Stop the mailbox-program.  Can be done at once, or when all 
+          channels are clear.
+
+<FONT COLOR="#ff0000">ALT-B</FONT>  -  Blank screen.
+<FONT COLOR="#ff0000">ALT-D</FONT>  -  Save scroll-buffer to file.
+<FONT COLOR="#ff0000">ALT-N</FONT>  -  Allows reprogramming a telephone modem
+<FONT COLOR="#ff0000">ALT-R</FONT>  -  Redisplay screen.
+<FONT COLOR="#ff0000">ALT-S</FONT>  -  Show last DOS-screen.  Press a key to return to BBS.
+<FONT COLOR="#ff0000">ALT-X</FONT>  -  Stop the BBS (same as ALT-F10).
+
+<FONT COLOR="#ff0000">CTRL-F1 to CTRL-F10</FONT> holds pre-defined texts, that are sent when pressing
+          that key.  The texts are in the file <A HREF="fmtmemo.htm">MEMO.SYS</A>.
+
+<FONT COLOR="#ff0000">Arrow -&gt;</FONT> - Display next channel.
+<FONT COLOR="#ff0000">Arrow &lt;-</FONT> - Display previous channel.
+<FONT COLOR="#ff0000">Ctrl -&gt; <FONT COLOR="#000000">or</FONT> Ctrl &lt;-</FONT> Return to the display of all channels.
+<FONT COLOR="#ff0000">PG-UP</FONT> Display the previous page if it exists
+<FONT COLOR="#ff0000">PG-DW</FONT> Display next page.
+<FONT COLOR="#ff0000">HOME</FONT> Display the first page.
+<FONT COLOR="#ff0000">END</FONT> Display the last page.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

@@ -1,0 +1,516 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of INIT.SRV</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  INIT.SRV
+</H1>
+<P>
+<PRE>
+
+<BIG><B>INIT.SRV (\FBB).</B></BIG>
+
+
+ This file is the next file that FBB looks into during startup. This file
+will be found in the main FBB-directory. All basic data is collected from
+this file. Use your standard ASCII-editor to edit the following lines:
+(all lines starting with # are comments)
+
+<FONT COLOR="#ff0000">In WinFBB,</FONT> INIT.SRV is created or updated with a small program called
+<A HREF="toolinst.htm#INSTWFBB">INSTWFBB.COM</A>.  This program may also be run inside WinFBB, when WinFBB is
+running, by clicking on Config at the top of the screen.
+
+<FONT COLOR="#ff0000">In LinFBB</FONT>, INIT.SRV is created or updated with a small program called
+<A HREF="toolinst.htm#INSTALL">INSTALL.SH</A>.
+
+<FONT COLOR="#ff0000">In DosFBB,</FONT> INIT.SRV is created or updated with a small program called
+<A HREF="toolinst.htm#FBBSETUP">FBBSETUP.EXE</A>.
+
+
+This program is organized as pages of menus, and you can edit or change any
+topic in your configuration.<FONT COLOR="#ff0000"> It is no longer necessary to edit the INIT.SRV</FONT>
+<FONT COLOR="#ff0000">file manually.</FONT>
+
+ The version of the software is now indicated in the first comment line. This
+will allow further automatic updates.
+
+
+ # FBB7.00
+ #
+ # Callsign and H-address (Do not include SSID !)
+ LA1B.#BRG.NOR.EU
+ #
+ # SSID for the BBS
+ 0
+ #
+ # Qra locator
+ JP20RH
+ #
+ # Qth (variable $c)
+ Bergen
+ #
+
+
+ In the above lines you must replace the callsign and H-address with your own
+BBS-call and H-address. You also must replace the SSID, that is the number
+after the callsign. In LA1B-6, the 6 is the SSID. If you do not want any
+SSID, type 0 here. You also must replace the QRA-locator with your own
+locator (ask some other ham for help on this, if you don't know the BBSs QRA-
+locator. Do NOT use the value from this example-file ! You also must replace
+the QTH (don't make it too long...). If the QTH-name is short, you might add
+the QRA-locator here too, like I have done.
+
+ Next we have some filenames and path-names. These filenames and paths are
+the same as used in the installation-procedure. If you did no changes in this
+during installation, you will not need to change any of these now. 
+Note the syntax, and note that directory-names MUST end with a \
+
+
+ # Directory for files used by the BBS
+ C:\fbb\system\
+ #
+ # Directory for messages
+ C:\fbb\MAIL\
+ #
+ # Directory for binary-messages
+ C:\FBB\BINMAIL\
+ #
+ # Directory for users DOS
+ # Up to 8 drives may be specified, starting with drive A:
+ # In this example drive A and B are not used, and therefore replaced
+ # by a * each.
+ *,*,C:\fbb\users\,*,*,*,*,*
+ #
+ # Directory for Yapp-files
+ C:\fbb\users\yapp\
+ #
+ # Directory for DOCS
+ C:\FBB\DOCS\
+ #
+
+ That was not so difficult ?
+
+ Next, check the first-name of sysop, and the callsign of sysop.  Here are
+MINE :
+
+ # First-name of sysop
+ Per
+ #
+ # Sysops callsign
+ LA6CU
+ #
+
+ In the following line you CAN (not necessary) replace the ***** with a
+callsign. If you do, that callsign will receive a copy of all SYSOP-messages
+that arrives. You might want to put your own callsign there.
+You may also include more than one callsign, separated by space.
+
+ # Callsign (and route if needed) that shall have copy of messages
+ # addressed to SYSOP
+ # (*** for no copy, FD1CDC@FD1CDC.FMLR.FRA.EU if route)
+ *****
+ #
+
+ No need to change this:
+
+ # Path and filename for import-file
+ \FBB\MAIL.in
+ #
+
+ Here you must first write the code for the kind of monitor you use, and then
+you must have a number for how many minutes you want before the screen should
+go blank, after no activity on the keyboard. In this example I have a CGA-
+monitor, and my screen will go blank after 5 minutes since I last touched the
+keyboard.
+
+ # Type video:0=CGA, 1=EGA, 2=VGA Time before screen-blank.
+ #
+ 0 5
+ #
+
+ Complete log gives you a log-file for every week. If you write NO here, no
+log-file will be made. The log-file will appear in the directory named LOG.
+Direct video uses fast BIOS-calls if you answer OK. If you plan to use
+Desqview or Windows (with DosFBB, that is..), you must change it to NO. 
+Indication of channels will normally be OK (that means that monitored 
+information on screen will be more complete, with callsign of user before
+every frame from each user, etc).
+
+
+ # Complete log (OK or NO)
+ OK
+ #
+ # Direct video (OK or NO)
+ OK
+ #
+ # Indication of channels
+ OK
+ #
+
+ Next we have Test Mode (NO - OK). If you type OK, the BBS will start, but
+will not access the TNC(s). Use this the first times, to make sure that
+everything works fine. When you are sure that all is well, connect the TNC(s)
+and change this to NO. Restart the FBB, and now the TNCs will be used, as
+normal.
+
+ # Test-Mode (NO - OK)
+ OK
+ #
+
+ Forward type FBB is faster and more efficient than standard MBL-type
+forward. Use this whenever possible (OK). If you type NO, FBB-type forward
+will not be allowed.  You may also use a parametre after OK/YES from this
+list (add the ones you want):
+  1  : A space is mandatory before the @ in a send message command
+  2  : The length of the fields of a hierarchical address is not 
+       tested to be 6 characters
+  4  : The header line of a message is not truncated to the space before
+       the 79th character
+  8  : Header MBL/RLI
+  16 : If there is no BBS field, the callsign of the BBS is sent to the PMS
+  32 : Deletes the DATA messages sent to SYSOP
+  64 : Don't use the BID recovered from headers and use a new one
+  128: Accepts forwarding only from pre-declared BBS
+  256: WP Messages are not held.
+  512: XForwarding protocol has priority on FBB protocol.
+ 1024: Generation of an alternate BID like F6FBB-12345 (for dual BBS site)
+ 2048: Checksum unvalidated on XFwd.
+ 4096: Test of callsigns is less strict.  Allows all "callsign" as long as
+       they have one figure (0-9) anywhere in the callsign.
+
+ # Use (when possible) forward type FBB
+ OK
+ #
+
+(or, you may include a numer, like     OK 2048     or whatever..)
+
+ The same goes for compressed forward. Compressed forward
+is very much faster, and should always be used. 
+Parametre after "use compressed forwarding" give the options between 
+compressed protocols :
+1 = FBB compressed forwarding
+2 = XFWD compressed forwarding
+"OK 3"    allow both FBB and XFWD.
+
+ # Use (when possible) compressed forward
+ OK 3
+ #
+
+ Hroute update validation. If you type OK, the HROUTE look-up will be
+validated. This takes some tens KB of memory. A route without hierarchical
+extension will be changed to hierarchical route if found in the HROUTE.SYS
+database. This  database  is  automatically  updated  while  receiving  
+headers.
+
+ # HROUTE look-up and database update validation
+ OK
+ #
+
+ Information query. This ensures that the user will give his information.
+This will be helpful for the update of the white pages database. If "OK",
+the user will prompted until he answers to the queries.
+
+ # User MUST give Name, HomeBBS, Qth and ZIPcode
+ OK
+ #
+
+ Next we have 'Masque'. This is a default value that is given to all new
+users when they log on the BBS for the FIRST TIME. Select the things you want
+for all new users, and the values for them. If you f.ex. want all new users
+to get Paging, and be in Guest mode, add 32 and 64, and put the result 96 in
+the file. If you want none of the things listed here, put in a 0. The "see-
+all_mail" mask will be active only if the user has the "read-all-messages"
+security code (see behind).
+
+ # First connection mask.
+ # 0   : disable mask.
+ # 1   : Excluded.
+ # 2   : Local.
+ # 4   : Expert.
+ # 8   : Sysop.
+ # 16  : BBS.
+ # 32  : Pagination on
+ # 64  : Guest.
+ # 128 : Modem.
+ <A NAME="LIST/READ"><!-- --></A># 256 : List/read all personal messages
+ # 512 : Request for unproto beacon-lists allowed
+ # 1024: Get list of new messages at each connect
+ # Add up the values for your choices.
+ 1568
+ #
+
+ Next we have 'Security-codes'. Here we give 3 values. The first
+ says what ALL users are allowed to do. The next says what sysops
+ are allowed to do when they connect the BBS, and the third says
+ what a sysop is allowed to do after he has successfully performed
+ the SYS-command. The same applies here as above; choose the
+ values you want and add them up.
+
+ # Security-codes.
+ # All users can:
+ # 1  : Read all messages, including all personal messages.
+ # 2  : Kill all messages.
+ # 4  : Send SYS-command.
+ # 8  : Use remote-sysop commands (edit, forward etc).
+ # 16 : Edit labels in YAPP, FBBDOS, DOC.
+ # 32 : Can delete files in YAPP and FBBDOS.
+ # 64 : Have access to all gateways.
+ # 128: Run dos-programs (command DOS in FBBDOS).
+ # 256: Have access to the entire hard-disk.
+ # 512: Have access to command /A (stop BBS) and /R (reboot PC).
+ #
+ # All: Sysop: Sysop after successful SYS-command:
+   0    127    1023
+#
+
+<A NAME="Warning"><!-- --></A>Next we have warning-messages to sysop (mask):
+
+ # 1   : Less than 1MB in disk
+ # 2   : Error in system file (FORWARD, BBS, REJECT...)
+ # 4   : Server error/warning
+ # 8   : Ping-Pong warning
+ # 16  : No-route warning
+ # 32  : No NTS warning
+ # 64  : Message file not found
+ # 128 : Error in proposal
+ # 256 : Message rejected in remote BBS
+ # 512 : Message held in remote BBS
+1023
+
+ Next we have the time for cleanup of messages. This should be done in a low-
+traffic hour, as the BBS is completely shut down during cleanup. Type also
+the timeout-values you want, the default values here should be OK. Put also
+in the number of hours (+ or -) between the PCs local-time and UTC.
+
+ # Time (hour) for cleanup of messages
+ # (Forced disconnection of all links at housekeeping time+15 min.)
+ 02
+ #
+ #
+ # Time-out for normal use (minutes) and during forward (minutes)
+ 15 5
+ #
+
+ Max download-size (pr period) for Yapp and via modem, in kbytes.  0 0 will
+disable it
+ #
+ 100 500
+ #
+
+ # Hours +/- in relation to UTC
+ 0
+ #
+
+ Type how many callsigns you want (maximum) in each mail-beacon (variable
+$Q). If you precede the number by a B, also bulletins to local users (type BN
+or BY) will be broadcast in the mail-beacon. Like this:
+
+ # Number of callsigns in mail-beacon
+ B20
+ #
+
+ Number of lines in scroll-buffer may be changed. Just remember that they use
+a lot of memory (each line takes 160 bytes of memory, but can be in high
+memory), so I advice you to use these values:
+
+ # Number of lines in scroll-buffer
+ # User Console Monitoring
+ 1000    1000     1000
+ #
+
+ Leave this one alone:
+
+ # Text for forward-header (variables OK), appears LAST in the R:line.
+ # Please do not change the contents and the order of the fields except
+ # the FBB$E field which is only an information and can be removed.
+ # $c is the QTH as declared before in this file.
+ [$c] FBB$E $$:$R
+ #
+
+ Next you must decide how many BIDs to keep. 
+<FONT COLOR="#ff0000">For WinFBB and LinFBB:</FONT>  Normally you will have enough memory.  So you may
+use the max. However, I found 10000 to be a good value.
+<FONT COLOR="#ff0000">For DosFBB: </FONT>Depending on how much memory you have.  3000 is a good value,
+but 10000 is better (hi).  
+
+ # How many BIDs are saved (32000 max)
+ 3000
+ #
+
+ Leave the next one alone. This one means that bulletins that are older 
+than (in this case) 30 days, will not be forwarded again from my BBS, and
+will go directly to X-status. Be aware: a too low value here will cause 
+problems for other BBSs that you forward to..
+
+ # Lifetime for bulletins. Number of days from message is written
+ 30
+ #
+
+You should answer 1 for memory-cache, followed by the list of topics you 
+want to load into memory. The BBS will do these operations very 
+much faster.
+
+ #
+ # Use memory-cache ? 0=No, 1=Yes (preferred).
+ # and optional list of topics to put in memory-cache
+ #
+ # Topics : BID = Bulletins or messages identifiers
+ #          MSG = Message lists
+ #          HIE = Hierarchical information
+ #          SCR = Screen buffers
+ #          WPG = White Pages database
+ #          REJ = Reject/hold information
+ #          FWD = Forwarding information
+ #
+ 1 BID MSG WPG HIE SCR REJ FWD
+ #
+
+ List of routes to send WP update messages. First, keep this line blank until
+you have a WP network available, then give the route(s) to send your updates.
+
+
+ # List of routes to send WP messages
+ #
+ LA1B LA6CU
+ #
+
+ Zip code of the BBS. Give the post code area where is the BBS. Mandatory.
+
+ # ZipCode of the BBS
+ #
+ 31120
+ #
+
+ Here you will give the parameters allowing the list of messages in unproto
+mode. This list can be interpreted by some terminal softwares (as TPK) and
+greatly reduce the traffic on the local frequency.
+ The first parameter is the maximum backward number. If a unproto user asks a
+list which is lower than this number backward, he will be limited to this
+parameter (IE: if the current message number is 20000 and a user asks the
+list of the message 15000, he will be then limited to the 19500 if the
+backward number is 500).
+ The second parameter is the speed of the unproto updates given in seconds.
+The frames will be sent with this period.
+ The third parametre(s) have this meaning:
+A = ACK messages
+V = transit private messages
+P = end-user private mail
+M = subject is replaced by stars in private mail
+    (Bulletins are always displayed)
+Any unauthorized message will be unproto like
+12345 #
+
+ #
+ 500 5 VPA
+ #
+
+ Leave this lines alone, unless you are absolutely sure you want to change
+it:
+
+ # DRSI and TFPC interrupt (Hexadecimal, default FF and FE)
+FF FE
+
+ Then you have two optional programs of batches which are called at the end
+of the initialization, and just before shutdown. If you don't need them, keep
+these lines empty.
+
+
+ #
+ # BBS-UP program (default empty)
+
+ #
+ # BBS-DW program (default empty)
+
+ #
+
+ You can change these colours if you like:
+
+ # Colour on texts :
+ #
+ # Black      : 0      Dark grey     : 8
+ # Blue       : 1      Light blue    : 9
+ # Green      : 2      Light green   : 10
+ # Cyan       : 3      Light cyan    : 11
+ # Red        : 4      Light red     : 12
+ # Magenta    : 5      Light magenta : 13
+ # Brown      : 6      Yellow        : 14
+ # Light grey : 7      White         : 15
+ #
+ #
+ # COULEUR FONDS
+ #
+ # Status (top)
+ 1
+ # Bandeau (middle)
+ 7
+ # Text (bottom)
+ 0
+ # Menus
+ 4
+ #
+ # Colour of characters
+ #
+ # Status (top)
+ 7
+ # Bandeau (middle)
+ 1
+ # Menus
+ 14
+ # Text sent
+ 10
+ # Text received
+ 12
+ # UI (Headers)
+ 15
+ # UI (traffic)
+ 7
+ # Console
+ 14
+ # Beacon
+ 6
+ # Channel-marking
+ 11
+ #
+
+ You may change these lines if you like. These are the servers that are
+normally available in most FBB-BBSs, and they are automatically installed for
+you from the diskettes. So you can leave them alone. Or you can disable them
+with a # in front of each of these lines.
+
+ Two built-in servers already exist, but you MUST declare them in this file
+to make them available. As they are built-in, the program-name MUST be
+replaced with stars.
+
+ -----------
+ # List of "servers" :
+ #
+ # To Program-name Description
+ #
+ REQCFG ****** Request configuration
+ WP     ****** WP server
+ REQDIR REQDIR Request directory-listings from other BBSs.
+ REQFIL REQFIL Request files from other BBSs.
+ NEWDOC NEWDOC Upgrade files under DOCS.
+ ------
+ #
+ # End of file
+ #
+
+ Ok. That was the INIT.SRV file. This file is VERY important, so check and
+double-check to make sure that you have it all OK.  The best way to check
+it, is by using <FONT COLOR="#ff0000">INSTWFBB for WinFBB</FONT>, <FONT COLOR="#ff0000">INSTALL.SH for LinFBB</FONT> or 
+<FONT COLOR="#ff0000">FBBSETUP for DosFBB</FONT>.
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

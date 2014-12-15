@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+  <TITLE>Format of RUNFBB.BAT</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  RUNFBB.BAT
+</H1>
+<P ALIGN=Center>
+<FONT COLOR="#ff0000"><BIG>Only for WinFBB</BIG> !</FONT>
+<P>
+<PRE>
+<BIG><B>RUNFBB.BAT (\FBB\BIN).</B></BIG>
+
+ This is the very first file that WinFBB will use. You will find it in 
+\FBB\BIN-directory. You don't really need to do any changes in this file,
+unless you did some changes during the installation-process.  If you did, 
+you must change the pathnames in RUNFBB.BAT exactly the same as you did 
+during the installation.
+This is very important ! So look for the lines that I have marked with 
+an     <FONT COLOR="#ff0000">&lt;---</FONT>      here :
+
+@echo off
+rem -------------------------------------------------
+rem This file is run from RUNFBB.EXE.  Only the relevant part is started.
+rem It can be START, STOP, RERUN, MAINT or ERROR.
+rem Do not forget to type "goto end" at the end of each section !
+rem --------------------------------------------------
+
+break off
+set fbb=C:\FBB                                 <FONT COLOR="#ff0000">&lt;----</FONT>
+goto %1
+
+:start  ********************** START of START script ************************
+  echo off
+  cd %fbb%
+  goto end
+rem *************************** END of START script **************************
+
+:rerun  *********************** START of RERUN script ************************
+  cd %fbb%
+  goto end
+rem **************************** END of RERUN script **************************
+
+:maint  ********************** START of MAINT script **************************
+    cd %fbb%
+    @echo off
+    cd %fbb%\system\sat                              <FONT COLOR="#ff0000">&lt;----</FONT>          
+    if not exist amsat.txt goto amsatend
+    satupdat amsat.txt /n &gt; satupdat.res
+    satupdat amsat.txt &gt;&gt; satupdat.res
+    del amsat.txt
+  :amsatend
+    echo Backup of important files
+    copy %fbb%\system\dirmes.sys %fbb%\backup\dirmes.s1		<FONT COLOR="#ff0000">&lt;----</FONT>           
+    copy %fbb%\system\inf.sys %fbb%\backup\inf.s1               <FONT COLOR="#ff0000">&lt;----</FONT>
+    echo Cleaning up messages...
+    del epurmess.res
+    epurmess
+    rem EPURWP Parametre:  Number of days before update, and delete
+    rem Default is 40 and 90
+    epurwp 45 95
+    del %fbb%\system\wp\wp.old				<FONT COLOR="#ff0000">&lt;----</FONT>
+    cd %fbb%\system
+    clr_user&gt;&gt;%fbb%\clr_user.res			<FONT COLOR="#ff0000">&lt;----</FONT>
+    MAINTINF 3 /a
+    COPY %FBB%\SYSTEM\INF.NEW %FBB%\SYSTEM\INF.SYS	<FONT COLOR="#ff0000">&lt;----</FONT>
+    cd %fbb%
+    del %fbb%\system\dirmes.new				<FONT COLOR="#ff0000">&lt;----</FONT>
+    del %fbb%\system\dirmes.old				<FONT COLOR="#ff0000">&lt;----</FONT>
+    if not exist %fbb%\error.sys goto direct		<FONT COLOR="#ff0000">&lt;----</FONT>
+    rem ---------------------------------------------------
+    rem --- If you want a message when errors have occured:
+    rem --- <FONT COLOR="#ff0000">PLEASE exchange LA6CU with your own callsign !!!!	</FONT>
+    rem echo SP LA6CU             &gt;&gt; %FBB%\MAIL.IN		<FONT COLOR="#ff0000">&lt;----</FONT>
+    rem echo Error-report         &gt;&gt; %FBB%\MAIL.IN		<FONT COLOR="#ff0000">&lt;----</FONT>
+    rem type %FBB%\ERROR.SYS       &gt;&gt; %FBB%\MAIL.IN		<FONT COLOR="#ff0000">&lt;----</FONT>
+    rem echo.                     &gt;&gt; %FBB%\MAIL.IN		<FONT COLOR="#ff0000">&lt;----</FONT>	
+    rem ECHO /EX                  &gt;&gt; %FBB%\MAIL.IN		<FONT COLOR="#ff0000">&lt;----</FONT>
+    rem type %FBB%\ERROR.SYS       &gt;&gt; %FBB%\ERROR.LOG	<FONT COLOR="#ff0000">	&lt;----</FONT>
+    rem del %FBB%\ERROR.SYS					<FONT COLOR="#ff0000">&lt;----</FONT>
+    rem ---------------------------------------------------
+:direct
+    goto end
+rem **************************** END of MAINT script  ************************
+
+:stop ************************* START of STOP script *************************
+  goto end
+rem ***************************** END av STOP script *************************
+
+:error  ********************** START av ERROR script *************************
+  echo WFBB exited with ERRORLEVEL %2
+  sleep 5
+  goto end
+rem **************************** END av ERROR script **************************
+
+:end
+  echo %1 script is finished.
+  sleep 2
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

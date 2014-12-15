@@ -1,0 +1,156 @@
+<HTML>
+<HEAD>
+  <TITLE>Tool: SATUPDAT</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  SATUPDAT.EXE
+</H1>
+<P>
+<PRE>
+ SATUPDAT.EXE will read messages from AMSAT copied via packet radio. This is
+the english version of AJOURSAT.EXE. This software was developed by F6BVP.
+
+ It extracts keplerian elements both in NASA and AMSAT formats and updates
+the results into the satellites data base of the F6FBB's BBS <A HREF="fmtsatel.htm">(SATEL.DAT)</A>
+
+ Loading SATUPDAT without arguments will print the following message on your
+screen (between lines -----):
+
+ ------------------------------------------------------------------
+ Automatic update of satellites orbital parameters for F6FBB's bbs Version
+1.77e - June 1991 - Bernard Pidoux, F6BVP
+
+Usage: SATUPDAT [file name&lt;.txt&gt;] &lt;/option&gt; &lt;/option&gt;
+
+ Reading option:
+  /a AMSAT format (default)
+  /n NASA format
+
+ Update option:
+  /f merging new and old data (default)
+  /u update only satellites present in the
+
+ data base
+  /s keep only satellites present in the input file
+
+ &lt;&lt;767 satellites maximum&gt;&gt;
+ ------------------------------------------------------------------
+
+ This version 1.77e verifies checksum both for AMSAT files and NASA files.
+For automatic update of keplerian elements into F6FBB's bbs just create a
+virtual BBS into BBS.SYS file. Its name could be AMSAT for example.
+
+ Then declare the following forward in the file FORWARD.SYS :
+
+ A AMSAT
+ *
+ G AMSAT
+ P @
+ C C:\FBB\SYSTEM\SAT\AMSAT.TXT
+ *
+ ------
+
+ CAUTION: The name of the disk unit and the path name should be the exact one
+of your configuration.
+
+ In order to run automatically SATUPDAT when your computer boots, you must
+modify the batch file like the following example:
+
+<FONT COLOR="#ff0000">In WinFBB (file RUNFBB.BAT):</FONT>
+
+maint  ********************** START of MAINT script **************************
+  cd %fbb%
+    @echo off
+    cd %fbb%\system\sat                                        
+    if not exist amsat.txt goto amsatend
+    satupdat amsat.txt /n &gt; satupdat.res
+    satupdat amsat.txt &gt;&gt; satupdat.res
+    del amsat.txt
+:amsatend
+   cls
+   echo
+cd %fbb%
+
+<FONT COLOR="#ff0000">In LinFBB :</FONT>(There is no SATUPDAT for LinFBB yet..)
+
+<FONT COLOR="#ff0000">In DosFBB (file APPEL.BAT):</FONT>
+ :direct
+ if not exist c:\fbb\system\sat\amsat.txt goto appel
+ cd \fbb\system\sat
+ satupdat amsat /n &gt; satupdat.res
+ satupdat amsat &gt;&gt; satupdat.res
+ del amsat.txt
+ cd \fbb
+ :appel
+ echo Running the BBS ^C for stopping
+ sleep 3
+ serv -t
+ if errorlevel 2 goto direct
+ if errorlevel 1 goto suite
+ :suite
+
+ (Once again be careful with the disk name and directories !)
+
+<BIG><B> SATUPDAT OPTIONS</B></BIG>:
+
+ The default extension for input file is .TXT, however you can specify
+another extension.
+
+ Both arguments after the filename in the command line are optional: the
+first one indicates the reading format, either the AMSAT format or the NASA
+"2-line" format. The first one is selected by default.
+
+ The second option is for the choice of update mode. By default the program
+will merge the old list with the new one (same if you select option /f). Old
+data of satellites which are not present in the input file are kept as is and
+the other one are updated.
+
+ Option /u can be selected if you don't want to add new satellites to the one
+already present. Only keplerian elements from known satellites are updated.
+This prevents the list to grow with incoming satellites that you are not
+eventually interested in.
+
+ Option /s, on the contrary, gives you the possibility to keep only in the
+data base the data from the satellites whose name is in the input file.
+
+ This can help you to suppress old satellites from the data base.
+
+ In all cases the program takes care of the permanent data of satellites such
+as the frequency (for doppler) and the step for computing the tracking (you
+must provide both manually only the first time).
+
+ If the keplerian elements of the input file are older than the one already
+present in the BBS data base, the old one are kept.
+
+ The list is sorted by name in order to help the finding of the satellite
+name when someone is connected to the BBS.
+
+ If elements for one satellite are duplicated in the input file, the program
+will look again for the newest data.
+
+ Of course, if CRC computed by the program is not the same as the one in the
+input file, the program informs you that the CRC is BAD and it does not take
+the keplerian elements.
+
+ In the batch file example given above you have certainly noticed that I call
+twice the program SATUPDAT with two different format arguments. The first
+time I ask the program to read the NASA format and the second time to read
+the default format AMSAT. The reason is that the probability for an error to
+occur in both formats for the same satellite is very small. Thus if an error
+occurs in one format the program will complete the update when he will found
+unaffected keplerian elements in the other format. Thanks to the recently
+adopted checksum by AMSAT!
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

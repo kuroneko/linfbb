@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+  <TITLE>BPQ (Appendix 3)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  BPQ<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 3)
+<P>
+<PRE>
+
+<BIG><B>G8BPQ-node (uses TNCs in KISS-mode, DRSI cards, etc...).</B></BIG>
+
+ If you plan to use BPQ-node with this software, you must make some changes.
+Before you start FBB, you must load the BPQ-program.
+
+ From version 4.05 of BPQcode, separate ports can be declared. Level 2
+connections issue to the MultCh in the same order as PORTs declared in the
+BPQCFG.TXT (G8BPQ distribution) file. First port corresponds to MultCh 0.
+Level 4 connections (from the network) always issue to MultCh 0.
+
+ In <A HREF="fmtport.htm">PORT.SYS</A> you must use 2 in INTERFACE, and Q in type host mode. Version
+4.05 or up is recommended. COM can be from 1 to 8, but will exclude existing
+COMs. Choosing 8 is a good solution to keep existing COMs.  We recommend 
+that you use COM 8.
+
+ Only the <A HREF="finittnc.htm">INITTNCx.SYS</A> for the 1st port must exist. You must check that there
+is only one INITTNCx.SYS file for all BPQ-ports, otherwise you will have 
+big problems! The parameters for other ports will be taken by default, and then
+no conflict should happen between ports. If you want to define the streams 
+differently on each port, you can do it with the INITTNCx.SYS file, but be sure
+to give the right configuration.  INITTNCx.SYS will look like this:
+A1
+R0
+UMAIL
+M1
+N1
+
+ If paclen is equal to 0, then the default BPQ paclen of the port will be
+taken, otherwise the specified paclen will overwrite the default BPQ paclen.
+
+ If you have validated the gateway, you must configure ENABLE_LINKED=A in
+BPQCFG.TXT to give to the stream the callsign of the user.
+
+
+ Here is an example of PORT.SYS with BPQ-node and 2 TNCs:
+
+ #
+ #Ports TNCs
+ 1      2
+ #
+ #
+ #Com Interface Address (Hex) Baud
+ 8    2         0            4800
+ #
+ #
+ #TNC NbCh Com MultCh Pacl Maxfr NbFwd MxBloc M/P-Fwd Mode Freq
+ 1    8    8   0      230  4     1     10     30/60   UQYW VHF
+ 2    1    8   1      80   1     1     5      30/60   UQYW HF
+ #
+
+ Example of INITTNCx.SYS for BPQ 4.05 (Only ONE INITTNCx.SYS) :
+
+ A1      Number of application
+ R0      Returns to node (0=No,1=Yes)
+ UMAIL   Unproto MAIL
+ M1      Monitor (0=No,1=YES)
+ N1      Number of first stream
+
+The parameters for other ports will be taken by default, For instance, as the
+first stream of the first port is 1, the first stream of the second port will
+be 9. (8 channels defined in PORT.SYS for port 1). This will be done
+automatically, and the second INITTNCx.SYS should not exist.
+
+ In FORWARD.SYS there are a few changes, here is a short example:
+
+ A LA2D
+   #
+   P B
+   #
+   C C SWITCH       Connect first BPQ switch.
+   C C 2 LA2D       Connect LA2D on port 2 of BPQ.
+   #
+   B LA2D
+   F LA2D
+   #
+ ---------
+
+
+<FONT COLOR="#ff0000">For WinFBB:</FONT>
+
+If you are using WinFBB together with BPQ-code you have to copy the files
+
+	BPQCODE.386
+	BPQDLL.DLL
+
+to the \WINDOWS\SYSTEM directory. These files are normally included in the
+BPQ programpack.
+After this you starts BPQ in the same way as with DOSFBB, but before starting
+WINDOWS.  The best is to start BPQCODE from AUTOEXEC.BAT.
+
+<FONT COLOR="#ff0000">For LinFBB:</FONT>
+
+BPQ cannot be used with LinFBB....
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

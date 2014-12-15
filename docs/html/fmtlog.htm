@@ -1,0 +1,101 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of FBBLOG.nn</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  FBBLOG.nn
+</H1>
+<P>
+<PRE>
+<BIG><B>FBBLOG.nn File (\FBB\SYSTEM\LOG).</B></BIG>
+
+ Most of the executed commands are recorded in the file FBBLOG.nn - n is the
+number of the week. This yields a weekly archive which is not of a too big
+size.
+
+ This file will be updated if the line "Complete Log" of the file <A HREF="fmtinit.htm">INIT.SRV</A> is
+"OK".
+
+ It is an ASCII file which is automatically created, and does not request any
+special care. This single file keeps the activity record for all ports
+together.
+
+ All the lines begin with a string of figures, corresponding to the month,
+day, hour, minute and second of the trace, followed by the channel number,
+then the executed command.
+
+ A stats analysis software, LOGSTAT.EXE allows the processing of the log file
+(see 13.xxx).
+
+ FBBLOG file sample :
+
+ 043004460500SI *** BBS Initialize
+ 043004483200SA *** BBS Online
+ 043004483305CB FC1NOU-0 VIA F6FNL-5
+ 043004483905XD
+ 043004484705CB FC1NOU-0 VIA F6FNL-5
+ 043004500905MR 64072
+ 043004511405XB
+ 043005003201CA F1EBV-14
+ 043005012816CC F1EBV-1 VIA FE6BEX-8 {FC1BPS-7,F1EBV-7,FF6KQK-2}
+ 043005020701MW 64081P F:FC1GQL T:FE1JNY@F6DEG [281] S:F6CQP
+ 043005022816MN B:19226_FF6KNL V:F1EBV
+ 043005424401M&gt; 62893 V:F1EBV [2881]
+ 043005463616MN B:4759_EA6RCM V:F1EBV
+ 043005463616MF 62896 V:F1EBV [393]
+ 043005470813CC FC1HAQ-1 VIA F6FBB-7,019101
+ 043005481701M&gt; 62897 V:F1EBV [872]
+ 043005485816MF 62897 V:F1EBV [872]
+ 043005510701M&gt; 62898 V:F1EBV [815]
+ 043005514516MF 62898 V:F1EBV [815]
+ 043005522901M&gt; 62901 V:F1EBV [398]
+ 043005530516MN B:26051_FC1HAQ V:F1EBV
+ 043005530616MF 62901 V:F1EBV [398]
+ 043005533313MW 64084B F:DF9WM T:ALL@EU [1161] S:Address Needed
+ 043005572701M&gt; 62931 V:F1EBV [2728]
+ 043005580113XD
+ 043005584516MF 62931 V:F1EBV [2728]
+ 043006003012CB F6CDD-1
+ 043006211401XT
+ 043006303216CC FC1HAQ-1 VIA F6FBB-8,019101
+ 043006323016MF 64081 V:FC1HAQ [281]
+ 043006340716MF 64082 V:FC1HAQ [830]
+ 043006354116M&lt; 64086B F:DK3GI T:DXNEWS@EU [953] S:BY4AA in RTTY
+ 043006443216M&lt; 64089B F:OZ2FAR T:ALL@WW [1895] S:re qrt
+ 043006452112CB F6CDD-1
+ 043006465112MF 64086 V:F6CDD [953]
+ 043006465212MF 64087 V:F6CDD [2632]
+ 043006465312MF 64088 V:F6CDD [1626]
+ 043006465312MF 64089 V:F6CDD [1895]
+ 043006465412XB
+ 043006474016M&lt; 64090B F:VS6XQF T:ALL@WW [1748] S:CRY FOR TR-9500
+ 043006490316M&lt; 64091B F:DJ0AW T:ALL@WW [972] S:mfj-1278
+ 043006534816M&lt; 64092B F:DB2OS T:KEPLER@WW [3684] S:Elements 118.
+ 043007002612CB F6CDD-1
+ 043007005516M&lt; 64095B F:VK5CGB T:ALL@WW [1166] S:RNARS PACKET
+ 043007022116M&lt; 64096B F:DF7MX T:COMMOD@EU [913] S:SUPPORT
+ 043007034316M&lt; 64097B F:I1ZEU T:ALL@EU [1096] S:ID1V
+ 043007065416SQ *** BBS Quit
+
+
+All Xx lines in log are deconnections (eXit)
+XI Invalid callsign
+XE Excluded callsign
+XB is normal disconnection by the BBS (after a B command for instance)
+XT Time-out disconnection
+XF Forced disconnection (after a XI or XE)
+XM Too many errors
+XP Password error (modem)
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

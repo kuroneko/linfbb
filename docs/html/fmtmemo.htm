@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of MEMO.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  MEMO.SYS
+</H1>
+<P>
+<PRE>
+<BIG><B>MEMO.SYS (\FBB\SYSTEM).</B></BIG>
+
+<FONT COLOR="#ff0000">This file was designed for DosFBB</FONT> and works fine there.  See comments on use
+with WinFBB at the end of this file.
+
+ This ascii file will substitute a text when pressing CtrL-F1 to Ctrl-F10. 
+This text can hold variables and is limited to 255 characters. It can 
+include $W variable (CR) and then will be formatted as more than one line.
+
+ This file will have 10 lines, the first line corresponding to Ctrl-F1, and
+the last one to Ctrl-F10. If a line is not used, it must have a dot in first
+column.
+
+ Example of MEMO.SYS file :
+
+$W$O BBS (FBB$E) in $c ($?).$W
+.
+.
+.
+.
+.
+.
+.
+$W  Vy 73. Jean-Paul, F6FBB @ F6FBB.FMLR.FRA.EU$W$W/EX$W
+$W  73 Qro. Jean-Paul, F6FBB@F6FBB.FMLR.FRA.EU$W$W/EX$W
+
+<FONT COLOR="#ff0000">In WinFBB</FONT> this does not work the same.  It works only in the editor,
+and only Ctrl-F2, Ctrl-F3, Ctrl-F5 to Ctrl-F9 works.  The rest are 
+captured by Windows itself.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

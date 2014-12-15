@@ -1,0 +1,136 @@
+<HTML>
+<HEAD>
+  <TITLE>Variables</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  <SMALL>Variables.</SMALL>
+</H1>
+<P>
+<PRE>
+<BIG><B>Variables definition:</B></BIG>
+
+ Most of the text files support usage of variables. These variables enable
+text or values to be placed, depending upon the context or the channels in
+use.
+
+ These variables are defined with the $ sign, followed by a letter. The
+meaning will be different if the letter is in capital or in lower case. A
+second set of variables is defined with the % sign, followed by a letter.
+
+ They can also be followed by a figure and in this case, this is a parameter
+whose value is function of the context. These particular variables are used
+in texts, usually as computation results. Do not use them in other places
+than text files (*.TXT).
+
+ The $ sign will have to be written $$, if it is not to be considered as a
+variable. The % sign will have to be written %%.
+
+<BIG><B>List of the variables:</B></BIG>
+
+ $0 - $9 : Temporary variables.
+ $A : @ BBS of the message header.
+ $a : Year of the current date.
+ $B : Inserts a Ctrl-G (Bell).
+ $b : Zip code of the user.
+ $C : Number of the next message.
+ $c : City where the BBS is located.
+ $D : Current date (Format : YYMMDD).
+ $d : Current date (Format : DD-Dec).
+ $E : Version number.
+ $e : City of the connected user.
+ $F : Minute of the hour for forwarding.
+ $f : File appended to the message header.
+ $G : Destination of the message header.
+ $g : Number of gateway ports available.
+ $H : Current time (Format : HH:MM).
+ $h : Home BBS of the user.
+ $I : First name of the connected user.
+ $i : Date and time of the message header (Format MMDD/HHMM).
+ $J : Date of the message header (Format YYMMDD).
+ $j : Date of the message header (Format 29-Dec).
+ $K : Time of the message header (Format : HH:MM).
+ $k : List of the users involved in the conference.
+ $L : Number of the last used message.
+ $l : Filter value of LC command.
+ $M : Number of the message header.
+ $m : Frequency of the port in use.
+ $N : Number of active messages.
+ $n : Size of the message header.
+ $O : BBS callsign.
+ $o : SSID of the BBS.
+ $P : Origin of the message header.
+ $p : Number of lines of scroll page option, for the connected user
+ $Q : List of the 8 callsigns which have new messages.
+ $q : Base messages number of the user.
+ $R : BID of the message header.
+ $r : L or space character. L means that the message was locally created.
+ $S : Subject of the message header.
+ $s : Status of the message header.
+ $T : Time of message header (Format : HH:MM).
+ $t : Type of message header.
+ $U : Callsign of the connected user.
+ $u : Current drive in FBBDOS.
+ $V : SysOp first name.
+ $v : Complete route (with the hierarchical structure).
+ $W : Inserts a carriage return.
+ $w : Inserts an escape character.
+ $X : Date of the last connection (Format : 881229).
+ $x : Date of the last connection (Format : 29-Dec).
+ $Y : Time of the last connection (Format : 12:30).
+ $y : Year of message.
+ $Z : Last message read by the user (L command).
+ $z : Zip Code of the BBS.
+
+ $* : Number of active channels.
+ $= : User's current channel.
+ $! : User's current port.
+ $^ : Number of allowed ports.
+ $? : BBS QTH-Locator.
+ $% : List of the connected users.
+ $: : Connection duration (Format : 12mn 05s).
+ $. : Machine operation time (Format : 12mn 05s).
+ $$ : Character $
+
+ Second set of variables :
+(unformatted means that text is not padded with spaces) :
+
+ %A : @ BBS of the message header, unformatted.
+ %C : Gives the number of times a message has been read.
+ %d : Nb of KB downloaded to the user.
+ %E : Give the version code (Linux, Dos, Windows).
+ %G : Destination of the message header, unformatted.
+ %i : Date and time of the message creation (Format MMDD/HHMM).
+ %J : Date of the message creation (format YYMMDD).
+ %j : Date of the message creation (format 29-Dec).
+ %K : Time of the message creation (format HH:MM).
+ %M : Number of the message, unformatted.
+ %m : Maximum KB of download allowed on the port.
+ %N : Gives the message number limited to the right 5 digits and
+      modulo 65536. To be changed in the header definition of INIT.SRV.
+ %n : Size of the message header, unformatted.
+ %O : Callsign of sysop.
+ %P : Origin of the message header, unformatted.
+ %R : Callsign with full path (e.g. F6FBB.FMLR.FRA.EU).
+ %r : = D if the message holds data (7+) else is space.
+ %T : Name of the current theme.
+ %t : Number of bulletins in the current theme.
+ %X : Number of messages for the user.
+ %x : Number of new messages for the user.
+
+ %y : Year of the message creation.
+ %% : Character %
+ 
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

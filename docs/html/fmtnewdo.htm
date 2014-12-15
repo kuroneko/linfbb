@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+  <TITLE>NEWDOC-server</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  NEWDOC server<SMALL>.</SMALL>
+</H1>
+<P>
+<PRE> The NEWDOC server allows a simple and fast update of the documentation
+database (topic DOCS of the server). This server will create the file and
+will give it a label. It will not create a directory if it doesn't exist.
+Therefore it is necessary to prepare the directory tree structure before.
+
+ A message will give a summary to the originator.
+
+ The standard command line for messages is used. The message should be of
+type private and addressed to the BBS which will be updated.
+
+ SP NEWDOC @ bbs-destination
+
+ The message title contains two information , the name of the file requested
+followed by the label to give to the file (see the description of the topics
+DOCS).
+
+ Filename Label eventually on several words.
+
+ The text of the message will be transferred in the documentation file.
+
+ Example :
+
+ F6FBB BBS &gt;
+ SP NEWDOC @ F6ABJ.FRA.EU
+ Title of message :
+ BBS\DOC_1.DOC This is the label of the documentation.
+ Text of message :
+ This is the content of the documentation.
+ ....
+ End of documentation.
+ /EX
+
+ This example assumes that the BBS is a subdirectory of DOCS, thus one of the
+topics of the documentation.
+
+ If the NEWDOC.SYS file is specified, the server will be limited to the
+callsigns declared in this file, one callsign in each line.
+
+ Example of NEWDOC.SYS file :
+
+ F6FBB
+ FD1CDC
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

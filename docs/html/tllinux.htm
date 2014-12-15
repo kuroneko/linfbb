@@ -1,0 +1,495 @@
+<HTML>
+<HEAD>
+  <TITLE>Linux help (Appendix 23)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG WIDTH="32" HEIGHT="32" SRC="fbb.gif">
+<H1 ALIGN=Center>
+  <SMALL>Installation-help for Linux.</SMALL>
+</H1>
+<P>
+<SMALL></SMALL>
+<P>
+<B>The contents of this file is:</B>
+<PRE>
+<A HREF="#Why">Why use FBB with Linux ?</A>
+<A HREF="#Info">Info on AF_AX25, AF_NETROM and AF_ROSE.</A>
+<A HREF="#Install">Install AF_AX25, AF_NETROM and AF_ROSE.</A>
+<A HREF="#Config">Config AF_AX25, AF_NETROM and AF_ROSE for KISS TNC and SCC card.</A>
+<A HREF="fmttelne.htm">Telnet installation (Appendix 24).</A>
+
+
+<A NAME="Why"><!-- --></A><IMG SRC="/red.gif" WIDTH="14" HEIGHT="14"><B>Why use FBB with Linux ?</B>
+
+LINUX is a true multitasking system where many applications may run 
+concurently. When Linux (and other UNIX systems) has finished booting
+it is possible to run one ore more applications running concurently (NODE,
+BBS, CLUSTER, TCPIP, etc...) on the same CPU and above all very fast and 
+secure.
+
+Another good thing for linux is that the AX25 is included in the kernel, 
+and then you need no TNC, no BPQ or other. You only need hardware. (think
+of a DOS including Netrom, Rose, AX25, TCPIP and other software....)
+
+
+<A NAME="Info"><!-- --></A><IMG SRC="/blue.gif" WIDTH="14" HEIGHT="14"><B>Info on AF_AX25, AF_NETROM ans AF_ROSE.</B>
+
+Standard kernel AF_AX25, AF_NETROM and AF_ROSE sockets
+AX.25, NET/ROM and ROSE protocol are built into the Linux kernel.
+
+I recommend to use these interfaces, because it will give you
+more flexibility to build a system with many futures..
+
+This choice may be little difficult to set up,
+because the functions is depended of lots of things.. eg:
+ - Linux kernel version
+ - ax25-utils version
+ - z8530drv version
+ - net-tools version
+ ... and more
+
+If you desire to use this/these interfaces,
+i strongly recommend to read at least AX25-HOWTO!
+
+The AX25-HOWTO located at:
+http://sunsite.unc.edu/mdw/HOWTO/AX25-HOWTO.html
+
+More HOWTO&#180;s located at:
+http://sunsite.unc.edu/mdw/HOWTO/HOWTO-INDEX-3.html
+
+The Linux Documentation Project Homepage is located at
+http://sunsite.unc.edu/mdw/linux.html
+
+
+<A NAME="Install"><!-- --></A><IMG SRC="/cyan.gif" WIDTH="14" HEIGHT="14"><B>Install AF_AX25, AF_NETROM and AF_ROSE.</B>
+
+How to set up Linux kernel AF_AX25, AF_NETROM, AF_ROSE socket.
+
+These examples are for Linux kernel 2.0.27 patched with ax25-module-7.
+
+First, get these files (or newer files).
+ Linux kernel 2.0.27
+  available @ ftp://ftp.funet.fi/pub/Linux/PEOPLE/Linus/
+
+ ax25-utils-2.0.12c.tar.gz
+ ax25-module-7.tar.gz
+ ax25-utils-module-7.tar.gz
+  available @ http://www.cs.nott.ac.uk/~jsn/
+
+Unpack kernel 2.0.27 in &#180;/usr/src&#180; with &#180;tar zxvf linux-2.0.27.tar.gz&#180;
+this will unpack kernel 2.0.27 to a directory called &#180;linux&#180; ,
+beware if you already have a directory named &#180;linux&#180; in &#180;/usr/src&#180;.
+
+Tip:
+I rename my kernel source directory to kernel version with &#180;mv linux linux-2.0.27&#180;
+then i do a symbolic link to this directory with &#180;ln -s linux-2.0.27 linux&#180;
+
+Before i install a new kernel, i remove the symbolic link (eg: rm linux),
+this allows me to have more kernel sources installed at same time.. :-
+
+Okay, now it&#180;s time to compile the &#180;ax25-utils-2.0.12c.tar.gz&#180; ,
+unpack this file in &#180;/usr/src&#180; with &#180;tar zxvf ax25-utils-2.0.12c.tar.gz&#180;.
+
+I can&#180;t compile &#180;ax25-utils-2.0.12c.tar.gz&#180; after patching the kernel
+with &#180;ax25-module-7.tar.gz&#180;... :-/
+
+Read the &#180;INSTALL&#180; file how to compile, and install this package.
+
+Now it&#180;s time to patch the kernel with &#180;ax25-module-7.tar.gz&#180;,
+unpack this file in &#180;/usr/src&#180; with &#180;tar zxvf ax25-module-7.tar.gz&#180;,
+then type &#180;cat ax25-module-7/ax25-2.0.27-2.1.19.diff | patch -p0&#180;
+
+Okay, do &#180;cd linux&#180; now, read the file README now, to know how to set up the kernel!
+
+Okay, now it&#180;s time to run &#180;make config&#180; , be sure that you enable
+- Amateur Radio AX.25 Level 2 (CONFIG_AX25)
+- Amateur Radio NET/ROM (CONFIG_NETROM)
+
+If you want to use ROSE, enable this..
+- Amateur Radio X.25 PLP (Rose) (CONFIG_ROSE) 
+
+You can make these as loadable modules, or to be compiled into the kernel.
+
+After you finished with &#180;make config&#180; , then type &#180;make dep; make clean; make zImage&#180;
+to compile the new kernel with AX.25 and NET/ROM support (and ROSE if defined).
+
+After compilation, install the new kernel, as in the /usr/src/linux/README file.
+
+Okay, you should have rebooted and started up the new kernel now..
+
+Now it&#180;s time to compile &#180;ax25-utils-module-7.tar.gz&#180; ,
+unpack this file in &#180;/usr/src&#180; with &#180;tar zxvf ax25-utils-module-7.tar.gz&#180;,
+do &#180;cd ax25-utils.module-7&#180; and read the INSTALL file how to compile and install!
+
+If all steps has gone without problem, you are now ready to set up your Linux system
+to work with kernel AX.25, NET/ROM (and ROSE if defined), CONGRATULATIONS!
+
+Now you should go to &#180;/usr/src/ax25-utils-2.0.12c&#180; and read the README file,
+to find out what files you should need to change for suite you.
+
+All configuration files are in &#180;/etc/ax25&#180;.
+
+
+Tip:
+ Read the AX25-HOWTO @ http://sunsite.unc.edu/mdw/HOWTO/AX25-HOWTO.html
+
+
+<A NAME="Config"><!-- --></A><IMG SRC="/yellow.gif" WIDTH="14" HEIGHT="14"><B>Config AF_AX25, AF_NETROM and AF_ROSE for KISS TNC and SCC card.</B>
+
+How to setup LinFBB to use kernel AF_AX25, AF_NETROM and AF_ROSE sockets.
+
+Here is a example with LinFBB and one KISS TNC at COM1, 8 channels.
+
+# /etc/ax25/axports
+#
+# The format of this file is:
+#
+#name	callsign	speed	paclen	window	description
+#
+ax0	SM6TKY-3	9600	256	7	Tx: 437.975 Rx: 434.000 MHz 9600bps
+
+
+----
+
+
+# /usr/local/fbb/system/port.sys
+#
+# Comments is deleted to save space
+#
+#Ports TNCs
+ 1     1
+#
+#
+#Com Interface Adress (device) Baud
+ 1   9         ****            9600
+#
+# Same number of lines as TNCs:
+#
+#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode  Freq
+ 1   8    1   ax0    250   7     2     10     30/01   XUWYL  ax0
+#
+# Special callsigns and modes for some channels.
+#
+#TNC Nbs Callsign-SSID Mode
+#1    2   SK6BA-0       B
+#
+# End of file.
+#
+
+----
+
+# /etc/rc.d/rc.ax25
+#
+# This file is called from /etc/rc.d/rc.local
+#
+# attach a TNC2 with KISS
+#
+# (/dev/cua0 = COM1, /dev/cua1 = COM2, /dev/cua2 = COM3, /dev/cua3 = COM4)
+#
+/usr/sbin/kissattach -i 44.140.208.129 /dev/cua0 ax0
+#
+# set up default IP routings
+# This is not needed if you don&#180;t want to run TCP/IP on Radio
+#
+/sbin/ifconfig ax0 44.140.208.129 netmask 255.255.255.0 broadcast 44.140.208.255 arp mtu 256
+/sbin/route add -host sk6ba.ampr.org ax0
+/sbin/route add -net 44.140.208.0 gw sk6ba.ampr.org netmask 255.255.255.0 ax0
+/sbin/route add default gw sk6ba.ampr.org ax0
+#
+# Send ID every 10 min
+#
+/usr/sbin/beacon -t 10 ax0 "This Packet Radio Node is Powered with Linux Unix" &amp;
+#
+# If you want to run LinFBB in X-Windows,
+# comment out this below...
+#
+# Start up LinFBB deamon
+#
+/home/xfbb/xfbb.sh -d &amp;
+#
+
+-------------------------------------
+
+Here is one example with one KISS TNC2 on COM2, NET/ROM interface, 16 channels.
+
+
+# /etc/ax25/axports
+#
+# The format of this file is:
+#
+#name	callsign	speed	paclen	window	description
+#
+ax0	SM6TKY-3	9600	256	7	Tx: 437.975 Rx: 434.000 MHz 9600bps
+
+----
+
+# /etc/ax25/nrports
+#
+nr0 SM6TKY-13 #IP 236 Radio 9600bps
+nr1 SM6TKY-0 XFBB 236 NET/ROM&lt;-&gt;XFBB
+
+----
+
+# /etc/ax25/nrbroadcast
+ax0	1	192	10	1
+
+----
+
+# /usr/local/fbb/port.sys
+#
+# Comments is deleted to save space
+#
+#Ports TNCs
+ 1     2
+#
+#
+#Com Interface Adress (device) Baud
+ 1   9         ****            9600
+#
+# Same number of lines as TNCs:
+#
+#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode  Freq
+ 1   8    1   ax0    250   7     2     10     30/01   XUWYL  ax0
+ 2   8    1   nr1    236   7     2     10     30/01   XUY    netrom
+#
+# Special callsigns and modes for some channels.
+#
+#TNC Nbs Callsign-SSID Mode
+#1    2   SK6BA-0       B
+#
+# End of file.
+#
+
+----
+
+# /etc/rc.d/rc.ax25
+#
+# This file is called from /etc/rc.d/rc.local
+#
+# attach a TNC2 with KISS
+#
+# (/dev/cua0 = COM1, /dev/cua1 = COM2, /dev/cua2 = COM3, /dev/cua3 = COM4)
+#
+/usr/sbin/kissattach -i 44.140.208.129 /dev/cua1 ax0
+#
+# attach NET/ROM interface
+/usr/sbin/nrattach -i 44.140.208.129 nr0
+#
+# This is for LinFBB NET/ROM
+/usr/sbin/nrattach -i 44.140.208.129 nr1
+#
+# set up default IP routings
+# This is not needed if you don&#180;t want to run TCP/IP on Radio
+#
+/sbin/ifconfig ax0 44.140.208.129 netmask 255.255.255.0 broadcast 44.140.208.255 arp mtu 256
+/sbin/route add -host sk6ba.ampr.org ax0
+/sbin/route add -net 44.140.208.0 gw sk6ba.ampr.org netmask 255.255.255.0 ax0
+/sbin/route add default gw sk6ba.ampr.org ax0
+#
+# Start up NET/ROM deamon
+/usr/sbin/netromd
+/usr/sbin/nrparms -parms -qual 192
+#
+# Send ID every 10 min
+/usr/sbin/beacon -t 10 ax0 "This Packet Radio Node is Powered with Linux Unix" &amp;
+#
+# If you want to run LinFBB in X-Windows,
+# comment out this below...
+#
+# Start up LinFBB deamon
+/home/xfbb/xfbb.sh -d &amp;
+#
+
+-------------------------------------
+
+Here is a example with 2 ports SCC (PA0HZP compatibelt) card installed, 16 channels,
+and SCC driver is a loadable module.
+
+# /etc/z8530drv.conf
+#
+# Lines must not be longer than 255 bytes!
+#
+#
+# Hardware section
+#
+# SCC chip 1
+#
+chip	1
+data_a  0x153			# data port A
+ctrl_a  0x152			# control port A
+data_b  0x151			# data port B
+ctrl_b  0x150			# control port B
+irq     5			# IRQ No. 5 (#)
+pclock  4915200			# clock (+)
+# board	PA0HZP
+# escc yes
+# escc    no			# enhanced SCC chip? (8580/85180/85280) (*)
+# vector  0			# latch for interrupt vector ($)
+# special no			# address of special function register (*)
+# option  0			# option to set via sfr (*)
+#
+# (*) option, default value is 0
+# (+) option, default is 4915200
+#
+# SCC chip 2
+#
+# chip	2
+# data_a  0x157
+# ctrl_a  0x156
+# data_b  0x155
+# ctrl_b  0x154
+# irq     5			# IRQ No. 5 (#)
+# pclock  4915200			# clock (+)
+# board	PA0HZP
+# escc	no
+# vector	0
+# special	no
+# option	0
+#
+# (#) all chips can share one interrupt, or you may use multiple INTs,
+#     but there must be at least one IRQ defined in this system.
+# ($) only one Vector Latch for all Chips is allowed.
+#
+#
+# Software section
+#
+# The order of entries IS important!
+#
+# 	first     : DEVICE
+# 	then      : MODEM section
+# 	after that: Level 1 parameters
+#
+# Definition of /dev/scc0
+#
+device	/dev/scc0
+speed	9600
+clock	divider
+mode	nrzi
+# rxbuffers 8
+# txbuffers 16
+# bufsize 1152
+#
+txdelay 30
+persist 250
+slot	8
+tail	8
+fulldup	0
+wait    12
+min	3
+maxkey	7
+idle	3
+maxdef  120
+group   0
+txoff   off
+softdcd off			# use software dcd
+#
+# Definition of /dev/scc1
+#
+device	/dev/scc1
+speed	1200
+clock	divider
+mode	nrzi
+# rxbuffers 8
+# txbuffers 16
+# bufsize 1152
+#
+txdelay 30
+persist 250
+slot	8
+tail	8
+fulldup	0
+wait    12
+min	3
+maxkey	7
+idle	3
+maxdef  120
+group   0
+txoff   off
+softdcd off
+
+----
+
+# /etc/ax25/axports
+#
+# The format of this file is:
+#
+#name	callsign	speed	paclen	window	description
+#
+scc0	SM6TKY-3	9600	256	7	Tx: 437.975 Rx: 434.000 MHz 9600bps
+scc1	SM6TKY-1	1200	256	7	MARKnet Lan 144.800 MHz 1200bps
+
+----
+
+# /usr/local/fbb/port.sys
+#
+# Comments is deleted to save space
+#
+#Ports TNCs
+ 1     2
+#
+#
+#Com Interface Adress (device) Baud
+ 1   9         ****            9600
+#
+# Same number of lines as TNCs:
+#
+#TNC NbCh Com MultCh  Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode   Freq
+ 1   8    1   scc0    250   7     2     10     30/01   XUWYL  scc0
+ 2   8    1   scc1    250   7     2     10     30/01   XUWYL  scc1
+#
+# Special callsigns and modes for some channels.
+#
+#TNC Nbs Callsign-SSID Mode
+#1    2   SK6BA-0       B
+#
+# End of file.
+#
+
+-----
+
+# /etc/rc.d/rc.ax25
+#
+# This file is called from /etc/rc.d/rc.local
+#
+# Load the SCC module and init
+/sbin/insmod scc
+/sbin/sccinit
+#
+# attach the SCC card
+#
+/sbin/ifconfig scc0 44.140.208.129 hw ax25 sm6tky-3 up
+/sbin/ifconfig scc1 44.140.208.129 hw ax25 sm6tky-1 up
+#
+# set up default IP routings
+# This is not needed if you don&#180;t want to run TCP/IP on Radio
+#
+/sbin/ifconfig scc0 44.140.208.129 netmask 255.255.0.0 broadcast 44.140.255.255 arp mtu 256
+/sbin/ifconfig scc1 44.140.208.129 netmask 255.255.255.0 broadcast 44.140.208.255 arp mtu 256
+/sbin/route add -host sk6ba.ampr.org scc1
+/sbin/route add -net 44.140.208.0 gw sk6ba.ampr.org netmask 255.255.255.0 scc1
+/sbin/route add default gw sk6ba.ampr.org scc1
+#
+#
+# Send ID every 10 min
+/usr/sbin/beacon -t 10 scc0 "This Packet Radio Node is Powered with Linux Unix" &amp;
+/usr/sbin/beacon -t 10 scc1 "This Packet Radio Node is Powered with Linux Unix" &amp;
+#
+# If you want to run LinFBB in X-Windows,
+# comment out this below...
+#
+# Start up LinFBB deamon
+/home/xfbb/xfbb.sh -d &amp;
+#
+
+
+
+
+<A HREF="doc.htm"><IMG WIDTH="108" HEIGHT="28" SRC="contents.gif"></A>
+
+<A HREF="/"><IMG SRC="/button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

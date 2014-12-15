@@ -1,0 +1,153 @@
+<HTML>
+<HEAD>
+  <TITLE>Drivers and phone-modem</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Async port drivers and telephone modem<SMALL>.</SMALL>
+</H1>
+<P>
+<PRE>
+You may need several external drivers for your BBS.  
+
+<FONT COLOR="#ff0000">For WinFBB:</FONT>
+<A HREF="#FBBCOMM">FBBCOMM.DRV</A>
+<A HREF="fbpq.htm">BPQ</A>
+
+<FONT COLOR="#ff0000">For LinFBB:</FONT>
+<A HREF="#AF_">AF_AX25 domain socket  </A>
+<A HREF="#AF_">AF_NETROM domain socket</A>
+<A HREF="#AF_">AF_ROSE domain socket  </A>
+It is necessary to compile the Linux Kernel with SLIP (serial line).
+
+<FONT COLOR="#ff0000">For DosFBB:</FONT>
+<A HREF="#ESS">ESS.COM </A>
+<A HREF="#ESSKAM">ESSKAM.COM</A>
+<A HREF="#FBBIOS">FBBIOS.COM </A>
+<A HREF="fbpq.htm">BPQ</A>
+<A HREF="ftfpcx.htm">TFPCX/TFPCR</A>
+
+Installation of a <A HREF="fmtphnmo.htm">TELEPHONE MODEM.</A> 
+
+
+<IMG SRC="../cyan.gif" WIDTH="14" HEIGHT="14"><A NAME="FBBCOMM"><!-- --></A><BIG><B>FBBCOMM.DRV</B></BIG>:  <FONT COLOR="#ff0000">(Only for WinFBB)</FONT>
+
+The port-driver FBBCOMM.DRV is installed in Windows during the installation-
+process of WinFBB.  
+
+FBBCOMM.DRV is automatically installed in your Windows as you install WinFBB
+from the diskette.  So there is nothing for you to do.  The driver is 
+automatically installed into your SYSTEM.INI in the [boot] section as 
+comm.drv=fbbcomm.drv.  If in doubt, you may want to check this.
+
+
+<IMG SRC="../orange.gif" WIDTH="14" HEIGHT="14"><A NAME="ESS"><!-- --><!-- --></A><BIG><B>ESS.COM:</B></BIG>       <FONT COLOR="#ff0000">(Only for DosFBB)</FONT>
+
+ ESS is an async port driver optimized for FBB software. It can drive either
+TNC2/PK232/clones or KAM.
+
+ This small device driver is loaded as resident at the beginning of the
+machine initialization (TSR).
+
+ One ESS handles one serial line and makes use of one IRQ.
+
+ The COM number, the address of the serial interface and the IRQ number are
+given as parameters appended to the command line. The address should be given
+as a FOUR digit hex number.
+
+ Example : Install ESS for COM1 at hex 03F8 and using IRQ 4 :
+ ESS 1 03F8 4
+
+ If only the COM number is specified, the address and the IRQ will default to
+the standard DOS value. Thus ESS 1 would have had the same effect than the
+example.
+
+ Any address or IRQ number can be specified. Carefully check that the address
+and the IRQ number match the board you intend to use, special attention
+should be given to the IRQ number which should not already be used by another
+peripheral device in the machine. On a PC the IRQ's can not usually be
+shared.
+
+ Should there be more than one port to handle, several ESS can be cascaded.
+The IRQ should be different for each ESS, except for the case in which the
+interrupt sharing is supported by the serial card used.
+
+ Example :
+
+ ESS 1 03F8 4
+ ESS 2 02F8 3
+
+ This sequence will load ESS's for COM1 and COM2.
+
+ ESS accommodates also the muxing arrangement of serial ports.
+
+<B> Version 1.08 of ESS-driver (included with DosFBB distribution)</B>
+<B> must be used with the MUX ! </B>
+
+
+<IMG SRC="../orange.gif" WIDTH="14" HEIGHT="14"><A NAME="ESSKAM"><!-- --><!-- --></A><BIG><B>ESSKAM.COM:</B></BIG>    <FONT COLOR="#ff0000">(Only for DosFBB)</FONT>
+
+ESSKAM works exactly as <A HREF="#ESS">ESS.COM</A>, but only for Kantronics Kam TNCs.
+
+
+<IMG SRC="../purple.gif" WIDTH="14" HEIGHT="14"><A NAME="FBBIOS"><!-- --></A><BIG><B>FBBIOS.COM:</B></BIG>    <FONT COLOR="#ff0000">(Only for DosFBB)</FONT>
+
+ FBBIOS is a serial line driver dedicated to the usage of a PSTN modem.
+Binary as well as ASCII file transfer are supported with the XMODEM protocol.
+
+ FBBIOS handles one serial line, one IRQ is required. The COM number, the
+address of the serial interface and the IRQ number are given as parameters
+appended to the command line, the address should be specified in FOUR hex
+digits.
+
+ Example : Install FBBIOS for COM1 at hex 03F8 and using IRQ 4 :
+ FBBIOS 1 03F8 4
+
+ If only the COM number is specified, the address and the IRQ will default to
+the standard DOS value. Thus FBBIOS 1 would have had the same effect than the
+example.
+
+ Any address or IRQ number can be specified. Carefully check that the address
+and the IRQ number match the board you intend to use, special attention
+should be given to the IRQ number which should not already be used by another
+peripheral device.
+
+ On a PC the IRQ's can not usually be shared.
+
+ If the modem in use is at the HAYES standard, FBBIOS can modify the line
+speed according to the one of the incoming call connection. In this case the
+parameter 'A' should be appended to the command line to activate this
+feature. This is not true with some buffered modems using a junction with a
+settled speed.
+
+ Example : FBBIOS 1 03F8 4 A
+
+ Upon receipt of the string CONNECT 1200 or CONNECT 2400, the driver will
+adjust its speed to the incoming call.
+
+ From version 1.30, FBBIOS.COM can run up to 56 KBauds. Be sure that your
+computer is fast enough !
+
+
+<A NAME="AF_"><!-- --></A><IMG SRC="../yellow.gif" WIDTH="14" HEIGHT="14"><B><BIG>AF_AX25 domain socket    </BIG>(More in <A HREF="tllinux.htm#info">appendix 23</A>)</B>
+  <B><BIG>AF_NETROM domain socket  </BIG>(More in <A HREF="tllinux.htm#info">appendix 23</A>)</B>
+  <B><BIG>AF_ROSE domain socket    </BIG>(More in <A HREF="tllinux.htm#info">appendix 23</A>)</B>
+<SMALL>  <FONT COLOR="#ff0000">(Only for LinFBB)</FONT></SMALL>
+<SMALL></SMALL>
+<SMALL>Standard kernel AF_AX25, AF_NETROM and AF_ROSE sockets</SMALL>
+<SMALL>AX.25, NET/ROM and ROSE protocol are built into the Linux kernel.</SMALL>
+<SMALL></SMALL>
+<SMALL>I recommend to use these interfaces, because it will give you</SMALL>
+<SMALL>more flexibility to build a system with many futures..</SMALL>
+<SMALL></SMALL>
+<SMALL></SMALL>
+<SMALL><A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A></SMALL>
+<SMALL></SMALL>
+<SMALL><A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A></SMALL>
+<SMALL></SMALL>
+<SMALL><FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT></SMALL>
+<SMALL></SMALL>
+</PRE>
+</BODY></HTML>

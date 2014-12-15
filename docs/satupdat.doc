@@ -1,0 +1,165 @@
+
+			Documentation for SATUPDAT / AJOURSAT
+			by Bernard Pidoux, F6BVP
+			DOS version created October 16, 1989
+                        ported to Linux by Jean-Paul F6FBB
+
+
+satupdat program will read messages from AMSAT copied via packet radio. 
+It extracts keplerian elements both in NASA and AMSAT formats and updates
+the data into the satellites data base of the F6FBB's BBS file that should 
+be in the directory fbb/system/sat/satel.dat 
+
+satupdat program must be put in the fbb/bin directory, together with binaries.
+
+Running satupdat without arguments will print the following message on 
+your screen (between lines -----): 
+
+-----------------------------------------------------------------------
+Automatic update of satellites orbital parameters for F6FBB's bbs
+Version 1.83e - November 1994 - Bernard Pidoux, F6BVP
+Linux version - April 1997 - Jean-Paul ROUBELAT F6FBB
+Usage: satupdat [file name<.txt>] </option> </option> </option>
+
+Reading option:       /a AMSAT format (default)
+                      /n NASA format
+Update option:        /f merging new and old data (default)
+                      /u update only satellites being in the data base
+                      /s keep only satellites being in the input file
+Delete option:        /dxxx delete data older than xxx days
+                              (default xxx=100 days)
+
+<<769 satellites maximum>>
+-----------------------------------------------------------------------
+
+Version 1.82 October 1994
+=========================
+This version replaces earlier versions to be compatible with REQKEP, a new
+satellite KEPlerian elements REQuest service for F6FBB BBS. A few minor bugs
+have  been fixed  and the  number of  satellites that  can be  managed by  the
+program was increased to 768. 
+
+Version 1.80 November 1993
+==========================
+This new version incorporates a new feature that deletes automatiquely from
+the satellites data base, keplerian parameters older than a specified number
+of days. Default is 100 days. This cleans the data base, removing decayed
+satellites without sysop intervention. 
+
+Both AMSAT and NASA format checksum are verified, providing uncorrupted data
+feeding of the BBS data base.
+
+SYSOP information:
+For automatic update of keplerian elements into F6FBB's bbs, just create
+a virtual BBS into bbs.sys file. Its name could be AMSAT for example. 
+
+30 F5NUF
+31 F5JAD
+32
+33 AMSAT   <- Modify a free entry of bbs.sys to add AMSAT
+34
+35
+36
+37
+
+Then declare the following forward in the file forward.sys :
+
+------
+*
+A AMSAT
+*
+   G AMSAT
+   P @
+*
+*  Adjust the next line depending of the xfbb root directory
+*
+   C /fbb/system/sat/amsat.txt
+*
+------
+
+CAUTION: The path name should be the exact one of your configuration.
+
+In order to run automatically satupdat when xfbb makes its maintenance,
+you must modify the xfbb.sh batch file like the following example:
+
+maintenance()
+{
+  echo "Running maintenance"
+  sleep 2
+  epurmess
+  epurwp 40 90
+# Added lines for satupdat
+  if [ -f $XFBBDIR/system/sat/amsat.txt ]
+  then
+    cd $XFBBDIR/system/sat
+    satupdat amsat /n > satupdat.res
+    satupdat amsat   >> satupdat.res
+    rm amsat.txt
+    cd $XFBBDIR
+  fi
+}
+
+SATUPDAT OPTIONS
+================
+
+The default extention for input file is .txt, however you can specify 
+another extention.
+ 
+Both arguments after the filename in the command line are optional:
+the first one indicates the reading format, either the AMSAT format
+or the NASA "2-line" format. The first one is selected by default.
+ 
+The second option is for the choice of update mode.
+
+By default the program will merge the old list with the new one (same
+if you select option /f). Old data of satellites which are not present in
+the input file are kept as is and the other ones are updated.
+
+Option /u can be selected if you dont want to add new satellites to the ones
+already present. Only keplerian elements from known satellites are updated.
+This prevents the list to grow with incoming satellites that you are not
+eventually interested in.
+
+Option /s, on the contrary, gives you the possibility to keep only in the 
+data base the data from the satellites whose name is in the input file.
+This can help you to suppress old satellites from the data base.
+
+Option /d is optionnal. Default is 100 days. This means that the program
+will remove data older than 100 days from the satellite data base, and
+will not take into account keplerian elements older than 100 days from
+the input file.
+
+In all cases the program takes care of the permanent data of satellites
+such as the frequency (for doppler) and the step for computing the 
+tracking (the SYSOP must provide both manually only the first time). 
+
+If the keplerian elements of the input file are older than the ones already
+present in the BBS data base, the old ones are kept.
+
+The list is sorted by name in order to help finding of the satellite
+name when someone is connected to the BBS.
+
+If elements for one satellite are duplicated in the input file, the program
+will look again for the newest data.
+
+Of course, if CRC computed by the program is not the same as the one in the
+input file, the program informs you that the CRC is BAD and it does not take
+the keplerian elements. 
+
+In the batch file example given above you have certainly noticed that I call
+twice the program satupdat with two different format arguments. The first
+time I ask the program to read the NASA format and the second time to read
+the default format AMSAT. The reason is that the probability for an error
+to occure in both formats for the same satellite is very small. Thus if an
+error occurs in one format the program will complete the update when it founds
+uncorrupted keplerian elements in the other format. Thanks to the checksum 
+adopted by AMSAT! The results of the update operation is written into the 
+satupdat.res file.  
+
+All remarks and suggestions will be appreciated by F6BVP.
+
+73's de Bernard,
+F6BVP @F6BVP.FRPA.FRA.EU
+f6bvp@amsat.org
+http://f6bvp.free.fr
+
