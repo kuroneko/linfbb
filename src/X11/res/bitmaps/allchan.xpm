@@ -1,0 +1,30 @@
+/* XPM */
+static char * allchan_xpm[] = {
+/* width height num_colors chars_per_pixel */
+"20 20 4 1",
+/* colors */
+" 	c #C0C0C0C0C0C0",
+".	c black",
+"X	c #ffff00",
+"o	c white",
+/* pixels */
+"                    ",
+"     .............. ",
+"     .XoXoXoXoXoXo. ",
+"     .o.o.o.o.o.oX. ",
+"   ...XoXoXoXoXoXo. ",
+"   .o.o.o.o.o.oXoX. ",
+"   .X.XoXoXoXoXoXo. ",
+" ...o.o.o.o.oXoXoX. ",
+" .X.X.XoXoXoXoXoXo. ",
+" .o.o.o.o.o.o.oXoX. ",
+" .X.X.XoXoXoXoXoXo. ",
+" .o.o.............. ",
+" .X.XoXoXoXoXoXo.   ",
+" .o.oXoXoXoXoXoX.   ",
+" .X..............   ",
+" .oXoXoXoXoXoX.     ",
+" .XoXoXoXoXoXo.     ",
+" ..............     ",
+"                    ",
+"                    "};
