@@ -1,0 +1,74 @@
+# BBS sample port file
+# To be located in @sysconfdir@/ax25/fbb/port.sys
+#
+# @package_string@ 
+#
+# Number of Com Ports (not including Com 0) and TNCs
+  2      5
+#
+# Interface 6 = Windows
+# Interface 7 = TCPIP
+# Interface 8 = TFWin.dll
+# Interface 9 = LINUX
+#
+#Com Interface Adress (Hex)  Baud
+ 1   9         0           115200
+ 2   9        189C         0
+# Preceding line declares telnet port address 189C in Hexadecimal notation.
+# 189C = 6300 decimal ---> sample usage syntaxe : telnet f6xyz.no-ip.org 6300
+# Com 2 line should be #commented if not using telnet.
+#
+# Maxframe: The maximum number of frames the TNC will send at a time.
+# NbFwd   : Number of channels for OUTGOING forward at the same time.
+# MxBloc  : Size of forward-block in Kb.
+#
+# M/P-Fwd : Minute of the hour for start of forward, and period
+#           (how many minutes between each forward-start).
+# Mode    : One of these:
+#           B : BBS-mode.
+#           G : "Guest"-mode.
+#           U : Normal-mode.
+# Type host-mode, one of these:
+#           D : WA8DED
+#           K : KAM hostmode.
+#           M : Telephone-modem.
+#           P : PK-232
+#           Q : BPQ v 4.x
+# Addition: One of these letters can be used too:
+#           L : Send unproto beacon after each arriving mail.
+#           Y : Yapp allowed on this QRG.
+#           W : Gateway allowed TO this QRG.
+#           R : Read-Only acces.
+#           E : Recommanded by JP F6FBB
+# 
+# Freq.   : Text to describe this port (max 9 characters, no space)
+# Same number of lines as number of TNCs.
+#
+#TNC NbCh Com MultCh   Pacln Maxfr NbFwd MxBloc M/P-Fwd  Mode  Freq
+  0   0    0   0        0     0     0     0      00/01   ----  File-fwd.
+  1   4    1   vhfdrop  250   2     2     10     15/15   XULWY VHF
+  2   4    1   uhfdrop  250   2     2     10     14/30   XULWY UHF
+  3   4    1   hfdrop   250   2     2     10     25/15   QULWY HF
+  4   4    2   0        250   2     4     10     13/60   TUY   Telnet
+  5   4    1   axudp    250   2     2     10     12/60   XUWY  AXUDP
+#  6   6    1   rose0    250   2     6     10     11/60   XUWY  Rose0
+#  7   4    1   netbbs   250   2     2     10     30/15   XUWY  NetRom
+#
+# On line (TNC 6) multch is rose0 that is the device providing internal 
+# interface with ROSE kernel module when an FPAC node is installed. 
+# For example BBS or users wanting to connect this BBS via ROSE network routing should call F6XYZ-1 2080194501
+# in order to let ROSE/FPAC network know how to relay the frames between ROSE nodes.
+# TNC 5 line declares port AX.25<->UDP toward LAN local area network and Internet  
+# If forward is done through AXUDP (TNC 5), forward file will state "P E"
+# If forward is done through Telnet (TNC 4), forward file will state "P D" etc...
+# TNC 4 declares telnet port 6300 --> COM 2. This line to be #commented if telnet not in use.
+# MultCh: 0, axudp, uhfdrop,..., are the names of ports in /usr/local/etc/ax25/axports
+# axudp is a device associated with ax25ipd application for IP encapsulation of AX.25 frames
+# allowing forward via Internet
+# netbbs is a NetRom device declared in nrports.
+#
+# Special callsigns and modes for some channels
+# TNC Nbs Callsign-SSID Mode
+# 1    2   XXXXX-1       B
+#
+# End of file

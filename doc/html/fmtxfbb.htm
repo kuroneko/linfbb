@@ -1,0 +1,126 @@
+<HTML>
+<HEAD>
+  <TITLE>Format of XFBB.SH</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  XFBB.SH
+</H1>
+<P ALIGN=Center>
+<FONT COLOR="#ff0000"><B>Only for LinFBB !</B></FONT>
+<P>
+<IMG SRC="../construction3.gif" WIDTH="49" HEIGHT="43">
+<FONT COLOR="#800000">This page is under construction !</FONT>
+<PRE>
+
+<B><BIG>XFBB.SH (/usr/local/fbb)</BIG></B>
+
+
+This is the very first file that LinFBB will use. You will find it in 
+/usr/local/fbb-directory. (or in that directory you chosen when you installed
+LinFBB).  You don't really need to do any changes in this file, unless you did
+some changes during the installation-process.  If you did, you must change 
+the pathnames in LinFBB.SH exactly the same as you did during the installation.
+This is very important ! So look for the lines that I have marked with 
+an     &lt;---      below.
+
+This file is used to start both the deamon version and X-Windows version of 
+LinFBB, to start the deamon version you should type: ./xfbb.sh -d &amp;
+in X-Windows xterm you should start LinFBB with: ./xfbb.sh
+
+You must go to the LinFBB root directory before executing this shell
+script.
+
+
+#!/bin/bash
+#
+# Shell file to LinFBB software
+#
+# F6FBB 1996
+#
+#
+# Base directory of LinFBB software
+XFBBDIR=/usr/local/xfbb               &lt;---
+
+#
+# Add local PATH
+PATH=$XFBBDIR/bin:$PATH
+
+#
+# Export resource file
+XAPPLRESDIR=$XFBBDIR/res
+
+export XFBBDIR PATH XAPPLRESDIR
+
+end_session()
+{
+  echo "Session of LinFBB is ended"
+  exit 0;
+}
+
+maintenance()
+{
+  echo "Running maintenance"
+  sleep 2
+  $XFBBDIR/bin/epurmess &gt; /dev/null 2&gt;&amp;1           &lt;---
+  $XFBBDIR/bin/epurwp 40 90 &gt; /dev/null 2&gt;&amp;1       &lt;---
+}
+
+rerun()
+{
+  echo "Re-running LinFBB"
+  sleep 2
+}
+
+error_return()
+{
+  echo "Unknown return value $1"
+  sleep 10
+}
+
+if [ "_$1" = "_-d" ]
+then
+  XFBB=xfbbd
+  shift
+else
+  XFBB=xfbb
+fi
+
+PARAM=$*
+
+while [ 1 ]
+  do
+
+    cd $XFBBDIR                          &lt;---
+
+    echo
+    echo "Running LinFBB ^C to abort"
+    sleep 3
+
+    echo "Starting LinFBB ..."
+    $XFBB $PARAM                         &lt;---
+    
+    ret=$?
+    echo
+    case $ret in
+      1) end_session ;;
+      2) rerun;;
+      3) maintenance;;
+      *) error_return $ret;;
+    esac
+    
+done
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

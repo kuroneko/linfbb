@@ -1,0 +1,108 @@
+<HTML>
+<HEAD>
+  <TITLE>DRSI-card (Appendix 5)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  <SMALL>DRSI-card.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 5)
+<P>
+<PRE> If you plan to use DRSI-card with this software, you must make some changes.
+Before you start FBB, you must load the DRSI-driver that comes with the DRSI-
+card. This must be TNCTSR-R or TNCTSR-L with a version-number higher or equal
+to 2.1.
+
+ The first DRSI-card (MultCh 0 and 1) must be at address 300.
+ The second DRSI-card (MultCh 2 and 3) must be at address 310.
+ The third DRSI-card (MultCh 4 and 5) must be at address 308.
+ The fourth DRSI-card (MultCh 6 and 7) must be at address 318.
+
+ Before installing cards in the PC, use the program CHKADDR to verify that
+the addresses corresponding to the cards have a value of FF. If there is a
+problem, check your configuration to find what peripheral is already using
+this address. Install just one card at the time, and verify each cards
+presence with CHKADDR.
+
+ When all cards are ok, configure the driver by means of the TAILORnn program
+(depending of the version). TNCTSR-S will be ok if you use only a few
+channels, while TNCTSR-L should be used for big configurations, up to 32
+channels.
+
+ One problem: What DRSI calls DRSI-PORT, is what we call MultCh in FBB ! What
+DRSI calls PORT, is what FBB calls port or TNC ! We always use FBB-names
+here...
+
+ Each DRSI-card works like 2 radio-ports. The first DRSI-card is always
+MultCh 0 and 1, and the forth card is MultCh 6 and 7. If one radio-port is
+used on HF, that port must be the second port on the card.
+
+ All the DRSI-cards together, work like only one COM. And this COM-port does
+not need to exist in the PC. You may call that port COM 7 or COM 8 and keep
+free the already existing COMS.
+
+ Baud-rate does not matter, but should be set to a standard value, to avoid
+error-messages.
+
+ Here is an example of PORT.SYS with 2 DRSI-cards (4 radios) :
+
+ #
+ #Ports TNCs
+ 1      4
+ #
+
+ #
+ #Com Interface Address (Hex) Baud
+ 7    4         0            4800
+ #
+
+ #
+ #TNC NbCh Com MultCh Pacl Maxfr NbFwd MxBloc M/P-Fwd Mode Freq
+ 1    8    7   0      230  4     1     10     30/60   UDYW 433.650
+ 2    1    7   1      80   2     1     5      12/30   GDW  15/20m
+ 3    8    7   2      230  4     1     10     36/60   UDYW 433.650
+ 4    8    7   3      230  4     1     5      10/30   GDW  145.300
+ #
+
+ If you are using DRSI-card, you also must change the INITTNC1.SYS. You will
+need only ONE file for all the ports.
+
+ Example of INITTNC1.SYS that initializes 4 ports:
+ MUIS
+ U0
+ p0 1 64 10 4 4 10 100 18000 30 2 0
+ p1 1 64 10 4 1 16 100 18000 30 1 0
+ p2 1 64 10 4 4 10 100 18000 30 2 0
+ p3 1 64 10 4 4 10 100 18000 30 2 0
+
+
+
+
+ The same goes for MAINT1.SYS, only 1 file is needed for all 4 ports, like
+this:
+
+
+ Y 1
+ U 1 BBS ($c) was shut down for service $d $T.
+
+
+ In FORWARD.SYS there is no changes. Use standard syntax.
+
+ Well, I think that should be all (for DRSI). Oh, bye the way: DRSI cannot
+limit the number of connections per radio-port. But in FBB we still can have
+NbCh set to for example 1. When a station then connects to the BBS on that
+radio-port, and there already is one user connected there, the BBS will send
+a message to him: "Sorry, no more channels available" and disconnect him.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

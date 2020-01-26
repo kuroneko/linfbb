@@ -1,0 +1,252 @@
+<HTML>
+<HEAD>
+  <TITLE>TELNET (appendix 24)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  <SMALL>TELNET interface.</SMALL>
+</H1>
+<P ALIGN=Center>
+<FONT COLOR="#ff0000"><SMALL>(Only for WinFBB and LinFBB)</SMALL></FONT>
+<P>
+<PRE>The contents of this file is:
+<B><A HREF="#INFO">Info about Telnet interface</A></B>
+<B><A HREF="#PORTLINUX">Example of PORT.SYS for LinFBB</A></B>
+<B><A HREF="#PORTWIN">Example of PORT.SYS for WinFBB</A></B>
+<B><A HREF="#FORWARD">Example of FORWARD.SYS</A></B>
+
+
+<A NAME="INFO"><!-- --></A><IMG SRC="../blue.gif" WIDTH="14" HEIGHT="14"><B>Info about Telnet interface</B>
+
+Telnet is a communication tool like a terminal, but using TCP-IP. That is
+you can use it on a network like the web. You MUST validate your local 
+echo first.
+
+It&#180;s possible to use Telnet with LinFBB and WinFBB
+to be used in User contacts or in Forward contacts.
+
+The address to use may be 189C (189C hex = 6300 decimal).
+
+But, it&#180;s also possible to define another port address,
+for example if you want Telnet access to LinFBB on port 23,
+(port 23 is standard for Telnet, but 23 is also used by inetd in Linux!)
+then change the &#180;address&#180; of COM2 to 17 (hex 17 = 23 decimalt)
+
+Tip:
+You may put the R letter (Read only default access) which gives a read-only
+if the user is unknown or not authorized fo<A NAME="PORT"><!-- --></A>r Modem/Telnet (M Flag in EU command).
+
+
+<A NAME="PORTLINUX"><!-- --></A><IMG SRC="../green.gif" WIDTH="14" HEIGHT="14"><B>Example of PORT.SYS for LinFBB</B>
+
+Standard PORT.SYS with 1 TNC (COM1) with WA8DED-hostmode,
+4 channels, 1 channel for outgoing forward,
+and one Telnet interface listening on port 6300,
+8 channels, 1 channel for outgoing forward.
+
+# FBB7.00
+# File for programming of channels and TNCs.
+#
+# Ports : How many ports (COM1, COM2, Etc...)
+# TNCs : How many TNCs and modems in use. With multiplexer
+# there can be up to 4 TNCs per port.
+#
+#Ports TNCs
+2      2
+#
+#<FONT COLOR="#ff0000">In WinFBB ONLY THESE interfaces are available:</FONT>
+# Interface : 2 = BPQ-node (BPQ in AA4RE-mode)
+#             4 = DRSI
+#             5 = TFPCR/TFPCX interface.  Interrupt MUST be 0xFD or the same
+#                 as stated in INIT.SRV, if any..
+#             6 = Windows-driver, replaces both ESS and FBBIOS.
+#             7 = TCP/IP.  Needs WINSOCK.DLL.  Put port-address as 17.
+#                 TNC-emulation is T (see below) 
+#             8 = TFWin.dll
+# BEWARE: The old interface 1 and 3 will NOT be used in WinFBB.  Interface 6
+#         replaces both.  (FBBCOMM.DRV).  Neither ESS nor FBBIOS can be
+#         used with WinFBB !
+#
+<FONT COLOR="#000000">#</FONT><FONT COLOR="#ff0000">In LinFBB ONLY this interface is available:</FONT>
+# Interface   9 = Linux.  Can work via serial port (D),via AX25 domain
+#                 socket (X) or via Telnet port (T).
+#
+#<FONT COLOR="#ff0000">In DosFBB ONLY THESE interfaces are available:</FONT>
+# Interface : 1 = Use external COMBIOS-driver (MBBIOS, ESS etc)
+#             2 = BPQ-node v 4.05 and up (BPQ in AA4RE-mode)
+#             3 = Telephone-modem with FBBIOS
+#             4 = DRSI card with driver
+#             5 = TFPCR/TFPCX interface.  Interrupt MUST be 0xFD or the same
+#                 as stated in INIT.SRV, if any..
+#
+# Address   : Address of port in hexadecimal (Needed for multiplexer).
+#             <FONT COLOR="#ff0000">In LinFBB:</FONT>
+<FONT COLOR="#000000">#</FONT><FONT COLOR="#ff0000"> </FONT>            Address is the device name (/dev/cua0).
+#             Be sure you have the rights to access to the device (rw-rw-rw-).
+#             When using kernel AF_AX25 socket, address is not used.
+#             When using Telnet, address is the Telnet port in Hex (Hex 17 = Telnet port 23)
+# Baud      : Ports baud rate. Ignored by BPQ, kernel AF_AX25 socket and Telnet.
+#
+# Use same number of lines as number of ports.
+#
+#Com Interface Address (device)   Baud
+1    9         /dev/cua0          9600
+2    9         189C               0
+#
+# TNC     : Number on TNC in use.  Use 0 for file-forward !
+# NbCh    : Number of channels I want to use in the TNC.
+#           Maximum available channels depend on firmware.
+# Com     : Number of the COM-port. Com1, Com2 etc.
+# MultCh  : Number of channel if port-multiplexer is used, otherwise 1.
+#           In DRSI use values from 0 to 7, by KAM use 1/VHF and 2/HF.
+#           When using kernel AF_AX25 socket in Linux, MultCh is the
+#           interface name (eg: ax0)
+# Paclen  : PACLEN on this TNC.
+# Maxframe: The maximum nb of frames the TNC will send at a time.
+# NbFwd   : Number of channels for OUTGOING forward at same time.
+# MxBloc  : Size of forward-block in kb.
+# M/P-Fwd : Minute of the hour for start of forward, and period
+#           (how many minutes between each forward-start).
+# Port mode, one of these:
+#           B : BBS-mode.
+#           G : "Guest"-mode.
+#           U : Normal-mode.
+# Type host-mode, one of these:
+#           D : WA8DED
+#           K : KAM hostmode.  Must use ESSKAM driver.
+#           P : PK-232
+#           Q : BPQ v 4.x
+#           T : Ethernet/TCP-IP
+#           X : AX25 domain socket (for Linux)
+# Addition: One or more of these letters can be used too:
+#           L : Send unproto beacon after each arriving mail.
+#           M : Telephone-modem.
+#           Y : Yapp allowed on this QRG.
+#           W : Gateway allowed TO this QRG.
+#           R : Modem port allowed in Read-only mode.
+# Freq.   : Text to describe this port (max 9 characters, no space)
+#
+# Same number of lines as TNCs:
+#
+#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode Freq
+0    0    0   0      0     0     0     0      00/01   ----  File-fwd.
+1    4    1   1      230   4     1     10     30/60   UDYL  433.650
+2    8    2   0      250   2     1     10     00/60   TUWR  Telnet
+#
+# Special callsigns and modes for some channels.
+#
+#TNC Nbs Callsign-SSID Mode
+#1    1   LA1B-1        B
+#
+# End of file.
+#
+
+
+<A NAME="PORTWIN"><!-- --></A><IMG SRC="../orange.gif" WIDTH="14" HEIGHT="14"><B>Example of PORT.SYS for WinFBB</B>
+
+Standard PORT.SYS with 1 TNC (COM1) with WA8DED-hostmode,
+4 channels, 1 channel for outgoing forward,
+and one Telnet interface listening on port 6300,
+8 channels, 1 channel for outgoing forward.
+
+# FBB7.00
+#
+#
+#Ports TNCs
+2      2
+#
+# Com       : COM-number (1,2,...8)
+#
+# Interface : 2 = BPQ-node (BPQ in AA4RE-mode)
+#             4 = DRSI
+#             5 = TFPCR/TFPCX interface.  Interrupt MUST be 0xFD or the same
+#                 as stated in INIT.SRV, if any..
+#             6 = Windows-driver, replaces both ESS, ESSKAM and FBBIOS.
+#             7 = TCP/IP.  Needs WINSOCK.DLL.
+#                 TNC-emulation is T (see below) 
+#             8 = TFWin.dll
+# BEWARE: The old interface 1 and 3 will NOT be used in WinFBB.  Interface 6
+#         replaces both.  (FBBCOMM.DRV).  Neither ESS nor FBBIOS can be
+#         used with WinFBB !
+##
+#Com Interface Adress (Hex) Baud
+1    6         3F8          9600
+2    7         189C         0
+#
+# TNC     : Number on TNC in use.  Use 0 for file-forward !
+# NbCh    : Number of channels I want to use in the TNC.
+#           Maximum available channels depend on firmware.
+# Com     : Number of the COM-port. Com1, Com2 etc.
+# MultCh  : Number of channel if port-multiplexer is used, otherwise 1.
+#           In DRSI use values from 0 to 7, by KAM use 1/VHF and 2/HF.
+#            When using kernel AF_AX25 socket in Linux,
+#            MultCh is the interface name (eg: ax0)
+# Paclen  : PACLEN on this TNC.
+# Maxframe: The maximum nb of frames the TNC will send at a time.
+# NbFwd   : Number of channels for OUTGOING forward at same time.
+# MxBloc  : Size of forward-block in kb.
+# M/P-Fwd : Minute of the hour for start of forward, and period
+#           (how many minutes between each forward-start).
+# Port mode, one of these:
+#           B : BBS-mode.
+#           G : "Guest"-mode.
+#           U : Normal-mode.
+# Type host-mode, one of these:
+#           D : WA8DED
+#           K : KAM hostmode.
+#           P : PK-232
+#           Q : BPQ v 4.x
+#           T : Ethernet/TCP-IP
+#           X : AX25 domain socket (for Linux)
+# Addition: One or more of these letters can be used too:
+#           L : Send unproto beacon after each arriving mail.
+#           M : Telephone-modem.
+#           Y : Yapp allowed on this QRG.
+#           W : Gateway allowed TO this QRG.
+#           R : Modem port allowed in Read-only mode.
+# Freq.   : Text to describe this port (max 9 characters, no space)
+#
+# Same number of lines as TNCs:
+#
+#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode  Freq
+0    0    0   0      0     0     0     0      00/01   ----  File-fwd.
+1    4    1   1      230   4     1     10     30/60   UDYL  433.650
+2    8    2   0      250   2     1     10     00/60   TUWR  Telnet
+#
+# Special callsigns and modes for some channels.
+#
+#TNC Nbs Callsign-SSID Mode
+# 1    1   LA1B-1        B
+#
+# End of file.
+#
+
+
+<A NAME="FORWARD"><!-- --></A><IMG SRC="../yellow.gif" WIDTH="14" HEIGHT="14"><B>Example of FORWARD.SYS</B>
+
+It&#180;s syntax is common to both LinFBB and WinFBB.
+
+A	SK6BA
+	P A
+#       C C &lt;callsign&gt; &lt;ip address&gt; &lt;ip port&gt;
+	C C SK6BA 44.140.208.134 6300
+#       V &lt;login&gt;$W&lt;password&gt;$W
+	V SM6TKY$WPASSWORD$W
+#
+# the rest of fwd block...
+
+
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

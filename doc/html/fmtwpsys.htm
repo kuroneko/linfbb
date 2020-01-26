@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of WP.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  WP.SYS
+</H1>
+<P>
+<PRE><BIG><B>WP.SYS file (\FBB\SYSTEM\WP).</B></BIG>
+
+The WP.SYS file is composed of records. Each record is 194 bytes long.
+
+typedef struct {
+  char    callsign[7]      ;  // Callsign of the record
+  char    name[13]         ;  // Name of the user
+  char    free             ;  // Unused
+  char    changed          ;  // Flag (U, G, I) of modification
+  ushort  seen             ;  // Number of updates
+  long    activ_date       ;  // Date of active part
+  long    temp_date        ;  // Date of temp part
+  char    activ_homebbs[41];  // Home BBS in active part
+  char    temp_homebbs[41] ;  // Home BBS in temp part
+  char    activ_zip[9]     ;  // Zip code in active part
+  char    temp_zip[9]      ;  // Zip code in temp part
+  char    activ_qth[31]    ;  // Qth in active part
+  char    temp_qth[31]     ;  // Qth in temp part
+} Wps;
+
+In C language, all strings are ended with a NULL (00 hex) character.
+
+This file should NOT be modified while the BBS software is running !
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

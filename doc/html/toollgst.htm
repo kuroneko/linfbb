@@ -1,0 +1,199 @@
+<HTML>
+<HEAD>
+  <TITLE>Tool: LOGSTAT</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  LOGSTAT.EXE
+</H1>
+<P>
+<PRE>
+ Statistical analysis software for the <A HREF="fmtlog.htm">FBBLOG</A> file written by FC1MVP.
+
+ The configuration file for this software is in the text file LOGFBB.CNF,
+which should be located in the same directory.
+
+<BIG><B> LOGFBB.CNF file layout :</B></BIG>
+
+ This file is made of several lines indicating:
+
+ - BBS Callsign
+ - the name of the SysOp port, a comment.
+ - The abbreviated name of the 1st port, a comment.
+ - The abbreviated name of the 2nd port, a comment.
+ - and so on until the last port (8 ports maximum).
+ - Three stars (***) at the beginning of the line means the end of the ports.
+ - The BIOS screen access option.
+
+ The BBS callsign must have 6 characters maximum. It will be truncated should
+it be longer.
+
+ The abbreviated port name may have up to 10 characters, it is recommended to
+limit at 4 (ex VHF1 or HF2).
+
+ A comma separates the abbreviated name from the comment which follows it,
+without any space. The comment may have 10 characters too (frequency).
+
+ At the end of the comment, it is possible to add a comment which is internal
+to the CNF file, and which will not be used elsewhere, using the ":" as a
+separation.
+
+ If the BIOS line has a NON at the beginning, the screen access will be
+direct. The word OUI means that the screen access is made via the BIOS. The
+direct access improves the processing speed by 50 percent but is careless
+with DesqView.
+
+<BIG><B> Example of LOGFBB.CNF file:</B></BIG>
+
+ F6FBB : BBS name.
+ SYSOP,at keyboard : port name @ , comment.
+ VHF, 144.675 : Port A , comment.
+ VHF, 145.275 : Port B , comment.
+ UHF, 430.675 : Port C , comment.
+ HF, 21.107 : Port D , comment.
+ SHF, 1299,675 : Port E , comment.
+ MODEM, Telefone : Port F , comment.
+ *** End of ports definition.
+ NON : Screen access through BIOS (OUI) or
+ Direct (NON).
+
+<BIG><B> Software limitations :</B></BIG>
+
+ The software is able to handle a log file within the following limits:
+
+ - Maximum number of days : 35, or 5 weeks if you chain 5 log files.
+
+ - Maximum number of channels: 50
+
+  - Maximum number of ports : 8+1, corresponding to ports A to H handled by
+the BBS and the SysOp keyboard "port".
+
+ - Maximum nr of callsigns : 300 (This is not the number of the call signs
+known by the BBS, but the number of calls which were used the BBS during the
+log period.
+
+ In case an overflow occurs, the mention AUTRES for the callsign and 99 for
+the day will be displayed in the corresponding areas.
+
+ Regarding the forward efficiency, only the stations which have actually
+forwarded will be given a value, the others will be mentioned "nc".
+
+<B><BIG>Usage :</BIG></B>
+
+ On the same diskette (or the same disk) there should be at least the program
+LOGSTAT.EXE, the config file LOGFBB.CNF and enough disk free space for the
+result files to be created. The log file may stay on another diskette.
+
+ For the startup you should type in LOGSTAT FBBLOG.nn (nn is the number of
+the week) or A:FBBLOG.nn (if the file is located on A:)
+
+ The results are recorded into the files LOG.@, LOG.A ... LOG.T being the
+total of the logs.
+
+<BIG><B>Archiving :</B></BIG>
+
+ A suggestion: you should better archive your FBBLOG.nn file rather than the
+LOG.x files. You should ZIP them (or ARC or LZH) with the name LOG990nn.ZIP
+(.ARC or .LZH) with 990 standing for 1990 (000 will be for 2000...) and nn is
+the number of the week.
+
+<BIG><B>Log structure :</B></BIG>
+
+ The number of resulting files created is equal to the number of ports of the
+BBS plus 2. The 2 supplementary files correspond to the console port and the
+sum of the various ports as being the total result.
+
+ The first log, named LOG.@ corresponds to the SysOp log (console), the last
+one, named LOG.T is the summation of the ports. The files LOG.A to LOG.H are
+the logs of the various ports.
+
+ Obviously, if a port has not been used, the corresponding file will not be
+created.
+
+ For each LOG.x file, you find in the following order:
+
+ - Diary of the connections per day (y-axix) and the time (x-axix) with the
+daily total at the end of the line and the hourly total at the bottom of each
+column.
+
+ - The total connection time: it is the sum of the connection times of each
+user. For the LOG.T file, the total connection time per channel will also be
+given.
+
+ - Mean time per connection : this is the total connection time divided by
+the number of connections.
+
+ - Mean time per user : total connection time divided by the number of users.
+
+ - Number of killed messages : self explanatory.
+
+ - Number of read messages : idem.
+
+ - Number of users.
+
+ - A matrix of forwarded messages per day (y-axix) and per hour (x-axix) is
+made like before. This matrix will not appear if there has not been at least
+one forward on this port.
+
+ - Number of forwarded messages: number of messages sent to another BBS or
+PMS.
+
+ - Number of messages received in forward: number of messages transmitted by
+other BBS in forward.
+
+ - Number of messages received in back-forward: number of messages received
+from another BBS when forwarding towards it.
+
+ - Number of messages refused as already received.
+
+ - An array giving the number and the size of the messages received from or
+sent to another BBS and the efficiency in Bits/s (Max 1200 !).
+
+ The BBS's are sorted by alphanumeric order, and the efficiency indication
+appears for callsigns having conducted only forwarding operations. This
+matrix will not appear unless there has been at least one BBS forwarded.
+
+ - A matrix of the main functions utilized, with on the y-axix the callsigns
+sorted by alphabetical order, and on the x-axis the total time of connections
+in minutes, the number of connections, and the various functions used (see
+the comment following the array).
+
+ In the LOG.T file, the X.F column (forced disconnection entered by the
+SysOp) is replaced by the number of killing commands. At the end of each
+column is the compound sum.
+
+<BIG><B>Log of a specific station.</B></BIG>
+
+ - The LOGCALL program yields generation of a log for a specific station
+
+ The principle of operation is the same as for LOGSTAT, except that a
+supplementary calling parameter is required to define the station.
+
+ LOGCALL FBBLOG.33 FE1ZZZ
+
+ The generated file will be of the same format as the FBBLOG, but it will
+enclose only the lines specific to the callsign. The name of the file will
+match the format FE1ZZZ.LOG, if the requested callsign is FE1ZZZ.
+
+ While executing LOGSTAT FE1ZZZ.LOG, you will have the statistics related to
+that station (in the LOG.A, LOG.B,...).
+
+ If you specify the SSID, you will create a log corresponding only to the
+callsign and the specified SSID. Ex:
+
+ LOGCALL FBBLOG.33 FE1ZZZ-2
+
+ Editing the file FE1ZZZ.LOG will allow you to display all the commands sent
+by that station.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

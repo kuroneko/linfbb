@@ -1,0 +1,121 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of EPURMESS.INI</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  EPURMESS.INI
+</H1>
+<P>
+<PRE>
+
+<BIG><B>EPURMESS.INI (\FBB).</B></BIG>
+
+ This file is also in the main FBB-directory. This is the file that controls
+the lifetime of messages. Each night EPURMESS will be activated at the time
+specified in <A HREF="fmtinit.htm">INIT.SRV</A>. Normally you will not need to change this, but if you
+did any changes during installation, you must also change the same pathnames 
+here. That goes for all lines that include a pathname.
+
+ Next, you decide if you want to save "killed" messages in the OLDMAIL-
+directory. If you do, write a 1 first, if you want to save old personal
+messages, and another 1 if you want to save old bulletins.
+
+ # Personal Bulletins (0=kill 1=archive in oldmail)
+ 0 0
+ #
+
+ Next we have the actual parametres (in days) for the lifetimes of bulletins
+and personal messages. Let me just explain the letters in use here:
+ P=Personal message
+ B=Bulletin
+ N=Not read
+ Y=Had been read
+ F=Forwarded (forwarded to all BBSs that should receive this msg)
+ X=Expired (still readable, but will not be forwarded to other BBSs)
+ K=Killed (readable only by sysop)
+ A=Archived (same as killed, but will be deleted at once, or moved to
+   OLDMAIL)
+
+ I think this is self-explanatory:
+
+ # Parametres in days:
+ #
+ # PARAMETRES FOR PERSONAL MESSAGES:
+ #
+ # PN -&gt; PX (days after message is written)
+ 30
+ #
+ # PY -&gt; PX (days after changed to Y)
+ 7
+ #
+ # PF -&gt; PK (days after changed to F)
+ 7
+ #
+ # PX -&gt; PK (days after changed to X)
+ 0
+ #
+ # PK -&gt; PA (days after changed to K)
+ 0
+ #
+ # PARAMETRES FOR BULLETINS
+ #
+ # BN -&gt; BX (days after the message is written)
+ 7
+ #
+ # B$ -&gt; BX (days after the message is written)
+ 7
+ #
+ # BY -&gt; BX (days after changed to Y)
+ 7
+ #
+ # BX -&gt; BK (days after changed to X)
+ 14
+ #
+ # BF -&gt; BX (days after message is written)
+ 14
+ #
+ # BK -&gt; BA (days after changed to K)
+ 0
+ #
+#
+# Automatic generated return-messages for non-forwarded messages.
+# Each line may be max 255 characters long.  Disable with only an 0.
+#
+# Timeout for valid forward-path (number of days + text, end with $W)
+21 This message could not be forwarded, due to bad link.$W
+#
+# Unknown routing or wrong H-address (number of days + text, end with $W)
+2 This message could not be forwarded, due to bad callsign or bad route.$W
+#
+# Max number of lines in a returned message:
+10
+#
+------
+#
+# At the end of the file, you can have special lifetimes for special messages.
+# In the example below, messages that are TO LA6CU will be 365 days old,
+# messages FROM system will be 0 days, messages @LA will be 365 days. I have an
+# # in front of them, this means they are disabled right now.
+# List of lifetime-tests
+#
+# To/from/via Callsign Days
+@  VEST   365
+@  LA     365
+&gt;  LA6CU  365
+&lt; system 0
+#
+# End of this file.
+#
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

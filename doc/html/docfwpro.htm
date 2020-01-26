@@ -1,0 +1,213 @@
+<HTML>
+<HEAD>
+  <TITLE>Forward protocol (Appendix 9)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  FBB forward protocol<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 9)
+<P>
+<PRE> FBB software includes two forward protocols. The first one is standard with
+MBL/RLI  protocol.  The  second  one  was  developed  to  allow 
+efficiency, particularly on long links where propagation time of data are
+long. The exchange of commands is reduced to a minimum, and not acknowledged
+to get time. The data transfer direction is changed every block of data, a
+block of data holding up to five messages. This uses the "pipeline" effect of
+long links (Nodes and digipeaters), and gain some time over short links
+(HF...).
+
+ FBB protocol is very simple in its principle. It is based on MID/BID usage.
+The identification is made by the F letter in the SID (system type identifier
+contained in square brackets). All command lines must start in first column
+with the 'F' character. All command lines are ended by a return (CR)
+character.
+
+ Suppose I call another BBS to forward some mail. When I connect another BBS
+using FBB protocol, I will receive the SID followed by a text and the prompt
+("&gt;"). If the SID contains the F flag, I will send immediately my SID and the
+first proposal.
+
+ Proposals looks like :
+
+ FB P F6FBB FC1GHV FC1MVP 24657_F6FBB 1345
+ F&gt; HH
+
+ FB : Identifies the type of the command (proposal)
+ P : Type of message (P = Private, B = Bulletin).
+ F6FBB : Sender (from field).
+ FC1GHV : BBS of recipient (@field).
+ FC1MVP : Recipient (to field).
+ 24657_F6FBB : BID ou MID.
+ 1345 : Size of message in bytes.
+ F&gt; : End of proposal.
+ HH is optional. It is the checksum of the whole proposal in hexadecimal.
+
+ ALL the fields are necessary. This kind of command must hold seven fields.
+If a field is missing upon receiving, an error message will be send
+immediately followed by a disconnection.
+
+ A proposal can handle up to five FB command lines. If the total size of
+messages seems to be too important, the proposal can handle less lines. In
+FBB software, a parameter is defined in INIT.SRV file to tell the maximum
+size of the message block. It is set by default to 10KB.
+
+ Example of proposal :
+
+ FB P F6FBB FC1GHV.FFPC.FRA.EU FC1MVP 24657_F6FBB 1345
+ FB P FC1CDC F6ABJ F6AXV 24643_F6FBB 5346
+ FB B F6FBB FRA FBB 22_456_F6FBB 8548
+ F&gt; HH
+
+ This proposal is limited to three FB lines, as the amount of messages
+overran the 10KB limit.
+
+ When receiving the proposal, the other BBS will reject, accept or defer the
+message. This command is made by a FS line :
+
+ FS -+=
+
+ This means :
+
+ - I don't want the first message (-).
+ - I need the second message (+).
+ - I defer the third message, as I'm still receiving it.
+
+ In the new version 1 of FBB protocol there are 3 more responses:
+ R, E or H:
+
+ "FS +R++" means that the second message is rejected. Only works with new 
+ version of the protocol.
+ The information is also written in the LOG like :
+ MJ B:Message_Bid V:Callsign_Rejecting
+ A warning message may be sent to the sending sysop when his message is 
+ rejected (see <A HREF="fmtinit.htm#Warning">INIT.SRV</A> for more info on warning messages).
+ The message is not marked as 'F', and still can be forwarded to another BBS
+
+ "FS +H++" means that the second message is held. Only works with new 
+ version of the protocol.
+ The information is also written in the LOG like :
+ MH B:Message_Bid V:Callsign_Rejecting
+ A warning message may be sent to the sending sysop when his message is 
+ held (see <A HREF="fmtinit.htm#Warning">INIT.SRV</A> for more info on warning messages).
+
+ "FS +E++" means that the second message has a format error. Only works 
+ with new version of the protocol. 
+ A warning message may be sent to the sending sysop when his message  
+ proposal is wrong (see <A HREF="fmtinit.htm#Warning">INIT.SRV</A> for more info on warning messages).
+
+ It should interesting to defer a message if you are still receiving it on a
+other channel, or if you think that the size is to big, or for another
+reason. The message should be proposed again at the next connection.
+
+ FS line MUST have as many +,-,=, R, E, H signs as lines in the proposal.
+
+ When receiving the FS lines, I can send the block of messages. Each message
+is made with the title on the first line, the text, and a Ctrl Z in the last
+line. The is no blank line between the messages.
+
+ Title of 2nd message
+ Text of 2nd message
+ .....
+ ^Z
+
+ When the other BBS has received all the asked messages, it acknowledges by
+sending its proposal, and the system is reversed.
+
+ If it has no message to send, it only sends a line :
+
+ FF
+
+ This line must not to be followed by a F&gt;.
+
+ If the other hand has no message, it sends a line :
+
+ FQ
+
+ and asks for the disconnection.
+
+
+ Example :
+ ---------
+
+ F6FBB                          FC1GHV
+ ----------------------------------------------------------------
+
+ Connects FC1GHV
+
+                                Connected
+
+                                [FBB-5.11-FHM$]
+                                Bienvenue a Poitiers, Jean-Paul.
+                                &gt;
+
+ [FBB-5.11-FHM$]     (F6FBB has the F flag in the SID)
+ FB P F6FBB FC1GHV.FFPC.FRA.EU FC1MVP 24657_F6FBB 1345
+ FB P FC1CDC F6ABJ F6AXV 24643_F6FBB 5346
+ FB B F6FBB FRA FBB 22_456_F6FBB 8548
+ F&gt; HH
+
+                                FS +-+ (accepts the 1st and the 3rd).
+
+ Title 1st message
+ Text 1st message
+ ......
+ ^Z
+ Title 3rd message
+ Text 3rd message
+ ......
+ ^Z
+
+                                 FB P FC1GHV F6FBB F6FBB 2734_FC1GHV 234
+                                 FB B FC1GHV F6FBB FC1CDC 2745_FC1GHV 3524
+                                 F&gt; HH
+
+ FS -- (Don't need them, and send immediately the proposal).
+ FB P FC1CDC F6ABJ F6AXV 24754_F6FBB 345
+ F&gt; HH
+
+                                 FS + (Accepts the message)
+
+ Title message
+ Text message
+ ......
+ ^Z
+
+                                 FF (no more message)
+
+ FB B F6FBB TEST FRA 24654_F6FBB 145
+ F&gt; HH
+
+                                 FS + (Accepts the message)
+
+ Title message
+ Text message
+ ......
+ ^Z
+
+                                 FF (still no message)
+
+ FQ (No more message)
+
+ Disconnection of the link.
+
+
+ In this example, FBB protocol is used as the two BBS were identified by the
+F flag in the SID. If F6FBB had sent the SID [FBB-5.11-MH$] when answering
+FC1GHV, the protocol should be the standard MBL/RLI.
+
+ All callsigns are only examples !
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

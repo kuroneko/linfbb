@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of TPSTAT.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="back_fbb.jpg">
+<P>
+<IMG WIDTH="32" HEIGHT="32" SRC="fbb.gif">
+<H1 ALIGN=Center>
+  TPSTAT.SYS
+</H1>
+<P>
+<PRE><BIG><B>TPSTAT.SYS (\FBB\SYSTEM)</B></BIG>
+
+This file holds the statistics of the rubrics. Deleting it will 
+restart these statistics from scratch. Do not delete the file
+while the BBS is running. You will be prompted to create it
+when booting the software.
+
+The file is organized as 21 records.
+
+Each record is a long integer holding the number of seconds used
+for the current record. Each record correspond to the level 
+(first number of the three numbers of the status bar).
+
+record 0  : Server menu
+record 1  : Message (sending or receiving)
+record 2  : Qra locator
+record 3  : Statistics
+record 4  : Documentations
+record 5  : Nomenclature
+record 6  : Trajectography
+record 7  : Unused
+record 8  : Sending bin message
+record 9  : FbbDOS menu
+record 10 : Gateway
+record 11 : Modem
+record 12 : Binary transfer
+record 13 : X forwaring
+record 14 : Mailbox usage
+record 15 : Forwarding
+record 16 : Console chat
+record 17 : YAPP
+record 18 : Conference
+record 19 : Editor
+record 20 : Themas area
+
+<A HREF="doc.htm"><IMG WIDTH="108" HEIGHT="28" SRC="contents.gif"></A>
+
+<A HREF="/"><IMG SRC="/button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

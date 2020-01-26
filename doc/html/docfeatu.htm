@@ -1,0 +1,268 @@
+<HTML>
+<HEAD>
+  <TITLE>FEATURES</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  <SMALL>FEATURES.</SMALL>
+</H1>
+<P>
+<PRE>- This software is available for Dos, Windows and Linux.  Most features and
+  operations are identical to all versions.  Where there are differences, 
+  they are clearly marked in the manual with <FONT COLOR="#ff0000">DosFBB</FONT>, <FONT COLOR="#ff0000">WinFBB</FONT> and <FONT COLOR="#ff0000">LinFBB</FONT> (for
+  Linux).  There are two LinFBB-versions for Linux:
+  a windowing version (using X11 windowing system and MOTIF toolkit).
+  a daemon version. The daemon version has no interface and works alone in
+  background (like works an anti-virus, hi...). So the compter may be used
+  for any application while the BBS is running.
+
+- The usage of this software is very close to the one made by WA7MBL, whose
+  commands have been kept. It has also a set of specific and original
+  supplementary commands.
+
+- <B>The code does not work on XT.</B>
+  Works on AT286 and UP with at least 2MB of memory.
+  Code uses up to 16MB of memory.
+
+- Multiconnections: up to 50 simultaneous channels on 8 TNC (4 or 8 channels
+  per TNC depending on the software used).
+
+- Multiplexing: this software supports usage of an external MUX and supports
+  also extension boards in the case of a hardware configuration having more
+  than 2 ports. The MUX connects 4 TNC on 1 serial port, either com1 or com2.
+  Printed board is available from the ATEPRA association, (ATEPRA, 23 rue de
+  Provins, 77520 MONS EN MONTOIS - FRANCE).
+
+The software operates:
+- with any TNC2 or clone fitted with the special 27256 eprom containing the
+  WA8DED firmware, or TF4/TF8, with a Z80 clock of 2.5 or, better, 4.9 MHz.
+- with a PK232 in Host-Mode (but TFPK software, WA8DED hostmode for PK232
+  works better !).
+- with a G8BPQ node.
+- With a KAM hostmode.
+- With TFPCX/TFPCR/TFKISS and tnc's in kiss-mode or a kisslink to a 
+  nodesystem.
+
+- Standard BBS: It has many BBS-commands identical to the BBSs by WA7MBL 
+  or W0RLI. It has also server functions (computation of satellite orbits, 
+  callbook, and operator customizable chapters, gateway to an other 
+  channel, the users being able to chat together in real time on the same
+  or different channels, etc...).
+
+- Forwarding: With other BBSs of WA7MBL type or compatible, BIDS management
+  (up to 32000 bids, depending on a parameter, are saved in a separate file),
+  a BID is automatically generated if the user does not give one. Private 
+  message works with the management of MID. The messages are suppressed 
+  automatically after a delay which can be user defined. This is true for
+  bulletins and personal mail.
+
+- The forwarding is optimized between BBSs using FBB protocol type. It is
+  more efficient on a VHF/UHF network. This kind of forwarding can be disabled
+  by configuration.
+
+- The compressed forwarding allows the reduction by a factor of about 40-50%
+  the quantity of data to exchange in big messages. The messages are protected
+  by checksums, so the transfer is made error-free.
+
+- X forwarding Protocol is also implemented.  XForwarding now supports 
+  re-routing and swapping.  Checksum is implemented in the X-forwarding.
+
+- The forwarding is simultaneous on the various ports regardless if they are
+  incoming or outgoing. There might be several forwardings outgoing per port
+  which number is set by parameter. The number of incoming forwarding is a
+  function of the available channels. The time and the period of forward can
+  be set separately on each port.
+
+- Hierarchical routing is supported.
+
+- The ping-pong phenomenon is automatically detected and an information is
+  given to the sysop by a system message.
+
+- Messages and bulletins for SYSOP may be duplicated for one or more 
+  destination-call which can be defined by configuration.
+
+- A detailed log of the BBS activity is maintained and a statistic analysis
+  program, written by FC1MVP, is also available.
+
+- Binary transfer is supported with the usage of the YAPP protocol of WA7MBL.
+  An extension to this protocol has been made, including the automatic 
+  restart and the checksum, should a stop occur or a disconnection take 
+  place during the transfer. This extension to the protocol works with the 
+  TPK, packet terminal program written by FC1EBN.
+
+- Gateway between connected stations or with another port.
+
+- Conference within the limits of the available ports and channels.
+
+- Language: At the first connection, the connect language is attributed to
+  the user, depending of the callsign.
+
+- Remote SYSOP operation is supported and the housekeeping of the BBS
+  messages, mail and old mail is done each and every night at low activity
+  period which can be parametered, and is done automatically.
+
+- <FONT COLOR="#ff0000">DosFBB</FONT> works under DesqView.
+
+- Unproto beacons may be sent on any port and via any path (more than one
+  per port, if wanted) for each arrived message.  Users may be validated 
+  to be allowed to ask for resync of unproto-beacons to update their 
+  internal messages-list without connecting the BBS.  This feature is 
+  used by TPK  and some other modern terminal-programs.
+
+- Modem in <FONT COLOR="#ff0000">WinFBB</FONT> support XMODEM, YMODEM and ZMODEM upload and download
+  with the DSZ shareware. 
+
+- Modem in <FONT COLOR="#ff0000">LinFBB</FONT> support XMODEM, YMODEM and ZMODEM upload and download
+  with the utility &#180;fbb_zm&#180; that is included in the LinFBB package. 
+
+- Modem in <FONT COLOR="#ff0000">DosFBB</FONT> support XMODEM, YMODEM and ZMODEM download.  
+  Needs a recent version of FBBIOS.  Upload is supported only for XMODEM.
+
+- langname.NEW works as langname.ENT, but is sent only ONCE to  each 
+  user (at the first connection after the file has been updated).
+
+- Max KB for download in modem and yapp port may be set in INIT.SRV
+
+- Only one simultaneous forward for a station is allowed.
+
+- ACK-messages show only the first R:line (if passed through FBBs).
+
+- Too long callsigns in routing are rejected (asked by G1NNB)
+
+- 3 extensions to the version 1 of FBB protocol:
+  1: Reject messages from being forwarded to the BBS.
+  2: Receive messages, but hold them for sysop before release.
+  3: Reject message-proposals with wrong format.
+  In the first 2 cases a message may be sent to sysop to advice him of the
+  problem (this is parametred in INIT.SRV file).
+
+- No more than 1 message from one callsign in each proposal block. If more,
+  the other messages are delayed to the next proposal blocks. This avoid long
+  lists of message from the same sender. May be disabled with the letter D in
+  the T line of FORWARD.SYS
+
+- Oldmail has a format compatible with import.
+
+- Information about the number of free buffers in the TNC in the status line.
+  Maximum buffers per channel is divided by two if the number of free buffers
+  is going too low.
+
+- New feature for FORWARD.SYS for sending of 7+ messages:
+  New line J in FORWARD.SYS :  (data means 7+)
+  J 0 : no data sent
+  J 1 : data is sent (default)
+  J 2 : personal data is sent
+  J 3 : only data is sent (exclusive)
+
+- Forced disconnection of all links at housekeeping time+15 min.
+
+- Binary transfer protocol Autobin (used in GP, SP TurboPacket, etc...)
+  Commands are BGET and BPUT.
+
+- Full screen editor usable to send or reply messages. 
+  In <FONT COLOR="#ff0000">DosFBB</FONT> validated with AltF6.
+  Always used in <FONT COLOR="#ff0000">WinFBB</FONT>.
+
+- Command "WHERE file" in FBBDOS (to find one or more files in FBBDOS)
+  Wildcards are accepted.
+
+- Command TH -&gt; access to the thematic zone. The file THEMES.SYS is configuring
+  this zone.
+
+- FBBIOS40 (and up) should work with 16550 FIFO chips (<FONT COLOR="#ff0000">for DosFBB</FONT>).
+
+- Server REDIST is included.  Used to redirect personal message as bulletin.
+
+- System files are checked after local editing.
+
+- Implementation of the VXD interface of the BPQ code.
+
+- All program run from FORWARD.SYS are synchronous.
+
+- Filters accepted as DLL (much faster...).  Both for WinFBB and  DosFBB (!!).
+
+- Ethernet/tcp-ip implementation. Needs the WINSOCK.DLL Microsoft library.
+
+- Information on a connected station. Double click on the callsign line 
+  of the connected stations give the info <FONT COLOR="#ff0000">(WinFBB)</FONT>.
+
+- Uploaded file via modem is validated and set to the user.
+
+- F_FILTER validated for filtering of uploaded files.
+  The F_FILTER may also be created as a DLL.  Both for WinFBB and 
+  DosFBB (!!). The filter must be installed in the path (\FBB\BIN) of Dos.
+
+- Every connected channel is bufferized. The connection is visible while
+  double-clicking on the user in the list <FONT COLOR="#ff0000">(WinFBB)</FONT>.
+
+- BBS forwarding is not allowed on a GUEST port if the BBS is not declared.
+
+- Two DLLs have been developed to be called from FORWARD.SYS <FONT COLOR="#ff0000">(WinFBB)</FONT>:
+    ICOM.DLL uses the same parameters as ICOM.COM
+    PROGTX.DLL sends a binary file to a tx through a serial com
+      format : PROGTX [options] filename
+      options : /C2     = COM2 (default COM1)
+                /A02F8  = Com address is 02F8 (excludes /C OPTION)
+                /B9600  = Baud rate is 9600 Bauds (default 1200)
+
+- A hold-message is not recorded in the list, only saved as a file. 
+  So no unproto list or other is sent.
+
+- New programs <FONT COLOR="#ff0000">INSTWFBB for WinFBB</FONT> and <FONT COLOR="#ff0000">FBBSETUP for DosFBB</FONT> to configure 
+  the software.  In <FONT COLOR="#ff0000">LinFBB</FONT> there is a small <FONT COLOR="#ff0000">INSTALL.SH</FONT> script that does
+  part of the job for LinFBB.
+
+- Binary forwarding via telephone modem (FBB or XFWD)
+
+-<FONT COLOR="#ff0000"> WinFBB: </FONT>The configuration may be called from the Config menu. Updates
+  are made without rebooting the software (after saving the config).
+
+- Blocking DOS commands (EDIT, ...) is killed after 60 seconds.
+
+- Messages or files are not accepted if disk free is less than 100K.
+
+- Telnet interface is working as modem interface except that password is
+  mandatory.
+
+- <FONT COLOR="#ff0000">WinFBB:</FONT> Servers can be made as DLLs provided they are fast enough (no 
+  multitasking during a DLL activity).
+
+- <FONT COLOR="#ff0000">WinFBB: </FONT>Selection of zone in the channel windows. Accept copy (=Ctrl Ins)
+  to clipboard and print. Menu is activated with the right button of the 
+  mouse inside the text window.
+
+- Selection of a word (left double click) or a list of characters (Ctrl left
+  double click).
+
+- Sysop-command HO puts a message in the hold list.
+
+- ReadOnly access if there is no password defined (modem/telnet port)
+
+- MD ("Message Digest") password system. This password is based on a public
+  key. The 10 digits are never the same and the answer is also never the 
+  same. So it is not possible to find the original password from the answer.
+
+- Both WinFBB and DosFBB use protected mode (DPMI).  
+
+- Swapping is now using hierarchy. For instance :
+  @ F6FBB.FRA.EU @ F6FBB.FMLR.FRA.EU
+	Only the first full address will be swapped to the other
+  @ F6FBB @ F6FBB.FMLR.FRA.EU
+	All F6FBB addresses will be swapped to the other
+
+- WinFBB32 is a 32-bit version of WinFBB.  For use with Windows NT and
+  Windows95.  Can NOT be used with Windows 3.x !
+
+- W32 : TfWin32.DLL interface validated.  Only WinFBB 32-bit!
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of OPTIONS.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  OPTIONS.SYS
+</H1>
+<P>
+<PRE><BIG><B>OPTIONS.SYS (\FBB\SYSTEM)</B></BIG>
+
+This file holds the different options of the software. Each option 
+is defined as an integer (2 bytes).
+
+struct {
+
+int beep            ; /* 2  Connection beep validated        */
+int ok_chat         ; /* 2  T command allowed                */
+int ok_disp         ; /* 2  Indication of channels           */
+int separe          ; /* 2  Position of the split line       */
+int split           ; /* 2  DOS screen is splitted           */
+int gate            ; /* 2  Gateway validated                */
+int justif          ; /* 2  Justification validated          */
+int upd_fwd         ; /* 2  Message list is being rescanned  */
+int sed             ; /* 2  Internal screen editor validated */
+
+};
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

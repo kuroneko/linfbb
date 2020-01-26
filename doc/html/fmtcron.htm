@@ -1,0 +1,80 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of CRON.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  CRON.SYS
+</H1>
+<P>
+<PRE>
+
+
+<BIG><B>CRON.SYS (\FBB\SYSTEM).</B></BIG>
+
+ This file is in the SYSTEM directory. The BBS looks in this file once every
+hour. If the hour and date is right, the BBS will execute the commands in
+this file.
+
+ DOS-programs are run with X or D command, like X DOTHIS.EXE or D DOTHAT.EXE.
+When running BAT files, a COMMAND.COM is automatically first sent. That needs
+some more memory.
+
+<FONT COLOR="#ff0000">In DosFBB</FONT> the the screen is saved with D-cpmmand, and reappears after the 
+program has terminated.  With X the program will not write to the screen.
+
+ #
+ # File CRON.SYS. Here DOS-commands can be executed to fixed
+ # hours, also Gateway, Yapp, Bip and Talk can be turned on or
+ # off.
+ # Format: TALK YES (NO), BIP YES (NO), GATE 1 YES (NO), YAPP 2
+ # YES (NO).
+ # DOS-program is run like in FORWARD.SYS with D or X command.
+ #
+ # As in FORWARD.SYS, you can use H for hour and D for day.
+ # 0=sunday, 1=monday,.....6=saturday.
+ # Also IF-ENDIF and IF-ELSE-ENDIF is allowed
+ #
+ # Possible formats for time:
+ # IF H 0-9 All hours between 00 and 09.
+ # IF H 0,9 Only at 00 and 09.
+ # IF H 0,9-11 At 00, and all other hours between 09 and 11.
+ # IF D 0-2 Sunday, monday tuesday.
+ #
+ TALK NO
+ BIP NO
+ GATE 1 YES
+ GATE 2 YES
+ YAPP 1 YES
+ YAPP 2 YES
+ IF D 1-5
+   IF H 15-23
+     GATE 3 YES
+     YAPP 3 YES
+   ELSE
+     GATE 3 NO
+     YAPP 3 NO
+   ENDIF
+ ELSE
+   IF H 8-23
+     GATE 3 YES
+     YAPP 3 YES
+   ELSE
+     GATE 3 NO
+     YAPP 3 NO
+   ENDIF
+ ENDIF
+ X DOTHIS ARG1 ARG2 ARG3
+ D DOTHAT ARG1 ARG2
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

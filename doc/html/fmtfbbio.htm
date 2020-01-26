@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+  <TITLE>FBBIOS.COM</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  FBBIOS.COM.
+</H1>
+<P>
+<PRE><A NAME="FBBIOS"><!-- --></A><BIG><B>FBBIOS.COM:</B></BIG>    <FONT COLOR="#ff0000">(Only for DosFBB)</FONT>
+
+ FBBIOS is a serial line driver dedicated to the usage of a PSTN modem.
+Binary as well as ASCII file transfer are supported with the XMODEM protocol.
+
+ FBBIOS handles one serial line, one IRQ is required. The COM number, the
+address of the serial interface and the IRQ number are given as parameters
+appended to the command line, the address should be specified in FOUR hex
+digits.
+
+ Example : Install FBBIOS for COM1 at hex 03F8 and using IRQ 4 :
+ FBBIOS 1 03F8 4
+
+ If only the COM number is specified, the address and the IRQ will default to
+the standard DOS value. Thus FBBIOS 1 would have had the same effect than the
+example.
+
+ Any address or IRQ number can be specified. Carefully check that the address
+and the IRQ number match the board you intend to use, special attention
+should be given to the IRQ number which should not already be used by another
+peripheral device.
+
+ On a PC the IRQ's can not usually be shared.
+
+ If the modem in use is at the HAYES standard, FBBIOS can modify the line
+speed according to the one of the incoming call connection. In this case the
+parameter 'A' should be appended to the command line to activate this
+feature. This is not true with some buffered modems using a junction with a
+settled speed.
+
+ Example : FBBIOS 1 03F8 4 A
+
+ Upon receipt of the string CONNECT 1200 or CONNECT 2400, the driver will
+adjust its speed to the incoming call.
+
+ From version 1.30, FBBIOS.COM can run up to 56 KBauds. Be sure that your
+computer is fast enough !
+
+<SMALL></SMALL>
+<SMALL><A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A></SMALL>
+<SMALL></SMALL>
+<SMALL><A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A></SMALL>
+<SMALL></SMALL>
+<SMALL><FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT></SMALL>
+<SMALL></SMALL>
+</PRE>
+</BODY></HTML>

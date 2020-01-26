@@ -1,0 +1,64 @@
+<HTML>
+<HEAD>
+  <TITLE>ESS.COM</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  ESS.COM
+</H1>
+<P>
+<P>
+<BIG><B>ESS.COM:</B></BIG> <FONT COLOR="#ff0000">(Only for DosFBB)</FONT>
+<PRE>
+ ESS is an async port driver optimized for FBB software. It can drive either
+TNC2/PK232/clones or KAM.
+
+ This small device driver is loaded as resident at the beginning of the
+machine initialization (TSR).
+
+ One ESS handles one serial line and makes use of one IRQ.
+
+ The COM number, the address of the serial interface and the IRQ number are
+given as parameters appended to the command line. The address should be given
+as a FOUR digit hex number.
+
+ Example : Install ESS for COM1 at hex 03F8 and using IRQ 4 :
+ ESS 1 03F8 4
+
+ If only the COM number is specified, the address and the IRQ will default to
+the standard DOS value. Thus ESS 1 would have had the same effect than the
+example.
+
+ Any address or IRQ number can be specified. Carefully check that the address
+and the IRQ number match the board you intend to use, special attention
+should be given to the IRQ number which should not already be used by another
+peripheral device in the machine. On a PC the IRQ's can not usually be
+shared.
+
+ Should there be more than one port to handle, several ESS can be cascaded.
+The IRQ should be different for each ESS, except for the case in which the
+interrupt sharing is supported by the serial card used.
+
+ Example :
+
+ ESS 1 03F8 4
+ ESS 2 02F8 3
+
+ This sequence will load ESS's for COM1 and COM2.
+
+ ESS accommodates also the muxing arrangement of serial ports.
+
+<B> Version 1.08 of ESS-driver (included with DosFBB distribution)</B>
+<B> must be used with the MUX ! </B>
+
+
+<SMALL><A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A></SMALL>
+<SMALL></SMALL>
+<SMALL><A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A></SMALL>
+<SMALL></SMALL>
+<SMALL><FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT></SMALL>
+<SMALL></SMALL>
+</PRE>
+</BODY></HTML>

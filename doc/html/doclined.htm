@@ -1,0 +1,99 @@
+<HTML>
+<HEAD>
+  <TITLE>Line editor (Appendix 1)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  How to use the line-editor.
+</H1>
+<P ALIGN=Center>
+(Appendix 1)
+<PRE>
+ The FBBDOS offers a small line editor allowing the process of ASCII 
+files.  It can help the remote SysOp to maintain the system files of 
+the software.
+
+ The commands are straightforward, and for better efficiency, they can
+be chained on a single line.
+
+Here are the available commands:
+
+
+<FONT COLOR="#ff0000">?</FONT> : Shows all commands that can be used in the editor.
+
+<FONT COLOR="#ff0000">A</FONT> : Adds a line after the current line.  The text for the new line
+    shall follow the letter A.  If more commands are to follow after
+    the text, the text must be ended with a "/" before next command.  If 
+    the sign "/" itself is to used in the text, a "\" must be written 
+    just before the "/".  If again the "\" is to be used inside the text
+    as a valid character, it must be written twice ("\\").  
+    The pointer will be at the start of the new line.
+      
+<FONT COLOR="#ff0000">B</FONT> : Go to start of file.
+   
+<FONT COLOR="#ff0000">E</FONT> : Go to end of file.
+
+<FONT COLOR="#ff0000">F</FONT> : Search for the first occurrence of a character (or string of 
+    characters) in the file.  The search starts at the current line.
+    The string of characters must be ended with a "/" if more commands
+    are chained (se the paragraph on the A-command).
+       
+<FONT COLOR="#ff0000">I</FONT> : Insert a line before the current line.  Read about ending with a
+    "/" in the paragraph on the A-command.
+
+<FONT COLOR="#ff0000">K</FONT> : Delete the number of lines that are stated just before the letter K.
+    Example:  3K
+    If no number is used, then 1 line is deleted.
+       
+<FONT COLOR="#ff0000">L</FONT> : Move a number of lines from the current line.  The number can be 
+    negative to move towards the start of the file.
+    Examples:  5L   -10L
+       
+<FONT COLOR="#ff0000">N</FONT> : Toggle line-numbering on/off.
+
+<FONT COLOR="#ff0000">P</FONT> : Show a number of lines from the current line.  Example 8P.  This
+    will show 8 lines, starting with the current line.
+       
+<FONT COLOR="#ff0000">R</FONT> : Search and replace.  Search for a string of characters and replace it
+    with a new one.  Example:  RALL/ALLE  will replace all ALL with ALLE
+    from the current line to the end of the file.  
+       
+<FONT COLOR="#ff0000">S</FONT> : Save file.
+
+<FONT COLOR="#ff0000">Q</FONT> : Exit the editor without saving the file.
+
+
+Examples::
+
+
+    "EDIT&gt;B5L10P" sets pointer at start of file.  Move 5 lines down, and
+                  show 10 lines from there.
+                  
+    "EDIT&gt;B4L6K-2L1OP" sets the pointer to the start of file.  Move down
+                  4 lines.  Delete 6 lines.  Move back 2 lines, and show
+                  10 lines.
+                     
+    "EDIT&gt;BFBonjour/K-2L5P" sets the pointer to the start of file,
+                  searches for "Bonjour", deletes the line containing
+                  "Bonjour",  moves back 2 lines and shows 5 lines.
+     *                
+    "EDIT&gt;BFBonjour/IC'est une nouvelle ligne avec un \/ dedans/-1L3P"
+                  sets the pointer to start of file.   Searches for
+                  "Bonjour", inserts the new line.  The new line also
+                  contains the character "/".  Goes back 1 line and
+                  shows 3 lines.
+                     
+    "EDIT&gt;SQ"     save file and quit the editor.
+       
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+
+</PRE>
+</BODY></HTML>

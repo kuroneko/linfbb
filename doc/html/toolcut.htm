@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+  <TITLE>Tool: CUT</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  CUT.COM
+</H1>
+<P>
+<PRE>
+ Utility allowing to peak a part of a file and copy or append it to another
+file. The format is :
+
+ CUT From-file To-file length offset [/A]
+
+ To-file will have added up to length bytes of From-file, starting at offset.
+If the switch /A is specified, then datas will be appended to To-file,
+otherwise To-file will be replaced.
+
+ This small utility is useful to take parts or file, or to do copy/paste
+with either binary nor ascii files.
+
+ Together with the specification of the offset in the XGET command, in case
+of crash, first note the amount of datas already received (ie : 50300), save
+the part of the file already received, and then ask "XGET filename 50000".
+The transfer will start at offset 50000 and then you will be able to receive
+the end of the file. The paste the two parts, either with COPY command or
+with the CUT command. It is more secure to cut the first received part before
+as the last bytes should be garbaged.
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

@@ -1,0 +1,81 @@
+<HTML>
+<HEAD>
+  <TITLE>PK-232 (Appendix 2)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  PK-232<SMALL> in host-mode.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 2)
+<P>
+<PRE>
+
+ If you plan to use a PK-232 with this software, you must make some changes.
+First, check again <A HREF="fmtport.htm">PORT.SYS</A>. You must have a P in "Type host mode". For
+example:
+
+ #
+ #TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode Freq
+ 1    7    1   1      230   4     1     10     30/60   UPYW 433.650
+ 2    1    3   1      80    2     1     5      17/30   GPW  15/20m
+ #
+
+ Example of INITTNCx.SYS for PK-232:
+
+ UNMAIL v LA7QR   means Unproto MAIL v LA7QR
+ RY10               "   Retry 10
+ MN6                "   Monitor 6
+ MC6                "   Mcon 6
+
+ Example of MAINTx.SYS for PK-232:
+
+ UR1
+ CTBBS ($c) was shut down for service $d $T.
+
+ PK-232 host-mode commands (from F6AIW) :
+
+ 8B 8BITCONV AU AAB      AB ABAUD    AG ACHG     AA ACRDISP
+ AK ACRPACK  AT ACRRTTY  AE ADDRESS  AD ADELAY   AI ALFDISP
+ AP ALFPACK  AR ALFRTTY  AL ALIST    AM AMTOR    AC ARQ
+ AO ARQTMO   AS ASCII    AY ASPECT   AW AWLEN    AV AX25L2V2
+ AX AXDELAY  AH AXHANG   BA BAUDOT   BE BEACON   BI BITINV
+ BK BKONDEL  BT BTEXT    CL CANLINE  CP CANPAC   CX CASEDISP
+ CU CBELL    CC CCITT    CF CFROM    CB CHCALL   CD CHDOUBLE
+ CH CHSWITCH CK CHECK    CQ CMDTIME  CM CMSG     CI CODE
+ CN COMMAND  CE CONMODE  CO CONNECT  CY CONPERM  CG CONSTAMP
+ CI CPACTIME CR CRADD    CT CTEXT    CW CWID     DS DAYSTAMP
+ DA DAYTIME  DC DCDCONN  DL DELETE   DF DFROM    DI DISCONNE
+ DW DWAIT    EA EAS      EC ECHO     ES ESCAPE   FA FAX
+ FN FAXNEG   FE FEC      FL FLOW     FR FRACK    FS FSPEED
+ FU FULLDUP  GR GRAPHICS HB HBAUD    HD HEADERLN HI HID
+ HO HOST     HP HPOLL    ID ID       IL ILFPACK  IO IO
+ JU JUSTIFY  KI KISS     LR LEFTRITE LO LOCK     MX MAXFRAME
+ MB MBX      MC MCON     MD MDIGI    MM MEMORY   MI MFILTER
+ MF MFROM    MH MHEARD   MN MONITOR  MO MORSE    MP MSPEED
+ MR MRPT     MS MSTAMP   MT MTO      MA MYALIAS  ML MYCALL
+ MG MYSELCAL MK MYALTCAL NE NEWMODE  NO NOMODE   NR NUCR
+ NF NULF     NU NULLS    OK OK       OP OPMODE   PA PACKET
+ PL PACLEN   PT PACTIME  PR PARITY   PS PASS     PX PASSALL
+ PE PERSIST  PP PPERSIST PC PRCON    PF PRFAX    PO PROUT
+ PY PRTYPE   RW RAWHDLC  RB RBAUD    RC RCVE     RE RECEIVE
+ RX RXREV    RD REDISPLA RL RELINK   RS RESET    RP RESPTIME
+ RT RESTART  RY RETRY    RF RFEC     SE SELFEC   SP SENDPAC
+ SI SIGNAL   SL SLOTTIME SQ SQUELCH  SR SRXALL   ST START
+ SO STOP     TB TBAUD    TC TCLEAR   TM TIME     TR TRACE
+ TW TRFLOW   TI TRIES    TD TXDELAY  TF TXFLOW   TX TXREV
+ UN UNPROTO  UR USERS    US USOS     VH VHF      WI WIDESHFT
+ WO WORDOUT  WR WRU      XW XFLOW    XM XMIT     XO XMITOK
+ XF XOFF     XN XON
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

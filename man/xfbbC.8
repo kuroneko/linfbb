@@ -1,0 +1,62 @@
+.TH XFBBC 8 
+.SH NAME
+xfbbC \- Console for the fbb mailbox
+.SH SYNOPSIS
+.B xfbbC
+.I "[options]"
+
+.SH DESCRIPTION
+This is the console client for the xfbbd BBS daemon.
+
+.SH OPTIONS
+.TP
+.B \-h <address>
+Hostname address of the xfbbd server.
+.TP
+.B \-d <file>
+Download remote configuration file.
+.TP
+.B \-u <file>
+Upload configuration file.
+.TP
+.B \-l
+Display remote directory.
+.TP
+.B \-f
+Data filtering. Control characters are discarded.
+.TP
+.B \-p <port>
+IP port number (default 3286).
+.TP
+.B \-w <password>
+password of the callsign as defined in passwd.sys.
+.TP
+.B \-i <callsign>
+Callsign used for connection.
+.TP
+.B \-c
+Console connection.
+.TP
+.B \-m <channel>
+Displays a connected channel (0 = all channels).
+.TP
+.B \-r
+Don't use ncurses.
+.TP
+.B \-s <svc_nb>
+Request service number.
+
+.SH REMARKS
+Environment variables used by xfbbC are:
+.TP
+XFBBC_HOST : hostname (default localhost).
+.TP
+XFBBC_PORT : socket port (default 3286).
+.TP
+XFBBC_CALL : my callsign.
+.TP
+XFBBC_PASS : password string of passwd.sys in xfbbd.
+
+
+.SH AUTHOR
+This manual page was written by Joop Stakenborg <pa3aba@debian.org>.

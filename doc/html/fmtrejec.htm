@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of REJECT.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  REJECT.SYS
+</H1>
+<P>
+<PRE>
+<BIG><B>REJECT.SYS (\FBB\SYSTEM).</B></BIG>
+
+ This file is in SYSTEM-directory. With this file it is possible to reject or
+hold certain types or sizes of messages.
+
+The first letter of each valid line specifies the action :
+
+R = Reject     : The message will not be received.
+H = Hold       : The message will be received but held until the sysop reviews.
+L = Local Hold : Only messages created on this BBS will be held.
+
+ # File for rejecting messages. They are rejected with N-BID:
+ #
+ # Type, from, @BBS, to, BID, maximum size:
+ #
+ # * and ? can be used as wildcards (as in MS-DOS)
+ #
+ R B TOTO  ALL    TATA  * 0
+ R B *     *      VENTE * 0
+ R B *     VENTE  *     * 0
+ H * P1RAT *      *     * 0
+ L B *     *      *     * 0
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

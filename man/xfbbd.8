@@ -1,0 +1,30 @@
+.TH XFBBD 8
+.SH NAME
+xfbbd \- Daemon for the fbb mailbox
+.SH SYNOPSIS
+.B xfbbd
+.I "[options]"
+
+.SH OPTIONS
+.TP
+.B \-v
+Verbose option. Prints errors, warnings and messages.
+.TP
+.B \-p <port>
+TCP/IP port for the console client. Default is 3286.
+.TP
+.B \-a
+Decode all packets when receiving data on a socket. Normally only
+AX.25 data (NET/ROM and Rose) will be monitored.
+.TP
+.B \-i
+Init mode. Only initialize, don't run. Use this to parse your
+configuration files without actually starting the daemon.
+.TP
+.B \-n
+Don't start communication socket for the console.
+
+
+
+.SH AUTHOR
+This manual page was written by Joop Stakenborg <pa3aba@debian.org>.

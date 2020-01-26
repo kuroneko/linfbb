@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of MAINTx.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  MAINTx.SYS
+</H1>
+<P>
+<PRE>
+
+<BIG><B>MAINTx.SYS (\FBB\SYSTEM).</B></BIG>
+
+ This file is in the SYSTEM directory. This works exactly like <A HREF="finittnc.htm">INITTNCx.SYS</A>,
+but the parametres are sent to the TNC when the BBS is shut down. The file
+can look like this:
+
+ Y 1
+ U 1 BBS ($c) was shut down for service $d $T.
+
+ Y 1 means that only 1 station can connect my TNC now.
+ U 1 means that the TNC will send this message to any user that connects
+after the BBS has shut down.
+
+If you use a PK-232, the same file would look like this:
+
+ UR1
+ CTBBS ($c) was shut down for service $d $T.
+
+ The  commands  sent  to  the  TNC,  are  the  commands  described in the 
+documentation for the firmware you use, or in the documentation for <A HREF="fpk232.htm">PK-232</A>,
+<A HREF="fdrsi.htm">DRSI</A>, <A HREF="fbpq.htm">BPQ</A> , <A HREF="fkam.htm">KAM</A> etc.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

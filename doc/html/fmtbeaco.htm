@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of BEACONx.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  BEACONx.SYS
+</H1>
+<P>
+<PRE>
+
+<BIG><B>BEACONx.SYS (\FBB\SYSTEM).</B></BIG>
+
+ This file is in the SYSTEM directory. This file makes the text that will be
+broadcast as mail-beacon from the BBS. The first line is a parametre that 
+says how often to send the beacon. %15 means "send one beacon every 15 
+minutes". The next line says to what unproto-address the beacon will be sent.
+! MAIL v LA7QR means send beacon to MAIL via LA7QR digipeater.
+There may be several !-lines for different paths for each port.
+
+The next lines are the actual beacon-text. Here we can use variables like $d
+$T etc. We cannot use variables that are specific to one channel alone. You
+do not need to change anything else then the !-line in this file. But you
+will need one file named BEACON1.SYS for TNC1, one called BEACON2.SYS for
+TNC2 etc.
+
+
+ %15
+ ! MAIL v LA7QR
+ $d $T &lt;&lt;&lt; Mailbox $O $c &gt;&gt;&gt; $N active messages.
+ Messages for$W$Q
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

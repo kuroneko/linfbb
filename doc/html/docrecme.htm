@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+  <TITLE>Recording a message (Appendix 7)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Recording a message<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 7)
+<P>
+<PRE>
+ A message can be left by a user or within a forwarding connection. The
+recording mechanism is always the same.
+
+ The recording command is always like :
+
+ Sx desti @ bbs &lt; exped $ ident + filename
+
+ Only recipient field is mandatory, all other fields are optional.
+
+ Appending a filename is a possibility reserved to the sysop. The name must
+be complete, including logic unit and complete path (C:\FBB\SYSTEM\TEST.TXT).
+
+ When receiving the command line, a first test checks if a route exists when
+a route has been specified, or if the message must be automatically routed
+when no route was specified.
+
+ The title of the message is then asked to the user.
+
+ If the title is a missing, the message is canceled and the user returns to
+the main menu.
+
+ The text of the message is then asked to the user.
+
+ The software checks possible preamble lines. These lines give information
+on the previous BBS having routed this message. They all begin by R: on first
+column. The BBS callsign is given behind the @ character within the preamble
+line. All adjacent BBS mentioned in this preamble will be included in the
+"already forwarded" list, and will not be concerned by this message. This
+list specific to each message can be displayed with the $ or FN command
+followed by the message number.
+
+ When receiving a /EX in first column, or a Ctrl Z, a message number is then
+assigned, The BID (or MID if private) and the list of adjacent BBS concerned
+by this message are created. All these information are sent to the user when
+acknowledging the message.
+
+ In case of disconnection before the /EX or Ctrl Z, the whole message will be
+lost, and the texts already stored are deleted.
+
+ All information about the message (sender, recipient, route, MID, title,
+etc...) are stored in the <A HREF="fmtdirme.htm">DIRMES.SYS</A> file. The text of the message is stored
+in a sub-directory of the MAIL directory. The sub-directory is MAILn where n
+is the last digit of the message number. The name of the file corresponds to
+the message number 123 is M_000123.MES, the number is 6 digits wide, in this
+case it is in the sub-directory MAIL3.
+
+ The message number uses a long integer (32 bits), the number boundary is
+very far (more than 4 billions !).
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

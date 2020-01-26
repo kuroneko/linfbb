@@ -1,0 +1,253 @@
+<HTML>
+<HEAD>
+  <TITLE>White Pages</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  White Pages<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+Database and server.
+<P>
+<PRE>
+<BIG><B><A HREF="docwp.htm#Description">DESCRIPTION.</A></B></BIG>
+<BIG><B><A HREF="docwp.htm#Update">UPDATE REQUESTS.</A></B></BIG>
+<BIG><B><A HREF="docwp.htm#DataDesc">DATABASE DESCRIPTION.</A></B></BIG>
+<BIG><B><A HREF="docwp.htm#Manager">DATABASE MANAGER.</A></B></BIG>
+<BIG><B><A HREF="docwp.htm#Epurwp">EPURWP AND UPDATE MESSAGES.</A></B></BIG>
+<BIG><B><A HREF="docwp.htm#Wpserver">WP SERVER REQUESTS.</A></B></BIG>
+
+
+<A NAME="Description"></A><IMG SRC="../blue.gif" WIDTH="14" HEIGHT="14"><BIG><B>Description.</B></BIG>
+
+ The White Pages implementation in FBB software has been based upon the W0RLI
+model (many thanks to Hank for his work). I've tried to maintain a high
+degree of compatibility whilst making further development to my own criteria.
+
+ I shall try to explain how FBB White Pages works.
+
+I have probably mis-understood some features of W0RLI's specifications but I
+hope that this will not greatly  affect the compatibility.
+
+ First of all, why do we need White Pages?
+
+ White pages has some interesting features. Not least :
+
+- A dynamic database containing users Name, zip code, HomeBBS and QTH (as
+well as other fields).
+- Automatic addressing/routing of mail to the HomeBBS of the destination
+callsign.
+- A White Pages server for remote interrogation of the database.
+
+ The database information is updated, firstly from the information given by
+users when they exercise the N, NH, NQ and NZ features at their home (or
+another WP equipped) BBS; and secondly, from information contained within the
+messages headers as they traverse the Network.
+
+ The database is dynamic, it is changing constantly, and it updates itself in
+real time. Either as soon as a line of a message header is received when in
+ASCII forwarding mode, or when a complete message is decoded in compressed
+forwarding mode; or else when a user disconnects from the BBS (this is to
+prevent multiple updates being generated during a session).
+
+ So, the database can hold many callsigns. In fact it maintains a list of all
+the callsigns seen from all individuals sending messages as well has all of
+the BBS's seen in the forwarding paths. More than 10,000 valid records is not
+impossible today, and this will surely increase as the number of packet radio
+users grows with each day. This will allow user to send messages to other
+users around the world without necessarily having to be concerned to find
+their full Hierarchical Address, the old principle of the user typing:
+
+BBS PROMPT &gt;
+SP K6VAZ @ KM6WU.#CENCA.CA.USA.NOAM
+
+should now be replaced by the user entering:
+
+BBS PROMPT &gt;
+SP KM6VAZ
+
+The BBS will add the HA and send the response:
+
+BBS PROMPT &gt;
+SP K6VAZ
+WP ROUTING @KM6WU.#CENCA.CA.USA.NOAM ADDED
+TITLE ?
+
+ If the routing destination HA is not recorded in the database then the user
+will be advised and prompted to enter the address manually.
+
+ Another capability of FBB White Pages is the automatic sending of update
+messages to other BBS's. These messages are generated every night during
+House-Keeping and are a listing of the additions and modifications made to
+the database during that day. These messages are sent addressed both to and
+from WP.
+
+ When passing through or terminating at another White Pages equipped BBS, the
+message will automatically update the 'local' WP database at that BBS. This
+feature MUST BE USED WITH CARE, as updates can generate a lot of traffic and
+the Network must be able to support it.
+
+*** It's not be a good idea to send these update messages on HF ! ***
+
+ A built-in White Pages server (WP) will provide information from the
+database in response to a remote request. This server is described in
+paragraph xx.
+
+ All files used by White Pages are in the FBB\SYSTEM\WP subdirectory.
+
+Trace for WP updates (for debugging etc):
+in the \windows\winfbb.ini file, add the following line in the main section :
+TraceWp=1
+You can replace 1 with 2 or 3. 3 gives the maximum information.
+A file WP.DBG will be created in the WP directory.
+
+
+
+<A NAME="Update"></A><IMG SRC="../red.gif" WIDTH="14" HEIGHT="14"><BIG><B>UPDATE REQUESTS.</B></BIG>
+
+ The  database  receives  information  from  three  sources.  The  s
+indicated on each line of the update message as a suffix to the callsign:-
+
+ - The /U suffix denotes that the information in this line of the   update is
+User-Generated as is therefore assumed to be CORRECT. This information is
+collected by the BBS whenever the User responds to the N, NH, NQ or NZ
+commands. The date associated with the information is the date when the User
+disconnects that session.
+
+ - The /G suffix denotes that the information in this line has been gathered
+by examining the header of a message to GUESS at which BBS the sender is
+registered. The HomeBBS of the User is assumed to be the BBS shown in the
+first R: header line. The date associated with this information is the date
+shown on this R: header line.
+
+ - The /I suffix denotes information about forwarding BBS's taken from the R:
+header lines. This information can consist of the HA (the Hierarchical
+Address), the QTH (within brackets) and the zip code (following the Z:). The
+date of this information is again taken from the R: header line of the BBS in
+question.
+
+ When the BBS is idle the Database Manager is called and the update
+information detailed above is processed.
+
+
+<A NAME="DataDesc"></A><IMG SRC="../green.gif" WIDTH="14" HEIGHT="14"><BIG><B>DATABASE DESCRIPTION.</B></BIG>
+
+ The database  is  composed  of  individual  records.  Each  record 
+following components :
+
+- Callsign and Name.
+- Active information.
+- Temporary information.
+
+ The active and temporary information components are identical and each
+includes the following fields:
+
+- Date of the information
+- Hierarchical Address   (one word)
+- Zip code          (one word)
+- Qth               (one or more words)
+
+ Only the Active information is used for addressing/routing and database
+requests.
+
+
+<A NAME="Manager"></A><IMG SRC="../cyan.gif" WIDTH="14" HEIGHT="14"><BIG><B>DATABASE MANAGER.</B></BIG>
+
+ This process freshens the database, following receipt of the new or changed
+information detailed above.
+
+ The update subroutine will first look for an entry in the database for the
+callsign which matches the received information. If it does not exist then a
+completely new record will be created in the database and the information be
+used to fill what fields it can, in both the active and the temporary
+components. The date will be then changed to the one associated with the
+update information.
+
+ If the record does already exist, then the unknown fields of both the
+temporary and active fields will be filled in, and those fields already known
+in the temporary part will be replaced by the new information if the date new
+information is younger than that already on file. The date will then be
+adjusted such that it is consistent with the updated information.
+
+ If the new information is of the /U category, then the current fields will
+be replaced by the new information in both the primary and secondary (Active
+and Temporary) parts of the record, as this information has been input
+directly from the user. If the information was of another category then only
+the secondary (Temporary) part of the record will be updated, so the Active
+or primary record will remain unchanged at this time.
+
+ If a field is changed, a flag giving the update request type is then
+validated. If the /U flag is already validated, it will not be replaced. This
+flag will be used in case the WP update messages are validated.
+
+
+<A NAME="Epurwp"></A><IMG SRC="../orange.gif" WIDTH="14" HEIGHT="14"><BIG><B>EPURWP AND UPDATE MESSAGES.</B></BIG>
+
+ <A HREF="toolepwp.htm">EPURWP</A> is a maintenance program for the White Pages database which should be
+run during each House-Keeping cycle.
+
+ The program conducts a validity check on each of the entries, and discards
+any "unwanted" records (in the case of an invalid callsign for example).
+
+ The program also checks the date of the last update of the temporary part of
+each record. If this date is older than a pre-defined number of days (given
+as a parameter, default 40 days) then the temporary part is considered as
+stable, and then the known fields will be transferred to the Primary or
+Active part, which is then used to answer all addressing/server requests.
+
+ This process ensures that the database is tolerant of users sending messages
+from mailboxes other than their normal HomeBBS. Once the Active or primary
+part of the record is set, then the temporary (or secondary) part can be
+updated/changed many times. Only once this temporary field has remained
+unchanged for 40 days, or the user exercises any of the "Nx" options at his
+new HomeBBs will the Active or Primary record be changed.
+
+ If the changes to the database are validated, then the record is marked with
+an update flag and a line will be appended to the file MESS.WP
+
+ Each line of the outgoing WP update messages looks like :
+
+On 930123 FD1CDC/U @ F6FBB.FMLR.FRA.EU zip 31240 Claude Saint Jean
+
+ Any unknown fields are replaced by "?" like :
+
+On 930123 FD1CDC/U @ F6FBB.FMLR.FRA.EU zip ? ? Saint Jean
+
+ The U character is the update type.
+
+
+<A NAME="Wpserver"></A><IMG SRC="../grey.gif" WIDTH="14" HEIGHT="14"><BIG><B>WP SERVER REQUESTS.</B></BIG>
+
+ FBB software has an internal built-in WP server.
+
+ The format of the WP server requests are as shown below :
+
+BBS PROMPT &gt;
+SP WP @ F6FBB
+Title of message
+WP Request (does not matter)
+Text of message
+
+F6FBB ?
+EA3* ?
+
+^Z (or /EX)
+
+ The server will answer to the request with a private message, addressed to
+the sender, and routed to the BBS according to the first R: header line of
+the incoming request.
+
+ The reply message is restricted to a maximum of 100 lines, as the use of
+wildcards in the request could generate a unacceptably long replies.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

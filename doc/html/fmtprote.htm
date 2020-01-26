@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of PROTECT.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  PROTECT.SYS
+</H1>
+<P>
+<PRE>
+<BIG><B>PROTECT.SYS (\FBB\SYSTEM).</B></BIG>
+
+ This file is in the SYSTEM directory.
+
+ In this file you can specify some directories in which you do NOT want any
+sysop to be able to delete any files, without a special syntax. To delete
+files in  protected  directories,  the  command  must  look  like  this: 
+DEL +FORWARD.SYS In an un-protected directory the command looks like this:
+DEL FORWARD.SYS. So you can see that you need an extra '+' sign in 
+protected directories.
+
+
+ Example of PROTECT.SYS:
+ \
+ \FBB
+ \TOOLS
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

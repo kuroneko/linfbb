@@ -1,0 +1,160 @@
+<HTML>
+<HEAD>
+  <TITLE>Tool: EPURMESS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  EPURMESS.COM
+</H1>
+<H2 ALIGN=Center>
+</H2>
+<P>
+EPURMESS is a tool which allows for modification of messages: status,
+<PRE>removal, or archiving. This tool is called every night by the BBS in order to
+maintain the message list as a function of the time.
+
+ The EPURMESS configuration is made by the text file EPURMESS.INI. The
+parameters which are contained are given as a suggestion, and can be edited
+later if needed, to suit the targeted archiving and the mass of messages and
+bulletins received.
+
+ EPURMESS searches the current directory for its EPURMESS.INI initialization
+file. In that file, it will find out all the parameters for processing, as
+well as the file name for the report EPURMESS.RES (this file name can be
+changed in the EPURMESS.INI file).
+
+ At the beginning of the process, EPURMESS first copies <A HREF="fmtdirme.htm">DIRMES.SYS</A> into
+DIRMES.OLD to keep an archive trace of the previous file, then creates
+DIRMES.NEW, in which the processing will take place. At the end of the
+process,  DIRMES.NEW  will  be  copied  into  DIRMES.SYS.  A  report of the
+processing will be written in the EPURMESS.RES file.
+
+ If the last update of the <A HREF="fmtdirme.htm">DIRMES.SYS</A> file has been carried out more than 24
+hours ago, EPURMESS will not make its process, in order to avoid any loss of
+data due to a possible clock error in the system. It will report the error in
+the EPURMESS.RES file. In such a case, after the reason of the error has been
+detected, it will be necessary to suppress the EPURMESS.RES report file, in
+order to re-enable the processing.
+
+ The ARCHIVE line has two digits, the first one applies to private messages
+and the second to bulletins. The '1' digit validate the archiving while the
+'0' will suppress the messages once and for all.
+
+ It is possible to specify origins, destinations or routing for which the
+obsolete time (X status) are different from the default values. These
+particular cases are specified at the end of the file with the form of
+supplementary lines. Each line specifies a particular case.
+
+ The line should begin with the character which specifies the field to be
+tested, then the content of the field and then the number of days before the
+status X is given.
+
+ Ex :
+ &gt; ALL 1
+
+ The messages for ALL will be valid only one day.
+
+ Example of EPURMESS.INI file:
+
+
+# File for deciding messages' lifetime..
+#
+# Directory for messages
+\FBB\MAIL\
+#
+# Directory for binary-messages
+\FBB\BINMAIL\
+#
+# Directory for "killed" messages
+\fbb\OLDMAIL\
+#
+# The file DIRMES.SYS (database-file)
+\fbb\system\DIRMES.SYS
+#
+# Old database-file (backup)
+\fbb\system\DIRMES.OLD
+#
+# New database-file (after EPURMESS (cleanup))
+\fbb\system\DIRMES.NEW
+#
+# Result of cleanup is put into this file:
+\FBB\EPURMESS.RES
+#
+# Personal  Bulletins (0=kill 1=archive in oldmail)
+0 0
+#
+# Parametres in days:
+#
+# PARAMETRES FOR PERSONAL MESSAGES:
+#
+# PN -&gt; PX (days after message is written)
+30
+#
+# PY -&gt; PX (days after changed to Y)
+7
+#
+# PF -&gt; PK (days after changed to F)
+7
+#
+# PX -&gt; PK (days after changed to X)
+0
+#
+# PK -&gt; PA (days after changed to K)
+0
+#
+# PARAMETRES FOR BULLETINS
+#
+# BN -&gt; BX (days after the message is written)
+7
+#
+# B$ -&gt; BX (days after the message is written)
+7
+#
+# BY -&gt; BX (days after changed to Y)
+7
+#
+# BX -&gt; BK (days after changed to X)
+14
+#
+# BF -&gt; BX (days after message is written)
+14
+#
+# BK -&gt; BA (days after changed to K)
+0
+#
+# Automatic generated return-messages for non-forwarded messages.
+# Each line may be max 255 characters long.  Disable with only a 0.
+#
+# Timeout for valid forward-path (number of days + text, end with $W)
+21 This message could not be forwarded, due to bad link.$W
+#
+# Unknown routing or wrong H-address (number of days + text, end with $W)
+2 This message could not be forwarded, due to bad callsign or bad route.$W
+#
+# Max number of lines in a returned message:
+10
+------
+#
+# List of lifetime-tests
+#
+# Type To    Days
+#@  VEST   365
+#@  LA     365
+#&gt;  LA6CU  365
+#&lt; system 0
+#
+# End of this file.
+#
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

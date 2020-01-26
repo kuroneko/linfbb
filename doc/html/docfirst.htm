@@ -1,0 +1,425 @@
+<HTML>
+<HEAD>
+  <TITLE>First installation and startup</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  First installation and startup.
+</H1>
+<P>
+<PRE> This part of the manual is intended for the sysop who has never used FBB
+software before. I hope this part of the manual will help you to get "on the
+air" with FBB without too many problems.
+
+ FBB is designed in 3 versions.  One for Dos (referred to as <FONT COLOR="#ff0000">DosFBB</FONT>), one
+for Windows (referred to as <FONT COLOR="#ff0000">WinFBB</FONT>) and one for Linux (referred to as <FONT COLOR="#ff0000">LinFBB</FONT>).
+This manual covers all versions.  Most of the contents is identical for all
+versions, but when there is a difference, it will be clearly stated.  In 
+either case, I presume that you have installed your operating-system (DOS,
+Windows or Linux) correct before you attempt to install FBB.
+
+ Normally you will install FBB from diskettes. Normally your diskette-drive
+will be called A, and normally you will install the FBB-program on hard-disk
+called C. But this is no absolute need, you may use other drives as well.
+More about this a little later.
+
+ Your hard-disk is organised in several directories. If you are not familiar
+with this, you should read in your operating-system's manual about how the 
+hard-disk is organized.
+
+ FBB will normally be installed on your hard-disk in a directory named FBB.
+This directory should be placed directly under root  (C:\FBB). This directory
+will be automatically created for you. The BBS will also need a lot of other
+directories, and they can be created directly from root, or they can be 
+created under the FBB-directory. In the procedure I will describe here, only 
+the FBB-directory will be at the root (C:\FBB) of the hard-disk, while all the
+other directories will be placed under FBB (like  C:\FBB\USERS etc). But you 
+can choose this yourself. More about this a little later.
+
+ However, this is the recommended  organization  for  your  directories.  The 
+directories will be created like this if you make no changes (a list of the
+files and directories is given in <A HREF="docconts.htm">appendix 14</A>).
+
+ You should now be ready to start the installation procedure. Put the first
+of the diskettes in your disk-drive.
+
+<FONT COLOR="#ff0000">For WinFBB:</FONT>
+
+ Have Windows up-and-running.  Install WinFBB from your diskette-drive the 
+same way as you normally install programmes from diskette.  In Windows 3.x 
+I think it should be normal to go to the file-manager, select RUN, and type
+A:INSTALL.  In Win95 you may press START, then RUN, then type A:INSTALL.
+
+ You will first be asked for the directory (and drive) that you want to 
+have WinFBB installed to.  If you accept the defaults, just press ENTER.
+If you want WinFBB installed in another directory or on another drive, 
+just do the changes you want now, by typing your own drive/path.
+
+ The screen will now display a text with some more information on the
+installation.  Read it carefully before you proceed (by closing that
+window).  
+
+ The installation continues.  You will be advised that SYSTEM.INI will be
+modified to replace the COMM-driver.  This is the driver for the TNCs and
+telephone-modem.  You will also be told to increase the environment to 2kb.
+AUTOEXEC.BAT will also be updated with the correct path to your 
+FBB-directory.
+
+ Next, the installation-procedure continues by starting the program
+<A HREF="toolinst.htm#INSTWFBB">INSTWFBB</A>.  (If this is not started during installation, you should start
+it after the installation has completed, by clicking on the icon for
+WinFBB Configuration).  This program lets you set most of the parametres you
+need (all parametres for <A HREF="fmtport.htm">PORT.SYS</A> and <A HREF="fmtinit.htm">INIT.SRV</A>) for your installation.  
+Please take great care here, and go through ALL the pages of this installation
+very carefully before you exit the program.  Use the NEXT - PREV buttons to go
+through the entire installation.  Be sure to insert your correct callsign, 
+your correct H-route etc.  INSTWFBB will update both <A HREF="fmtinit.htm">INIT.SRV</A> and <A HREF="fmtport.htm">PORT.SYS</A> for
+you, you will not need to change them manually later, if you take great care 
+to do a good job now.
+
+ When you are sure that your setup now is correct, you may exit the 
+INSTWFBB.  The PC will then reboot, to finish the setup.  After this,
+you will have a new program-group with icons for WinFBB and for
+WinFBB Configuration.  You may run WinFBB Configuration at any time later,
+to change your setup again.  The configuration may also be changed while 
+the BBS is running, by clicking on the word Config on the top of the 
+screen.
+
+Next, the same procedure for DosFBB and LinFBB follows.  Skip them, and go
+directly to the section called <A HREF="#First-time">"FIRST-TIME SETUP OF DIFFERENT FILES."</A>
+
+
+<FONT COLOR="#ff0000">For DosFBB:</FONT>
+
+ You should now be ready to start the installation procedure. Put the first
+of the diskettes in your disk-drive, and type A: if that drive is named A, 
+or B: if that drive is named B. Press ENTER to execute the command (you must
+always press ENTER after a command to the PC). Your PC will now answer with
+something like A:\&gt; or B:\&gt;
+
+ If you now are ready to install FBB for the first time on your PC, you
+type INSTA700.
+
+ You will now see at your screen something like this:
+
+ ---- QUOTE: ----
+
+       ****   FIRST TIME INSTALLATION OF FBB 7.00 FROM DISK %disk%   ****
+
+-  Main BBS-directory -  C:\FBB
+-  System-files       -  C:\FBB\SYSTEM
+-  Messages           -  C:\FBB\MAIL
+-  Binary-messages    -  C:\FBB\BINMAIL
+-  User's dir.        -  C:\FBB\USERS
+-  Yapp files         -  C:\FBB\USERS\YAPP
+-  Oldmail            -  C:\FBB\OLDMAIL
+-  Statistics         -  C:\FBB\STATS
+-  Documentation      -  C:\FBB\DOCS
+-  FBB-manuals        -  C:\FBB\DOC
+-  Fwd-include-files  -  C:\FBB\SYSTEM\FWD
+-  Executable files   -  C:\FBB\BIN
+-  Example-files      -  C:\FBB\EXAMPLES.700
+-  Utillities         -  C:\FBB\UTIL
+   (Fwd-include-files MUST stay under %system%.)
+
+       If this configuration does not suit your needs, you must stop now
+       with CTRL-C and edit the SET-lines in the file A:SUITE1.BAT.
+       If a version of FBB 5.15c already exists, press Ctrl-C 
+       and use 515c700.BAT for upgrading.
+
+ ----- UNQUOTE. -----
+
+ This screen may vary a bit from version to version, but the work you have to
+do, will still be the same. First of all, you will see that the PC says that
+you will install from disk A. Is this correct ? If you are installing from
+disk-drive B, you must stop the installation now. The same applies if you
+want to use other directory-names or paths for some of the other directories
+that are listed on your screen now.
+
+ If you DO want to change any of these things, you MUST do it now. The
+changes are described in this paragraph; if you do NOT want any changes, you
+can go on to the next paragraph. You stop the installation-batch by pressing
+CTRL-C. Now you will see the standard A:\&gt; prompt again. Now you must use a
+normal text-editor and edit the file SUITE1.BAT on your diskette. I presume
+you have such an editor... Make sure that it is able to save the file again
+in ASCII (DOS) format ! So if you use for example Word Perfect, you MUST
+remember to save the file again in DOS-format !
+
+ At the beginning of that file, you will see a line saying SET disk=A: If you
+want to install from B-drive, you edit this line like this:
+
+ SET disk=B:
+
+ You change only the letter after '=', nothing else ! You can also change all
+directory-names or directory-paths in this same way. If you do not want to
+use C:\FBB\SYSTEM, but want it to be C:\FICHIERS, you just change the line
+saying
+
+ SET system=C:\FBB\SYSTEM
+ to
+ SET system=C:\FICHIERS
+
+ and so on. You must ONLY change the name behind the '=' sign, you must NOT
+change anything before that in that line. You can do this with any (or all)
+the directory-names and paths. But remember that you will need to do some
+extra work with other config-files later if you do not use the default
+installation.
+
+ When you have finished doing the changes you want in the lines starting with
+SET, you must save the file again to disk. When that is done, you start over
+again from the beginning, by typing INSTA700 etc.
+
+ OK. That is about all. Now the BBS-program and all its files will be
+installed on your hard-disk. You only have to change diskettes each time you
+are asked to (if you install from more than one diskette). 
+
+ Next, the installation-procedure continues by starting the program
+<A HREF="toolinst.htm#FBBSETUP">FBBSETUP</A>.  This program lets you set all the parametres in <A HREF="fmtinit.htm">INIT.SRV</A> and 
+<A HREF="fmtport.htm">PORT.SYS</A> that you need for your installation. 
+(FBBSETUP supports multiple language files, but for the first time 
+installation you will probably have only the English language files.)  
+Please take great care here, and go through ALL the pages of this
+installation very carefully before you exit the program.  Be sure to put in 
+your correct callsign, your correct H-route etc.  FBBSETUP will update <A HREF="fmtinit.htm"></A>
+<A HREF="fmtinit.htm">INIT.SRV</A> and <A HREF="fmtport.htm">PORT.SYS</A> for you, you will not need to change it manually later,
+if you take great care to do a good job now.
+
+ The path FBB\BIN must be included in your PATH in AUTOEXEC.BAT. Do this by
+adding to the PATH line in AUTOEXEC.BAT ";C:\FBB\BIN" like :
+
+PATH C:\;C:\FBB\BIN
+
+Next, the same procedure for LinFBB follows.  Skip it, and go directly to 
+the section called <A HREF="#First-time">"FIRST-TIME SETUP OF DIFFERENT FILES."</A>
+
+
+<FONT COLOR="#ff0000">For LinFBB:</FONT>
+
+There are two versions:
+  a windowing version (using X11 windowing system and MOTIF toolkit).
+  a daemon version. The daemon version has no interface and works alone in
+  background (like works an anti-virus, hi...). So the compter may be used
+  for any application while the BBS is running.
+
+Tnx to SM6TKY:
+
+If you need some help in setting up AF_AX25 and AF_NETROM for use with
+LinFBB, you may want to read the <A HREF="tllinux.htm">Appendix 23</A>.
+
+You should now be ready to start the installation procedure.
+To install and run LinFBB you <B>MUST</B> have root access,
+you may log in as root or you can go to superuser mode with: su root
+
+(1)
+Put the floppy disk into the diskdrive.
+
+(2)
+If you have MTOOLS installed.
+ To copy from floppy disk A:, type: mcopy a:/x700.tgz /tmp
+ To copy from floppy disk B:, type: mcopy b:/x700.tgz /tmp
+
+If you have NOT MTOOLS installed.
+ To mount floppy drive A: type: mount -t msdos /dev/fd0 /mnt
+ To mount floppy drive B: type: mount -t msdos /dev/fd1 /mnt
+
+ Then type: cp /mnt/x700.tgz /tmp , to copy the contents of disk to /tmp,
+ then type: umount /mnt , to unmount the floppy disk.
+
+(3)
+Now you should create the base directory where you want LinFBB.
+ Example, if you want LinFBB in: /usr/local/fbb
+ Then type: mkdir /usr/local/fbb
+
+(4)
+If you now are ready to install LinFBB for the first time on your PC,
+
+ Type: cd /usr/local/fbb , to go to the LinFBB root directory.
+ Type: tar xvzf /tmp/x700.tgz , to unpack the LinFBB archive.
+
+OK. That is about all.
+Now the BBS-program and all its files will be installed on your hard-disk. 
+
+Next, the installation-procedure continues by starting the installation
+script named <FONT COLOR="#ff0000"><A HREF="toolinst.htm#INSTALL">INSTALL.SH</A></FONT>
+
+This script lets you set most of the parametres in <A HREF="fmtinit.htm">INIT.SRV</A> (BUT NOT ALL !)
+that you need for your installation.  Please take great care here, and go 
+through ALL the questions of this installation very carefully before you 
+exit the script. Be sure to put in your correct callsign, your correct 
+H-route etc. The script INSTALL.SH will update <A HREF="fmtinit.htm">INIT.SRV</A> for you, but you 
+will also need to check the rest of it manually, too, afterwards !
+
+
+<A NAME="First-time"><!-- --></A><BIG><B>FIRST-TIME SETUP OF DIFFERENT FILES.</B></BIG>
+
+ So far so good... Now we must modify some files, to make the system work. I
+will describe all the changes you MUST do, and some changes that you CAN do,
+if you like. Read this section very carefully. For most of the files it is
+VERY important that the number of non-comment lines must NOT be changed.
+Later in the sysop-manual you will find more details on some of these files,
+and also details on other files that are not described here in this startup-
+section.
+
+Files you MUST check/change:
+<A HREF="fmtrunfb.htm">RUNFBB.BAT</A> <FONT COLOR="#ff0000">(ONLY for WinFBB)</FONT>
+<A HREF="fmtxfbb.htm">XFBB.SH</A>    <FONT COLOR="#ff0000">(ONLY for LinFBB)</FONT>
+<A HREF="fmtappel.htm">APPEL.BAT</A>  <FONT COLOR="#ff0000">(ONLY for DosFBB)</FONT>
+<A HREF="fmtport.htm">PORT.SYS</A>   <FONT COLOR="#ff0000">(MUST be changed for LinFBB, no changes needed for WinFBB or DosFBB)</FONT>
+<A HREF="finittnc.htm">INITTNCx.SYS</A>
+<A HREF="fmtmaint.htm">MAINTx.SYS</A>
+
+Files you must change if you plan to do any forward:
+<A HREF="fmtbbs.htm">BBS.SYS</A>
+<A HREF="fmtforwa.htm">FORWARD.SYS</A>
+
+Files you should check, too, but not SO important:
+<A HREF="fmtbeaco.htm">BEACONx.SYS</A>
+<A HREF="fmtepurm.htm">EPURMESS.INI</A>
+<A HREF="fmtswapp.htm">SWAPP.SYS</A>
+
+Files that are automatically configured by INSTWFBB and FBBSETUP, and should
+normally not be needed to change manually after <FONT COLOR="#ff0000">(DosFBB and WinFBB)</FONT>.
+<A HREF="fmtinit.htm">INIT.SRV</A>
+<A HREF="fmtport.htm">PORT.SYS</A> 
+
+Files you may have a look at later (not so important).
+<A HREF="fmtcron.htm">CRON.SYS</A>
+<A HREF="fmtrejec.htm">REJECT.SYS</A>
+<A HREF="fmtprote.htm">PROTECT.SYS</A>
+<A HREF="fmtlang.htm">LANGUE.SYS</A>
+<A HREF="fmttheme.htm">THEMES.SYS</A>
+<A HREF="fmtredis.htm">REDIST.SYS</A>
+<A HREF="fmtmemo.htm">MEMO.SYS</A>
+
+
+
+<BIG><B>Start the BBS for the first time.</B></BIG>
+
+ Now you should be ready to start the BBS for the first time. Before you do,
+make sure that the internal clock of the BBS is correct. If not, you must
+correct it now with the DOS-command DATE and TIME. In most newer PCs today,
+the clock is automatically set at each power-up. But in some older PCs you
+may need to use a special clock/calendar card in your PC, and use a special
+program to set the date/time at each startup. For this you must look in the
+manual for that clock/calendar card and include the appropriate command in
+your AUTOEXEC.BAT file.
+
+<FONT COLOR="#ff0000">For WinFBB:</FONT>
+ Go to the FBB program-group an double-click the WinFBB icon.
+
+<FONT COLOR="#ff0000">For DosFBB:</FONT>
+ Go to the FBB directory and type APPEL and press ENTER.
+
+<FONT COLOR="#ff0000">For LinFBB:</FONT>
+ To start LinFBB in X-Windows:
+  Go to base directory and run "./xfbb.sh" in a xterm.
+ To start LinFBB deamon:
+  Go to base directory and run "./xfbb.sh -d &amp;".
+
+ The first time you start the BBS like this, it may ask you if you want to
+create some files. Just answer Y (for Yes) every time. Then those files are
+automatically created for you.
+
+ The BBS should now be ready for use. Try a connect to the BBS. Do this by
+pressing F2. The BBS will ask you for your name, city, home-BBS and 
+ZIP-code.
+
+<FONT COLOR="#ff0000">Only for LinFBB:</FONT>
+<B>Deamon version of LinFBB:</B>
+ Go to 'bin' directory, then use the utility 'xfbbC' to connect (eg: xfbbC -c).
+ If you have set up <A HREF="fmtport.htm">PORT.SYS</A> to allow incoming Telnet connections
+ to LinFBB, then you can also use this..
+ For example, if you defined LinFBB to listen on port 6300 (hex = 189C) 
+ for incoming Telnet connections, then you type: telnet sm6tky.ampr.org 6300
+<B>X-Windows version of LinFBB:</B>
+ Select the "Window" in menu, and then select "Console"
+ to enter Console connection.
+
+
+ Next you must define all the BBSs you want to forward to. You do this with
+the command EU. If you want to have forward to for example LA2D, you 
+type EU LA2D.
+
+ The BBS will say that this callsign is not known, and ask if you want to
+create it. You answer Y. Next you will see a line of different options for
+that user. You only have to type B. Now that callsign (LA2D) will be defined
+as a BBS. You must press ENTER once more to stop editing the user. Repeat
+this procedure with the callsign of all the BBSs that you will forward to.
+You terminate the keyboard-session with the command B (Bye).
+
+ Well, if all is ok, and you have not encountered any big problems so far,
+you can stop the BBS.  
+<FONT COLOR="#ff0000">In DosFBB</FONT> you do this with Alt-F10 or Alt-x.
+<FONT COLOR="#ff0000">In WinFBB</FONT> you do this by pressing Alt-F4).
+In <FONT COLOR="#ff0000">LinFBB</FONT> you do this:
+  <B>Deamon version:</B>
+   Do 'ps ax' , check for 'xfbbd' look after
+   the process number and do 'kill &lt;process number&gt;'
+  <B>X-Windows version:</B>
+   Select "File" in menu, and then select "Exit"
+   to shutdown the BBS.
+
+You can connect the TNCs, and in <A HREF="fmtinit.htm">INIT.SRV</A> you must change from No to Ok in
+the line that asks 'Mode test ?', or 
+<FONT COLOR="#ff0000">in WinFBB</FONT>  : Click on the WinFBB Configuration icon
+<FONT COLOR="#ff0000">in LinFBB  </FONT>: Use INSTALL.SH
+<FONT COLOR="#ff0000">in DosFBB</FONT>  : Use FBBSETUP 
+to change the field "TEST MODE" to "NO".
+
+
+<BIG><B>The TNC.</B></BIG>
+
+ This software will work with different kinds of TNCs or TNC-interfaces:
+
+ - TNC-2 or close clones. The EPROM of type 27256 must be replaced by a
+special EPROM with the WA8DED host-mode software, or by the german TF4, 
+TF8, TF18 or similar.
+
+ - PK-232 in host-mode.
+
+ - Kantronics KAM in host-mode. You need a special driver called ESSKAM.
+
+ - DRSI-card.
+
+ - G8BPQ-node (uses TNCs in KISS-mode).
+
+ The software for the TNC-2 host-mode EPROMs TF4 and TF8, may be included on
+the distribution-disks. If you cannot burn new EPROMs yourself, there are a 
+lot of hams around who can. You can also send a new EPROM to F6FBB or FC1GHV
+(with return-postage and packing material, of course) and they will do the
+work for you.
+
+ The TNC should work on 4.9 MHz. The standard is 2.5 MHz, but a modification
+for this is normally quite simple. In some cases it might be necessary to
+replace the Z80 and the Z80 SIO by A-versions.
+
+ If you use standard TNC-2 with one of the mentioned host-EPROMs, you can
+start again now, and all should work fine. Make sure that the TNCs have the
+same baud-rate as you wrote in <A HREF="fmtport.htm">PORT.SYS</A>, and that they really are connected
+to the COM-ports that you said in PORT.SYS.
+
+ If you do NOT use a standard TNC-2 with DED-type host, but PK-232, BPQ,
+Kantronics KAM or DRSI-card, you must read about your special TNC-
+setup in one (or more) of the chapters <A HREF="fpk232.htm">PK-232</A>, <A HREF="fbpq.htm">BPQ</A>, <A HREF="fkam.htm">KAM</A>, <A HREF="fdrsi.htm">DRSI</A> or <A HREF="ftfpcx.htm">TFPCX/TFPCR</A>
+before you can start the BBS again.
+
+ If the TNCs don't work ok with the software, you will see this when you
+start the BBS. You will have a lot of error-messages on the screen, and the
+TNCs may start to resync. Stop the program and go through all the setup once
+more.
+
+<FONT COLOR="#ff0000">For WinFBB:</FONT>
+You may need to check the port-speed in Windows, make sure it is the same
+for the port, as you have set the TNC and <A HREF="fmtport.htm">PORT.SYS</A> to.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

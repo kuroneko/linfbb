@@ -1,0 +1,418 @@
+#!/bin/bash
+#
+# Shell file for xfbbX client software
+#
+# (C)F6FBB 1986-1998
+#
+
+#
+# Directory of xfbbX software
+XFBBXDIR=`dirname $0`
+
+#
+# Add local PATH
+PATH=$XFBBXDIR:$PATH
+
+#
+# Temporary resource files
+XAPPLRESDIR=/tmp/.xfbbX
+
+export XFBBDIR PATH XAPPLRESDIR
+
+XFBBX=xfbbX_cl
+
+#
+# Prepares the resources
+#
+
+[ ! -d $XAPPLRESDIR ] && mkdir $XAPPLRESDIR
+[ ! -d $XAPPLRESDIR/bitmaps ] && mkdir $XAPPLRESDIR/bitmaps
+
+cat > $XAPPLRESDIR/xfbbX <<EOF
+
+xfbb*background:			#c0c0c0
+
+*selectColor:				green
+*indicatorSize:				14
+
+*XmTextField.shadowThickness:		1
+*XmScrollBar.shadowThickness:		1
+*XmList.shadowThickness:		1
+*XmPushButton.shadowThickness:		1
+*XmToggleButton.shadowThickness:	1
+*XmCascadeButton.shadowThickness:	1
+
+*XmToggleButton.indicatorOn:		INDICATOR_CHECK
+*highlightThickness:			1
+
+*XmForm.marginHeight:			1
+*XmForm.marginWidth:			1
+
+!
+! Menues
+!
+*menu_bar.file.labelString:		File
+	*file.exit.labelString:			Exit
+
+*menu_bar.window.labelString:		Window
+	*window.console.labelString:		Console
+	*window.monitoring.labelString:		Monitoring
+	*window.all_channels.labelString:	All channels
+
+*menu_bar.remote.labelString:		Remote
+
+*menu_bar.config.labelString:		Config
+	*config.main_parameters.labelString:	Default parameters
+
+*menu_bar.help.labelString:		Help
+	*help.copyright.labelString:		Copyright
+	*help.about.labelString:		About
+
+*copyright_popup.title:			Copyright
+*about_popup.title:			About
+*setup_popup.title:			Setup
+
+*workarea.confname.labelString:		Configuration name
+*workarea.hostname.labelString:		Hostname or address
+*workarea.portnb.labelString:		Port (default=3286)
+*workarea.callsign.labelString:		Callsign
+*workarea.password.labelString:		Password
+
+*menu_bar.shadowThickness:		1
+
+*tool_bar.topOffset:			3
+*tool_bar.shadowThickness:		0
+*tool_bar.spacing:			0
+*tool_bar.marginWidth:			0
+*tool_bar.marginHeight:			0
+
+*B1.labelPixmap:			console.xpm
+*B3.labelPixmap:			monitor.xpm
+*B4.labelPixmap:			allchan.xpm
+*B16.labelPixmap:			help.xpm
+
+*B1.labelInsensitivePixmap:		consol_u.xpm
+*B3.labelInsensitivePixmap:		monit_u.xpm
+*B4.labelInsensitivePixmap:		allchn_u.xpm
+*B16.labelInsensitivePixmap:		help_u.xpm
+
+*list_label.labelString:		No connected station
+*status_toggle.labelString:		Status
+*message_toggle.labelString:		Messages
+
+*txt_used.labelString:			Used memory
+*txt_gmem.labelString:			Data memory
+*txt_disk1.labelString:			Disk#1 free
+*txt_disk2.labelString:			Disk#2 free
+*txt_msgs.labelString:			Messages
+*txt_hold.labelString:			Hold msgs
+*txt_priv.labelString:			Priv msgs
+
+*used.labelString:			: 0
+*gmem.labelString:			: 0
+*disk1.labelString:			: 0
+*disk2.labelString:			: 0
+*msgs.labelString:			: 0
+*hold.labelString:			: 0
+*private.labelString:			: 0
+
+*stat_list.marginWidth:			0
+*stat_list.marginHeight:		0
+*stat_list.spacing:			0
+
+*footer.alignment:			ALIGNMENT_BEGINNING
+
+! CDE stuff
+
+*enableBtn1Transfer:			True
+*enableEtchedInMenu:			True
+*enableButtonTab:			True
+*enableMenuInCascade:			True
+*defaultButtonEmphasis:			internal_highlight
+*enableToggleColor:			True
+*enableDragIcon:			True
+
+EOF
+
+
+cat > $XAPPLRESDIR/bitmaps/allchan.xpm <<EOF
+/* XPM */
+static char * allchan_xpm[] = {
+/* width height num_colors chars_per_pixel */
+"20 20 4 1",
+/* colors */
+" 	c #C0C0C0C0C0C0",
+".	c black",
+"X	c #ffff00",
+"o	c white",
+/* pixels */
+"                    ",
+"     .............. ",
+"     .XoXoXoXoXoXo. ",
+"     .o.o.o.o.o.oX. ",
+"   ...XoXoXoXoXoXo. ",
+"   .o.o.o.o.o.oXoX. ",
+"   .X.XoXoXoXoXoXo. ",
+" ...o.o.o.o.oXoXoX. ",
+" .X.X.XoXoXoXoXoXo. ",
+" .o.o.o.o.o.o.oXoX. ",
+" .X.X.XoXoXoXoXoXo. ",
+" .o.o.............. ",
+" .X.XoXoXoXoXoXo.   ",
+" .o.oXoXoXoXoXoX.   ",
+" .X..............   ",
+" .oXoXoXoXoXoX.     ",
+" .XoXoXoXoXoXo.     ",
+" ..............     ",
+"                    ",
+"                    "};
+EOF
+
+
+cat > $XAPPLRESDIR/bitmaps/allchn_u.xpm <<EOF
+/* XPM */
+static char *allchn_u[] = {
+/* width height num_colors chars_per_pixel */
+"    20    20        3            1",
+/* colors */
+". c #c0c0c0",
+"# c #808080",
+"a c #ffffff",
+/* pixels */
+"....................",
+".....##############.",
+".....##a#a#a#a#a#a#a",
+".....#a#.#.#.#.#.##a",
+"...####.#.#.#.#.#.#a",
+"...#a#a#.#.#.#.#.##a",
+"...####.#.#.#.#.#.#a",
+".###a#a#.#.#.#.#.##a",
+".######.#.#.#.#.#.#a",
+".#a#a#a#.#.#.#.#.##a",
+".######.#.#.#.#.#.#a",
+".#a#a##############a",
+".####.#a#a#a#a#a#aaa",
+".#a#a#.#.#.#.#.##a..",
+".################a..",
+".#a#a#a#a#a#a##aaa..",
+".##.#.#.#.#.#.#a....",
+".##############a....",
+"..aaaaaaaaaaaaaa....",
+"...................."
+};
+EOF
+
+cat > $XAPPLRESDIR/bitmaps/console.xpm <<EOF
+/* XPM */
+static char *console[] = {
+/* width height num_colors chars_per_pixel */
+"    20    20        5            1",
+/* colors */
+". c #000000",
+"# c #c0c0c0",
+"a c #ffff00",
+"b c #00ffff",
+"c c #ffffff",
+/* pixels */
+"####################",
+"####...............#",
+"####.acacacacacaca.#",
+"####.c.c.c.c.c.c.c.#",
+"####.acacacacacaca.#",
+"####.c.c.c.c.cacac.#",
+"####.acacacacacaca.#",
+"####.c.c.c.cacacac.#",
+"####.acacacacacaca.#",
+"####.c.c.c.c.c.cac.#",
+"####.acacacacacaca.#",
+"####...............#",
+"####################",
+"####...............#",
+"###..b.b.b.b.b.b.b.#",
+"###.b.b.b.b.b.b.b.##",
+"##.b.b.b.b.b.b.b.###",
+"##...............###",
+"####################",
+"####################"
+};
+EOF
+
+
+cat > $XAPPLRESDIR/bitmaps/consol_u.xpm <<EOF
+/* XPM */
+static char *consol_u[] = {
+/* width height num_colors chars_per_pixel */
+"    20    20        3            1",
+/* colors */
+". c #c0c0c0",
+"# c #808080",
+"a c #ffffff",
+/* pixels */
+"....................",
+"....###############.",
+"....##a#a#a#a#a#a##a",
+"....#a#.#.#.#.#.#.#a",
+"....##.#.#.#.#.#.##a",
+"....#a#.#.#.#.#.#.#a",
+"....##.#.#.#.#.#.##a",
+"....#a#.#.#.#.#.#.#a",
+"....##.#.#.#.#.#.##a",
+"....#a#.#.#.#.#.#.#a",
+"....##.#.#.#.#.#.##a",
+"....###############a",
+".....aaaaaaaaaaaaaaa",
+"....###############.",
+"...################a",
+"...###############aa",
+"..###############aa.",
+"..###############a..",
+"...aaaaaaaaaaaaaaa..",
+"...................."
+};
+EOF
+
+
+cat > $XAPPLRESDIR/bitmaps/monitor.xpm <<EOF
+/* XPM */
+static char *monitor[] = {
+/* width height num_colors chars_per_pixel */
+"    20    20        3            1",
+/* colors */
+". c #000000",
+"# c #c0c0c0",
+"a c #0000ff",
+/* pixels */
+"####################",
+"##########a######a##",
+"#########a######a###",
+"########a######a####",
+"#####a#a####a#a#####",
+"#####aa#####aa######",
+"#####aaa####aaa#####",
+"####################",
+"####.###.####.###.##",
+"####.###.####.###.##",
+"###.###.####.###.###",
+"###..............###",
+"###.###.#.##.###.###",
+"##.###.##.#.###.####",
+"##.###.##.#.###.####",
+"#########.##########",
+"#########.##########",
+"#########.##########",
+"#########.##########",
+"####################"
+};
+EOF
+
+
+cat > $XAPPLRESDIR/bitmaps/monit_u.xpm <<EOF
+/* XPM */
+static char *monit_u[] = {
+/* width height num_colors chars_per_pixel */
+"    20    20        3            1",
+/* colors */
+". c #c0c0c0",
+"# c #808080",
+"a c #ffffff",
+/* pixels */
+"....................",
+"..........#......#..",
+".........#.a....#.a.",
+"........#.a....#.a..",
+".....#.#.a..#.#.a...",
+".....##.a...##.a....",
+".....###....###.....",
+"......aaa....aaa....",
+"....#...#....#...#..",
+"....#a..#a...#a..#a.",
+"...#.a.#.a..#.a.#.a.",
+"...##############a..",
+"...#aaa#a#aa#aaa#a..",
+"..#.a.#.a#a#.a.#.a..",
+"..#a..#a.#a#a..#a...",
+"...a...a.#a.a...a...",
+".........#a.........",
+".........#a.........",
+".........#a.........",
+"..........a........."
+};
+EOF
+
+
+cat > $XAPPLRESDIR/bitmaps/help.xpm <<EOF
+/* XPM */
+static char *help[] = {
+/* width height num_colors chars_per_pixel */
+"    20    20        4            1",
+/* colors */
+". c #000000",
+"# c #008080",
+"a c #c0c0c0",
+"b c #00ffff",
+/* pixels */
+"aaaaaaaaaaaaaaaaaaaa",
+"aaaaaaaaaaaaaaaaaaaa",
+"aaaaaaa......aaaaaaa",
+"aaaaaa.bbbbbb.aaaaaa",
+"aaaaa.bbb..##b.aaaaa",
+"aaaaa.bb.aa.b#.aaaaa",
+"aaaaaa..aaa.b#.aaaaa",
+"aaaaaaaaaa.b#.aaaaaa",
+"aaaaaaaaa.b#.aaaaaaa",
+"aaaaaaaa.b#.aaaaaaaa",
+"aaaaaaaa.b#.aaaaaaaa",
+"aaaaaaaa.b#.aaaaaaaa",
+"aaaaaaaaa..aaaaaaaaa",
+"aaaaaaaaaaaaaaaaaaaa",
+"aaaaaaaaa..aaaaaaaaa",
+"aaaaaaaa.b#.aaaaaaaa",
+"aaaaaaaaa..aaaaaaaaa",
+"aaaaaaaaaaaaaaaaaaaa",
+"aaaaaaaaaaaaaaaaaaaa",
+"aaaaaaaaaaaaaaaaaaaa"
+};
+EOF
+
+
+cat > $XAPPLRESDIR/bitmaps/help_u.xpm <<EOF
+/* XPM */
+static char *help_u[] = {
+/* width height num_colors chars_per_pixel */
+"    20    20        3            1",
+/* colors */
+". c #c0c0c0",
+"# c #808080",
+"a c #ffffff",
+/* pixels */
+"....................",
+"....................",
+".......######.......",
+"......#aaaaaa#a.....",
+".....#.a.##aa.#a....",
+".....#a.#..#a.#a....",
+"......##...#a.#a....",
+"..........#a.#.a....",
+".........#a.#.a.....",
+"........#a.#.a......",
+"........#a.#........",
+"........#a.#a.......",
+".........##aa.......",
+"..........aaa.......",
+".........##a........",
+"........#aa#a.......",
+".........##.a.......",
+"..........aaa.......",
+"....................",
+"...................."
+};
+EOF
+
+PARAM=$*
+
+$XFBBX $PARAM 
+ret=$?
+
+rm -r $XAPPLRESDIR
+
+exit $ret

@@ -1,0 +1,64 @@
+<HTML>
+<HEAD>
+  <TITLE>XFBBC.TXT</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+&nbsp;<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  XFBBC
+</H1>
+<P>
+<PRE>
+XFBBC is a tool that allows to talk with LinFBB deamon.
+
+Main features are:
+
+- remote connection to the xfbbd console
+- remote display of the trafic
+- remote display of the monitoring
+
+The command line is:
+
+xfbbC [-c | -m channel] [-h hostname] [-p port] [-i mycall] [-w password]
+
+without parameter, xfbbC defaults to "xfbbC -m 0"
+
+Command line options:
+
+-c : console connection. In this case, a callsign and a password must be
+     provided. To provide them, you can use either command line options or
+     environment variables.
+
+-m channel : monitoring request. 
+    channel may be 
+      * 0  : traffic activity of all channels is displayed.
+      * n  : traffic activity of the channel "n" is displayed
+      * -1 : monitoring of all ports
+
+-h : hostname of xfbbd (default localhost)
+
+-p : socket port for the communication to xfbbd (default 1525)
+
+-i : callsign for the console connection
+
+-w : password for the console connection. The password must be the exact
+     string corresponding to the callsign as defined in the passwd.sys file of
+     xfbbd.
+
+some environment variables may default the command lines options :
+
+-h : XFBBC_HOST
+-p : XFBBC_PORT
+-i : XFBBC_CALL
+-w : XFBBC_PASS
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

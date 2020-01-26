@@ -1,0 +1,110 @@
+<HTML>
+<HEAD>
+  <TITLE>TFPCX (Appendix 25 )</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  TheFirmware (TF)<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 25)<SMALL>.</SMALL>
+<P>
+<PRE>
+<BIG><B>TFPCX / TFPCR / TFKISS (Hostmode KISS-driver).</B></BIG>
+
+
+It is possible to link FBB to a TheNetNode or similar systems running on a
+separat PC with a simple 0-modem cable.
+For this TF-KISS, TFPCR or TFPCX can be used as com-driver, and the link
+must be defined as a KISSLINK in the nodesystem.
+
+Another possibility is to use the driver with tnc's in kiss-mode etc..
+The only restriction is that baycom modem do not work, but SCC cards do work.
+
+It must be called with the same interrupt as stated in INIT.SRV as
+TFPC-interrupt, or OxFD by default (if the INIT.SRV does not specify it).
+It can be used with <FONT COLOR=#FF0000>DosFBB</FONT> or <FONT COLOR=#FF0000>WinFBB</FONT> running under <FONT COLOR=#FF0000>WIN3.xx or WIN95</FONT>.
+
+<FONT COLOR=#FF0000>IMPORTANT :</FONT> TFPCX, TFPCR or TFKISS always must be called before starting WINDOWS and/or FBB.
+Better add the call into your AUTOEXEC.BAT with a line like this (example using TFKISS) :
+
+        TFKISS -I:FD -B:9600
+       
+Comport 1 is default, but other ports as well as other parameters can be 
+specified (look in your manual).
+Place the driver itself in your \FBB\BIN directory.
+In <A HREF="fmtport.htm">PORT.SYS</A> you must use 5 in INTERFACE, and D in type host mode.
+The interface behaves in many ways as WA8DED hostmode.
+
+If you intend to use higher speed than 9600 baud you must use UART 16550
+in your serial ports and PCs not slower than 386 40 MHz.
+Otherwise you probably will get errors during binary transfer or forward.
+
+Example of PORT.SYS:
+
+# FBB7.00
+#
+#Ports TNCs
+1      1
+#
+#Com Interface Address (device)   Baud
+1         5      3F8              9600
+#
+#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode  Freq
+0    0     0    0       0    0     0     0    00/01    ----- File-fwd.
+1   10     1    1     236    7     4    30    00/15     UDLY VHF/UHF/SHF
+#
+#TNC Nbs Callsign-SSID Mode
+#1    1   LA1B-1        B
+#
+# End of file.
+#
+
+
+
+Example of INITTNC1.SYS:
+
+I OZ7BOX        # Set callsign
+M IUS           # Monitor I, U and S-frames - only necessary with UNPROTO function active
+@T2 150         # T2 timer settings
+W 10            # Slottime
+P 255           # P-persistance
+O 7             # Maxframe
+Y 10            # Number of channels
+
+Other parameters can be set - look in your manual.
+Parameters can also be set with  F7 - TNC commands.
+
+If you have outgoing on more than one channel at the time, you have to use
+SSID's in your forward connects for each channel.
+With hostmode SSID's can be set for a channel using the L-command (send tnc-
+command) together with the I-command (hostmode tnc-command - SET CALLSIGN).
+
+Examples (only part of the connect strings showed) :
+
+Forward to the first call:
+
+L I OZ7BOX-10   # Use SSID -10 as your outgoing call
+C C ...         # The connect strings
+
+Forward to the second call:
+
+L I OZ7BOX-9    # Use SSID -9 as your outgoing call
+C C ...         # The connect strings
+
+etc....
+
+SSID's from -0 to -15 can be used, but NOT SSID's already in use.
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

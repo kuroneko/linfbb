@@ -1,0 +1,119 @@
+<HTML>
+<HEAD>
+  <TITLE>Compressed forward (Appendix 10)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Compressed forward<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 10)
+<P>
+<PRE>FBB has 2 kinds of compressed forward:
+<B><A HREF="#FBB">Compressed forward FBB.</A></B>
+<B><A HREF="#XFWD">XFWD Compressed forward.</A></B>
+<BIG><B></B></BIG>
+
+<A NAME="FBB"><!-- --></A><IMG SRC="../cyan.gif" WIDTH="14" HEIGHT="14"><BIG><B>Extension to the protocol. Compressed forward FBB.</B></BIG>
+
+
+ The protocol utilized for the transfer of ascii files compressed is an
+extension to the existing protocol. The compressed forward is validated by
+the presence of the letter B in the SID [FBB-5.12-BFHM$]. The transfer of
+compressed files can only take place under FBB protocol. The presence of the
+letter B in the SID without the F letter will remain without effect.
+
+ The only difference as regard to the standard protocol is the submit line.
+It can specify the type of data contained in the compressed message. FA means
+that the transfer will be an ascii compressed message. FB means that the
+message will be a binary compressed file (this last possibility is not yet
+implemented in the version 5.12).
+
+ The submission of an ascii message will be in the form :
+ FA P FC1CDC F6ABJ F6AXV 24754_F6FBB 345
+
+ The submission of a binary file will be in the form :
+ FB P FC1CDC F6ABJ F6AXV 24754_F6FBB 345
+
+ The transferred data are of a specific format. The transfer will be done in
+binary mode. This last one is derived of the YAPP protocol which is very
+reliable. All transfer is made of a header, a block of data, an end of
+message and a checksum. Each transfer is equivalent to the transfer of one
+message of the standard protocol and shall not be followed by a control Z,
+the end of file specifier is defined in another way.
+
+ Format of header for an ascii compressed message (submission FA) :
+
+ &lt;SOH&gt; 1 byte = 01 hex
+ Length of the header 1 byte = Length from the title,
+                               including the two &lt;NUL&gt; characters.
+ Title of the message 1 to 80 bytes
+ &lt;NUL&gt; 1 byte = 00 hex
+ Offset 1 to 6 bytes
+ &lt;NUL&gt; 1 byte = 00 hex
+
+ Format of header for a binary compressed file (submission FB) :
+
+ &lt;SOH&gt; 1 byte = 01 hex
+ Length of the header 1 byte = Length from the filename,
+                               including the two &lt;NUL&gt; characters.
+ Name of the file 1 to 80 bytes
+ &lt;NUL&gt; 1 byte = 00 hex
+ Offset 1 to 6 bytes
+ &lt;NUL&gt; 1 byte = 00 hex
+
+ As to follow the french regulation, the title of the message or the file
+name are transmitted in ascii, not compressed.
+
+ The offset is also transmitted in ascii and specifies the offset at which
+the data should be inserted in the file (in case of a fragmented file). In
+the version 5.12, this parameter is not utilized and is always equal to zero.
+
+ A data block contains from one to 256 bytes. It begins by two bytes which
+specify the format.
+
+ Data block format :
+
+ &lt;STX&gt; 1 byte = 02 hex
+ Number of data 1 byte = 00 to ff hex. (00 if length = 256 bytes).
+
+  Data bytes 1 to 256 bytes
+
+ The last data block is followed by the end of file specifier and the
+checksum.
+
+ End of file specifier format :
+
+ &lt;EOT&gt; 1 byte = 04 hex
+ Checksum 1 byte = 00 a ff hex
+
+ The checksum is equal to the sum of all the data bytes of the transmitted
+file, modulo 256 (8 bits) and then two's complemented.
+
+ The checking of the checksum is very simple :
+
+ The sum of the data from the file and the checksum received modulo 256
+(anded with FF) shall be equal to zero.
+
+ In case of a checksum error, the message or the file is not taken to account
+and the system issues a disconnect request after having sent the comment :
+
+ *** Checksum error
+
+<A NAME="XFWD"><!-- --></A><IMG SRC="../orange.gif" WIDTH="14" HEIGHT="14"><BIG><B>Extension to the protocol. XFWD compressed forward.</B></BIG>
+
+ X forwarding Protocol is implemented.  
+ XForwarding now supports re-routing and swapping.
+ Binary forwarding via telephone modem (FBB or XFWD)
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

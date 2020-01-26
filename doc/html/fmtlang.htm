@@ -1,0 +1,101 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of LANGUE.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  LANGUE.SYS
+</H1>
+<P>
+<PRE><BIG><B>LANGUE</B><BIG><B>.</B></BIG><B>SYS (\FBB\SYSTEM).</B></BIG>
+
+ This file is in the SYSTEM-directory. You do not need to change this file
+for the first startups.
+
+ First there are 3 numbers. The text in the file explains how to use them.
+
+ Next there is a list of all available languages. These names must be the
+same names as used in the .TXT and .HLP files in the directory called LANG.
+So, there must be an <A HREF="fmttxt.htm#TXT">ENGLISH.TXT</A> and <A HREF="fmttxt.htm#HLP">ENGLISH.HLP</A> there, if ENGLISH is in
+LANGUE.SYS file.
+
+ After some comment-lines, there is a long list of prefixes, and the
+corresponding number of language that each user will be presented with for
+his first connect. The user himself, can change language later with OL-
+command in the BBS.
+
+ Remember, only the "Number in PC at the time" decides how much memory the
+languages will use. All languages will be available anyway, but if more then
+(in this case) 4 are in use at the same time, the BBS will swap the less used
+language to disk, and load a new one from disk.
+
+ #
+ # File that decides what language each user will use in the first
+ # connect. He can change language himself later...
+ # All prefixes not listed here, will receive language no 1 (english).
+ # 3 parametres :
+ # How many languages - How many in PC at the time - Console-language.
+ #
+ 17 4 1
+ #
+ ENGLISH
+ NORSK
+ NORSK8
+ FRANCAIS
+ SVENSKA
+ SVENSKA8
+ DANSK
+ DANSK8
+ SUOMI
+ PORTUGUE
+ ITALIANO
+ DEUTSCH
+ CATALA
+ ESPAGNOL
+ NEDERLAN
+ RUSSE
+ HRVATSKI
+ #
+ # 1 : English
+ # 2 : Norwegian (7-bits)
+ # 3 : Norwegian 8-bit
+ # 4 : French
+ # 5 : Swedish (7-bits)
+ # 6 : Swedish 8-bit
+ # 7 : Danish
+ # 8 : Danish 8-bit
+ # 9 : Finnish
+ # 10: Portugues
+ # 11: Italian
+ # 12: German
+ # 13: Catalan
+ # 14: Spanish
+ # 15: Dutch
+ # 16: Russian
+ # 17: Croatian
+ #
+ CT* 10
+ CU* 10
+ C3* 13
+ DU* 1
+ D* 12
+ EI* 1
+ E* 14
+ F* 4
+ 9A* 17
+
+ etc. etc.
+
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

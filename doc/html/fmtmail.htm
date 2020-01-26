@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+  <TITLE>MAIL.IN file (appendix 22)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  MAIL.IN
+</H1>
+<P ALIGN=Center>
+(Appendix 22)
+<P>
+<PRE>This file is used for importing messages directly to the BBS.  FBB checks 
+every minute for the existence of this file (filename and path may be
+changed in <A HREF="fmtinit.htm">INIT.SRV</A>, but the default is \FBB\MAIL.IN).  If the file exists,
+the messages in the file will be imported directly into the BBS.
+
+The format of each message is identical to the format of any message 
+normally sent to the BBS.  Example of short MAIL.IN with 2 messages:
+
+SP F6FBB &lt; LA6CU                        (S-line)
+Testmessage                             (Title)  
+This is only a test                     (Message)
+/EX                                     (/EX) 
+SB ALL @ EU &lt; LA6CU $12345ABCD
+Test Message
+This is just another test
+/EX
+  
+Some servers include a #-sign between each message to force the
+from-bbs to become the callsign of this BBS.  This is still alowed, but
+should maybe not be necessary.
+
+After the file has been processed (the messages imported) the file is 
+automatically deleted.
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

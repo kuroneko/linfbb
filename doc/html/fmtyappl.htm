@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of YAPPLBL.DAT</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  YAPPLBL.DAT
+</H1>
+<P>
+<PRE><BIG><B>YAPPLBL.DAT (\FBB\SYSTEM).</B></BIG>
+
+This is a binary file which holds the informations of the FbbDOS files.
+Do not edit or change this file, otherwise files of FbbDOS could be
+hidden or lost.
+
+#define LABEL_FIC 80
+#define LABEL_NOM 40
+#define LABEL_OWN 8
+
+typedef struct {
+	char	nomfic[LABEL_FIC] ; /* 80 Filename (virtual path of FBB)  */
+	char	label[LABEL_NOM]  ; /* 40 Label of the file               */
+	char	owner[LABEL_OWN]  ; /* 8  Callsign of the owner (no ssid) */
+	long	index             ; /* 4  Number of uploaded file (from 1)*/
+	long	date_creation     ; /* 4  date of the file creation       */
+	char	free[24]          ; /* 24 unused (padded with NULL)       */
+} Rlabel ;      /* 160 bytes */
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

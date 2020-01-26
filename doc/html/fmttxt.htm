@@ -1,0 +1,50 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of TXT-HLP-INF-ENT-NEW</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  TXT, HLP, ENT, NEW, INF
+</H1>
+<P ALIGN=Center>
+(for each language)
+<P>
+<PRE>
+<BIG><B>Specific language files like</B></BIG>
+<BIG><B><A HREF="#TXT">x.TXT</A>, <A HREF="#HLP">x.HLP</A>, <A HREF="#ENT">x.ENT</A>, <A HREF="#NEW">x.NEW</A>, <A HREF="#INF">x.INF</A> (SYSTEM\LANG).</B></BIG>
+
+
+ These various files have the names of the languages followed by the suffixes
+TXT, HLP, ENT, or INF. They may content variables and are searched for in the
+directory holding the files (SYSTEM\LANG).
+
+ <FONT COLOR="#ff0000"><A NAME="TXT"><!-- --><!-- --></A>TXT</FONT> : file which contains text used during the operation of the software.
+Each line is associated to a text used by the software. The number of lines
+must not be altered, except for the comment lines which are not taken into
+account (lines beginning with a # in the first column).
+
+ <A NAME="HLP"><!-- --><!-- --></A><FONT COLOR="#ff0000">HLP</FONT> : Help file called by the ? or H command. The help is refered to a word
+following the command, (ex: ? HELP). Each help block should begin with a line
+of a special format.
+
+ <FONT COLOR="#ff0000"><A NAME="ENT"><!-- --><!-- --></A>ENT</FONT> : Optional file displayed on the user connection, between the header and
+the list of commands. The FRANCAIS.ENT file will be displayed if it exists
+and if the caller uses french language.
+There are also special files MODEM.ENT and TELNET.ENT for modem/telnet.
+
+ <A NAME="NEW"><!-- --><!-- --></A><FONT COLOR="#ff0000">NEW</FONT> : Same as ENT above, but shown only ONCE for each user. 
+
+ <A NAME="INF"><!-- --><!-- --></A><FONT COLOR="#ff0000">INF</FONT> : File displayed when the command "I" is used. If the file does not
+exist, the display of the ! command will take place.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

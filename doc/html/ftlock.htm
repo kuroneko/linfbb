@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+  <TITLE>LOCK-files (Appendix 31)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  LOCK-files (.LCK)
+</H1>
+<P ALIGN=Center>
+(Appendix 31)<SMALL>.</SMALL>
+<P>
+Added lock files when importing and exporting mail (same filename, extension
+added or replaced = "lck")
+<PRE>
+This means that while FBB is using MAIL.IN a file named MAIL.LCK exists.
+In the same way, if a file named MAIL.LCK exists, FBB will delay MAIL.IN
+This is to avoid conflicts between applications.
+
+
+MAIL.LCK is not imported, it is only a (empty) temporary file which is used
+as a flag.
+
+When FBB imports MAIL.IN it does :
+
+if MAIL.LCK exists
+then begin
+    do not import MAIL.IN
+    if MAIL.LCK is older than one hour
+    then begin
+        delete (if possible) MAIL.LCK
+    end
+end
+else begin
+    create MAIL.LCK
+    import MAIL.IN
+    delete MAIL.LCK
+end
+
+this is checked every minute until MAIL.LCK no longer exist.
+
+When FBB exports LA6CU.OUT, it does :
+
+if LA6CU.LCK exists
+then begin
+    do not export LA6CU.OUT
+    if LA6CU.LCK is older than one hour
+    then begin
+        delete (if possible) LA6CU.LCK
+    end
+end
+else begin
+    create LA6CU.LCK
+    export LA6CU.OUT
+    delete LA6CU.LCK
+end
+
+Another application should do the same to avoid conflicts.
+
+Lock-files are deleted (if possible) after 1 hour.
+
+</PRE>
+<PRE><A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

@@ -1,0 +1,34 @@
+.TH FBB 8
+
+.SH NAME
+fbb \- Script to start the fbb daemon
+
+.SH SYNOPSIS
+.B fbb
+.I "[options]"
+
+.SH DESCRIPTION
+This script is used to start the daemon. It will ask you for configuration
+details (CALL, SSID, QRA, etc.) and port entries when the
+configuration file for fbb (/etc/ax25/fbb.conf) does not exist.
+If a configuration file is present the daemon will be started.
+
+.SH OPTIONS
+.TP
+.B \-f
+Runs fbb in foreground.
+.TP
+.B \-h
+Help information (only displayed when a valid configuration is present).
+.TP
+.B \-l <logfile>
+Log debug info to logfile.
+.TP
+.B \-s
+Run fbb silently.
+.TP
+Any other flags will be passed to the daemon.
+
+
+.SH AUTHOR
+This manual page was written by Joop Stakenborg <pa3aba@debian.org>.

@@ -1,0 +1,80 @@
+<HTML>
+<HEAD>
+  <TITLE>Kantronics KAM (Appendix 4)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Kantronics KAM<SMALL> in host-mode.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 4)
+<P>
+<PRE>
+ If you plan to use a KAM with this software, you must make some changes.
+
+<FONT COLOR="#ff0000">For WinFBB:</FONT>
+ Use interface 6 in <A HREF="fmtport.htm">PORT.SYS</A>.
+
+<FONT COLOR="#ff0000">For DosFBB:</FONT>
+ Before you start the BBS, you must load the RS232 driver.  You must use 
+ESSKAM or ESS (ESS must be version 1.10 or higher). Do not use another 
+driver such as COMBIOS or MBBIOS.
+ Run it like this:
+ ESSKAM 1             (Com1, Address and IRQ = defaults)
+ ESSKAM 1 03F8 4      (Com1, Address=03F8Hex, IRQ4)
+
+ The KAM must be in the right baudrate, and in hostmode. You put it into
+hostmode with these commands:
+ INTF HOST
+ PERM
+
+ There is a special format for INITTNCx.SYS. For HF, use this:
+
+ UNPROTO MAIL/
+ MONITOR ON/
+ MCOM ON/
+ MCON ON/
+ MRESP ON/
+ PID ON/
+ RETRY 15/
+ RESPTIM 0/
+ FRACK 2/
+ CHECK 30/
+ HID OFF/
+
+ For VHF use this:
+
+ UNPROTO /MAIL
+ MONITOR /ON
+ MCOM /OFF
+ MCON /ON
+ MRESP /ON
+ PID /ON
+ RETRY /8
+ CHECK /30
+ HID /OFF
+
+ As you can see, the position of the "/" is very important for HF/VHF !
+
+ In PORT.SYS you must use 1 for VHF and 2 for HF in MultCh. You must also use
+K in "Type host-mode".
+
+ #
+ # Same number of lines as number of TNCs.
+ #
+ #TNC NbCh Com MultCh Pacl Maxfr NbFwd MxBloc M/P-Fwd Mode Freq
+ 1    4    1   1      230  4     1     10     30/60   UKYW 144.675
+ 2    1    1   2      80   1     1     6      15/60   UKYW HF
+ #
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

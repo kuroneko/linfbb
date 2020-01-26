@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+  <TITLE>FORMAT of WFBID.SYS</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  WFBID.SYS
+</H1>
+<P>
+<PRE>
+<BIG><B>WFBID.SYS (\FBB\SYSTEM).</B></BIG>
+
+
+ This binary file holds the last received BIDs. The number of records of this
+file is defined in the <A HREF="fmtinit.htm">INIT.SRV</A> file. This file is very important and must
+not be edited or changed otherwise the list of the messages could be lost.
+This file can only be opened for reading.
+
+
+ It is organized with records, each record containing information on a BID.
+This is a circular file and the first record of the file contains the pointer
+of the last overwritten record in the msg_number field. Never modify this
+file while the BBS is running.
+
+ Structure of one record (C language) :
+
+typedef struct {
+
+  char  mode         ;  /* 1   Type of message (A,B,P,T)       */
+  char  fbid[13]     ;  /* 13  BID of the message              */
+  long  msg_number   ;  /* 4   Number of the message           */
+
+} bidfwd             ;  /* 18  bytes = length of one record    */
+
+In C language, all strings are ended with a NULL (00 hex) character.
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

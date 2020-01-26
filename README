@@ -1,0 +1,227 @@
+
+These are the sources of xfbbd (daemon version for LINUX) and their utilities.
+
+1/ Compiling xfbbd, xfbbC client and its utilities with 2.6 kernel from source:
+-------------------------------------------------------------------------------
+To compile and install xfbbd you need to run a session as root
+for writing privilege reasons.
+
+- cd into fbb-70?? directory
+
+*** If you are building from SVN repository code, you may need to 
+*** run "./autogen.sh" first, in order to create the ./configure script.
+
+Enter the command "./configure" to run the configure script.
+
+Optionally, run "./configure --help" to see the various configure
+options you can set.
+
+Enter the command "make" to build the source.
+
+Be sure that an FBB daemon is not already running. Then, 
+
+Enter the command "make install".
+
+*** If you are installing for the first time, run "make installconf". 
+*** This will install default configuration files.
+*** DO NOT run "make installconf" if you are upgrading a working system, 
+*** as your configuration files WILL BE overwritten with defaults. 
+
+For the first installation start the BBS software using fbb script
+with command:
+	fbb
+It will check validity of FBB files tree and create missing files including configuration files.
+
+For next BBS start use fbb.sh script. It is in /usr/local/share/doc/fbb/
+Make it executable (chmod 755 fbb.sh) and move it somewhere on your system to call 
+it automatically on start, or use it manually "fbb.sh start". 
+
+2/ Compiling the xfbbX X11 client from source:
+----------------------------------------------
+Building the xfbbX client requires the following libraries to be installed:
+	libx11-dev (provides -lX11)
+	libxt-dev (provides -lXt)
+	libxext-dev (provides -lXext)
+	libxpm-dev (provides -lXpm)
+	lesstif2-dev or libmotif-dev (provides -lXm)
+
+or, the equivalent packages/libraries for your OS.
+
+If the above libraries are available, xfbbX_cl will be built and installed 
+automatically (you won't see a warning when running ./configure).
+
+xfbbX is a shell script which creates the resource file and runs xfbbX_cl.
+
+3/ Fixes and evolutions :
+-------------------------
+Please, do not create new versions of code, this will make us impossible
+to maintain and know what is the current version. Instead help us to develop
+the code and fix the bugs. All fixes and evolutions will be welcome.
+
+Please again, do not delete the copyright and author headers in the files.
+
+If you didn't do it already, subscribe to the xfbb mailing list by sending a 
+email to majordomo@f6fbb.org without title and with "subscribe xfbb" as the 
+first line of text.
+
+Then you will be able to send your fix, evolutions proposals and remarks to 
+the mailing list.
+
+
+4/ Running xfbbd :
+------------------
+
+Command line options of the fbb script :
+----------------------------------------
+
+-f : Software is run in foreground
+-h : help information
+-q : run silent
+-l logfile : log debug info to logfile
+
+
+Other options given to xfbbd :
+------------------------------
+
+-a : monitor all frames
+-v : verbose
+-i : only check init files
+-n : no client (xfbbC, xfbbX or fbbW) interface
+-s service : client service name (default none)
+-p port_num : client port number (default 3286)
+
+
+xfbbd exit values :
+-------------------
+
+        0 : Error (configuration...)
+        1 : Sigterm received
+        2 : re-run (no housekeeping)
+        3 : housekeeping
+        4 : Software stop
+        5 : Segv or BusError
+        6 : System Reboot asked
+
+
+Sysop exit commands :
+---------------------
+
+        /A : Software stop
+        ------------------
+        Immediate software exit (value 4)
+
+        /K : Housekeeping
+        ---------------------------
+        Delayed software exit (value 4)
+
+        /L : Re-run
+        ---------------------------
+        Delayed software exit (value 2)
+
+        /M : Re-run
+        ---------------------------
+        Immediate software exit (value 2)
+
+        /R : Reboot
+        ---------------------------
+        Immediate software exit (value 6)
+
+
+Scripts :
+---------
+
+By default, the script directories are in /usr/local/lib/fbb/script.
+
+When an exit value is received from xfbbd, all executable commands
+(scripts or programs) included in the directory are executed
+in alphanumeric order.
+
+
+Script directories (by value) :
+-------------------------------
+
+        0 : error_return
+        1 : end_session
+        2 : rerun
+        3 : maintenance
+        4 : stop_system
+        5 : sig_segv
+        6 : reset
+
+5/ fbb folder tree :
+--------------------
+
+Special files :
+- configuration : /usr/local/etc/ax25/fbb/fbb.conf
+- mail import   : /usr/local/var/ax25/fbb/mail/mail.in
+
+binaries :
+----------
+/usr/local/sbin
+
+configuration tree :
+--------------------
+/usr/local/etc/ax25/fbb
+                       \_ lang
+
+utilities tree :
+----------------
+/usr/local/lib/fbb
+                 |\_ filter
+                 |
+                 |\_ pg
+                 |
+                 |\_ script
+                 |        |\_ error_return
+                 |        |
+                 |        |\_ end_session
+                 |        |
+                 |        |\_ rerun
+                 |        |
+                 |        |\_ maintenance
+                 |        |
+                 |        |\_ stop_system
+                 |        |
+                 |        |\_ sig_segv
+                 |        |
+                 |         \_ reset
+                 |
+                 |\_ server
+                 |
+                  \_ tool
+
+data tree :
+-----------
+/usr/local/var/ax25/fbb
+                      |\_ docs
+                      |
+                      |\_ log
+                      |
+                      |\_ oldmail
+                      |
+                      |\_ sat
+                      |
+                      |\_ wp
+                      |
+                      |\_ fbbdos
+                      |      \_ yapp
+                      |
+                      |\_ mail
+                      |      \_ mail[0-9]
+                      |
+                       \_ binmail
+                         \_ mail[0-9]
+
+
+6/ Good luck with "fbb"... 
+--------------------------
+
+   Jean-Paul ROUBELAT jpr@f6fbb.org
+   6 rue George Sand
+   31120 ROQUETTES - France
+
+and since years 2000
+
+ Bernard Pidoux
+ f6bvp@free.fr
+

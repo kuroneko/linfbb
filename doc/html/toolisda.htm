@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+  <TITLE>Tool: ISDAY</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  ISDAY.COM
+</H1>
+<P>
+<PRE>ISDAY is a small program to use if you want some program to run only
+on specific days.
+
+Format : ISDAY [/Nmday] [/Dday] [/Mmonth] [/H]
+
+mday  = day of the month,  1 to 31
+day   = day in the week,   0=sunday .. 6=saturday
+month = month in the year, 1=january .. 12=december
+All parameters are anded.
+
+Each parameter can be specified as a value, or as an interval
+like "1,3,12-22", that is the first, third and 12th to 22nd
+
+ISDAY exits with ERRORLEVEL 0 if parameters match else with ERRORLEVEL 1
+
+Example :
+
+ISDAY /D0-2
+IF ERRORLEVEL 1 GOTO LABEL
+PROGRAM TO RUN ON SUNDAYS, MONDAYS and TUESDAYS
+:LABEL
+...
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>

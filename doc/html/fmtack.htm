@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+  <TITLE>Format of ACK-messages (Appendix 11)</TITLE>
+</HEAD>
+<BODY BACKGROUND="/back_fbb.jpg">
+<P>
+<IMG SRC="/fbb.gif" WIDTH="32" HEIGHT="32">
+<H1 ALIGN=Center>
+  Format of ACK-messages<SMALL>.</SMALL>
+</H1>
+<P ALIGN=Center>
+(Appendix 11)
+<P>
+<PRE>
+ The ACK messages on receiving have a simple and compact format. The aim is
+to have a message as short as possible in order to avoid an unnecessary usage
+of the network.
+
+ The title of the message is the title of the original message with a leading
+"ACK:". Example :
+
+ ACK:Title of the original message.
+
+ These ACK messages are true messages strictly speaking. They carry the
+origin, the destination, the route and the MID but they are of a particular
+type, the type A (private are of type P, bulletins of type B, etc...). This
+difference allows the routing of these messages without the lines "R:". This
+is done again with the aim of avoiding an excessive load by data which are of
+no use in this case.
+
+ To keep the compatibility with the existing forwarding protocol, the type of
+these messages is changed to P (private) if the receiving BBS of the
+forwarding does not know the type of ACK messages (specified in the SID [FBB-
+5.12-ABFHM$] by the letter A). In this case, the ack message will continue on
+its route as a private message.
+
+ The ACK messages are of the following form :
+ ACK:Message test. &lt;-- Title of message
+ Msg FD1CDC@F6FBB - 22-dec 17:28z &lt;-- Text of message
+
+ It tells that the message that you had sent to FD1CDC at F6FBB and whose
+title is "Message test" has been received in the BBS F6FBB on 22 dec at 12:28
+GMT.
+
+
+
+<A HREF="doc.htm"><IMG SRC="/contents.gif" WIDTH="108" HEIGHT="28"></A>
+
+<A HREF="/"><IMG SRC="../button_home.gif" WIDTH="90" HEIGHT="29"></A>
+
+<FONT COLOR="#800000">This page was last updated <!--#config timefmt="%d-%b-%y"--><!--#echo var="LAST_MODIFIED"--></FONT>
+
+</PRE>
+</BODY></HTML>
