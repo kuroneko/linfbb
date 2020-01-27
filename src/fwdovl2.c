@@ -44,7 +44,12 @@ char *idnt_fwd (void)
 	*ptr++ = '.';
 	*ptr++ = '0' + PACKAGE_VERSION_MINOR;
 	*ptr++ = '.';
-	*ptr++ = '0' + PACKAGE_VERSION_MICRO;
+	if (PACKAGE_VERSION_MICRO < 10) {
+		*ptr++ = '0' + PACKAGE_VERSION_MICRO;
+	} else if (PACKAGE_VERSION_MICRO < 100) {
+		*ptr++ = '0' + (PACKAGE_VERSION_MICRO / 10);
+		*ptr++ = '0' + (PACKAGE_VERSION_MICRO % 10);
+	}
 	*ptr++ = '-';
 	*ptr++ = 'A';
 	if (pvoie->prot_fwd & FWD_FBB)
