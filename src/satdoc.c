@@ -1,54 +1,37 @@
-/* SATDOC.C by Bernard PIDOUX, F6BVP [ f6bvp@amsat.org ]
+/************************************************************************
+    Copyright (C) 1986-2000 by
 
- Updates F6FBB BBS satellite documentation files from informations
- extracted from AMSAT bulletins AMSAT NEWS SERVICE 
- version 2.8 : option fichiers inverses avec noms des satellites
- sur 8 caracteres maximum XXXXXXXX.SAT
- version 2.8.1 INTERNATIONAL SPACE STATION ---> ISS
-               corrige bogue noms < 8 caracteres
- version 2.8.2  supprime la redefinition de strncasecmp
-		modification du compteur de fichiers documentaires
-		option de compilation ACCENTS 
- version 2.8.3 for GCC compliance
- version 2.8.4 In special cases satellite names iare like satellit-1
-               doc filename is translated as satellit1.sat
-	       increased TAILLE from 80 to 122 to avoid buffer overflow
- version 2.8.5 displayed a wrong number of created files. Corrected
- version 2.8.6 the format for number of lines processed changed
- version 2.8.7 ANS BID changed from $ANS to $WSR. Corrected
- version 2.8.8 Both $ANS and $WSR detected are valid.
- version 2.8.9 strncmp() for Windows needed small code change.
-*/
-/********************************************************************
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+    F6FBB - Jean-Paul ROUBELAT
+    jpr@f6fbb.org
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-MA  02111-1307  USA
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Parts of code have been taken from many other softwares.
+    Thanks for the help.
 *********************************************************************/
 /* A faire :
 traitement special pour le cas de satellites doubles comme RS-12 / RS-13 ayant le meme numero NASA*/
 
 /* #define FRANCAIS */
-#define _LINUX_ 
 #define ACCENTS
-#define _DOS_
 #define VERSION "2.8.9"
 
-#ifdef _DOS_
+#ifdef __DOS__
 #include <errno.h>
 #include <signal.h>
 #include <stdarg.h>
-#ifdef _LINUX_
+#endif
+#ifdef __linux__
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/fcntl.h>
@@ -74,7 +57,6 @@ traitement special pour le cas de satellites doubles comme RS-12 / RS-13 ayant l
 #include <ctype.h>
 #include <malloc.h>
 
-#endif
 
 #define LINE 256
 #define TAILLE 256
@@ -193,7 +175,7 @@ void cataloguer(FILE *fptr, int lignes, char *infos, char *buf2, short inverse)
  char tampon[LINE]="\0";	// tampon pour chaine de caracteres
  char buffer[LINE];
  char *nom;
- int fin,k;
+ int fin, k;
 /* Option fichiers au nom des numeros de catalogues */
  if (inverse == 1)
         strcpy(tampon,buf2);
@@ -228,7 +210,7 @@ void cataloguer(FILE *fptr, int lignes, char *infos, char *buf2, short inverse)
 		fiche = fopen(tampon,"wt+") ;
 		if (fiche == NULL) {
 #ifdef FRANCAIS
-#ifdef _LINUX_
+#ifdef __linux__
 #ifdef ACCENTS			
                 printf("Erreur: impossible de créer le fichier :'%s' ",tampon);
 		printf("à la ligne %d\n",lignes);
@@ -275,7 +257,7 @@ void cataloguer(FILE *fptr, int lignes, char *infos, char *buf2, short inverse)
 	}
  	lignes++;
 /* sauvegarde pour memoire si ligne avec nom du satellite */
-	k = sscanf(buffer, "%s \n", tampon);
+	if ((k = sscanf(buffer, "%s \n", tampon) == 1))
 	fwrite(buffer, strlen(buffer), 1, fiche);
  } while ((strncasecmp(tampon,"NNNN",4) != 0) && (strncasecmp(tampon,"=====",5) != 0) && (strncasecmp(tampon,"/EX",3) != 0) && (strncasecmp(tampon,"[ANS",4) != 0));
 
@@ -310,7 +292,7 @@ int main (int argc, char *argv[])
 	cejour = gmtime(&temps);
 
 #ifdef FRANCAIS
-#ifdef _LINUX_
+#ifdef __linux__
 #ifdef ACCENTS
         printf("\nProgramme DOCumentaire pour BBS F6FBB\n");
         printf("à partir des fichiers bulletins AMSAT SATELLITE NEWS WSR\n");
@@ -355,7 +337,7 @@ int main (int argc, char *argv[])
 
  if (fptr == NULL) {
 #ifdef FRANCAIS
-#ifdef _LINUX_
+#ifdef __linux__
 #ifdef ACCENTS
 	printf("\nFichier '%s' non trouvé\n",identification);
 #else
@@ -449,7 +431,7 @@ do {
 
 #ifdef FRANCAIS
         printf("\n 6%d bulletins WSR lus\n", bulletin_ANS);
-#ifdef _LINUX_
+#ifdef __linux__
 #ifdef ACCENTS
         printf(" %6d fichier(s) documentaire(s) satellites créés\n", doc_satellites);
 	printf(" %6d lignes traitées\n", lignes);

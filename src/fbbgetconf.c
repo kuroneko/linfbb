@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #define ENGLISH
 
@@ -39,7 +35,7 @@
 #include <sys/stat.h>
 #include <ctype.h>
 
-#ifdef __LINUX__
+#ifdef __linux__
 #include <stdlib.h>
 #include <unistd.h>
 #else
@@ -48,13 +44,21 @@
 #endif
 
 #include <fbb_conf.h>
-#include "version.h"
+#include <config.h> 
 
 char *conffile = NULL;
 
+void usage(void);
+
+void usage()
+{
+	fprintf(stderr, "\nfbbgetconf v%s\n", VERSION);
+	fprintf(stderr, "Usage : fbbgetconf [-a] [-d] [-h] [-f configfile] [key] [key] ...\n");
+}
+
 int main(int ac, char **av)
 {
-	int c;
+	int c = 0;
 	int list_all = 0;
 	int list_def = 0;
 
@@ -75,23 +79,16 @@ int main(int ac, char **av)
 			break;
 
 		case 'h':
-		default:
-#ifdef LETTRE
-#ifdef PRE
-			fprintf(stderr, "\nfbbgetconf V %d.%02d%c-pre%d\n", MAJEUR, MINEUR,
-					LETTRE, PRE);
-#else
-			fprintf(stderr, "\nfbbgetconf V %d.%02d%c\n", MAJEUR, MINEUR,
-					LETTRE);
-#endif
-#else
-			fprintf(stderr, "\nfbbgetconf V %d.%02d\n", MAJEUR, MINEUR);
-#endif
-			fprintf(stderr,
-					"format  : fbbgetconf [-a] [-d] [-h] [-f configfile] [key] [key] ...\n");
+			usage();
 			exit(0);
 
 		}
+	}
+
+	if (ac == 1)
+	{
+		usage();
+		exit(0);
 	}
 
 	if (read_fbb_conf(conffile) > 0)

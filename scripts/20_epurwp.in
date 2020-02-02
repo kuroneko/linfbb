@@ -1,0 +1,11 @@
+#!/bin/bash
+LIBDIR=@libdir@/fbb
+
+echo
+echo "--- Running epurwp"
+echo
+
+$LIBDIR/tool/epurwp 40 90
+ret=$?
+
+exit $ret

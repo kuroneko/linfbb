@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  *    MODULE FORWARDING OVERLAY 3
@@ -433,7 +429,7 @@ void appel_fwd (Forward * pfwd, int noport)
 #ifdef __FBBDOS__
 						send_dos (1, pcom, NULL);
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 						call_nbdos (&pcom, 1, NO_REPORT_MODE, NULL, TOOLDIR, NULL);
 #endif
 					}
@@ -460,7 +456,7 @@ void appel_fwd (Forward * pfwd, int noport)
 #ifdef __FBBDOS__
 						send_dos (2, pcom, NULL);
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 						call_nbdos (&pcom, 1, NO_REPORT_MODE, NULL, TOOLDIR, NULL);
 #endif
 					}
@@ -746,7 +742,7 @@ void appel_fwd (Forward * pfwd, int noport)
 #ifdef __FBBDOS__
 						fen_ptr = open_win (45, 5, 68, 18, INIT, s);
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 						if (max < 0xff)
 							cprintf ("Max size : %u Kb\n", max);
@@ -774,7 +770,7 @@ void appel_fwd (Forward * pfwd, int noport)
 							cprintf ("Bulletins : %d\r\n", nbmess->nbbul);
 #endif
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 							cprintf ("\nPrivate   : %d\n", nbmess->nbpriv);
 							cprintf ("Bulletins : %d\n", nbmess->nbbul);
@@ -788,7 +784,7 @@ void appel_fwd (Forward * pfwd, int noport)
 #ifdef __FBBDOS__
 							cprintf ("\nReverse\r\n");
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 							cprintf ("\nReverse\n");
 #endif
 */						/* il y a des messages a forwarder - connexion */
@@ -797,7 +793,7 @@ void appel_fwd (Forward * pfwd, int noport)
 #ifdef __FBBDOS__
 /*							cprintf ("Link BBS #%d\r\n", get_link (nobbs));*/
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 /*							cprintf ("Link BBS #%d\n", get_link (nobbs));*/
 #endif
 							program_fwd (1, 1, &ptnc, voie);
@@ -844,7 +840,7 @@ void appel_fwd (Forward * pfwd, int noport)
 #ifdef __FBBDOS__
 /*								cprintf ("Time out %d mn\r\n", t_o / 60);*/
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 /*								cprintf ("Time out %d mn\n", t_o / 60);*/
 #endif
 								con_fwd = TRUE;
@@ -870,7 +866,7 @@ void appel_fwd (Forward * pfwd, int noport)
 #ifdef __FBBDOS__
 								cprintf ("Prio : %s\r\n", p_route[i]);
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 								cprintf ("Prio : %s\n", p_route[i]);
 #endif
 							strcpy (svoie[voie]->p_route[i], p_route[i]);

@@ -1,0 +1,1280 @@
+  FBB BBS SOFTWARE HAS BEEN WRITTEN BY Jean-Paul F6FBB IN THE 90s
+  VERSION 5 WAS AT THE TIME OF DOS OPERATING SYSTEM !
+  VERSION 7 CAME WITH LINUX
+
+w700a
+- Problems with CR orCR/LF in export and log. Corrected.
+- TimeOut did not work 100%. Corrected.
+- GPF in review if list was empty. Corrected.
+- Disks like D:\ were not accepted in FbbDOS. Corrected.
+- Command NEW in FbbDOS did not give the prompt if no file. Corrected.
+- F8 was programmed as F9. Should give the focus to the main window. Corrected.
+- Any command beginning by T was accepted. Corrected.
+- Send message in console could destoy the contents of the editor. If the
+  editor is busy, normal line editing is used.
+- Read was always verbose when reviewing messages. Corrected.
+- Command W in FORWARD.SYS allows to skip one or more prompts (default one)
+  before starting a forward session (mainly used when "Linked to ..." gives
+  more than one prompt)
+- EPURMESS.COM did not limit the number of lines returned to sender in any
+  cases. Corrected.
+- The generation of WP messages has been rewritten to correct the problem
+  found on many BBS (but unfortunately not on mine!!!).
+
+w700b
+- Histograms did not work without callsign in statistics. Corrected.
+- WFBB crashes if the MESS.WP file has a size of 0. Corrected.
+- Command SYS did not work for callsigns defined in PASSWD.SYS. Corrected.
+- F7=Programmation of the TNC is now implemented in DED mode.
+b2
+- Only Sysops allowed to review will receive the "Nb of held" message.
+- PK232 host mode introduced again.
+- Variable %C gives the number of times a message has been read.
+- DLL buffer for PG programs is increased to 32K
+- INSTWFBB : PMS option added in the first connection mask
+- INSTWFBB : PK232 option in the supported protocols
+b3
+- GPF if using socket from gateway. Corrected.
+- The default 3 strings for NetRom/TheNet are now: CONNECTED FAILURE BUSY
+- TELNET interface has been improved. Do not forget to put address 17 in
+  PORT.SYS for TELNET (means socket port 23 in decimal)
+- File FBB\SYSTEM\LANG\TELNET.ENT may held the banner for the telnet access.
+- The format of the window has changed. You must delete the line "position"
+  in the part "main" of the file WINDOWS\WINFBB.INI before running the new
+  version. 
+b4
+- Edit-User and Edit-Msg are no longer closed with the OK button.
+- Telnet interface is working as modem interface except that password is
+  mandatory.
+- Debug informations for VE4KV's modem GPFs (debug info in DEBUG.BUG file).
+b5
+- Servers can be made as DLL provided they are fast enough (no multitasking
+  during a DLL activity).
+- Task was not run in background if more than one application in CRON.SYS.
+- Swapping was not done after a local re-routing. Corrected.
+b6
+- Selection of zone in the channel windows. Accept copy (=Ctrl Ins) to
+  clipboard and print. Menu is activated with the right button of the mouse
+  inside the text window.
+b7
+- ListBox of connections has been fully rewritten to be more efficient.
+  A menu is available in the list with the right button of the mouse.
+b8
+- PG called in a non-registered access gave a 23MB inf.sys. Corrected.
+- L command in review did not unvalidate forwarding after reboot. Corrected.
+- Command HO puts a message in the hold list.
+b9
+- selection of a word (left double click) or a list of characters (Ctrl left
+  double click).
+- INIT.SRV was not scanned after a modification from "main parameters" window.
+- Protocoles TFPCX and DRSI added in the configuration.
+- HO command did not delete held message. Corrected.
+- some optimisations and minor modifications...
+b10
+- Import/Export display in options menu.
+- Filter and substring in "last connections" window.
+- Hang if the MESS.WP file is exactly 5000 bytes long. Corrected.
+- in PORT.SYS, interface 9 (linux) has been added. LINUX can work via
+  a serial port (letter D for DED) or via AX25 domain socket (letter X).
+b12
+- Problems with affectation of ports and channels in BPQ driver.
+  Should be corrected.
+- Problem with the colors in the DOS version. Corrected.
+b13
+- S line (choices of forward) now checks default as a last choice.
+  Up to four previous choices ar checked as declared before. Warning,
+  these tests are case independent.
+- This was maybe undocumented : value after "use compressed forwarding"
+  give the options between compressed protocoles:
+    1 = FBB compressed forwarding
+    2 = XFWD compressed forwarding
+    "OK 3"    allow both FBB and XFWD.
+- MODEM.ENT was sent without line feed at the first connection. Corrected.
+- Command "?" gave a segmentation violation on the Linux version. Corrected.
+b14
+- One more color bug corrected !
+- variable %E give the version code (Linux, Dos, Windows).
+- debug.bug traces the current channels if "no more channel available"
+- "Last connections" window was not created in Windows version. Corrected.
+b15
+- hold counter was not initialized in dos version. Corrected.
+- Dialog window asks for import BBS in Windows and Linux versions.
+- Reject was not always done when importing files.
+b16
+- Built-in editor validated (Linux version).
+- Texts of menues corrected (Windows version).
+- Connections were not recorded in the LOG. Corrected.
+- PMS connections asked for FBB protocole. I have made a change,
+  but did not test it.
+b17
+- management of C_FILTER has changed. Will be always called if it exists.
+- Edit forward window (in edit message) now available in Linux version.
+- Filter on callsigns (in last connections) now available in Linux version.
+b18
+- ReadOnly access if there is no password defined (modem/telnet)
+b19
+- Connect line is case dependant.
+- Binary transfer implemented for telnet (with this version and up)
+- Some bug fixes in the Windows telnet interface.
+- Help was sometime crashing in linux version. Fixed.
+- New xfbbd version : xfbb daemon for linux.
+b20
+- Flag F (PMS Forwarding) added in EU command.
+- TH list sometime gave wrong numbers. Corrected.
+b22
+- Linux. Connection bip was disabling the X11 bell. Corrected.
+b23
+- ReadOnly mode was not 100%ok in xfbb. Corrected.
+- No CrLf when first connecting xfbb on telnet. Corrected.
+b24
+- Labels management of FBBDOS have been rewritten. Path is no longer
+  absolute but relative to the FBBDOS disks defined in INIT.SRV. TLABEL.COM
+  program is no longer required. The format of the file is changed from
+  YAPPLBL.SYS to YAPPLBL.DAT using MODLABEL.EXE program. Labels are compatible
+  with DOS, Windows and LINUX version.
+- Linux version : YI and YW command gave 0 bytes free. Corrected.
+b25
+- Possible corruption of INF.SYS in Linux version under Telnet. A change has
+  been done.
+- Get a Crc error when re-starting a FBB compressed forwarding session (XFBB).
+  Corrected.
+- Error in the "From" field when receiving mail from RLIBBS in XFWD mode.
+  Corrected.
+b27
+- PortName in LINUX was often wrong. Corrected
+- Epurmess did not count empty lines of INIT.SRV (Linux). Corrected.
+- = <call> allowed to send data even if the remote station was busy. Corrected.
+- Checksum of AUTOBIN was wrong under LINUX. Corrected.
+- WHERE and DU did not work on LINUX partitions. Corrected.
+- Channel names could not start whith a digit in PORT.SYS. Should be corrected.
+- SIGSEGV was caught in LINUX version. Corrected.
+- VIEW command of LINUX version calls fbb_view program. (or any program
+  defined by the variable $FBB_VIEW). fbb_view may be a shell script.
+- Telnet time-out is increased to 2mn (LINUX)
+- /A command stops the BBS and exit with value 4
+b28
+- List of flags of the [FBB forwarding line] (INIT.SRV)
+  1  : A space is mandatory before the @ in a send message command
+  2  : The length of the fields of a hierarchical address is not 
+       tested to be 6 characters
+  4  : The header line of a message is not truncated to the space before
+       the 79th character
+  8  : Header MBL/RLI
+  16 : If there is no BBS field, the callsign of the BBS is sent to the PMS
+  32 : Deletes the DATA messages sent to SYSOP
+  64 : Don't use the BID recovered from headers and use a new one
+  128: Accepts forwarding only from pre-declared BBS
+  256: WP Messages are not held.
+  512: XForwarding protocole has priority on FBB protocole.
+ 1024: Generation of an alternate BID like F6FBB-12345 (for dual BBS site)
+ 2048: Checksum unvalidated on XFwd.
+ 4096: Test of callsign is more simple.
+- DosFBB has a problem with the call and F10 command. Corrected.
+b31
+- WIN - /A gives a GPF. Corrected.
+- DOS - Optimisations in Mini-Editor. Was crashing while loading
+  a large file. Corrected.
+- DOS - ZModem transfer initialisation was wrong. Corrected.
+- DOS - Commande DOS without argument crashes. Corrected.
+- DOS - Some characters were lost in modem. Corrected.
+b32
+- ALL - If port.sys does not exist, FBB looks for port_d.sys (dos),
+  port_w.sys (windows) or port_l.sys (linux).
+  This allows to have the same tree for all versions.
+b33
+- LIN - Pacsat server : Some packets were lost. Corrected.
+b34
+- WIN - NO LineFeed in the modem driver. Corrected.
+- ALL - MD2 password available for SYS command.
+b35
+- LIN - Problem with LF and CRLF in messages. 1st correction.
+b36
+- LIN - Segmentation violation on retry count exceeded. Corrected?
+b37
+- DOS - WINDOWS DLL (C_FILTER, M_FILTER, F_FILTER) Implementation.
+  DLL must in the path of DOS (FBB\BIN).
+- MD2 C_FILTER.DLL available for DOS and WIN
+  MD2 C_FILTER     available for LINUX.
+b38
+- Password did not work for SYS command. Corrected.
+b39
+- Mail import was getting all system processing. Corrected.
+b40
+- DOS - AF5 and Esc closed the BBS. Corrected.
+- DOS - DLL of KE0W0 was not running. Disabling local interrupts during
+  DLL call.
+b41
+- WIN - Change in maintenance to avoid some crashes. (1st try).
+b42-b43
+_ WIN - Corrections of multiple GPF
+b44
+- ALL - xfwd had problems when forwarding RLIBBS. Fixed.
+b45
+- ALL - Crashed when THEMES.SYS was empty. Corrected.
+
+Version 700b distributed
+
+c01 
+- DOS - Crashed when device not ready. Fixed
+- DOS - CR/CR/LF sequence when exporting mail to disk. Fixed.
+c02
+- ALL - Crashed in REDIST server fixed.
+- DOS - TFPCX interface crashing at boot. Fixed.
+- DOS - Added TFPCX interrupt level in INIT.SRV:
+
+        # DRSI and TFPC interrupt (Hexadecimal, default FF and FE)
+        FF FE
+        #
+        # BBS-UP program (default empty)
+
+- DOS - Fwd line : Tried some modifications to fix the UPCASE callsign.
+c03
+- ALL - Added lock files when importing and exporting mail (same filename,
+        extension added or replaced = "lck")
+- W32 - TfWin32.DLL interface validated.
+c04
+- ALL - Hierarchy is now managed in SWAPP.SYS
+- DOS - Resync counter did not work. Corrected.
+- WIN - File/Maintenance always gave the "STOP" icon. Corrected.
+- ALL - NEW now works in console.
+- ALL - UNKNOWN ROUTE and 10 times "routed to" message corrected.
+c05
+- ALL - Variables were interpreted when xfwd sends the list of BID. Corrected.
+- ALL - Lock files deleted (if possible) if older than 1 hour.
+c06
+- ALL - Alternate callsign of PORT.SYS was not working. Corrected.
+c07
+- ALL - Title of message sometime greater than 60 characters. Corrected.
+- LIN - SP and others did not work from xfbbC. Corrected.
+- WIN - WP list of BBS was limited to 40 chars in instwfbb. Increased to 79.
+- ALL - S Line in forward.sys is case dependant.
+c08
+- DOS - I Fxxx was crashing in Nomenclature. Corrected.
+- ALL - DF command added to list all PMS users.
+- DOS - /R was crashing. Corrected.
+- ALL - HomeBBS of a reviewed message was wrong in WP. Corrected.
+- WIN - No LF in modem after a forwarding session. Corrected.
+- WIN - GPF with BPQ in gateway in command mode. Corrected.
+- ALL - Conference allowed calling to TCP interface. Corrected.
+- ALL - Channel number was 1 more in log. Corrected.
+c09
+- ALL - Added the date correction for > 1999
+- ALL - WP was update with local BBS at first connection. Corrected.
+- WIN - Garbage characters in SERVERnn.IN. Corrected.
+c10
+- ALL - Unproto were sent duplicated if more than one "!" line in BEACONn.SYS
+        file. Corrected.
+- ALL - Message counter went negative when using "edit message". Corrected.
+- ALL - Implementation of "exit 5" for PG : Level is not incremented.
+- ALL - Number of held messages is re-calculated after CRON and PG
+- WIN - WFBB crashed when opening a non-existing file in editor. Corrected.
+- ALL - Channel number in conference was wrong. Corrected.
+
+Version 700c distributed
+
+d01
+- ALL - JK gives a wrong channel number. Corrected.
+- WIN - Socket access : "." before the callsign removes pre-processing and
+        post-processing (transparent mode).
+
+Version 700d distributed
+
+e01
+- ALL - Sharing violation when importing a file. Corrected.
+- WIN - Socket interface rewritten
+- ALL - FB command was only printing P messages. Corrected.
+- W32 - Avail memory gave a wrong value. Corrected.
+- ALL - D (bin) status of 7+ mail was lost when "RE". Corrected.
+
+e02
+- ALL - Problems with review command. Debugging version.
+
+e03
+- LIN - Del User crashed in xfbb. Corrected.
+- LIN - TCPIP interface did not re-run without a pause. Corrected.
+
+e04
+- W32 - PG dir has now changed to PG32
+- ALL - Copied messages keep the original sender, So SR is now possible
+        on copy (like SYSOP messages).
+- ALL - Review bug corrected! Thanks to F1HCI for help...
+
+e05
+- W32 - Lock timeout was not 1 hour. Corrected.
+- WIN - Language was not ok after sending a message. Corrected.
+
+Version 700e distributed
+
+f01
+- ALL - Disk size could be negative in big disks (>2GB). Corrected.
+- ALL - PASSWD.SYS now accepts comment lines
+- ALL - Global password did not work using MD2. Corrected.
+- ALL - Only CP SYSOP originator is changed, not the SC command.
+- ALL - When replying to a CP SYSOP message, title is changed back to original.
+
+f02
+- ALL - Variable %e added. Date of the compilation (english only).
+- ALL - Time of connection was wrong in talk command. Corrected.
+- WIN - List of connections was not refresh at end of talk. Corrected.
+- ALL - Crash if "XFWD" validated and "FBB forwarding" not. Corrected.
+- ALL - Added commands for WP:
+        IN substring -> Gives WP records including "substring" in Name
+        IQ substring -> Gives WP records including "substring" in Qth
+- WIN - First watchdog implementation. Sends characters 0 and 1 each second
+        to the port specified in INIT.SRV. This port must be free:
+        #
+        # Test mode / Watchdog (1->9 = COM1->COM9, 81->84 = LPT1->LPT4)
+        NO 81
+        #
+- ALL - Support of the SCS/PCT-II pactor TNC
+        TNC is in Extended/WA8DED emulation with a "H" character in port.sys:
+        #
+        #TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode  Freq
+         0   0    0   0      0     0     0     0      00/01   ----  File-fwd.
+         1   1    1   0      250   4     1     10     30/60   HU    Pactor
+         2   8    1   1      250   4     1     10     30/60   HUWY  1st Packet
+         3   8    1   2      250   4     1     10     30/60   HUWY  2nd Packet
+        #
+- WIN32/LIN - Message was recompressed at each forward. Corrected.
+- ALL - Added cron_d, cron_w, cron_l.sys taken in priority for DOS, WINDOWS
+        or LINUX system. If this one doesn't exist, cron.sys is taken instead.
+- LIN - Wrong callsigns were recorded in INF.SYS in telnet mode. Corrected.
+
+f03
+- ALL - Added the PTC-II remote control from forward file.
+- ALL - Added the fequency-status information before connection
+- ALL - Added the PTCTRX built-in program to pilot the transceiver from PTC-II
+        The parameters are the same that the TRX command of the PTC-II
+        Example: "  X PTCTRX SCAN 1 "  will start scanning from forward file.
+
+f04
+- ALL - Changed BUSY to DISCONNECT when a frequency is busy.
+        Allows multi-choices from the FORWARD.SYS file.
+
+f05
+- ALL - More debugging of pactor mode
+
+f06
+- WIN - Added the "Immediate disconnection" command.
+
+f07
+f08
+- WIN - Some more debugging in PACTOR interface
+
+f09
+- WIN - L !TRX command was crashing when out of block. Corrected.
+- WIN - Packet ports of the PTC-II implemented.
+- WIN - Update of InstWfbb for PTC-II protocole
+
+f10
+- WIN - Connection was still sent if aborting during wait phase. Corrected.
+- WIN - MAINT file did not work with PTC-II. Corrected.
+
+f11
+- WIN - PTCTRX was not run from CRON.SYS. Corrected.
+- WIN - Display of long path callsign was wrong. Corrected.
+- ALL - Compilation of the f11 version on all architectures.
+
+f12
+- WIN - Added a scanning control command.
+- ALL - Forced disconnection if not disconnected after 10 sec.
+
+f13
+- ALL - New variable %k = Nb of KB to forward to the connected station
+                     %l = Nb of msg to forward to the connected station
+- ALL - Flag R (Read-Only) in port.sys available for any port.
+
+f14
+- ALL - Added a "IF G hour" test in GMT time for FORWARD.SYS and CRON.SYS
+- WIN - Retry field in main window increased to 3 digits
+- WIN - ChangeOver button for pactor mode
+
+f15 
+- ALL - More debugging
+
+f16
+- WIN32 - Size of NTFS disk was wrong. Corrected.
+
+f17 - f18
+- ALL - More debugging
+
+f19
+- Command line starting with a ";" is ignored
+- Speed information in the footer when sending in pactor mode
+- PTC-II is fully reset to work in binary mode. Think that all parameters
+  will be erased in the TNC.
+
+f20
+- New alternate files :
+  INIT.SRV    -> INIT_x.SRV
+  FORWARD.SYS -> FORW_x.SYS
+  PROTECT.SYS -> PROT_x.SYS
+
+f21
+- New command line in CRON_x.SYS :
+  M port U : Port nb is changed to USER  mode
+  M port B : Port nb is changed to BBS   mode
+  M port G : Port nb is changed to GUEST mode
+
+Version 700f distributed
+
+g01
+- WIN - INIT.SRV is not found when reloaded from Config->MainParameters
+- ALL - PACTOR - Added F command in gateway for frequency selection.
+        Added the gateway.sys file to configure the frequencies. This file
+        accepts the following commands:
+          IF / ELSE / ENDIF (for port and time)
+          BEGIN : commands sent when entering the port of the gateway
+          END   : commands sent when leaving the port of the gateway
+          FREQ  : Affectation of a frequency / TNC command
+
+g02
+- ALL - Gateway was crashing when all channels are busy. Corrected.
+
+g03
+- ALL - ChangeOver was not sent from the gateway. Corrected.
+
+g04
+- ALL - Added Minute/Period option in the "P" command line in CRON_x.SYS:
+  M port U 10/20 : Port nb is changed to USER mode and min/per to 10/20
+- ALL - CRON file accept the litteral port definitions of PORT.SYS.
+  Example: M PACTOR U 10/20
+- ALL - The callsign of the pactor channel was lost in the gateway. Corrected.
+
+g05
+- ALL - Implementation of the CQ command of the gateway for pactor.
+
+g06
+- ALL - Bug in the gateway made it crashing when no port was selected.
+- LIN - xfbbC and client interface of xfbbd fully rewritten.
+- LIN - maintinf has been compiled
+
+g07
+- LIN - Added monitoring options in xfbbC
+
+g08
+- LIN - Added MD2 authentication in xfbbC
+
+g09
+- ALL - Default password allowed in MD2 authentication.
+
+g10
+- LIN - Added new services for xfbbd client (xfbbC).
+        Source code and makefile of xfbbC supplied.
+
+g11-g16
+- LIN - Evolutions of the PTC-II hostmode
+
+g17
+- WIN - Added the Flex95 support in WinFBB32
+
+g18
+- WIN32 - New FBBIOS32.DLL for WIN32 modem interface
+- WIN32 - Console callsign did not work in Flex mode - Done.
+
+g19
+- ALL - Security problem with files owner under FBBDOS corrected.
+g20
+- LIN - Added the TCP address and port for telnet access in port.sys.
+       #Com Interface Adresse(Hex) Vitesse/Tcp-Port
+        8   9         44.151.31.6  1022
+- LIN - External set of commands added (or replacing) the default set.
+        These commands are defined in system/commands.sys.
+        Example:
+            #
+            # commands.sys file
+            # format: fbb_command external_command parameters...
+            #
+        TX cat /etc/ax25/axports
+        FPAC /usr/sbin/fpacnode
+        TELNET telnet
+g21
+- LIN - Daemon version now allows the T (talk) command. Must be answered
+        with either xfbbC or xfbbX. New versions of xfbbC et xfbbX.
+
+g22
+- LIN - Filenames in F_FILTER file are now in UNIX format.
+
+g23
+- LIN - Source code of the daemon version is released
+
+g24
+- LIN - Compilation with libc6 ok (RedHat 5.1)
+
+g25
+- ALL - Spurious empty lines - corrected (PA3FWM).
+- ALL - Redist to field too short - corrected (OH2KKU)
+
+g26
+- LIN - Sources compatible with 2.2 (SuSE 6.0 / 2.2.4)
+
+
+============== release 7.01 for 2.2 kernels ====================================
+
+added support for the new libax25 with glibc 2.x
+X11 applications can compile with motif2.0 and lesstif 0.88 (motif 2.0)
+all X11 applications moved in src/X11 directory
+
+- LIN - New configuration file /etc/ax25/fbb.conf replaces init.srv.
+        It is not compatible and is now organized as keyword = value
+- LIN - To be compliant with the files organization on LINUX, a new tree
+        has been defined:
+          - configuration files in /etc/ax25/fbb
+          - data files in /var/ax25/fbb
+          The program fbb_tree script creates/check the full tree.
+
+7.01b :
+- LIN - xfbbC and xfbbX did not work. Corrected.
+- LIN - reqdir server modified following the patch of 7m3tjz Satoshi
+- LIN - xfbb and xfbbX compiles with lesstiff 0.88
+
+7.01d :
+- LIN - Segmentation violation if a directory in fbb.conf has no leading /
+
+7.01e :
+- LIN - fixed a segmentation violation in AX25 socket.
+
+7.01f :
+- LIN - PG programs did not work. Fixed.
+
+7.01g
+- LIN - "CP SYSOP" messages can give wrong WP information when re-forwarded.
+        Fixed.
+- ALL - Y2K bug in satellite computation. Fixed.
+
+7.01h
+- ALL - Y2K bug in LD and WP import processing. Fixed.
+
+7.01i
+- LIN- Y2K bug in fbbdos. Fixed.
+
+7.01j
+- COPY command could only copy onto an existing file. Patch PA3FWM.
+- YN never find new files. Patch PA3FWM.
+- Added #MYPACTOR command to set the pactor callsign from inittnc file.
+
+7.01k
+- PPC and SPARC support. Patch JE1SGH - Ichiro Hieda.
+
+7.01l
+- MAIL.IN did not work correctly. Fixed.
+- FB commmand now take in account the data mode (J line of forward.sys)
+- Patch fbb_old_ax25.patch.gz : allow using this version with 2.0 kernels
+  run "zcat fbb_old_ax25.patch.gz | patch -p0" from the fbb distribution
+  base directory. Thanks to Jose.
+
+7.01m
+- Added line "T Onn" in forward.sys where "nn" is the number of hours
+  of the message forward delay. If nn is 24, then only mail older than
+  24 hours will be forwarded to the connected BBS.
+- New "install_fbb" and "fbb" scripts. The software is no longer run
+  by xfbb.sh but by "fbb".
+
+7.02
+- full distribution and pre-compiled binaries
+
+7.02a
+- added remote config directory list, upload and download for the xfbbC client.
+
+7.02b
+- L commands may be combined on a single line:
+  LR 101-110 & LS string
+- CHANGED the directory tree (see FBBTREE file) to fit the linux specifications
+- Added the TCP-IP driver for remote traffic and monitoring operations
+
+7.02c
+- L> l@ were L<. Corrected.
+
+7.02d
+- Other patch for L>, L< and L@
+- Added remote forward maintenance for clients
+- Added EO sysop command to edit sytstem options
+
+7.02e
+- Servers did not work correctly (upcase path -> lowcase) - Corrected.
+- Error in fbb.conf.sample - Corrected.
+- Fixed the default header string
+- Fixed a path bug in REQDIR
+
+7.02f
+- Added the disconnection client-service
+
+7.02g
+- Added Edit-User client-service
+- Added Edit-Message client-service
+
+7.02h
+- Added full page message editing client-service
+- Minor changes in install.sh and fbb scripts
+- epurwp and epurmess only test major number version
+- Possible crash if "import" is defined in fbb.conf. Corrected.
+
+7.03pre1
+- Added maintenance, rerun, and other subdirectories in lib/fbb/script directory
+  Executables in these subdirectory are run during housekeeping phase
+
+7.03pre2
+- Added hostname lookup for TCP-IP outgoing connections
+- Wrong disk size with Windows clent. Corrected.
+- Fixed some minor bugs in fbb and install_sh scripts
+
+7.03
+- Official release
+
+7.03a
+- In forwarding mode, FQ no longer disconnects. Only wait for remote
+  disconnection.
+- Multiple bug fixes in the client interface.
+
+7.03b
+- Added MsgEdit flag in EO sysop command (full screen editor for messages)
+
+7.03c
+- Changed the timeout during message edition.
+- Removing % in front of the call for PTC-II v3.1
+
+7.03d
+- Fixed pactor marine firmware implementation for PTC-II
+
+7.03e
+- Fixed the FOPEN_MAX (reduced from 256 to 16 ???) of stdio.h which gave
+  errors in binary files.
+
+7.03f
+- Made protect.sys working correctly. Protection is now made for the directory
+  tree, not only the directory.
+- WHERE command in FbbDos always searches in the FbbDos directories even
+  in sysop mode. Depth is limited to 16 sub-directories.
+- LABEL command allowed on protected areas. Needs security 16 (EDIT LABEL)
+  to be used and security 32 (DELETE ANY FILE) for editing any file.
+- Fixed the SC problem in 7.03e.
+
+7.03g
+- Support for long filenames in FbbDos
+
+7.03h
+- Multiple bugs corrected for long filenames support
+- Spaces accepted in filenames (need double quotes)
+
+7.03i
+- Connections are no longer accepted before maintenance
+- Sx call + filename accepts lowcase filenames
+
+7.03j
+- wrong filenames displayed in FBBDOS - DU command
+- Minor changes in text files for EU command (PMS = F flag added)
+
+7.04
+- Official release
+
+7.04a
+- Check pactor sending before asking for scanning
+- Added POP3 support (be sure your port 110 is free) :
+  You have to declare a new COM and PORT in port.sys like (port = 110):
+  #Ports TNCs
+  1      1
+  #Com Interface Address (device)   Baud
+  6    9         6e                 0
+  #TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode Freq
+  1    4    6   0      250   7     2     10     10/60   SU   Pop3
+
+7.04b
+- Some bug fixes in the POP driver
+- Added UIDL command to the POP server
+
+7.04c
+- Added APOP command in POP server
+- Added SMTP server : 
+  in port.sys add the SMTP port address like pop_hex_port:smtp_hex_port
+
+  #Com Interface Address (device)   Baud
+  6    9         456:401             0
+
+- Some more bug fixes in the POP driver
+- Some more new bugs in the POP/SMTP driver
+- Added config key "pophost" in fbb.conf to define the pop hostname
+  If this value is defined , the address line will be:
+    <sender%bbs@pophost>
+  else the address will be (default)
+    <sender@bbs>
+- Support multiple recipients in SMTP
+
+7.04d
+- Some more bug fixes in the POP driver
+- Bloc buffered POP input for faster processing
+- Pop delete messages on long lists fixed
+- Added %I variable gives the name (if known) of the message sender from WP.
+
+7.04e
+- Implementation of the NNTP server
+
+7.04f
+- Bug fixes
+
+7.04g
+- POP channels only monitored with the import/export display option
+- Number of channels increased to 99 (96 available)
+- Number of ports increased to 16
+- changed 'FW 9' to 'FW 0' to start forward on all ports
+- Added the forgotten October month in pop dates
+- Added the SMTP LOGIN and PLAIN authentication
+- Added the port configuration by a port_name.prt file:
+  If the PORT 2 is called network in the port.sys file,then
+  The system first look for a network.prt file, then a inittnc2.sys file
+  if the network.prt file does not exists.
+- Configuration of the smtp/pop driver by the port file (one or more lines):
+  SMTP authentications - One or more options (default NO):
+    SMTP AUTH (NO | LOGIN | PLAIN | CRAM-MD5)
+  POP authentications - One or more options (default USER):
+    POP AUTH (USER | APOP)
+  Example of my pop_smtp.prt file:
+
+#
+# POP/SMTP/NNTP configuration file - F6FBB
+#
+
+# SMTP authentication nedded. Accepts LOGIN, PLAIN and CRAM-MD5
+SMTP AUTH LOGIN PLAIN CRAM-MD5
+
+# POP authentication. USER and APOP accepted
+POP AUTH USER APOP
+
+#
+# end of file
+#
+
+7.04h
+- Enhanced capabilities in the themes.sys file. This file is up-compatible
+  with previous versions. Added parentheses and !, &, |, @ operators:
+
+  & means "expression and expression"
+  | means "expression or expression" (optional for up compatibility)
+  ! means "not expression"
+  @ means "via field"
+
+fra.achat       ACHAT* & @FRA
+fra.vente       VENTE* & @FRA
+fra.echange     ECH* & @FRA
+cherche         SEARCH CHERC* RECHER
+fra.satellite   @FRA & (AMSAT | SAT* | UO22 | KO23 | UOSAT | PACSAT | DOVE |
+                KEP* | SPACE | PHASE3 | ISS | PCSAT | NASA)
+ww.satellite    @WW & (AMSAT | SAT* | UO22 | KO23 | UOSAT | PACSAT | DOVE |
+                KEP* | SPACE | PHASE3 | ISS | PCSAT | NASA)
+
+7.04i
+- POP/SMTP/NNTP ports may be unvalidated with the port value 0 in port.sys
+#
+#Com Interface Address (device)   Baud
+ 6   9         0:0:45f            0
+#
+- cron.sys - All ports need the value 0 instead of 9 (GATE 0 or YAPP 0)
+- Added a CR after the messages header for POP
+
+7.04j
+- POP addresses without "<>" were not accepted (F4ECW)
+- Multiple security fixes (SM6TKY)
+
+7.04l (F6BVP)
+- includes patches for 2.6 kernel
+- improvement for satellite documentation file status (see SATDOC doc)
+
+7.04m (F6BVP)
+- was buggy. DO NOT USE.
+
+7.04n (F6BVP)
+- compliant with 2.6 kernel
+- base directory tree is now /usr/local/ by default (standard for AX25
+  applications) except /usr/lib/fbb/
+
+7.04o (F6BVP)
+- lib/fbb moved to /usr/local/lib/fbb (for easier backup)
+- script 20_epursat called during maintenance
+- AMSAT declared as BBS in bbs.sys
+- amsat.fwd declared in forward.sys
+- satupdat (ajoursat) and satdoc included
+- satupdat and satdoc doc files included
+- HTML bbs documentation included (start with doc.htm)
+- fbb script fbb.rc (start - stop -status - restart)
+- /var/log/fbb.log log file
+
+7.04p (F6BVP)
+- this version only corrects compilation errors for xfbbX client.
+- lesstif, lesstif-devel, libxpm and libxpm-devel packages must be installed.
+- fbb has to be compiled first (and installed).
+- then cd into fbb src/X11 directory and run make.
+- give xfbbX and xfbbX_cl executable permission
+  and copy both files into /usr/local/bin
+- start fbb using rc.fbb script (or fbb) and run xfbbX client
+  from an X11 console.
+
+7.04q (F6BVP)
+- Includes LA7ECA scan fix for PTCII pactor mode
+- Some format fixup in init messages for easier debuging display when starting
+  xfbbd with options -v -f
+- Makefile in src and X11 did not use the right path for include NEW_AX25. Fixed
+
+7.04r (F6BVP)
+- This version has been successfully tested with 2.6.28 SMP kernel
+  with a Core2 Duo CPU system.
+  However default recommandation is still to add "nosmp" argument on kernel
+  GRUB boot command line.
+- zero length data are no more sent via snd_sck() and snd_tcp() functions.
+- Please avoid using more than 40 channels in port.sys to prevent
+  forwarding problems.
+- There are probably still other unknown bugs in FBB. Any observation report
+  is thus appreciated.
+
+When FBB 7.05 is released it should include (in file sock_drv.c)
+function sock_stat
+/*
+ * valid when ROSE module is patched for
+ *      ax25_info_new structure
+ *      struct ax25_info_struct_new ax25info;
+ * if (ioctl (scan[canal].sock, SIOCAX25GETINFONEW, &ax25info) == 0)
+ *
+ */
+
+7.04r.2 (F6BVP)
+- less verbose debugging messages in /var/log/fbb.log
+- Added usleep instructions to allow interrupts in tcp and sock drivers and
+  reduce CPU load. It was sometime more than 14% and should be less than 1% now.
+
+7.04r.2.1 (F6BVP)
+- s_status was writing zero length frame. Corrected
+- date structure corrupted in ibm.c caused  stack-smashing. Corrected.
+- changed date format tm_year %100 in console.c to avoid stack overflow due
+  to incorrect date format during FBB initialization.
+- CFLAGS = -Wall -Wstrict-prototypes -O2 -funsigned-char $(DEFS) -D__LINUX__
+  -Wformat-security -D_FORTIFY_SOURCE=2  -DPROTOTYPES -I../include -fstack-check
+  -fstack-protector-all (this DEBUG option is removed in distributed package)
+
+7.04r.2.2 (F6BVP) is 7.04r6
+- cree_bid() did not actually create WFBID.SYS and initialize it
+  if file was missing. This could induce a segment violation. Corrected.
+- In case of test or PRE versions the full release number is displayed:
+  *********************************************************
+  * XFBB Linux daemon version 7.04r-pre6 (Sep  18 2009) PID=9172
+- Same full version number is used in /var/ax25/fbb/log/ files
+  070522165800SI *** BBS Initialize
+  070522170200SA *** BBS Online 7.04r-pre6
+- By default 20_epursat script does not export satdoc and satupdat
+  results to mail.
+
+7.04r.6.1 (F6BVP)
+- A bug was causing stack smashing with some kernels when message on hold
+  was found. Corrected. Thanks to Charlie K4GBB, allowing intensive debugging
+  on his LinuxLab machine and W4AKH-1 BBS.
+
+7.04r.7 (F6BVP)
+- Removed bugs in satdoc (SATellite DOCumentation utility) version 2.8.6
+- AMSAT Weekly Satellite Report have two BID types : $ANS and $WSR.
+  Updated Satdoc version 2.8.9
+- Updated ajoursat - satupdat utility programm for satellites data base.
+  Version is 1.87
+- Doc files for both above utilies updated and renamed with 8 + 3 characters.
+- register instructions removed (ignored by modern compilers)
+- FBB log is now labeled with year date. For example:
+  /var/ax25/fbb/log/fbblog.47 is now ~/fbblog09.47
+
+7.04r.8 (Cathryn at junglevision dot com)
+-segfaults in themes.c was crashing FBB with the nntp option when the bulletins
+ are reset. When the user attemps to read a non-existent bulletin fbb crashes.
+
+"This patch is for the Usenet server feature of FBB.  I put in code so that
+it is now possible to post from the USENET connection.  The password checking
+code is taken from the SMTP code.   I also put in a few changes to use
+snprintf rather than sprintf to prevent buffer overflows.  I don't believe this
+is all the places where this occurs, but I changed this when it was convenient.
+
+I added a new function pop_quit to replace the code in this file where it was
+sending a QUIT message to pop_process_read.  I found that the original code was
+failing under some complicated circumstances, and that it was less confusing
+to have a separate routine to quit directly to fix these crashes.  I also
+fixed a crash in pop_send that occurred when reading large messages.
+
+I updated the NNTP headers as follows.   I added the Newsgroups: line.  When you
+reply message from a USENET client, it will send the output to TODAY@WW matching
+the original distribution of the message.  I Removed the group name from
+the Subject, and I canged the Message-ID to match the PBBS BID ID. This makes
+the message lookup more robust in the case the themes.sys file changes."
+ 
+7.04r.9 (F6BVP)
+- A bug was causing stack smashing with DOS menu and long Linux file names.
+  Corrected. Thanks to Peter ZL2BAU who reported this bug and helped
+  tracing the cause.
+
+7.04r.10 (F6BVP)
+- channel timeout was not initialized at startup and after a timeout occured.
+- "BBS Quit" now displays FBB version in log file. 
+- Another bug was causing stack smashing with YAPP transfer and long Linux
+  file names. Corrected. Thanks again to Peter ZL2BAU who reported this bug
+  and helped tracing the cause.
+
+7.04r.11 (F6BVP)
+- Starting a local console FBB client xfbbC caused a segment violation
+  if another console was already connected localy. Cured.
+- corrected a compilation warning with xfbbC.c
+
+7.04r.12 (Cathryn Mataga)
+- SOCK_MAXCHAN (drv_sock.c) now set to (MAXVOIES)  This was set to 50, which
+  was less than MAXVOIES, and the code was accessing data off the end of
+  this table.  This was causing strange problems.  After I made this change
+  the gateway function started working again. If anyone was having trouble with
+  xfbbd and RF radio connections, this change may possibly fix their problem.
+- Several minor changes designed to eliminate "Bad file descriptor" error
+  messages.  These occurred at the time of housekeeping due to a minor bug.
+  The messages actually turned out to be harmless, as far as I can tell.
+- Only use the signal handler for signals that have functionality in the code.
+  This is a simplification to prevent bugs. Other signals are set to SIG_IGN.
+
+7.04r.13 (F6BVP)
+- Compressed forward is repared on 64 bits Linux system. After bug removal
+  it has been tested on 32 bits machines. For using compressed forward,
+  do not use "N 1" argument in forward files.
+
+7.04r14 (F6BVP)
+- This version is without debugging messages going to log file.
+  It will be renamed 7.05 if no major bug is reported.
+
+7.04r14.1 (F6BVP)
+- Three Patches from John Goerzen <jgoerzen@complete.org>
+  "I'm working to get 7.04r13 into Debian.  As part of doing that, I've
+  been reviewing the patches that Debian has in place to find which ones
+  are still applicable.  I have these three to send you that I think are
+  relevant. John".
+
+7.04r14.2 (F6BVP)
+- For some obscure reason LA7ECA scan fix for PTCII pactor mode included
+  in 7.04q was missing. Applied again.
+- While we are at it, lets include PACTOR CQ patches from DM3TT compilation.
+
+7.05 (F6BVP)
+- 7.04r14.2 is without major bug and can run on different systems.
+  It is renamed 7.05
+
+7.05a (F6BVP)
+- A bug in xfbbd prevented the correct display of PG programs execution.
+  Corrected.
+- 7plus application via server and PG 7plserv, 7plus executable, 7pfbb script
+  (50_7pfbb) was broken. Found 7plsrc.225 archives *** 7PLUS ASCII-
+  Encoder/Decoder, (c) Axel Bauda, DG1BBQ *** It would not compile with
+  Linux 2.6. Modified install_sh installation script. It performs all to have
+  a complete 7plus files managment system. Small README file written
+  and all utilities put into 7plus.tar.bz2 archive. Published.
+
+7.05b (F6BVP)
+- sh: message about c_filter removed even if this filter application
+  is not present.
+- Gustavo / I0OJJ signaled another failure concerning the D (info) feature which
+  is on the (F) menu: the (D)irectories of *topics* are missed; the 'documents'
+  may be regularly read but cannot be labeled by sysop. Corrected. In D menu,
+  for labelling a file, Sysop command is D followed by file name, followed
+  by a description texte no more than 30 characters.
+  Users may navigate into doc directories with CD and list files using
+  L command. Labels follow file names, and a user will read a document 
+  file by entering its file number.
+
+7.05b (F6BVP)
+- Gustavo / I0OJJ sent a well documented series of bug report:
+  1. Millennium bug (?) in the FBBDOS dates of files and directories.
+     Dates where 20 years away! Corrected
+  2. CANNOT CHANGE DIRECTORY BEYOND THE YAPP DIRECTORY with error message:
+     path too long. Under investigation.
+  3. PING sends a SERVER error report to the BBS Sysop while the ACK message
+     is replied *correctly* OK:! Under investigation
+  4. Bug description: two messages (simultaneously) issued by xfbb. A first
+     *** SERVER ERROR *** issued by xfbb 7.05b and a second *CONCURRENT* message
+     to callsign making the request (CORRECT OPERATION). Under investigation.
+
+7.05c3 (F6BVP)
+- Gustavo / I0OJJ reported : CANNOT CHANGE DIRECTORY BEYOND THE YAPP DIRECTORY.
+  Corrected.
+- Gustavo / I0OJJ reported that M, MH and MHA command crashed FBB. Corrected.
+
+7.05c4 (F6BVP)
+- Peter ZL2BAU reported that FBBDOS command cd .. was crashing FBB. Corrected.
+
+7.05c5 (F6BVP)
+- Charley K4GBB asked "With todays RTC clocks and NTP servers is there still
+  a need to freeze the Housekeeping process because the last check failed?".
+  Corrected. epurmess no more checks the date of epurmess.res.
+- "Official libax25" introduced a new feature in ax25_ntoa() function removing
+  SSID 0 in callsigns when present. This has been a major source of AX.25
+  application programs dysfunctions. A new local function _ax25_ntoa()
+  is used by FBB to avoid such issues.
+
+7.05c6 (F6BVP)
+- Gustavo / I0OJJ noticed that the *english.txt* file from the source archive
+  did not conform anymore the *original* style, so xdfbb does not work with
+  the 'outpost' and other new terminal programs.
+  Gustavo fully revised the original "english.txt" and "english.hlp" files
+  to overcome that lack.
+  Thanks to Gustavo I0OJJ, both new english files are included in this version.
+  SYSOPs are encouraged to copy these files from conf/lang/ directory into
+  BBS ~fbb/lang/ directory.
+
+7.05c7 (F6BVP)
+- Corrected small bug in lzhuf warning message.
+
+7.05c8 (F6BVP)
+- Corrected small bug in lzhuf warning message again.
+
+7.05c9 (F6BVP)
+- First FBB week log number of year YY starts with number 0 (was 52) i.e.
+  /var/ax25/fbb/log/fbblogYY.00 
+
+7.05d (F6BVP)
+- Charley K4GBB provided an improved fbb.sh start script (formerly rc.fbb).
+
+7.05e (F6BVP)
+- xfbbC client caused segmentation fault on RedHat distro.
+- Makefile did not include -g flag, another possible source
+  of segmentation fault.
+
+7.05f (F6BVP)
+- Compiling 7.05f will fail In Ubuntu 12.04 (and possible also in Ubuntu 11)
+  and later because of the ncurses issue when it tries to link XfbbC.
+  Bob VE3TOK provided a cure to avoid this issue. Now it will compile
+  and link with gcc 4.5, gcc 4.6  and also with the older gcc 4.4
+- Changed some debuging message
+- removed packed attribute in pacsat.c that was generating unwanted
+  compile warnings
+- Added warning to send a message to Sysop when unregistered tcp client.
+  Patch by Tom SP2L.
+- Conditional compile on 64 bit systems to keep 32 bits FBB data format
+  compatibility. Patch by Cathryn Mataga. Define THIRTYTWOBITDATA if you are
+  bringing in data from 32-bit versions. This creates datafiles that match
+  the origin documentation for FBB. They are not compatible with files created
+  with 64-bit versions. Edit file include/fbb_serv.h and edit line 38 showing:
+        /* #define THIRTYTWOBITDATA 1 */
+        ^^                            ^^
+  Remove these 4 marked characters if you want to keep your FBB data
+  compatible 32 bit system.
+7.05g (F6BVP)
+- A few patches by Colin Tuckley G8TMV Debian developer:
+  Add a basic manual page for fbbgetconf written by Joop Stakenborg
+  <pa3aba@debian.org> and fix spelling mistakes. The two directories
+  src/X11/res and src/X11/res/bitmaps needed to have their permissions changed
+  to 755 so that they can be listed and inspected by the normal user.
+  Add a Makefile in fbb main source file directory. 
+  In src/Makefile LIBS   = -lm -lax25
+- From F6BVP: moved conditional fbb_open() prototype to comply with Debian
+  extended checking compiler.
+
+7.0.6 (VE7FET)
+- This version receives a standard autotool facility to help install fbb
+  package on different distro of Linux. Read README file in order to see
+  the new command line sequence to enter for compiling and installing the full
+  set of FBB routines.
+
+7.0.7 (F6BVP)
+- All project is moved to SourceForge repository Linfbb for easier maintenance
+  and collaborative project handling. [r<number>] displays the patch number.
+- First patches were made for customization of the project to our new tools.
+- [r18] Quit routine added by N1URO for cross-platform command set compatability
+  with URONode, FlexNet, Xnet, and others. BBS command Q (quit) will act exactly
+  like B (bye).
+- [r20] Added PACTOR in Pactor CQ as suggested by G4APL SysOP GB7CIP.
+- [r24] Added port.sys.sample sample file.
+- [r26] Removed "No PACSAT satellit protocol configuration file 'init.pac'"
+  warning.
+- [r27] Added strupr() in redist.c to cure compiler-loader issue as reported
+  by Charley K4GBB.
+- [r29] Empty LETTER field removed from version.h for 7.06 compatibility (bug
+  reported by Peter ZL2BAU).
+- [r30] Increased length of characters copied in wp buffer message for long
+  list (N1URO).
+- [r31] lang/english.hlp amended by Brian N1URO and including new Quit command.
+- [r32] Increased QRA locator field to 10 characters asked by Tom SP2L.
+- Removed a couple of old bugs reported by Paul G4APL (In TCP driver and
+  themes date).
+- [r34] - f6bvp: modified README to explain correct location of fbb.sh
+  in /usr/local/share/doc/fbb/
+- [r35] - f6bvp: drv_tcp.c:623:9: warning: too many arguments for format
+  reported by Paul G4APL.
+- [r36]  Probably a parameter inversion detected by 0 length warning reported
+  by Paul G4APL
+- [r38] epurmess.ini was not correctly checked and created if missing
+- [r39] Updated francais.hlp and ChangeLog.
+- [r40] fbb.conf is now in /usr/local/etc/ax25/fbb and automatically copied
+  there if fbb.conf is present in parent directory. updated doc/fbb.conf.sample
+  to reflect new location.
+- [r41] fixed variable substitutions in 20_epurwp and 20_epurmess
+- [r42] removed unused code from serv.h
+- [r43] Bug #3 fixed missing substitutions in xfbbC.c that were preventing
+  ncurses support from being compiled.
+- [r44] Bug #6 changed linker flag for -lax25 from LDFLAGS to LDADD to resolve
+  compiling issues on newer gcc versions
+- [r45] Upate ChangeLog.
+- [r46] Bug #8 changed src/X11 linker flag for -lax25 from LDFLAGS to LDADD.
+  Update ChangeLog.
+- [r49] Bug #8 move linker flags for Xlibs from LDFLAGS to LDADD.
+- [r50] port.sys.sample installed with make installconf to provide a sample
+  port.sys file for new BBS install.
+- [r51] Update ChangeLog.
+- [r52] Bug #1 make /lang files and amsat.fwd only overwrite/install with
+  make installconf.
+- [r53] Remove obsolete code that checked for OLD_AX25 (for version 2.0 kernels)
+  If you're kernel is THAT old... you REALLY should upgrade your box.
+- [r54] Fix a couple more variable substitutions in help texts of fbb shell
+  script.
+- [r55] 'ctrl-C' 'ctrl-Z' and 'ctrl-\' disabled in console client xfbbC
+  (bug reported by Gustavo I0OJJ).
+- [r56] fbbgetconf updated to defined parameters version and added usage
+  message.
+- [r57] All conditional compile depending on LETTER and BETA removed from
+  source code files.
+- [r58] Update ChangeLog.
+- [r59] In Satupdat we are now using fgets() returned value to avoid compiler
+  warnings. Update ChangeLog.
+- [r60] In Ajoursat we are now using fgets() returned value to avoid compiler
+  warnings.
+- [r61] Replaced INIT.SRV text in X11/xfbb.c
+- [r62] In xfbb.c use of uintptr_t and intptr_t cast suppress different size
+  compiler warning.
+- [r63] In xfbbX.c use of uintptr_t and intptr_t cast suppress different size
+  compiler warning.
+- [r64] In xfbbXcnsl.c use of uintptr_t and intptr_t cast suppress different
+  size compiler warning.
+- [r65] In xfbbpndd.c use of uintptr_t and intptr_t cast suppress different
+  size compiler warning.
+- [r66] In xfbbedtm.c use of uintptr_t and intptr_t cast suppress different
+  size compiler warning.
+- [r67] In xfbbcnsl.c use of uintptr_t and intptr_t cast suppress different
+  size compiler warning.
+- [r68] ChangeLog reformated to 80 characters per line (Thanks to Tom, SP2L).
+- [r69] In tncio.c added (intptr_t) casts to avoid compiler warning
+  and possible bugs!
+- [r70] Update ChangeLog.
+- [r71] Added prototype for newly introduced usage() in fbbgetconf.c
+- [r72] Added limits.h, stdio.h, and perror to configure checks.
+- [r73] Oops, forgot to update some files for version release.
+- [r74] Update versions in their appropriate files.
+- [r75] Tagging this as release 7.0.7
+
+7.0.8 (F6BVP)
+- [r76] Create 7.0.8 branch for development.
+- [r77] Update all instances of FBB version to use one source and eliminate
+  version.h.
+- [r78] Including <stdio.h> is necessary for sprintf() prototype in date.c
+- [r79] Update ChangeLog.
+- [r80] Minor editorial changes.
+- [r81] Minor editorial changes.
+- [r82] Update ChangeLog.
+- [r83] Update ChangeLog (changed not valid sp2lob callsign to SP2L).
+- [r84]-[r92] Removed <CR> codes.
+- [r93] Update ChangeLog.
+- [r94] Update ChangeLog.
+- [r95] Update ChangeLog.
+- [r96] - [r106] Remove <CR> code in branches/7.0.6 Update ChangeLog.
+- [r107]- In DOS format, end of lines had a Carriage Return and Line Feed
+  (0D/0A hex), couple of characters for old TeleType machines needed both
+  to instruct the TTY carriage to go to a new line.
+  In Linux there is a single character (0D hex) for new line.
+  Update ChangeLog.
+- [r109] Changes in xfbbXabtd.c to remove possible errors and compile warnings
+- [r110] Uninitialised structure in drv_sock.c detected with valgrind
+- [r111] Terminal.c updated in order to remove compiler warnings
+- [r112] Removed unused variable 'ok' in console.c
+- [r113] Removed unused variable 'nb' in drv_aea.c
+- [r114] Removed unused variable drv_pop.c and drv_mod.c
+- [r115] Removed unused variables in drv_sock.c
+- [r116] Removed unused variable in fwdovl1.c
+
+7.0.8-beta (F6BVP)
+- [r117] Change version number in xfbbC to reflect package version.
+- [r118] removed unnecessary fbb.conf version number check in maintinf.c
+- [r119] Not using curses in xfbbC client implies we are in console mode
+- [r120] User can quit xfbbC monitor mode with <ESC> character
+- [r121] fbbgetconf did not read key options
+- [r122] fbbgetconf displays key result on first line
+- [r123] Update ChangeLog.
+- [r124] struct array 0 init in drv_tcp.c and trait.c and removed commented
+  debug lines
+- [r125] No <CR> character when Linux in init_tnc.c
+- [r126] No <CR> character when Linux in init.c
+- [r127] More <CR> character removed and fbb.conf instead of INIT.SRV with Linux
+- [r128] More <CR> characters removed in FBB init process with Linux OS
+- [r129] Still more <CR> characters removed in FBB init process
+- [r130] port.sys.sample.in showed wrong port.sys destination directory
+- [r131] Initializing arrays and structures to 0 in order to avoid memory leaks
+- [r132] More arrays and structures initialized in order to avoid memory leaks
+- [r133] End-of-line of messages adapted to Linux OS in epurmess
+- [r134] End-of-line of message adapted to Linux OS in epurwp
+- [r135] Yet another wrong new-line for Linux OS in epurwp
+- [r136] Other updates of <CR><LF> and new-line for Linux OS versus DOS/WINDOWS
+  in init.c
+- [r137] Partially reversing r133 commit of epurmess.c
+- [r138] Update ChangeLog.
+- [r139] Initializing arrays to 0 in drv_tcp to avoid memory leaks 
+- [r140] Removed two printf and included sprint for case WILL TN_LINEMOD
+  in tcp_trame() of drv_tcp.c
+- [r141] configure.ac patch for ncursesw <jskarvad@redhat.com>
+- [r142] include string.h and remove strndup() in drv_pop <jskarvad@redhat.com>
+- [r143] string error missing %s in modem.c <jskarvad@redhat.com>
+- [r144] remove SETUID security potential issue - Jaroslav, OK2JRQ
+  <jskarvad@redhat.com>
+- [r145] converting satdoc-f.doc to utf8 - Jaroslav OK2JRQ <jskarvad@redhat.com>
+- [r146] Partially reverting r77 to restore forward compatibility with non FBB
+  applications
+- [r147] Update ChangeLog.
+- [r148] Update ChangeLog.
+- [r149] /bin/bash shebang replacing #!/bin/sh in fbb scripts
+- [r150] Issues removed from ChangeLog and published as Sourceforge tickets.
+- [r151] Update ChangeLog.
+- [r152] epurmess.c patched for '=' sign no more accepted in putenv() parameter
+
+7.0.8-beta2 (F6BVP)
+- [r153] Corrected issue during a new install with wrong /usr/local/share/doc
+  directory(reported by K4GBB)
+- [r154] Update ChangeLog.
+- [r155] Replacement of Copyright and GNU GPL license header text.
+- [r156-7-8-9] Update ChangeLog.
+
+7.0.8-beta3 (F6BVP)
+- [r160-1] Added missing check for HAVE_NCURSES in xfbbC (reported by Tom SP2L)
+
+7.0.8-beta4 (F6BVP)
+- [r162] Added missing #include and (int voie) declaration to avoid Gcc implicit
+  declarations warning
+- [r163] Update ChangeLog.
+- [r164] Correction - revision numbers. Update ChangeLog.
+
+7.0.8-beta5 (F6BVP) removed
+7.0.8-beta6 (F6BVP)
+- [r165] Extended wp_line copy to 256 in  int_serv.c
+  for handling large WP forwarding (Brian, N1URO)
+- [r166] Log of BBS connections during week # 52 was wrongly named fbblogYY.00
+7.0.8-beta7 (F6BVP)
+- [r167] Configure will check for installed libncurses libraries
+- [r168] 20_epursat maintenance script sends message to BBS SYSOP (Brian N1URO) 
+- [r169] New autogen.sh will create missing AX.25 library links
+  (with help from Tom SP2L)
+- [r170] configure.ac was displaying old subversion (Tom SP2L)
+- [r171] Update ChangeLog.
+
+7.0.8-beta8 (N1URO)
+- [r172] Commented out  rm -f .m4/*  that prevented  autogen.sh  to work
+- [r173] scripts/fbb.in:  # Parse localtime configuration,
+  keeps standard/daylight savings time intact.
+  src/mbl_user.c:       /* FlexNet Poll filtering - N1URO and WB2CMF */
+  Update ChangeLog.
+- [r174] Renumbered revision numbers. Some minor editorial changes. 
+  Update ChangeLog.
+- [r175] Week 53 is first week of the year.
+
+7.0.9 (f6bvp, Dave van der Locht) 
+[r178]
+- fbblog files renamed from 0 to 52 for week number 
+- fbb log displayed calling executable script /usr/local/bin/fbblog 
+- Some functions are done via system() calls. However, observed return value
+  is invariably -1 while it should reflect the result of called program.
+  It happened because the SIGCHILD signal handler was set to SIG_IGN.
+  Fixed at the beginning of the main function in xfbbd.c.
+- 7.0.8-beta9 was hanging. xfbbd.c patched.
+  1) Return value of system() is always -1 due to SIGCHLD signal was ignored.
+  2) Added 'fail-safe bypass' in case call_nbdos() couldn't find the command/executable to run.
+  3) Replaced system() with popen() in the call_nbdos() function to fix the problem with 
+  response text from a c_filter not coming through.
+- PG servers returned errors. Tested by Brian N1URO
+*******************************************************************************

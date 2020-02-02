@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 
 #include <serv.h>
@@ -34,7 +30,7 @@ static char *l2call (lcall);
 
 int init_white_pages (void)
 {
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	char buf[80];
 
 #endif
@@ -56,10 +52,18 @@ int init_white_pages (void)
 	if (fptr == NULL)
 		return (1);
 
+#ifdef __linux__
+#ifdef ENGLISH
+	cprintf ("White Pages Set-up           \n");
+#else
+	cprintf ("Initialisation Pages Blanches\n");
+#endif
+#else
 #ifdef ENGLISH
 	cprintf ("White Pages Set-up           \r\n");
 #else
 	cprintf ("Initialisation Pages Blanches\r\n");
+#endif
 #endif
 
 	deb_io ();
@@ -76,7 +80,7 @@ int init_white_pages (void)
 	{
 		if ((record % 100) == 0)
 		{
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 			InitText (ltoa ((long) record, buf, 10));
 #endif
 #ifdef __FBBDOS__
@@ -90,7 +94,7 @@ int init_white_pages (void)
 		++record;
 	}
 	fclose (fptr);
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	InitText (ltoa ((long) record, buf, 10));
 #endif
 #ifdef __FBBDOS__
@@ -99,10 +103,18 @@ int init_white_pages (void)
 	close_win (fen_ptr);
 #endif
 	fin_io ();
+#ifdef __linux__
+#ifdef ENGLISH
+	cprintf ("%u records updated\n", record);
+#else
+	cprintf ("%u enregistrements mis a jour\n", record);
+#endif
+#else
 #ifdef ENGLISH
 	cprintf ("%u records updated\r\n", record);
 #else
-	cprintf ("%u records updated\r\n", record);
+	cprintf ("%u enregistrements mis a jour\r\n", record);
+#endif
 #endif
 	return (1);
 }

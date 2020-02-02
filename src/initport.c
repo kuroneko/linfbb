@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #include <serv.h>
 
@@ -92,7 +88,7 @@ void initport (void)
 	char portname[81];
 	int voie;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	int linux_canal = 1;
 
 #endif
@@ -123,7 +119,7 @@ void initport (void)
 #ifdef __WINDOWS__
 	portfile = "port_w.sys";
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	portfile = "port_l.sys";
 #endif
 	if ((fptr = fopen (c_disque (portfile), "r")) == NULL)
@@ -131,17 +127,25 @@ void initport (void)
 		if ((fptr = fopen (c_disque ("port.sys"), "r")) == NULL)
 		{
 #ifdef ENGLISH
-			errport (lig, "File PORT.SYS not found    ");
+			errport (lig, "File PORT.SYS not found");
 #else
 			errport (lig, "Fichier PORT.SYS inexistant");
 #endif
 			return;
 		}
 	}
+#ifdef __linux__
+#ifdef ENGLISH
+	cprintf ("Ports set-up            \n");
+#else
+	cprintf ("Initialisation des ports\n");
+#endif
+#else
 #ifdef ENGLISH
 	cprintf ("Ports set-up            \r\n");
 #else
 	cprintf ("Initialisation des ports\r\n");
+#endif
 #endif
 
 	al = sizeof (defport) * NBPORT;
@@ -259,7 +263,7 @@ void initport (void)
 			p_com[p1].delai = 0;
 			p_com[p1].cbase = p2;
 			p_com[p1].pactor_st = 247;
-#ifdef __LINUX__
+#ifdef __linux__
 			if (p3 != P_LINUX)
 			{
 #ifdef ENGLISH
@@ -302,7 +306,7 @@ void initport (void)
 			else
 			{
 #endif
-#if defined(__LINUX__) || defined(__FBBDOS__)
+#if defined(__linux__) || defined(__FBBDOS__)
 			if (p3)
 			{
 #endif
@@ -362,7 +366,7 @@ void initport (void)
 					p_com[p1].options = 0x20;
 					break;
 				default:
-#ifdef __LINUX__
+#ifdef __linux__
 					break;
 #else
 #ifdef ENGLISH
@@ -485,7 +489,7 @@ void initport (void)
 #endif
 					return;
 				}
-#ifndef __LINUX__
+#ifndef __linux__
 				if (p5 > 7)
 				{
 #ifdef ENGLISH
@@ -626,7 +630,7 @@ void initport (void)
 				case 'R':
 					p_port[p1].moport |= 0x40;
 					break;
-#ifdef __LINUX__
+#ifdef __linux__
 				case 'S':
 					p_port[p1].typort = TYP_POP;	/* POP SOCKET */
 					p_port[p1].ccanal = 0;
@@ -666,7 +670,7 @@ void initport (void)
 					p_port[p1].typort = TYP_BPQ;	/* BPQ4 */
 					p_port[p1].ccanal = p5 + 1;
 					break;
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 				case 'T':
 					p_port[p1].typort = TYP_TCP;	/* TCP-IP */
 					break;
@@ -750,7 +754,7 @@ void initport (void)
 			{
 				int tot;
 
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 				{
 					char buf[80];
 
@@ -772,7 +776,7 @@ void initport (void)
 				{
 					init_voie (NBVOIES);
 					svoie[NBVOIES]->affport.port = p1;
-#ifdef __LINUX__
+#ifdef __linux__
 					if (S_LINUX (p1))
 					{
 						tot = linux_canal++;
@@ -916,10 +920,18 @@ void initport (void)
 	{
 		svoie[voie]->paclen = p_port[no_port (voie)].pk_t;
 	}
+#ifdef __linux__
+#ifdef ENGLISH
+	cprintf ("%d channels ok  \n", nbvalid);
+#else
+	cprintf ("%d voies valides\n", nbvalid);
+#endif
+#else
 #ifdef ENGLISH
 	cprintf ("%d channels ok  \r\n", nbvalid);
 #else
 	cprintf ("%d voies valides\r\n", nbvalid);
+#endif
 #endif
 
 	MWARNING = NBVOIES;
@@ -940,7 +952,7 @@ static void errport (int lig, char *texte)
 #endif
 	attend_caractere (10);
 #endif
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	char msg[80];
 
 #ifdef ENGLISH
@@ -960,7 +972,7 @@ static void err_fic (char *nomfic, int ligne, char *texte)
 	cprintf ("\r\n%s (%d) : %s\r\n\a", nomfic, ligne, texte);
 	attend_caractere (10);
 #endif
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	char msg[80];
 
 	sprintf (msg, "%s (%d) :\n%s", nomfic, ligne, texte);
@@ -1015,12 +1027,22 @@ void initexte (void)
 		return;
 	}
 
+#ifdef __linux__
+#ifdef ENGLISH
+	cprintf ("Texts set-up             \n");
+
+#else
+	cprintf ("Initialisation des textes\n");
+
+#endif
+#else
 #ifdef ENGLISH
 	cprintf ("Texts set-up             \r\n");
 
 #else
 	cprintf ("Initialisation des textes\r\n");
 
+#endif
 #endif
 	nbc = cpt = 0;
 #ifdef ENGLISH
@@ -1075,10 +1097,18 @@ void initexte (void)
 #endif
 			++niv;
 			nomlang = (char *) m_alloue (LG_LANG * nbc);
+#ifdef __linux__
+#ifdef ENGLISH
+			cprintf ("%d language buffers allocated\n", NBLANG);
+#else
+			cprintf ("%d buffers langue allou‚s    \n", NBLANG);
+#endif
+#else
 #ifdef ENGLISH
 			cprintf ("%d language buffers allocated\r\n", NBLANG);
 #else
 			cprintf ("%d buffers langue allou‚s    \r\n", NBLANG);
+#endif
 #endif
 			break;
 		case 1:
@@ -1091,7 +1121,7 @@ void initexte (void)
 #ifdef __FBBDOS__
 			cprintf ("\r\n%8s ", nomlang + cpt * LG_LANG);
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 			printf ("Init lang %9s\n", nomlang + (cpt * LG_LANG));
 #endif
 			nb = lang_len (nomlang + (cpt * LG_LANG));

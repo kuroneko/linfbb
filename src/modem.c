@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  *    MODULE MODEM
@@ -31,7 +27,7 @@
 #include <serv.h>
 #include <modem.h>
 
-#ifdef __LINUX__
+#ifdef __linux__
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/ioctl.h>
@@ -66,7 +62,7 @@ int md_send (int port, char *chaine)
 		{
 		case '~':
 			deb_io ();
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 			WinMSleep (500);
 #endif
 #ifdef __FBBDOS__
@@ -123,7 +119,7 @@ static void md_etoiles (int voie)
 {
 	int port = no_port (voie);
 
-#ifdef __LINUX__
+#ifdef __linux__
 	struct termios tty;
 	defcom *ptrcom = &p_com[(int)p_port[port].ccom];
 
@@ -161,7 +157,7 @@ static void md_etoiles (int voie)
 
 void md_echo (int voie)
 {
-#ifdef __LINUX__
+#ifdef __linux__
 	int port = no_port (voie);
 	struct termios tty;
 	defcom *ptrcom = &p_com[(int)p_port[port].ccom];
@@ -209,7 +205,7 @@ void modem_no_echo (int port)
 
 void init_modem (int port)
 {
-#ifdef __LINUX__
+#ifdef __linux__
 	if (BIOS (port) == P_LINUX)
 	{
 		struct termios tty;
@@ -269,7 +265,7 @@ void init_modem (int port)
 
 void modem_stop (int port)
 {
-#ifdef __LINUX__
+#ifdef __linux__
 	{
 		int comfd = p_com[(int)p_port[port].ccom].comfd;
 
@@ -329,7 +325,7 @@ void modem_start (int port)
 	fen_ptr = open_win (4, 2, 50, 8, INIT, s);
 #endif
 
-#ifdef __LINUX__
+#ifdef __linux__
 	if (BIOS (port) == P_LINUX)
 	{
 		struct termios tty;
@@ -434,7 +430,7 @@ void md_defaut (int voie)
 {
 	int port = no_port (voie);
 
-#ifdef __LINUX__
+#ifdef __linux__
 	if (BIOS (port) == P_LINUX)
 	{
 		struct termios tty;
@@ -478,7 +474,7 @@ int modem_vide (int voie)
 	int nbtot;
 	int port = no_port (voie);
 
-#ifdef __LINUX__
+#ifdef __linux__
 	if (BIOS (port) == P_LINUX)
 	{
 		defcom *ptrcom = &p_com[(int)p_port[port].ccom];
@@ -526,7 +522,7 @@ void md_inbuf (int voie, char *ptr, int nb)
 {
 	in_buf (voie, ptr, nb);
 
-#ifdef __LINUX__
+#ifdef __linux__
 	{
 		defcom *ptrcom = &p_com[(int)p_port[port].ccom];
 		struct termios tty;
@@ -655,7 +651,7 @@ void deconnect_modem (int voie)
 
 	/* Attend que le buffer soit vide */
 
-#ifdef __LINUX__
+#ifdef __linux__
 	{
 		int tempo = 100;		/* attend 10s le vidage du modem */
 
@@ -700,7 +696,7 @@ void deconnect_modem (int voie)
 
 	temps = time (NULL) + 2;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	if (BIOS (port) == P_LINUX)
 	{
 		defcom *ptrcom = &p_com[(int)p_port[port].ccom];
@@ -811,6 +807,9 @@ void accueil_modem (void)
 	p_port[no_port (voiecur)].echo = TRUE;
 	if (!outfich (c_disque ("LANG\\MODEM.ENT")))
 		out ("$W$O BBS. Phone access$W$W", 25);
+
+	fprintf (stderr, "%s", (c_disque ("LANG\\MODEM.ENT")));
+
 	out ("Callsign :", 10);
 	pvoie->temp1 = pvoie->temp2 = 0;
 	pvoie->maj_ok = 0;

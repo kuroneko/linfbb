@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #define ENGLISH
 
@@ -39,7 +35,7 @@
 #include <sys/stat.h>
 #include <ctype.h>
 
-#ifdef __LINUX__
+#ifdef __linux__
 #include <stdlib.h>
 #include <unistd.h>
 #else
@@ -48,9 +44,9 @@
 #endif
 
 #include <fbb_conf.h>
-#include "version.h"
+#include <config.h> 
 
-#ifdef __LINUX__
+#ifdef __linux__
 
 #define __a2__ __attribute__ ((packed, aligned(2)))
 #define O_BINARY 0
@@ -132,7 +128,7 @@ FILE *fpto;
 FILE *fptr_mess;
 FILE *fptr_upd;
 
-#ifdef __LINUX__
+#ifdef __linux__
 
 char *strupr (char *str)
 {
@@ -177,7 +173,7 @@ long filelength (int fd)
 char *test_back_slash (char *chaine)
 {
 	if ((strlen(chaine) == 0)
-#ifdef __LINUX__
+#ifdef __linux__
 		|| (chaine[strlen (chaine) - 1] != '/'))
 			strcat(chaine, "/");
 #else
@@ -218,11 +214,7 @@ int main (int ac, char **av)
 
 	if ((ac >= 2) && (strcmp (strupr (av[1]), "/H") == 0))
 	{
-#ifdef LETTRE
-		fprintf (stderr, "\nEPURWP V %d.%02d%c\n", MAJEUR, MINEUR, LETTRE);
-#else
-		fprintf (stderr, "\nEPURWP V %d.%02d\n", MAJEUR, MINEUR);
-#endif
+		fprintf (stderr, "\nEPURWP V%s\n", VERSION);
 		fprintf (stderr, "format  : EPURWP [upd-days [kill-days [update-file]]]\n");
 		fprintf (stderr, "defaults: upd-days = 40\n          kill-days= 90\n\n");
 		fprintf (stderr, "If temporary part is stable during \"upd-days\" days,\n");
@@ -254,11 +246,7 @@ int main (int ac, char **av)
 	   deb_zone = (unsigned)atoi(av[3]) * 1000;
 	 */
 
-#ifdef LETTRE
-	fprintf (stderr, "\nEpurwp V %d.%02d%c\n\n", MAJEUR, MINEUR, LETTRE);
-#else
-	fprintf (stderr, "\nEpurwp V %d.%02d\n\n", MAJEUR, MINEUR);
-#endif
+	fprintf (stderr, "\nEpurwp V%s\n\n", VERSION);
 
 	heure = time (NULL);
 
@@ -366,7 +354,11 @@ int main (int ac, char **av)
 			++destroy;
 
 		if ((*rec.callsign) && ((++record % 100) == 0))
+#ifdef __linux__
+			fprintf (stderr, "\nRecord %ld", record);
+#else
 			fprintf (stderr, "\rRecord %ld", record);
+#endif
 
 		++record_in;
 	}
@@ -564,13 +556,10 @@ void print_compte_rendu (void)
 
 void defauts (int jours, int obsolete)
 {
-	int lig;
 	unsigned int flag;
 	char *ptr;
 	char system_dir[256];
 	char temp[20];
-
-	lig = 0;
 
 	if (read_fbb_conf(NULL) > 0)
 	{
@@ -593,7 +582,7 @@ void defauts (int jours, int obsolete)
 #endif
 		exit (1);
 	}
-	sprintf (temp, "FBB%d.%02d", MAJEUR, MINEUR);
+	sprintf (temp, "FBB%s", VERSION);
 
 	/* Only test the major number ... */
 	if (strncasecmp (temp, ptr, 4) != 0)
@@ -605,7 +594,11 @@ void defauts (int jours, int obsolete)
 #endif
 		exit (1);
 	}
-	fprintf (stderr, "Configuration version : %s\r\n", ptr);
+#ifdef __linux__
+	fprintf (stderr, "Configuration version : %s\n", ptr);
+#else
+	fprintf (stderr, "Configuration version : %s\r", ptr);
+#endif
 	
 	/* path of conf files */
 	ptr = find_fbb_conf("data", 0);
@@ -625,7 +618,7 @@ void defauts (int jours, int obsolete)
 	sscanf (ptr, "%s %u", temp, &flag);
 	ext_call = ((flag & 4096) != 0);
 
-#ifdef __LINUX__
+#ifdef __linux__
 	sprintf (wp_sys, "%swp/wp.sys", system_dir);
 	sprintf (wp_old, "%swp/wp.old", system_dir);
 	sprintf (wp_mess, "%swp/mess.wp", system_dir);
@@ -781,7 +774,7 @@ int copy_ (char *oldfich, char *newfich)
 {
 	char s[256];
 
-#ifdef __LINUX__
+#ifdef __linux__
 	sprintf (s, "cp %s %s > /dev/null", oldfich, newfich);
 #else
 	sprintf (s, "COPY %s %s > NUL", oldfich, newfich);

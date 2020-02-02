@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  * Initialisation du buffer forward.
@@ -107,7 +103,7 @@ static char *forward_sys[2] =
 
 #endif
 
-#ifdef __LINUX__
+#ifdef __linux__
 static char *forward_sys[2] =
 {"forw_l.sys", "forward.sys"};
 
@@ -442,7 +438,7 @@ static void init_buf_fwd_ems (void)
 					c = fwd_commande (com_buf);
 					if ((c == '*') || (c == '#') || (c == '\0'))
 						continue;
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 					if (c == 'A')
 					{
 						InitText (com_buf);
@@ -964,12 +960,22 @@ void init_bbs (void)
 
 	t_bbs = st.st_mtime;
 
+#ifdef __linux__
+#ifdef ENGLISH
+	if (!operationnel)
+		cprintf ("BBS set-up        \n");
+#else
+	if (!operationnel)
+		cprintf ("Initialisation BBS\n");
+#endif
+#else
 #ifdef ENGLISH
 	if (!operationnel)
 		cprintf ("BBS set-up        \r\n");
 #else
 	if (!operationnel)
 		cprintf ("Initialisation BBS\r\n");
+#endif
 #endif
 
 	if (bbs_ptr == NULL)
@@ -989,7 +995,7 @@ void init_bbs (void)
 				continue;
 			*bbs = '\0';
 			sscanf (chaine, "%d %s", &itmp, bbs);
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 			if (*bbs)
 			{
 				char text[80];
@@ -1048,7 +1054,7 @@ void cron (long h_time)
 #ifdef __WINDOWS__
 	cronname = "cron_w.sys";
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	cronname = "cron_l.sys";
 #endif
 	if ((fptr = fopen (c_disque (cronname), "rt")) == NULL)
@@ -1149,7 +1155,7 @@ void cron (long h_time)
 #if defined(__WINDOWS__) || defined(__FBBDOS__)
 				send_dos (1, com_buf, NULL);
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 				char *pptr = com_buf;
 
 				call_nbdos (&pptr, 1, NO_REPORT_MODE, NULL, TOOLDIR, NULL);
@@ -1166,7 +1172,7 @@ void cron (long h_time)
 #if defined(__WINDOWS__) || defined(__FBBDOS__)
 				send_dos (2, com_buf, NULL);
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 				char *pptr = com_buf;
 
 				call_nbdos (&pptr, 1, NO_REPORT_MODE, NULL, TOOLDIR, NULL);
@@ -1198,7 +1204,7 @@ void cron (long h_time)
 	}
 	fclose (fptr);
 	aff_etat ('A');
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	if (modif)
 	{
 		maj_menu_options ();

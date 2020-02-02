@@ -1,34 +1,31 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  *  MODULE TNCIO.C : ENTREES-SORTIE
  */
 
 #include <serv.h>
+#include <stdint.h>
 
 #define INT10 0x10
 
@@ -972,7 +969,7 @@ static void wheader (int voie, int color, char *s)
 
 	deb_io ();
 
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	aff_bas_suite (voie, color, "\r", 1);
 #endif
 #ifdef __FBBDOS__
@@ -1072,7 +1069,7 @@ static void aff_bas_suite (int voie, int color, char *str, int nb)
 	winputs (voie, color, buf);
 	if (voie == CONSOLE)
 	{
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 		if (print)
 		{
 			trait_time = 0;
@@ -1249,12 +1246,12 @@ void tnc_commande (int select, char *command, int cmd)
 static void FAR hst_disc (int port, void *userdata)
 {
 	/* Imediate disconnection */
-	force_deconnexion ((int) userdata, 1);
+	force_deconnexion ((uintptr_t) userdata, 1);
 }
 
 void dec (int voie, int mode)	/* Mode = 1 deconnexion   2 retour au nodal */
 {
-#ifndef __LINUX__
+#ifndef __linux__
 	int command;
 #endif
 
@@ -1274,7 +1271,7 @@ void dec (int voie, int mode)	/* Mode = 1 deconnexion   2 retour au nodal */
 		{
 			/* Timer to force disconnection after 10 seconds */
 			del_timer (p_port[port].t_delay);
-			p_port[port].t_delay = add_timer (10, port, (void FAR *) hst_disc, (void *) voie);
+			p_port[port].t_delay = add_timer (10, port, (void FAR *) hst_disc, (void *)(intptr_t)voie);
 		}
 		break;
 	case TYP_PK:
@@ -1293,7 +1290,7 @@ void dec (int voie, int mode)	/* Mode = 1 deconnexion   2 retour au nodal */
 		tnc_commande (voie, "D", SNDCMD);
 		break;
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	case TYP_TCP:
 	case TYP_ETH:
 	case TYP_SCK:
@@ -1485,7 +1482,7 @@ int dec_voie (int voie)
 	if (svoie[voie]->binary)
 		aff_yapp (voie);
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	kill_rzsz (voie);
 #endif
 
@@ -1549,7 +1546,7 @@ int dec_voie (int voie)
 	init_fb_mess (voie);
 	fbb_log (voie, 'X', "D");
 	aff_forward ();
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	window_disconnect (voie);
 #endif
 	ff ();
@@ -1606,7 +1603,7 @@ static void pactor_data (int port, int voie)
 	if (svoie[voie]->sta.connect)
 	{
 		p_port[port].nbc = (int) (delta / tempo);
-		add_timer (STATIMER, port, pactor_data, (void *) voie);
+		add_timer (STATIMER, port, pactor_data, (void *)(intptr_t) voie);
 	}
 	else
 	{
@@ -1701,7 +1698,7 @@ int con_voie (int voie, char *ptr)
 					svoie[voie]->affport.port = port;
 				}
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 				else if (S_LINUX (no_port (voie)))
 				{
 					port = linux_port (no_port (voie), canal);
@@ -1740,7 +1737,7 @@ int con_voie (int voie, char *ptr)
 		aff_event (voie, 1);
 		status (voie);
 		curseur ();
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 		window_connect (voie);
 #endif
 		svoie[voie]->entmes.bid[0] = '\0';
@@ -1774,7 +1771,7 @@ int con_voie (int voie, char *ptr)
 		{
 			/* clear_queue (voie); TEST F6FBB */
 			sta_drv (voie, TOR, "%T");
-			add_timer (STATIMER, no_port (voie), pactor_data, (void *) voie);
+			add_timer (STATIMER, no_port (voie), pactor_data, (void *)(intptr_t) voie);
 			if (svoie[voie]->niv1 == 0)
 			{
 				/* Appel entrant */
@@ -2045,7 +2042,7 @@ int vide (int port, int echo)
 				--tempo;
 		}
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 		else
 		{
 			usleep (100000);

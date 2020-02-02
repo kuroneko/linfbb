@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #include <serv.h>
 #include <modem.h>
@@ -108,27 +104,27 @@ int test_temp(int voie)
 		char file[80];
 		FILE *fptr;
 
-#ifdef __LINUX__
+#ifdef __linux__
 		strcpy(dir, "X:/");	/* fill string with form of response: X:/ */
 #else
 		strcpy(dir, "X:\\");	/* fill string with form of response: X:\ */
 #endif
 		dir[0] = 'A' + getdisk();	/* replace X with current drive letter */
 		getcurdir(0, dir + 3);	/* fill rest of string with current directory */
-#ifdef __LINUX__
+#ifdef __linux__
 		sprintf(file, "%s/f_filter.%02d", dir, voiecur);
 #else
 		sprintf(file, "%s\\f_filter.%02d", dir, voiecur);
 #endif
 
-#ifdef __LINUX__
+#ifdef __linux__
 		strcpy(file, back2slash(file));
 #endif
 		if ((fptr = fopen(file, "wt")) == NULL)
 			return (-1);
 
 		fprintf(fptr, "#\n# Downloaded File information\n#\n");
-#ifdef __LINUX__
+#ifdef __linux__
 		fprintf(fptr, "TempName = %s\n", back2slash(temp));
 		fprintf(fptr, "FileName = %s\n", back2slash(pvoie->sr_fic));
 #else
@@ -145,7 +141,7 @@ int test_temp(int voie)
 
 			*buffer = '\0';
 
-#ifdef __LINUX__
+#ifdef __linux__
 /*			sprintf(s, "%sf_filter %s-%d %d %u %s",
 					FILTDIR,*/
 			sprintf(s, "./f_filter %s-%d %d %u %s",
@@ -814,7 +810,7 @@ static int execute_dos(void)
 
 #endif
 
-#ifdef __LINUX__
+#ifdef __linux__
 static int execute_dos(void)
 {
 	char buf[256];
@@ -993,7 +989,7 @@ static void view(void)
 	ptr = get_nextparam();
 	if ((ptr) && (strchr(ptr, '/') == NULL))
 	{
-#ifdef __LINUX__
+#ifdef __linux__
 		{
 			static char *fbb_view = "fbb_view";
 			char *vptr = getenv("FBB_VIEW");
@@ -1028,7 +1024,7 @@ static int where(int lg, char *path, char *pattern)
 	int retour = 0;
 
 	strcpy(rech, path);
-#ifdef __LINUX__
+#ifdef __linux__
 	strcat(rech, "*");
 #else
 	strcat(rech, "*.*");
@@ -1200,7 +1196,7 @@ void menu_dos(void)
 
 	if ((com[1] == ':') && (!ISGRAPH(com[2])))
 	{
-#ifdef __LINUX__
+#ifdef __linux__
 		if (voiecur == CONSOLE)
 		{
 			static char *txt = "Cannot select a virtual disk in console mode";
@@ -1390,7 +1386,7 @@ void menu_dos(void)
 			}
 			if (P_MODM(voiecur))
 			{
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 				var_cpy(0, "YMODEM");
 				maj_niv(N_MOD, 4, XR_INIT);
 				pvoie->type_yapp = 2;

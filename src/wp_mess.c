@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
 
@@ -119,7 +115,7 @@ void send_wp_mess (void)
 
 	for (;;)
 	{
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 		char txt[80];
 
 #endif
@@ -138,7 +134,7 @@ void send_wp_mess (void)
 
 		close (fd_dest);
 
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 		wsprintf (txt, "Preparing Message #%d", ++mess);
 		InfoMessage (-1, txt, "WP-Messages");
 #endif
@@ -162,7 +158,7 @@ void send_wp_mess (void)
 
 		while ((fd != -1) && (*route))
 		{
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 			wsprintf (txt, "Creating Message #%d (%s)", mess, route);
 			InfoMessage (-1, txt, NULL);
 #endif
@@ -194,14 +190,14 @@ void send_wp_mess (void)
 	/* On ferme le MAIL.IN */
 	fclose (fptr);
 
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	InfoMessage (-1, "Delete MESS.WP file", NULL);
 #endif
 	unlink (d_disque ("WP\\MESS.WP"));
 	unlink ("TEMP.WP");
 	selvoie (sav_voie);
 	vlang = sav_lang;
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	InfoMessage (-1, NULL, NULL);
 #endif
 }

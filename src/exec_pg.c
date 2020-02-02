@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #include <serv.h>
 
@@ -37,10 +33,11 @@ static void load_pg (void);
 
 static int nbpg = 0;
 
-#ifdef __LINUX__
+#ifdef __linux__
 
 #undef open
 
+#include <grp.h>
 #include <termios.h>
 #include <sys/ioctl.h>
 #include <sys/signal.h>
@@ -98,8 +95,12 @@ static int pty_open (int *pty, struct winsize *winsize)
 	setsid ();					/* will break terminal affiliation */
 	ioctl (tty, TIOCSCTTY, (char *) 0);
 
-	setuid (getuid ());
-	setgid (getgid ());
+	if (setuid (getuid ()) < 0 || setgroups(0, NULL) < 0 ||
+		setgid (getgid ()) < 0)
+	{
+		perror ("cannot set UID/GID");
+		exit (1);
+	}
 
 	devtty = open ("/dev/tty", O_RDWR);
 	if (devtty < 0)
@@ -303,7 +304,7 @@ void exec_pg (void)
 
 		m_libere (ptr, PG_BUF);
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	
 		char deroute[80];
 		char *pptr = s;
@@ -408,7 +409,7 @@ static void dir_pg (void)
 		return;
 	}
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	{
 		cmdlist *clist = tete_cmd;
 
@@ -522,7 +523,7 @@ int appel_pg (char *nom)
 {
 	pglist *lptr = tete_pg;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	cmdlist *cptr = tete_cmd;
 
 	strupr (nom);
@@ -559,7 +560,7 @@ int appel_pg (char *nom)
 	return (0);
 }
 
-#ifdef __LINUX__
+#ifdef __linux__
 static void load_cmd (void)
 {
 	FILE *fptr;
@@ -617,7 +618,7 @@ static void load_pg (void)
 		return;
 	}
 #endif
-#if defined(__LINUX__)
+#if defined(__linux__)
 	sprintf(str, "%s*", PGDIR);
 	if (findfirst (str, &dirblk, FA_DIREC))
 	{
@@ -649,7 +650,7 @@ static void load_pg (void)
 		}
 		lptr->suiv = NULL;
 		strn_cpy (8, lptr->nom_pg, dirblk.ff_name);
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 		++nbpg;
 		{
 			char text[80];
@@ -678,7 +679,7 @@ static void load_pg (void)
 			}
 			lptr->suiv = NULL;
 			strn_cpy (8, lptr->nom_pg, dirblk.ff_name);
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 			++nbpg;
 			{
 				char text[80];
@@ -689,7 +690,7 @@ static void load_pg (void)
 #endif
 		}
 	}
-#ifdef __LINUX__
+#ifdef __linux__
 	/* Loads the commands of system/commands.sys */
 	load_cmd ();
 #endif
@@ -699,7 +700,7 @@ void end_pg (void)
 {
 	pglist *lptr;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	cmdlist *cptr;
 	int voie;
 
@@ -733,7 +734,7 @@ void end_pg (void)
 
 void affich_pg (int tp)
 {
-#ifdef __LINUX__
+#ifdef __linux__
 
 	load_pg ();
 

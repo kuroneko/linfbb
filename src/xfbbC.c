@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 
  /**********************************************
@@ -47,6 +43,8 @@
 #include <sys/ioctl.h>
 #include <netdb.h>
 #include <malloc.h>
+#include <sys/signal.h>
+#include <config.h>
 
 #include <fbb_orb.h>
 #include "terminal.h"
@@ -178,7 +176,6 @@ int main (int ac, char *av[])
 	int len;
 	int s;
 	int nb;
-	int console;
 	int service;
 	int transfer;
 	int filelen = 0;
@@ -193,8 +190,12 @@ int main (int ac, char *av[])
 	int mode;
 
 	buffer = (char *) (calloc(BUFFSIZE , sizeof(char)));
-
-	fprintf (stderr, "\nClient application for xfbbd v3.3 (%s) ( help : xfbbC -? )\n\n", __DATE__);
+	
+	signal(SIGINT,SIG_IGN);  /* disable ctrl-C */
+	signal(SIGQUIT,SIG_IGN); /* disable ctrl-\ */
+	signal(SIGTSTP,SIG_IGN); /* disable ctrl-Z */
+	
+	fprintf (stderr, "\nClient application for xfbbd V%s (%s) ( help : xfbbC -? )\n\n", VERSION, __DATE__);
 
 	if ((ptr = getenv ("XFBBC_HOST")))
 		strcpy (host, ptr);
@@ -216,7 +217,6 @@ int main (int ac, char *av[])
 	else
 		strcpy (mycall, "nocall");
 
-	console = 0;
 	channel = 0;
 
 	mask = ORB_MONITOR;
@@ -259,7 +259,6 @@ int main (int ac, char *av[])
 			strcpy (mycall, optarg);
 			break;
 		case 'c':
-			console = 1;
 			mask = ORB_CONSOLE;
 			break;
 		case 'm':
@@ -268,6 +267,7 @@ int main (int ac, char *av[])
 			break;
 		case 'r':
 			use_curses = 0;
+			mask = ORB_CONSOLE;
 			break;
 		case 's':
 			service = atoi (optarg);
@@ -328,9 +328,9 @@ int main (int ac, char *av[])
 		
 	}
 	if (mask & ORB_CHANNEL)
-		fprintf (stderr, "Monitoring channel %d ...\n\n", channel);
+		fprintf (stderr, "Monitoring channel %d ... Enter <ESC> character to Quit\n\n", channel);
 	if (mask & ORB_MONITOR)
-		fprintf (stderr, "Monitoring all ports ...\n\n");
+		fprintf (stderr, "Monitoring all ports ... Enter <ESC> character to Quit\n\n");
 
 	if (transfer)
 	{
@@ -401,8 +401,8 @@ int main (int ac, char *av[])
 	}
 	else
 	{
-		sprintf(buffer, " xfbbC V3.3 (%s) -  Callsign : %s  -  Remote host : %s", __DATE__, mycall, host);
-#ifdef USE_NCURSES
+		sprintf(buffer, " xfbbC V%s (%s) -  Callsign : %s  -  Remote host : %s", VERSION, __DATE__, mycall, host);
+#ifdef HAVE_NCURSES
 	if (use_curses)
 		init_terminal(mode, buffer);
 	else
@@ -427,7 +427,7 @@ int main (int ac, char *av[])
 
 		if (FD_ISSET (STDIN_FILENO, &sock_read))
 		{
-#ifdef USE_NCURSES
+#ifdef HAVE_NCURSES
 			if (use_curses)
 				nb = read_terminal(buffer, BUFFSIZE);
 			else
@@ -439,15 +439,27 @@ int main (int ac, char *av[])
 					perror ("read");
 					break;
 				}
-#ifdef USE_NCURSES
+#ifdef HAVE_NCURSES
 			}
 #endif
 			nb = write (sock, buffer, nb);
 			if (nb == -1)
 			{
-				perror ("read");
+				perror ("write");
 				break;
 			}
+
+			if (*buffer == 0x1B)
+			{
+#ifdef HAVE_NCURSES
+				if (use_curses)
+					end_terminal();
+#endif
+				close (sock);
+				free (buffer);
+				return (0);
+			}
+
 		}
 
 		if (FD_ISSET (sock, &sock_read))
@@ -457,7 +469,7 @@ int main (int ac, char *av[])
 			unsigned int command;
 			unsigned int len;
 			unsigned int total;
-			char *ptr;
+			char *ptr = '\0';
 
 			/* Read header first. Be sure the 4 bytes are read */
 			for (total = 0; total < 4;)
@@ -472,7 +484,7 @@ int main (int ac, char *av[])
 				if (nb == 0)
 				{
 					printf ("Connection closed. Terminating\n");
-#ifdef USE_NCURSES
+#ifdef HAVE_NCURSES
 					if (use_curses)
 						end_terminal();
 #endif
@@ -500,7 +512,7 @@ int main (int ac, char *av[])
 				if (nb == 0)
 				{
 					printf ("Connection closed. Terminating\n");
-#ifdef USE_NCURSES
+#ifdef HAVE_NCURSES
 					if (use_curses)
 						end_terminal();
 #endif
@@ -528,7 +540,7 @@ int main (int ac, char *av[])
 						ptr = buffer + 3;
 						if (filter)
 							total = do_filter (ptr, total);
-#ifdef USE_NCURSES
+#ifdef HAVE_NCURSES
 						if (use_curses)
 							write_terminal(ptr, total);
 						else
@@ -639,7 +651,7 @@ int main (int ac, char *av[])
 
 	close (sock);
 	free (buffer);
-#ifdef USE_NCURSES
+#ifdef HAVE_NCURSES
 	if (use_curses)
 		end_terminal();
 #endif

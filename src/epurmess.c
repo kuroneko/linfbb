@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
-
+************************************************************************/
 #define ENGLISH
 
 #include <stdio.h>
@@ -34,7 +30,7 @@
 #include <math.h>
 #include <string.h>
 
-#ifdef __LINUX__
+#ifdef __linux__
 #include <unistd.h>
 #else
 #include <io.h>
@@ -44,7 +40,7 @@
 #endif
 
 #include <fbb_conf.h>
-#include "version.h"
+#include <config.h> 
 
 #define DEBUG   1
 #define TRUE    1
@@ -68,7 +64,7 @@
 
 #endif
 
-#ifdef __LINUX__
+#ifdef __linux__
 
 #define _read read
 #define _write write
@@ -171,6 +167,7 @@ void init_liste (char *, int);
 void message_retour (int, bullist *, long);
 void newname (char *, char *);
 void print_compte_rendu (void);
+void print_zone(void);
 
 char *date_mbl_new (long);
 char *strdt (long);
@@ -198,7 +195,7 @@ FILE *fptr, *dptr;
 
 extern long timezone;
 
-#ifdef __LINUX__
+#ifdef __linux__
 
 char *strupr (char *str)
 {
@@ -233,7 +230,7 @@ char *back2slash (char *str)
 char *test_back_slash (char *chaine)
 {
 	if ((strlen(chaine) == 0)
-#ifdef __LINUX__
+#ifdef __linux__
 		|| (chaine[strlen (chaine) - 1] != '/'))
 			strcat(chaine, "/");
 #else
@@ -306,11 +303,7 @@ int main (int ac, char **av)
 	for (i = 0; i < NB_AUTOMESS; i++)
 		auto_mess[i] = 0;
 
-#ifdef LETTRE
-	printf ("Epurmess V %d.%02d%c\n\n", MAJEUR, MINEUR, LETTRE);
-#else
-	printf ("Epurmess V %d.%02d\n\n", MAJEUR, MINEUR);
-#endif
+	printf ("Epurmess V%s\n\n", VERSION);
 
 	for (i = 1; i < ac; i++)
 	{
@@ -460,7 +453,7 @@ int main (int ac, char **av)
 
 		if (entete.type == '\0')
 		{
-#ifdef __LINUX__
+#ifdef __linux__
 			sprintf (old_name, "%smail%d/m_%06ld.mes", mail, unite, entete.numero);
 			sprintf (bin_name, "%smail%d/m_%06ld.mes", binmail, unite, entete.numero);
 #else
@@ -495,7 +488,7 @@ int main (int ac, char **av)
 		if (entete.date > heure)
 			entete.date = heure;
 
-#ifdef __LINUX__
+#ifdef __linux__
 		sprintf (old_name, "%smail%d/m_%06ld.mes", mail, unite, entete.numero);
 		sprintf (bin_name, "%smail%d/m_%06ld.mes", binmail, unite, entete.numero);
 #else
@@ -695,7 +688,7 @@ int main (int ac, char **av)
 				entete.numero -= DEL_RENUM;
 				unite = (unsigned int) (entete.numero % 10);
 
-#ifdef __LINUX__
+#ifdef __linux__
 				sprintf (ren_name, "%smail%d/m_%06ld.mes", mail, unite, entete.numero);
 #else
 				sprintf (ren_name, "%sMAIL%d\\M_%06ld.MES", mail, unite, entete.numero);
@@ -1016,6 +1009,15 @@ char *strdt (long temps)
 	return (cdate);
 }
 
+void print_zone()
+{
+  char *tz;
+      printf( "TZ: %s ", (tz = getenv( "TZ" )) ? tz : "not set" );
+      printf( "-  daylight: %d ", daylight );
+      printf( "-  timezone: %ld ", timezone );
+      printf( "-  time zone names: %s %s\n",
+      tzname[0], tzname[1] );
+}
 
 void defauts (void)
 {
@@ -1036,7 +1038,7 @@ void defauts (void)
 	str     = (char *) (calloc(80 , sizeof(char)));
 	tzlig   = (char *) (calloc(80 , sizeof(char)));
 	temp    = (char *) (calloc(20 , sizeof(char)));
-	
+
 	if (read_fbb_conf(NULL) > 0)
 	{
 #ifdef ENGLISH
@@ -1058,7 +1060,7 @@ void defauts (void)
 #endif
 		exit (1);
 	}
-	sprintf (temp, "FBB%d.%02d", MAJEUR, MINEUR);
+	sprintf (temp, "FBB%s", VERSION);
 
 	/* Only test the major number ... */
 	if (strncasecmp (temp, ptr, 4) != 0)
@@ -1070,7 +1072,11 @@ void defauts (void)
 #endif
 		exit (1);
 	}
-	fprintf (stderr, "Configuration version : %s\r\n", ptr);
+#ifdef __linux__
+	fprintf (stderr, "Configuration version : %s\n", ptr);
+#else
+	fprintf (stderr, "Configuration version : %s\r", ptr);
+#endif
 
 	ptr = find_fbb_conf("call", 0);
 	if (ptr == NULL)
@@ -1095,7 +1101,7 @@ void defauts (void)
 	if (ptr == NULL)
 		err_keyword("impo");
 	strcpy (mail_in, strupr (ptr));
-#ifdef __LINUX__
+#ifdef __linux__
 	back2slash (mail_in);
 #endif
 #ifdef ENGLISH
@@ -1134,16 +1140,12 @@ void defauts (void)
 	if (ptr == NULL)
 		err_keyword("loca");
 #ifdef ENGLISH
-	fprintf (stderr, "GMT difference : %d\n", atoi (ptr));
+	fprintf (stderr, "GMT difference : %d - ", atoi (ptr));
 #else
-	fprintf (stderr, "Diff‚rence GMT : %d\n", atoi (ptr));
+	fprintf (stderr, "Diff‚rence GMT : %d - ", atoi (ptr));
 #endif
-	if (getenv ("TZ") == NULL)
-	{
-		sprintf (tzlig, "TZ=XXX%d", -atoi (ptr));
-		putenv (tzlig);
-	}
 	tzset ();		/* get timezone info */
+	print_zone();
 
 	putchar ('\n');
 	sleep (2);
@@ -1151,7 +1153,7 @@ void defauts (void)
 	lig = nolig = 0;
 	
 	sprintf(ligne, "%sepurmess.ini", c_path);
-#ifdef __LINUX__
+#ifdef __linux__
 	if ((fptr = fopen (ligne, "r")) != NULL)
 #else
 	if ((fptr = fopen (ligne, "rt")) != NULL)
@@ -1175,43 +1177,43 @@ void defauts (void)
 				{
 				case 1:
 					strcpy (mail, ligne);
-#ifdef __LINUX__
+#ifdef __linux__
 					back2slash (mail);
 #endif
 					break;
 				case 2:
 					strcpy (binmail, ligne);
-#ifdef __LINUX__
+#ifdef __linux__
 					back2slash (binmail);
 #endif
 					break;
 				case 3:
 					strcpy (old_mail, ligne);
-#ifdef __LINUX__
+#ifdef __linux__
 					back2slash (old_mail);
 #endif
 					break;
 				case 4:
 					strcpy (dirmes_sys, ligne);
-#ifdef __LINUX__
+#ifdef __linux__
 					back2slash (dirmes_sys);
 #endif
 					break;
 				case 5:
 					strcpy (dirmes_old, ligne);
-#ifdef __LINUX__
+#ifdef __linux__
 					back2slash (dirmes_old);
 #endif
 					break;
 				case 6:
 					strcpy (dirmes_new, ligne);
-#ifdef __LINUX__
+#ifdef __linux__
 					back2slash (dirmes_new);
 #endif
 					break;
 				case 7:
 					strcpy (compte_rendu, ligne);
-#ifdef __LINUX__
+#ifdef __linux__
 					back2slash (compte_rendu);
 #endif
 					break;
@@ -1315,7 +1317,7 @@ void defauts (void)
 #ifdef ENGLISH
 		fprintf (stderr, "Cannot open EPURMESS.INI file       \n");
 #else
-		fprintf (stderr, "Error ouverture fichier EPURMESS.INI\n");
+		fprintf (stderr, "Erreur ouverture fichier EPURMESS.INI\n");
 #endif
 
 		exit (1);
@@ -1389,7 +1391,7 @@ void copy_ (char *oldfich, char *newfich)
 {
 	char s[256];
 
-#ifdef __LINUX__
+#ifdef __linux__
 	sprintf (s, "cp %s %s > /dev/null", oldfich, newfich);
 #else
 	sprintf (s, "copy %s %s", oldfich, newfich);

@@ -1,28 +1,24 @@
-   /****************************************************************
+/***********************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+***********************************************************************/
 
 /*
  *  MODULE TRANSFERT BINAIRE PROTOCOLE YAPP
@@ -973,7 +969,7 @@ int dir_ok (char *masque)
 	int n;
 	char temp[80];
 
-#ifdef __LINUX__
+#ifdef __linux__
 	static char chaine[] = "\\*";
 
 #else
@@ -1305,7 +1301,7 @@ int dir_yapp (char *masque)
 				break;
 		}
 
-#ifdef __LINUX__
+#ifdef __linux__
 		ptr = slash2back (temp);
 #else
 		ptr = temp;
@@ -1333,7 +1329,7 @@ void yapp (void)
 		if (scan)
 			strcpy (ptr, scan);
 		else
-#ifdef __LINUX__
+#ifdef __linux__
 			strcpy (ptr, "*");
 #else
 			strcpy (ptr, "*.*");
@@ -1347,7 +1343,7 @@ void yapp (void)
 		if (scan)
 			strcpy (ptr, scan);
 		else
-#ifdef __LINUX__
+#ifdef __linux__
 			strcpy (ptr, "*");
 #else
 			strcpy (ptr, "*.*");
@@ -1422,7 +1418,7 @@ char *nom_yapp (void)
 		*pvoie->sr_fic = '\0';
 	else
 	{
-#ifdef __LINUX__
+#ifdef __linux__
 		strcpy (pvoie->sr_fic, slash2back (tot_path (ch_slash (fichier), pvoie->dos_path)));
 #else
 		strcpy (pvoie->sr_fic, tot_path (ch_slash (fichier), pvoie->dos_path));

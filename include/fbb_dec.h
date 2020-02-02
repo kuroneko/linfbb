@@ -1,35 +1,31 @@
-   /****************************************************************
+/***********************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+***********************************************************************/
 
 
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 
 	extern char *back2slash (char *);
 	extern char *get_nextparam(void);
@@ -518,7 +514,7 @@ extern "C"
 	extern int fbb_write (int, void *, unsigned);
 	extern int fbb_stat (char *filename, struct stat *buf);
 	extern int fbb_rmdir (char *filename);
-#ifdef __LINUX__
+#ifdef __linux__
 	extern int fbb_mkdir (char *filename, int mode);
 #else
 	extern int fbb_mkdir (char *filename);
@@ -712,6 +708,9 @@ extern "C"
 	extern int put_message (void);
 	extern int put_ui (uchar *, int, int);
 	extern int question (int);
+	/* Quit routine added by N1URO for cross-platform command set
+	compatability with URONode, FlexNet, Xnet, and others. */
+	extern int quit (void);
 	extern int quick_look (void);
 	extern int rcv_drv (int *, int *, int *, char *, int *, ui_header *);
 	extern int rcv_titre (void);

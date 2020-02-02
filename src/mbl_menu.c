@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  * MBL_MENU.C
@@ -145,6 +141,13 @@ static void menu_mbl (void)
 			error = mbl_options ();
 			retour_mbl ();
 			break;
+ /* Added by N1URO for cross-node command set compatability */
+ 		case 'Q':
+ 			if (quit ())
+ 			{
+ 				maj_niv (N_MENU, 0, 0);
+ 				sortie ();
+ 			}
 		case 'R':
 			if ((toupper (*indd) == 'M') || (toupper (*indd) == 'N'))
 			{
@@ -462,6 +465,16 @@ static void menu_mbl (void)
 				if (!p_cmd ())
 					error = 1;
 				break;
+ /* Added by N1URO for cross-node command set compatability */
+ 			case 'Q':
+ 				if (quit())
+ 				{
+ 				maj_niv (N_MENU, 0, 0);
+ 				sortie();
+ 				}
+ 				else
+ 				error = 1;
+ 				break;
 			case 'R':
 				maj_niv (N_MBL, 2, 0);
 				error = mbl_read (0);
@@ -735,7 +748,7 @@ void mbl_emul (void)
 #endif
 		break;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	case 20:
 		exec_cmd (NULL);
 		break;

@@ -1,31 +1,27 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #include <serv.h>
-#ifdef __LINUX__
+#ifdef __linux__
 #include <utime.h>
 #endif
 
@@ -35,7 +31,7 @@ static long parcours (char, char *);
 
 int is_dir (char *chaine)
 {
-#ifdef __LINUX__
+#ifdef __linux__
 	struct stat st;
 	int ret;
 
@@ -145,7 +141,7 @@ void wr_dir (char *fichier, char *indic)
 		close (fd);
 	}
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	struct utimbuf buf;
 	long temps = time (NULL);
 	struct tm *sdate;
@@ -196,7 +192,7 @@ int aut_dir (char *fichier, char *indic)
 		close (fd);
 		return (utime.dtime.time == dir_time (indic));
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 		int fd;
 		struct stat buf;
 		time_t temps;
@@ -229,7 +225,7 @@ static int protected_dir(char *file)
 #ifdef __WINDOWS__
 	if ((fptr = fopen (c_disque ("prot_w.sys"), "r")) == NULL)
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	if ((fptr = fopen (c_disque ("prot_l.sys"), "r")) == NULL)
 #endif
 	{
@@ -251,7 +247,7 @@ static int protected_dir(char *file)
 				continue;
 
 			strcpy (nomfich, tot_path (file, pvoie->dos_path));
-#ifdef __LINUX__
+#ifdef __linux__
 			ptr = strrchr (nomfich, '/');
 			if (ptr == nomfich)
 				strcpy (nomfich, "/");
@@ -263,7 +259,7 @@ static int protected_dir(char *file)
 				*ptr = '\0';
 #endif
 
-#ifdef __LINUX__
+#ifdef __linux__
 			ptr = ligne;
 			scan = nomfich;
 			if (ptr[1] != ':' && nomfich[1] == ':')
@@ -345,7 +341,7 @@ void remove_dir (void)
 			if (aut_ecr (ch_slash (ptr), 1))
 			{
 				var_cpy (0, ptr);
-#ifdef __LINUX__
+#ifdef __linux__
 				if (fbb_rmdir (tot_path (ptr, pvoie->dos_path)) == 0)
 #else
 				if (rmdir (tot_path (ptr, pvoie->dos_path)) == 0)
@@ -371,7 +367,7 @@ void make_dir (void)
 	}
 	else
 	{
-#ifdef __LINUX__
+#ifdef __linux__
 		path = tot_path (ptr, pvoie->dos_path);
 		
 		if (fbb_mkdir (path, 0777) != 0)
@@ -451,7 +447,7 @@ void change_dir (void)
 	}
 	else
 	{
-#ifdef __LINUX__
+#ifdef __linux__
 		teste_file_name (ptr);
 		if (*ptr == '/')
 #else
@@ -464,7 +460,7 @@ void change_dir (void)
 			{
 				strcpy (local_dir, ptr);
 				if (strlen (local_dir) > 1)
-#ifdef __LINUX__
+#ifdef __linux__
 					strcat (local_dir, "/");
 #else
 					strcat (local_dir, "\\");
@@ -473,7 +469,7 @@ void change_dir (void)
 		}
 		else
 		{
-#ifdef __LINUX__
+#ifdef __linux__
 			if ((scan = strtok (ptr, "\n")) != NULL)
 #else
 			if ((scan = strtok (ptr, "\\\r")) != NULL)
@@ -485,7 +481,7 @@ void change_dir (void)
 						continue;
 					if (strncmp (scan, "..", 2) == 0)
 					{
-#ifdef __LINUX__
+#ifdef __linux__
 						cur_dir = strrchr (local_dir, '\\');
 #else
 						cur_dir = strrchr (local_dir, "\\");
@@ -496,7 +492,7 @@ void change_dir (void)
 							{
 								*cur_dir-- = '\0';
 							}
-#ifdef __LINUX__
+#ifdef __linux__
 							while (*cur_dir != '\\');
 #else
 							while (*cur_dir != "\\");
@@ -506,14 +502,14 @@ void change_dir (void)
 					else if (*scan != '~')
 					{
 						strcat (local_dir, scan);
-#ifdef __LINUX__
+#ifdef __linux__
 						strcat (local_dir, "/");
 #else
 						strcat (local_dir, "\\");
 #endif
 					}
 				}
-#ifdef __LINUX__
+#ifdef __linux__
 				while ((scan = strtok (NULL, "\n")) != NULL);
 #else
 				while ((scan = strtok (NULL, "\\\r")) != NULL);
@@ -567,7 +563,7 @@ int dir_suite (char *masque)
 		{
 			if ((strlen (masque) == 3) && (masque[2] == '\\'))
 				masque[2] = '\0';
-#ifdef __LINUX__
+#ifdef __linux__
 			sprintf (chaine, "%s/*", masque);
 #else
 			sprintf (chaine, "%s/*.*", masque);
@@ -686,7 +682,7 @@ void retour_dir (char vdisk)
 	else if ((voiecur == CONSOLE) || (pvoie->niv1 == N_YAPP))
 		disk = vdisk + 1;
 	else
-#ifdef __LINUX__
+#ifdef __linux__
 		disk = vdisk + 1;
 #else
 		disk = PATH[vdisk][0] - '@';
@@ -701,7 +697,7 @@ void dir (void)
 	char vdisk;
 	char *ptr;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	char temp[] = "X:*";
 
 #else
@@ -748,7 +744,7 @@ void list (void)
 	char vdisk;
 	char *ptr;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	char temp[] = "X:*";
 
 #else
@@ -816,7 +812,7 @@ static long parcours (char vdisk, char *path)
 	int pos;
 
 	strcpy (rech, path);
-#ifdef __LINUX__
+#ifdef __linux__
 	strcat (rech, "*");
 #else
 	strcat (rech, "*.*");
@@ -837,7 +833,7 @@ static long parcours (char vdisk, char *path)
 	{
 		if (*ffblk.ff_name != '.')
 		{
-#ifdef __LINUX__
+#ifdef __linux__
 			if ((ffblk.ff_attrib & FA_DIREC) && ((ffblk.ff_attrib & FA_LINK) == 0))
 #else
 			if (ffblk.ff_attrib & FA_DIREC)

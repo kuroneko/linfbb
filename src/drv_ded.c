@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #include <serv.h>
 #include <fbb_drv.h>
@@ -213,7 +209,7 @@ int opn_ded (int port, int nb)
 		ok = 0;
 		sprintf (s, "Init PORT %d COM%d-%d",
 				 port, p_port[port].ccom, p_port[port].ccanal);
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 		InitText (s);
 #else
 		cprintf ("%s\r\n", s);
@@ -222,7 +218,7 @@ int opn_ded (int port, int nb)
 		{
 			sprintf (s, "Init PORT %d COM%d-%d PTCII",
 					 port, p_port[port].ccom, p_port[port].ccanal);
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 			InitText (s);
 #else
 			cprintf ("%s\r\n", s);
@@ -257,7 +253,7 @@ int opn_ded (int port, int nb)
 #endif
 		sprintf (s, "Resync PORT %d COM%d-%d",
 				 port, p_port[port].ccom, p_port[port].ccanal);
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 		InitText (s);
 #else
 		cprintf ("%s\r\n", s);
@@ -267,7 +263,7 @@ int opn_ded (int port, int nb)
 	}
 	sprintf (s, "Clear PORT %d COM%d-%d",
 			 port, p_port[port].ccom, p_port[port].ccanal);
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	InitText (s);
 #else
 	cprintf ("%s\r\n", s);
@@ -277,7 +273,7 @@ int opn_ded (int port, int nb)
 	sprintf (s, "Prog PORT %d COM%d-%d",
 			 port, p_port[port].ccom, p_port[port].ccanal);
 	vide (port, 1);
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	InitText (s);
 #else
 	cprintf ("%s\r\n", s);
@@ -429,13 +425,13 @@ static int ded_end_host (int port)
 		{
 			send_tnc (port, 1);
 			bt = btime () + 5;
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 			DisplayResync (port, nb + 1);
 #endif
 			while (btime () < bt);
 			if (rec_tnc (port) >= 0)
 			{
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 				DisplayResync (port, 0);
 #else
 				++com_error;
@@ -783,7 +779,7 @@ static void resync_port (int port)
 		p_port[port].cur_can = 1;
 		send_tnc (port, '\001');
 		delai[port] = nt + 4L;
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 		DisplayResync (port, p_port[port].synchro);
 #else
 		{
@@ -941,7 +937,7 @@ static int recv_ded (int port, int canal, int *lgbuf, char *buffer)
 		/* Une trame complete a ete recue */
 		if (p_port[port].synchro)
 		{
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 			char txt[80];
 
 			sprintf (txt, "Ending resynchronization on port %d - Error =", port);

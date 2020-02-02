@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  * THEMES.C
@@ -166,7 +162,7 @@ void scan_themes (int add)
 			}
 			if ((nb % 100) == 0)
 			{
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 				char buf[80];
 
 				sprintf (buf, "%ld", bptr->st_mess[offset].nmess);
@@ -186,7 +182,7 @@ void scan_themes (int add)
 		}
 	}
 
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	{
 		char buf[80];
 
@@ -223,7 +219,7 @@ static void read_dates (void)
 	int nb;
 	FILE *fptr;
 
-	memset(theme_date, sizeof(th_date) * MAX_THEMES * 2, 0);
+	memset(theme_date, 0,  sizeof(th_date) * MAX_THEMES * 2);
 	
 	fptr = fopen (d_disque ("THEMES.DAT"), "rt");
 	if (fptr == NULL)

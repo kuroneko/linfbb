@@ -1,28 +1,24 @@
-   /****************************************************************
+/***********************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+***********************************************************************/
 
 /*
  * Fichier des variables locales
@@ -95,49 +91,6 @@ struct  ffblk   {
 #define P_WAIT    0
 
 #include "fbb_serv.h"
-/*
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-char *strupr (char *);
-char *itoa(int, char*, int);
-char *ltoa(long, char*, int);
-char *ultoa(unsigned long, char*, int);
-char *strupr(char *);
-
-int GetFileNameDialog(char *);
-
-void InfoMessage(int, char *, char *);
-void FbbMem(int);
-int fbb_list(int);
-
-int fbb_ax25_config_load_ports(void);
-int fbb_nr_config_load_ports(void);
-int fbb_rs_config_load_ports(void);
-
-void deb_io (void);
-void fin_io (void);
-void randomize(void);
-int random_nb(int num);
-long filelength(int fd);
-int getdisk(void);
-char *getcurdir(int drive, char *str);
-int is_cdir(int chr);
-int fnsplit(char *name, char *drive, char *rep, char *base, char *ext);
-int getftime(int fd, struct ftime *ft);
-void format_ffblk(struct ffblk *blk, struct dirent *dir);
-int findfirst (char *rech, struct ffblk *blk, int mask);
-int findnext (struct ffblk *blk);
-unsigned long free_disk (int disk);
-int filter (char *ligne, char *buffer, int len, char *data);
-
-int fbb_statfs(char *filename, struct statfs *buf);
-
-#ifdef __cplusplus
-}
-#endif
-*/
 
 extern int filter (char *, char *, int , char * , char *);
 
@@ -153,8 +106,4 @@ extern int filter (char *, char *, int , char * , char *);
 #define CM_FILESCANMSG  10
 
 #endif
-
-
-
-
 

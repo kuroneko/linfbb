@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  * Serveur de communication socket pour connection console
@@ -112,6 +108,9 @@ static int orb_new_connection (int fd)
 {
 	unsigned addr_len;
 	struct sockaddr_in sock_addr;
+	
+	memset(&sock_addr, 0x00, sizeof(struct sockaddr_in));
+	
 	OrbClient *sptr;
 
 	sptr = orb_add_client ();
@@ -129,6 +128,8 @@ static int send_data(int sock, char *datafile, char *datarequest, int len, int c
 	int fd;
 	int nb;
 	char buffer[1024];
+	
+	memset(buffer, 0x00, sizeof(buffer));
 
 	buffer[0] = ORB_DATA;
 	buffer[1] = command;
@@ -170,6 +171,8 @@ static long flength(char *filename)
 {
 	struct stat bstat;
 	
+	memset(&bstat, 0x00, sizeof(struct stat));
+	
 	if (stat(filename, &bstat) == -1)
 		return 0L;
 
@@ -180,6 +183,8 @@ static int send_data_buf(OrbClient * sptr, int service, char *command, char *dat
 {
 	char buffer[1024];
 	int length;
+	
+	memset(buffer, 0x00, sizeof(buffer));
 
 	length = strlen(command);
 	strcpy(buffer+4, command);
@@ -217,6 +222,12 @@ static void orb_process_data (OrbClient * sptr)
 	char pass[256];
 	char *ptr;
 
+	memset(buffer, 0x00, sizeof(buffer));
+	memset(datafile, 0x00, sizeof(datafile));
+	memset(datarequest, 0x00, sizeof(datarequest));
+	memset(call, 0x00, sizeof(call));
+	memset(pass, 0x00, sizeof(pass));
+	
 	lg = 0;
 	
 	nb = read (sptr->fd, buffer + nbrcv, sizeof (buffer) - nbrcv);
@@ -253,7 +264,9 @@ again:
 		int ack;
 		char cmd[300];
 
-		/*commande */
+		memset(cmd, 0x00, sizeof(cmd));
+	
+	/*commande */
 		switch (buffer[1])
 		{
 		case 0:
@@ -443,6 +456,9 @@ again:
 				char command[80];
 				char arg[80];
 				
+				memset(command, 0x00, sizeof(command));
+				memset(arg, 0x00, sizeof(arg));
+				
 				buffer[nbrcv] = '\0';
 
 				sscanf(buffer+4, "%s %s", command, arg);
@@ -483,6 +499,8 @@ again:
 				int nChan;
 				int bImm;
 				int nb;
+				
+				memset(callsign, 0x00, sizeof(callsign));
 
 				buffer[nbrcv] = '\0';
 				nb = sscanf(buffer+4, "%d %s %d", &nChan, callsign, &bImm);
@@ -506,6 +524,9 @@ again:
 				char command[80];
 				char arg[80];
 				char *ptr;
+				
+				memset(command, 0x00, sizeof(command));
+				memset(arg, 0x00, sizeof(arg));
 				
 				buffer[nbrcv] = '\0';
 
@@ -573,6 +594,9 @@ again:
 				char arg[80];
 				char *ptr;
 				
+				memset(command, 0x00, sizeof(command));
+				memset(arg, 0x00, sizeof(arg));
+				
 				buffer[nbrcv] = '\0';
 
 				sscanf(buffer+4, "%s %s", command, arg);
@@ -625,6 +649,9 @@ again:
 			{
 				char command[80];
 				char arg[80];
+				
+				memset(command, 0x00, sizeof(command));
+				memset(arg, 0x00, sizeof(arg));
 
 				buffer[nbrcv] = '\0';
 				sscanf(buffer+4, "%s %s", command, arg);
@@ -656,6 +683,10 @@ again:
 				char command[80];
 				char arg[80];
 				char val[80];
+				
+				memset(command, 0x00, sizeof(command));
+				memset(arg, 0x00, sizeof(arg));
+				memset(val, 0x00, sizeof(val));
 
 				sptr->options = 1;
 				buffer[nbrcv] = '\0';
@@ -686,6 +717,8 @@ again:
 				char command[80];
 				int val = 1;
 				int port = 0;
+				
+				memset(command, 0x00, sizeof(command));
 
 				buffer[nbrcv] = '\0';
 				sscanf(buffer+4, "%s %d %d", command, &port, &val);
@@ -717,6 +750,8 @@ again:
 			{
 				char command[80];
 				int val = -1;
+				
+				memset(command, 0x00, sizeof(command));
 
 				buffer[nbrcv] = '\0';
 				sscanf(buffer+4, "%s %d", command, &val);
@@ -959,6 +994,8 @@ int fbb_orb (char *service, int port)
 	int val;
 	int len;
 	struct sockaddr_in sock_addr;
+	
+	memset(&sock_addr, 0x00, sizeof(struct sockaddr_in));
 
 	if ((orb_fd = socket (AF_INET, SOCK_STREAM, 0)) < 0)
 	{
@@ -1055,7 +1092,8 @@ void orb_write (int channel, char *data, int len, int color, int header)
 	int i, j;
 	char *buffer;
 
-	buffer = malloc (len + 8);
+	buffer = calloc ((len + 8), sizeof (char));
+
 	if (buffer == NULL)
 		return;
 
@@ -1078,6 +1116,8 @@ void orb_write (int channel, char *data, int len, int color, int header)
 			int len = 1;
 			
 			char buf[80];
+
+			memset(buf, 0, sizeof(buf));
 
 			editor_request = 0;
 			editor = 1;
@@ -1182,6 +1222,8 @@ void orb_services (void)
 	char buffer[260];
 	int i;
 	
+	memset(buffer, 0, sizeof(buffer));
+	
 	/* Header */
 	buffer[0] = ORB_DATA;
 	buffer[1] = SVC_LIST;
@@ -1200,6 +1242,8 @@ void orb_con_list (int channel, char *ligne)
 	char buffer[256];
 	int len = strlen (ligne);
 
+	memset(buffer, 0, sizeof(buffer));
+	
 	/* Header */
 	buffer[0] = ORB_LISTCNX;
 	buffer[1] = 0;
@@ -1234,6 +1278,8 @@ void orb_con_nb (int nb)
 	char buffer[80];
 	int len;
 
+	memset(buffer, 0, sizeof(buffer));
+	
 	sprintf (buffer + 4, "%d", nb);
 	len = strlen (buffer + 4);
 
@@ -1252,6 +1298,8 @@ void orb_nb_msg (int priv, int hold, int nbmess)
 	char buffer[80];
 	int len;
 
+	memset(buffer, 0, sizeof(buffer));
+	
 	sprintf (buffer + 4, "%d %d %d", priv, hold, nbmess);
 	len = strlen (buffer + 4);
 
@@ -1270,6 +1318,8 @@ void orb_status (long lmem, long gmem, long disk1, long disk2)
 	char buffer[80];
 	int len;
 
+	memset(buffer, 0, sizeof(buffer));
+	
 	sprintf (buffer + 4, "%ld %ld %ld %ld", lmem, gmem, disk1, disk2);
 	len = strlen (buffer + 4);
 
@@ -1324,6 +1374,8 @@ void orb_options(void)
 	char buffer[256];
 	int nb = 0;
 	
+	memset(buffer, 0, sizeof(buffer));
+	
 	nb += sprintf(buffer+nb, "B %d Connection bip\n", (bip) ? 1 : 0);
 	nb += sprintf(buffer+nb, "G %d Gateway\n", (gate) ? 1 : 0);
 	nb += sprintf(buffer+nb, "M %d Message Editor\n", (sed) ? 1 : 0);
@@ -1345,6 +1397,8 @@ void orb_info(int val, char *str)
 	static char buffer[512];
 	static int nb = 0;
 
+	memset(buffer, 0, sizeof(buffer));
+	
 	if (str)
 	{
 		nb += sprintf(buffer+nb, "%d %s\n", val, str);

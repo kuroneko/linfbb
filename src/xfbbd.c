@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /* For main module */
 #define PUBLIC
@@ -39,6 +35,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+#include <string.h>
+
 #define NB_INIT_B 11
 
 static int verbose = 0;
@@ -47,10 +45,11 @@ static int info_canal = -1;
 
 static void sig_fct (int sig)
 {
-	int pid, pstatus;
+	pid_t pid; 
+	int pstatus;
 
 	sig &= 0xff;
-	pid = wait (&pstatus);
+	if ((pid = wait (&pstatus)) != -1);
 	signal (sig, sig_fct);
 
 	switch (sig)
@@ -116,7 +115,7 @@ void banner (void)
 			 "*********************************************************\n"
 			 "* XFBB Linux daemon version %s PID=%d\n"
 			 "* Copyright F6FBB 1986-1999. All rights reserved.\n"
-			 "* Maintainer since 2000 : Bernard, f6bvp@amsat.org\n"
+			 "* Maintainer since 2000 : Bernard, f6bvp@free.fr\n"
 			 "*\n"
 			 "* This software is in the public domain. It can be copied\n"
 			 "* or installed for any use abiding by the laws\n"
@@ -188,11 +187,11 @@ int main (int ac, char **av)
 
 	for (i = 1; i < NSIG; i++)
 	{
-		if (i == SIGBUS || i == SIGSEGV || i == SIGALRM)
+		if (i == SIGBUS || i == SIGSEGV ||  i == SIGCHLD || i == SIGALRM)
 			continue;
 		else if (i == SIGHUP  || i == SIGTERM || i == SIGBUS || i == SIGSEGV)
 			signal (i, sig_fct); /* Use sig_fct only for signals that do something */
-		else 	
+		else
 			signal (i, SIG_IGN); /* Otherwise ignore */
 	}
 
@@ -299,8 +298,8 @@ void InitText (char *text)
 {
 	static char *initext[NB_INIT_B] =
 	{
-#ifdef __LINUX__
-		"Reading FBB.CONF",
+#ifdef __linux__
+		"Reading fbb.conf",
 #else
 		"Reading INIT.SRV",
 #endif
@@ -323,7 +322,7 @@ void InitText (char *text)
 		return;
 
 	printf (initext[init_phase - 1], text);
-#ifdef __LINUX__
+#ifdef __linux__
 	putchar ('\n');
 #else
 	putchar ('\r');
@@ -388,9 +387,10 @@ int call_nbdos (char **cmd, int nb_cmd, int mode, char *log, char *xdir, char *d
 
 	/* semi-column is forbidden for security reasons */
 		
-/*	if (log)*/
+//	if (log)
 	if (mode)
-		sprintf (file, " </dev/null >%s 2>&1", back2slash (log));
+		//sprintf (file, " </dev/null >%s 2>&1", back2slash (log));
+		sprintf (file, " </dev/null >%s", back2slash (log));
 	else
 		sprintf (file, " </dev/null");
 
@@ -412,14 +412,18 @@ int call_nbdos (char **cmd, int nb_cmd, int mode, char *log, char *xdir, char *d
 		ptr = strchr(data, ';');
 		if (ptr) {
 			*ptr = '\0';
-			sprintf (arg, " %s ", data);
-		}
+			// wrong, if semi-column not found there aren't arguments passed
+			//sprintf (arg, " %s ", data);
+		}		
+		sprintf (arg, " %s ", data);
 	}
 
 	for (i = 0; i < nb_cmd; i++)
 	{
+		FILE *fp;
 		int retour;
-
+		char cmd_buf[1024];
+		
 		/* semi-column is forbidden for security reasons */
 		ptr = strchr(cmd[i], ';');
 		if (ptr)
@@ -427,11 +431,34 @@ int call_nbdos (char **cmd, int nb_cmd, int mode, char *log, char *xdir, char *d
 
 		sprintf (buf, "%s%s%s%s", dir, cmd[i], arg, file);
 
-		retour = system (buf);
-		ExitCode = retour >> 8;
-/*F6BVP :  Why in FBB Linux system() always return -1 ??? */
-		if (ExitCode == -1)
+/* Dave van der Locht - 17-12-2020
+Replaced system() with popen() to fix issue with filter response text no coming through */
+   
+		//retour = system (buf);
+		
+		fp = popen (buf, "r");
+		if (fp == NULL)
+			printf ("Failed to run command\n" );	
+		else
+			retour = pclose(fp);
+		
+		ExitCode = retour >> 8;			
+		
+		if (verbose) {		
+			printf ("Debug: command = {%s}\n", buf);		
+			printf ("Debug: exit code = %d\n", ExitCode);
+		}
+
+		/* fail-safe bypasses */		
+		// if filter executable isn't found ExitCode = 127
+		if (ExitCode == 127)
 			ExitCode = 0;
+		
+/*F6BVP :  Why in FBB Linux system() always return -1 ??? */
+/*Dave van der Locht: It's because the SIGCHLD signal was ignored, added SIGCHLD to line 190 */
+		if (ExitCode == -1)
+			ExitCode = 0;		
+
 	}
 	return (ExitCode);
 }
@@ -454,10 +481,12 @@ int filter (char *ligne, char *buffer, int len, char *data, char *xdir)
 
 	sprintf (deroute, "%sEXECUTE.xxx", MBINDIR);
 	retour = call_nbdos (&ligne, 1, REPORT_MODE, deroute, xdir, data);
+
 /* F6BVP was if (retour != -1)
  * as retour is forced to 0 in call_nbos lets change test 
  * to not display deroute file name */
-	if (retour == -1)
+//	if (retour == -1)
+	if (retour != -1) 
 	{
 		outfichs (deroute);
 	}

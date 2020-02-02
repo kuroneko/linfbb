@@ -1,0 +1,28 @@
+#!/bin/bash
+BINDIR=@sbindir@
+DATADIR=@localstatedir@/ax25/fbb
+SYSOP='/usr/local/sbin/fbbgetconf sysop'
+echo
+echo "--- Running satdoc & satupdat"
+echo
+
+if [ -e $DATADIR/sat/amsat.txt ];
+    then
+	cd $DATADIR/sat
+	echo -e "sp $SYSOP\r\nSATDOC results\r\n" > $DATADIR/satdoc.res
+	$BINDIR/satdoc amsat.txt >> $DATADIR/satdoc.res
+	$BINDIR/satdoc -i amsat.txt >> $DATADIR/satdoc.res
+	echo -e "\r\n/ex\r\n" >> $DATADIR/satdoc.res
+#	cat $DATADIR/satdoc.res >> $DATADIR/mail/mail.in
+	echo -e "sp $SYSOP\r\nSATUPDAT results\r\n" > $DATADIR/satupdat.res
+	$BINDIR/satupdat amsat.txt /n /d60 >> $DATADIR/satupdat.res
+	$BINDIR/satupdat amsat.txt /a /d60 >> $DATADIR/satupdat.res
+	echo -e "\r\n/ex\r\n" >> $DATADIR/satupdat.res
+# 	cat $DATADIR/satupdat.res >> $DATADIR/mail/mail.in
+	rm amsat.txt
+fi
+
+ret=$?
+
+exit $ret
+

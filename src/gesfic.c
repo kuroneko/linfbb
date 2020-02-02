@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
-
+************************************************************************/
 #define FBB_IO
 
 #include <serv.h>
@@ -142,7 +138,7 @@ char *back2slash (char *str)
 
 int fbb_access (char *filename, int mode)
 {
-#ifdef __LINUX__
+#ifdef __linux__
 	return (access (back2slash (filename), mode));
 #else
 	return (access (filename, mode));
@@ -151,14 +147,14 @@ int fbb_access (char *filename, int mode)
 
 int fbb_stat (char *filename, struct stat *buf)
 {
-#ifdef __LINUX__
+#ifdef __linux__
 	return (stat (back2slash (filename), buf));
 #else
 	return (stat (filename, buf));
 #endif
 }
 
-#ifdef __LINUX__
+#ifdef __linux__
 int fbb_mkdir (char *filename, int mode)
 {
 	return (mkdir (back2slash (filename), mode));
@@ -172,14 +168,14 @@ int fbb_mkdir (char *filename)
 
 int fbb_rmdir (char *filename)
 {
-#ifdef __LINUX__
+#ifdef __linux__
 	return (rmdir (back2slash (filename)));
 #else
 	return (rmdir (filename));
 #endif
 }
 
-#ifdef __LINUX__
+#ifdef __linux__
 int fbb_statfs (char *filename, struct statfs *buf)
 {
 	return (statfs (back2slash (filename), buf));
@@ -200,7 +196,7 @@ char *fbb_fgets (char *s, int n, FILE * fptr)
 {
 	char *pres;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	pres = fgets (s, n, fptr);
 	if (lmode[fileno (fptr)] & O_TEXT)
 	{
@@ -248,7 +244,7 @@ int fbb_fgetc (FILE * fptr)
 
 	deb_io ();
 	res = fgetc (fptr);
-#ifdef __LINUX__
+#ifdef __linux__
 	if (get_mode(fileno (fptr)) & O_TEXT)
 	{
 		if (res == CTRL_Z)
@@ -282,7 +278,7 @@ FILE *fbb_fopen (char *filename, char *mode)
 	FILE *fptr;
 
 	deb_io ();
-#ifdef __LINUX__
+#ifdef __linux__
 	fptr = fopen (back2slash (filename), mode);
 #else
 	fptr = fopen (filename, mode);
@@ -309,7 +305,7 @@ FILE *fbb_fopen (char *filename, char *mode)
 
 FILE *fsopen (char *filename, char *mode)
 {
-#ifdef __LINUX__
+#ifdef __linux__
 	FILE *fptr;
 
 	fptr = fopen (back2slash (filename), mode);
@@ -379,7 +375,7 @@ int fbb_open (char *filename, int acces, unsigned mode)
 	int fd;
 
 	deb_io ();
-#ifdef __LINUX__
+#ifdef __linux__
 	fd = open (back2slash (filename), acces & (~O_TEXT), mode);
 #else
 	fd = open (filename, acces, mode);
@@ -408,7 +404,7 @@ int fbb_read (int fd, void *buf, unsigned nb)
 	int retour;
 
 	deb_io ();
-#ifdef __LINUX__
+#ifdef __linux__
 	retour = read (fd, buf, nb);
 	/* search for ^Z */
 	if ((retour > 0) && (get_mode(fd) & O_TEXT))
@@ -456,7 +452,7 @@ int fbb_write (int fd, void *buf, unsigned nb)
 	int retour;
 
 	deb_io ();
-#ifdef __LINUX__
+#ifdef __linux__
 	if (get_mode(fd) & O_TEXT)
 	{
 		int i;
@@ -510,7 +506,7 @@ int fbb_fread (void *ptr, size_t taille, size_t n, FILE * fp)
 
 	deb_io ();
 	retour = fread (ptr, taille, n, fp);
-#ifdef __LINUX__
+#ifdef __linux__
 	/* search for ^Z */
 	if ((retour > 0) && (get_mode(fileno (fp)) & O_TEXT))
 	{
@@ -570,7 +566,7 @@ int fbb_unlink (char *filename)
 	int retour;
 
 	deb_io ();
-#ifdef __LINUX__
+#ifdef __linux__
 	retour = unlink (back2slash (filename));
 #else
 	retour = unlink (filename);
@@ -757,7 +753,7 @@ char *mess_name (char *path, long numero, char *nom)
 
 	final = (unsigned int) (numero % 10);
 	sprintf (nom, "%smail%u\\m_%06ld.mes", path, final, numero);
-#ifdef __LINUX__
+#ifdef __linux__
 	strcpy (nom, back2slash (nom));
 #endif
 	return (nom);
@@ -766,7 +762,7 @@ char *mess_name (char *path, long numero, char *nom)
 char *temp_name (int voie, char *tempname)
 {
 	sprintf (tempname, "%stemp.%02d", MBINDIR, voie);
-#ifdef __LINUX__
+#ifdef __linux__
 	strcpy (tempname, back2slash (tempname));
 #endif
 	return (tempname);
@@ -775,7 +771,7 @@ char *temp_name (int voie, char *tempname)
 char *copy_name (int voie, char *tempname)
 {
 	sprintf (tempname, "%scopy.%02d", MBINDIR, voie);
-#ifdef __LINUX__
+#ifdef __linux__
 	strcpy (tempname, back2slash (tempname));
 #endif
 	return (tempname);
@@ -784,7 +780,7 @@ char *copy_name (int voie, char *tempname)
 char *xfwd_name (int voie, char *tempname)
 {
 	sprintf (tempname, "%sxfwd.%02d", MBINDIR, voie);
-#ifdef __LINUX__
+#ifdef __linux__
 	strcpy (tempname, back2slash (tempname));
 #endif
 	return (tempname);
@@ -793,7 +789,7 @@ char *xfwd_name (int voie, char *tempname)
 char *hold_name (long val, char *tempname)
 {
 	sprintf (tempname, "%s%08lx.hld", MESSDIR, val);
-#ifdef __LINUX__
+#ifdef __linux__
 	strcpy (tempname, back2slash (tempname));
 #endif
 	return (tempname);
@@ -1004,7 +1000,7 @@ FILE *fappend (char *filename, char *mode)
 	}
 #endif
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	if ((fptr = fbb_fopen (back2slash (filename), "r+")) != NULL)
 	{
 		fseek (fptr, 0L, SEEK_END);
@@ -1018,7 +1014,7 @@ FILE *fappend (char *filename, char *mode)
 int fbb_fcloseall (void)
 {
 
-#ifdef __LINUX__
+#ifdef __linux__
 	return 0;
 #else
 #if defined(__DPMI16__) || defined(__WINDOWS__)

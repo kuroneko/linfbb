@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /******************************
  *
@@ -32,7 +28,7 @@
 
 #include <serv.h>
 
-#ifdef __LINUX__
+#ifdef __linux__
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -48,7 +44,7 @@
 
 extern int GetModemDCD (int port);
 
-/* #if defined (__WINDOWS__) || defined(__LINUX__) */
+/* #if defined (__WINDOWS__) || defined(__linux__) */
 #define LOCSIZ 256
 static char *locbuf[NBPORT] =
 {NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL};
@@ -135,7 +131,7 @@ int snd_mod (int port, int canal, int cmd, char *buffer, int len, Beacon * ptr)
 					ctrl = 0;
 				}
 
-#ifdef __LINUX__
+#ifdef __linux__
 				if (BIOS (port) == P_LINUX)
 				{
 					defcom *ptrcom = &p_com[(int)p_port[port].ccom];
@@ -214,7 +210,7 @@ int snd_mod (int port, int canal, int cmd, char *buffer, int len, Beacon * ptr)
 
 	case DATA:
 
-#ifdef __LINUX__
+#ifdef __linux__
 		if (BIOS (port) == P_LINUX)
 		{
 			defcom *ptrcom = &p_com[(int)p_port[port].ccom];
@@ -508,7 +504,7 @@ int snd_mod (int port, int canal, int cmd, char *buffer, int len, Beacon * ptr)
 
 void end_modem (void)
 {
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	int i;
 
 	for (i = 0; i < NBPORT; i++)
@@ -526,7 +522,7 @@ int lit_port_modem (int port)
 {
 	int fin_rxmodem;
 	int fin_txmodem;
-	int abort_xmodem;
+	int abort_xmodem; 
 	int zr_pos;
 	int nb, con;
 	int nbtot;
@@ -544,7 +540,7 @@ int lit_port_modem (int port)
 
 	ch_stat = 0;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	if (BIOS (port) == P_LINUX)	/* LINUX driver */
 
 	{

@@ -1,32 +1,28 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #define ENGLISH
 
-#ifdef __LINUX__
+#ifdef __linux__
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -46,7 +42,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <time.h>
-#include "version.h"
+#include <config.h> 
 #include <fbb_conf.h>
 
 #define FALSE 0
@@ -121,7 +117,7 @@ static void insere (char *ind, long pos);
 static void ouvre_nomenc (void);
 
 
-#ifdef __LINUX__
+#ifdef __linux__
 char *strupr (char *txt)
 {
 	char *scan = txt;
@@ -154,7 +150,7 @@ char *strlwr (char *txt)
 char *test_back_slash (char *chaine)
 {
 	if ((strlen(chaine) == 0)
-#ifdef __LINUX__
+#ifdef __linux__
 		|| (chaine[strlen (chaine) - 1] != '/'))
 			strcat(chaine, "/");
 #else
@@ -196,11 +192,7 @@ int main (int ac, char **av)
 	long temps = time (NULL);
 	long timout;
 
-#ifdef LETTRE
-	fprintf (stderr, "\nMAINTINF V %d.%02d%c\n\n", MAJEUR, MINEUR, LETTRE);
-#else
-	fprintf (stderr, "\nMAINTINF V %d.%02d\n\n", MAJEUR, MINEUR);
-#endif
+	fprintf (stderr, "\nMAINTINF V%s\n\n", VERSION);
 
 #ifdef ENGLISH
 	fprintf (stderr, "FBB software MUST be stopped !!    \n\n");
@@ -546,23 +538,23 @@ static void defauts (void)
 #ifdef ENGLISH
 		fprintf (stderr, "Version number missing in fbb.conf\n");
 #else
-		fprintf (stderr, "Pas de numéro dans le fbb.conf\n");
+		fprintf (stderr, "Pas de numéro de version dans fbb.conf\n");
 #endif
 		exit (1);
 	}
 
-	sprintf (temp, "FBB%d.%02d", MAJEUR, MINEUR);
+/*	sprintf (temp, "FBB%s", VERSION);
 	if (strncasecmp (temp, ptr, 7) != 0)
 	{
 #ifdef ENGLISH
-		fprintf (stderr, "Wrong version number in fbb.conf\n");
+		fprintf (stderr, "Wrong version number '%s' in fbb.conf\n", ptr);
 #else
-		fprintf (stderr, "Numéro de version erroné dans fbb.conf\n");
+		fprintf (stderr, "Numéro de version erroné '%s' dans fbb.conf\n", ptr);
 #endif
 		exit (1);
 	}
 	fprintf (stderr, "Configuration version : %s\r\n", ptr);
-
+*/
 	/* path of conf files */
 	ptr = find_fbb_conf("data", 0);
 	if (ptr == NULL)

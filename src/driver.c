@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #include <serv.h>
 #include <fbb_drv.h>
@@ -78,7 +74,7 @@ static DrvFct drv_fct[NB_TYP] =
 		sta_tcp, snd_tcp, NULL, NULL, NULL
 	}
 	,							/* TYP_TCP */
-#elif defined(__LINUX__)
+#elif defined(__linux__)
 	{
 		sta_tcp, snd_tcp, rcv_tcp, opn_tcp, cls_tcp
 	}
@@ -89,7 +85,7 @@ static DrvFct drv_fct[NB_TYP] =
 	}
 	,							/* TYP_TCP */
 #endif
-#if defined(__LINUX__)
+#if defined(__linux__)
 	{
 		sta_sck, snd_sck, rcv_sck, opn_sck, cls_sck
 	}
@@ -116,7 +112,7 @@ static DrvFct drv_fct[NB_TYP] =
 		sta_tcp, snd_tcp, rcv_tcp, NULL, NULL
 	}
 	,							/* TYP_ETH */
-#elif defined(__LINUX__)
+#elif defined(__linux__)
 	{
 		sta_tcp, snd_tcp, rcv_tcp, opn_tcp, cls_tcp
 	}
@@ -142,7 +138,7 @@ static DrvFct drv_fct[NB_TYP] =
 	}
 	,							/* TYP_FLX */
 #endif
-#if defined(__LINUX__)
+#if defined(__linux__)
 	{
 		sta_pop, snd_pop, rcv_pop, opn_pop, cls_pop
 	}
@@ -290,7 +286,7 @@ int rcv_drv (int *port, int *voie, int *cmd, char *buf, int *len, ui_header * pt
 					return (0);
 				}
 
-#ifdef __LINUX__
+#ifdef __linux__
 				if ((!HST (*port)) && (!DRSI (*port)) && (!BPQ (*port)) && (!S_LINUX (*port)))
 #else
 				if ((!HST (*port)) && (!DRSI (*port)) && (!BPQ (*port)) && (!AGW (*port)))
@@ -427,7 +423,7 @@ int no_voie (int port, int canal)
 
 	df ("no_voie", 2);
 
-#ifdef __LINUX__
+#ifdef __linux__
 	if (S_LINUX (port))
 	{
 		for (i = 1; i < NBVOIES; i++)
@@ -636,17 +632,11 @@ void set_bs (int voie, int val)
 	sta_drv (voie, BSCMD, &val);
 }
 
-#ifdef __LINUX__
+#ifdef __linux__
 
-#ifdef OLD_AX25
-#include <ax25/axconfig.h>
-#include <ax25/nrconfig.h>
-#include <ax25/rsconfig.h>
-#else
 #include <netax25/axconfig.h>
 #include <netax25/nrconfig.h>
 #include <netax25/rsconfig.h>
-#endif
 
 /* Une seule initialisation quelque soit le driver */
 int fbb_ax25_config_load_ports (void)

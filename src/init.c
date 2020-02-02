@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  * INIT.C
@@ -162,11 +158,17 @@ int step_initialisations (int niveau)
 		NBVOIES = 1;
 		for (i = 0; i < NBLIG; i++)
 			af_voie[i] = -1;
-#ifdef __FBBDOS__
+#ifdef __linux__
+#ifdef ENGLISH
+		cprintf ("Reading fbb.conf file\n");
+#else
+		cprintf ("Lecture du fichier fbb.conf\n");
+#endif
+#else
 #ifdef ENGLISH
 		cprintf ("Reading INIT.SRV\r\n");
 #else
-		cprintf ("Lecture INIT.SRV\r\n");
+		cprintf ("Lecture de INIT.SRV\r\n");
 #endif
 #endif
 		init_voie (CONSOLE);	/* Init console */
@@ -204,7 +206,7 @@ int step_initialisations (int niveau)
 		cprintf ("Initialisation des ports RS232\r\n");
 #endif
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 		cprintf ("RS232 ports set-up            \n");
 #else
@@ -224,7 +226,7 @@ int step_initialisations (int niveau)
 		cprintf ("Initialisation des TNC\r\n");
 #endif
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 		cprintf ("TNC set-up            \n");
 #else
@@ -249,7 +251,7 @@ int step_initialisations (int niveau)
 		cprintf ("Initialisation des BID\r\n");
 #endif
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 		cprintf ("BID set-up            \n");
 #else
@@ -284,7 +286,7 @@ int step_initialisations (int niveau)
 		cprintf ("Fin des initialisations Fichiers\r\n");
 #endif
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 		cprintf ("Files set-up complete           \n");
 #else
@@ -304,7 +306,7 @@ int step_initialisations (int niveau)
 		cprintf ("Initialisation du forward\r\n");
 #endif
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 		cprintf ("FORWARD set-up           \n");
 #else
@@ -336,7 +338,7 @@ int step_initialisations (int niveau)
 		cprintf ("Fin des initialisations\r\n");
 #endif
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 		cprintf ("Set-up complete        \n");
 #else
@@ -358,7 +360,7 @@ int step_initialisations (int niveau)
 		if (*BBS_UP)
 		{
 			char *pptr = BBS_UP;
-#ifdef __LINUX__
+#ifdef __linux__
 			call_nbdos (&pptr, 1, NO_REPORT_MODE, NULL, TOOLDIR, NULL);
 #else
 			call_nbdos (&pptr, 1, NO_REPORT_MODE, NULL, NULL, NULL);
@@ -538,11 +540,11 @@ void init_semaine (void)
 
 	int ny = sdate->tm_yday;	/* Numero du jour dans l'annee */
 	int nw = sdate->tm_wday;	/* Numero du jour dans la semaine */
-
+/*
 	if (nw == 0)
 		nw = 6;
 	else
-		--nw;					/* 0 = dimanche -> 0 = lundi */
+		--nw;			*/		/* 0 = dimanche -> 0 = lundi */
 
 	if (ny < nw)				/* Premiere semaine de l'annee ? */
 	{
@@ -550,10 +552,11 @@ void init_semaine (void)
 		sdate = localtime (&temps);
 		ny = sdate->tm_yday;	/* Numero du jour de l'annee precedente */
 		nw = sdate->tm_wday;	/* Numero du jour de la semaine avant */
-		if (nw == 0)
+
+/*		if (nw == 0)
 			nw = 6;
 		else
-			--nw;				/* 0 = dimanche -> 0 = lundi */
+			--nw;		*/		/* 0 = dimanche -> 0 = lundi */
 	}
 	num_semaine = (7 - nw + ny) / 7;
 }
@@ -566,10 +569,15 @@ void start_tasks (void)
 #else
 	cprintf ("D‚marre le multitƒches...");
 #endif
+
 #ifdef __MSDOS__
 	init_keyboard ();
 #endif
+#ifdef __linux__
+	cprintf (" ok\n");
+#else
 	cprintf (" ok\r\n");
+#endif
 
 }
 
@@ -654,7 +662,11 @@ static void aff_heure (void)
 	sdate = gmtime (&temps);
 	cprintf ("GMT %02d:%02d", sdate->tm_hour, sdate->tm_min);
 	sdate = localtime (&temps);
+#ifdef __linux__
+	cprintf (" - LOCAL %02d:%02d\n", sdate->tm_hour, sdate->tm_min);
+#else	
 	cprintf (" - LOCAL %02d:%02d\r\n", sdate->tm_hour, sdate->tm_min);
+#endif
 }
 
 void lit_appel (void)
@@ -685,7 +697,7 @@ void lit_appel (void)
 	if (separe > h_screen - 4)
 		separe = h_screen - 4;
 	/*  printf("%d %d %d %d %d\n", bip, ok_tell, ok_aff, separe, doub_fen) ; */
-#if defined(__WINDOWS__) || defined(__LINUX__)
+#if defined(__WINDOWS__) || defined(__linux__)
 	maj_menu_options ();
 #endif
 }
@@ -764,10 +776,18 @@ int err_ouvert (char *nomfic)
 	char s[80];
 
 	deb_io ();
+#ifdef __linux__
+#ifdef ENGLISH
+	cprintf ("Cannot open %s     \n", nomfic);
+#else
+	cprintf ("Erreur ouverture %s\n", nomfic);
+#endif
+#else
 #ifdef ENGLISH
 	cprintf ("Cannot open %s     \r\n", nomfic);
 #else
 	cprintf ("Erreur ouverture %s\r\n", nomfic);
+#endif
 #endif
 	c = 0;
 
@@ -778,10 +798,18 @@ int err_ouvert (char *nomfic)
 #endif
 	if (sel_option (s, &c))
 	{
+#ifdef __linux__
+#ifdef ENGLISH
+		cprintf ("\rCreating file %s      \n", nomfic);
+#else
+		cprintf ("\rCreation du fichier %s\n", nomfic);
+#endif
+#else
 #ifdef ENGLISH
 		cprintf ("\rCreating file %s      \r\n", nomfic);
 #else
 		cprintf ("\rCreation du fichier %s\r\n", nomfic);
+#endif
 #endif
 	}
 	fin_io ();
@@ -820,7 +848,7 @@ static void initarbre (void)
 	FILE *fptr;
 	bloc_indic *bptr;
 
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 	cprintf ("Callsign set-up                  \n");
 #else
@@ -834,7 +862,7 @@ static void initarbre (void)
 #endif
 #endif
 	deb_io ();
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 	cprintf ("Callsigns set-up             \n");
 #else
@@ -871,7 +899,7 @@ static void initarbre (void)
 				bptr = bptr->suiv;
 				offset = 0;
 			}
-#ifdef __LINUX__
+#ifdef __linux__
 			if ((i++ % 50) == 0)
 			{
 				InitText (itoa (i, buf, 10));
@@ -886,7 +914,7 @@ static void initarbre (void)
 #ifdef __MSDOS__
 			if (tempo == 0)
 			{
-				cprintf ("%-6s\r", buf2.indic.call);
+				cprintf ("%-6s\r\n", buf2.indic.call);
 				tempo = CADENCE;
 			}
 #endif
@@ -898,10 +926,10 @@ static void initarbre (void)
 #ifdef __WINDOWS__
 	InitText (itoa (i, buf, 10));
 #else
-#ifdef __LINUX__
+#ifdef __linux__
 	cprintf ("%-6s\n", buf2.indic.call);
 #else
-	cprintf ("%-6s\r", buf2.indic.call);
+	cprintf ("%-6s\r\n", buf2.indic.call);
 #endif
 #endif
 	ferme (fptr, 4);
@@ -1003,7 +1031,7 @@ static void initmessage (void)
 	pos = nbfwd = 0;
 	ptr_fwd = tete_fwd = cree_bloc_fwd (NULL);
 
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 	cprintf ("Message set-up             \n");
 #else
@@ -1022,9 +1050,9 @@ static void initmessage (void)
 	ouvre_dir ();
 	read_dir (rmess++, &bufdir);
 	nomess = bufdir.numero;
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
-	cprintf ("Next message %ld  \r\n", nomess + 1);
+	cprintf ("Next message %ld  \n", nomess + 1);
 #else
 	cprintf ("Prochain message %ld\n", nomess + 1);
 #endif
@@ -1042,7 +1070,7 @@ static void initmessage (void)
 	{
 		if (bufdir.type)
 		{
-#ifdef __LINUX__
+#ifdef __linux__
 			if ((i++ % 50) == 0)
 			{
 				InitText (itoa (i, buf, 10));
@@ -1057,7 +1085,7 @@ static void initmessage (void)
 #ifdef __MSDOS__
 			if (tempo == 0)
 			{
-				cprintf ("%ld %-6s %d\r", bufdir.numero, bufdir.exped, nbfwd);
+				cprintf ("%ld %-6s %d\r\n", bufdir.numero, bufdir.exped, nbfwd);
 				tempo = CADENCE;
 			}
 #endif
@@ -1101,7 +1129,7 @@ static void initmessage (void)
 #ifdef __WINDOWS__
 	InitText (itoa (i, buf, 10));
 #else
-#ifdef __LINUX__
+#ifdef __linux__
 	if (bufdir.type)
 	{
 		cprintf ("%ld %-6s %d\n", bufdir.numero, bufdir.exped, nbfwd);
@@ -1109,13 +1137,13 @@ static void initmessage (void)
 #else
 	if (bufdir.type)
 	{
-		cprintf ("%ld %-6s %d\r", bufdir.numero, bufdir.exped, nbfwd);
+		cprintf ("%ld %-6s %d\r\n", bufdir.numero, bufdir.exped, nbfwd);
 	}
 #endif
 #endif
 	ferme_dir ();
 	fin_io ();
-#ifdef __LINUX__
+#ifdef __linux__
 #ifdef ENGLISH
 	cprintf ("End - %d forward(s)\n", nbfwd);
 #else

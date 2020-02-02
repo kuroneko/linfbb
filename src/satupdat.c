@@ -1,28 +1,24 @@
-/*********************************************************************
-SATUPDAT.C copyright 1989-2009 Bernard PIDOUX, F6BVP [ f6bvp@amsat.org ]
+/************************************************************************
+    Copyright (C) 1986-2000 by
 
-This program is free software; you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation; either version 2 of the License, or
-(at your option) any later version.
+    F6FBB - Jean-Paul ROUBELAT
+    jpr@f6fbb.org
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-You should have received a copy of the GNU General Public License
-along with this program; if not, write to the Free Software
-Foundation, Inc., 59 Temple Place, Suite 330, Boston,
-MA  02111-1307  USA
- ************************************************************************
- *
- * NOM / NAME : AJOURSAT  SATUPDAT 
- *
- * Lecture des parametres Kepleriens des satellites
- * pour serveur F6FBB a partir des bulletins de l'AMSAT
- *
- ************************************************************************
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+    Parts of code have been taken from many other softwares.
+    Thanks for the help.
+************************************************************************
  * HISTORIQUE :
  * DATE			AUTEUR / AUTHOR : Bernard Pidoux, f6bvp@amsat.org
  * ajoursat 16/10/89	Bernard Pidoux F6BVP
@@ -53,6 +49,8 @@ MA  02111-1307  USA
  *        dernières mises au point 9 juin 2000 sous Linux
  * 1.86 : septembre 2007
  * 1.87 : 26/09/2009
+ * 1.88 Jan-26-2015 changed fgets() lines avoiding compiler warnings 
+ * 1.89 Feb-03-2015 changed write() line avoiding compiler warning 
  *************************************************************************/
 
 #include <math.h>
@@ -79,9 +77,7 @@ MA  02111-1307  USA
 
 /* #define DEBUG */
 /* #define FRANCAIS*/
-#define _LINUX_
-/* #define _DOS_ */
-#define VERSION "1.87"
+#define VERSION "1.89"
 /* Tabulation a 4 espaces !! */
 
 #ifdef DEBUG
@@ -267,7 +263,7 @@ int main(int argc, char *argv[])
 	}
 #ifdef FRANCAIS
 	printf("\nMise à jour des paramètres orbitaux de la banque de données des satellites pour BBS F6FBB\n");
-	printf("Version %s - septembre 2009 - Bernard Pidoux, f6bvp@amsat.org\n",VERSION);
+	printf("Version %s - février 2015 - Bernard Pidoux, f6bvp@amsat.org\n",VERSION);
 	if ((argc < 2) || (argc > 5)) 
 	{
 		printf("Emploi: ajoursat nom_fichier<.txt> </option> </option> </option>\n");
@@ -286,7 +282,7 @@ int main(int argc, char *argv[])
 	}
 #else
 	printf("\nUpdate of F6FBB's BBS satellite data base orbital parameters\n");
-	printf("Version %s - September 2009 - Bernard Pidoux, f6bvp@amsat.org\n",VERSION);
+	printf("Version %s - February 2015 - Bernard Pidoux, f6bvp@amsat.org\n",VERSION);
 	if ((argc < 2) || (argc > 5)) 
 	{
 		printf("Usage: satupdat file_name<.txt> </option> </option> </option>\n");
@@ -401,7 +397,13 @@ int main(int argc, char *argv[])
 		/* Print_Sat(nouveaux,j); */
 		remove("satel.bak");
 		rename(dmold, "satel.bak");
-		l = Ecrit_Sat(dmo, nouveaux, k);
+		if ((l = Ecrit_Sat(dmo, nouveaux, k)) != k) 
+#ifdef FRANCAIS
+			printf("\nErreur écriture fichier '%s'\n", dmo);
+#else
+			printf("\nError writing file '%s'\n", dmo);
+#endif
+				 
 		rename(dmo, dmold);
 	}
 
@@ -512,9 +514,10 @@ void Amsat(char *filename)
 		{
 			crc = valide = 0;
 			do {
-				fgets(tampon, LINE, fd);
+				if (fgets(tampon, LINE, fd) != NULL) {
 				sscanf(tampon, "%s", ligne);
 				d_printf("%s\n",ligne);
+				}
 			} while (strcmp("Satellite:", ligne) && !(feof(fd)));
 
 			crc = checksum(tampon);
@@ -794,7 +797,12 @@ int Ecrit_Sat(char *filename, satel **stru, int nombre)
 			if (stru[indice]->libre[0] != -1) 
 			{
 	/*			printf("sat:{%s}\n ", stru[indice]->dd);  */
-				write(fd2, stru[indice], sizeof(satel));
+				if (write(fd2, stru[indice], sizeof(satel)) == 0)
+#ifdef FRANCAIS
+		printf("Impossible d'écrire dans le fichier %s !\n", filename);
+#else
+		printf("Could not write into file %s !\n", filename);
+#endif
 			} 
 			else
 				n--;
@@ -830,18 +838,20 @@ int openfile(char *filename)
 	 */
 	fd2 = open(filename, O_RDWR, S_IREAD | S_IWRITE | S_IEXEC);
 
+	if (fd2 == -1) {
 #ifdef FRANCAIS
-	if (fd2 == -1)
-		printf("fichier %s non trouvé - nouvelle banque créée !\n", filename);
-	else
-		printf("lecture fichier %s\n", filename);
+	printf("fichier %s non trouvé - nouvelle banque créée !\n", filename);
 #else
-	if (fd2 == -1)
-		printf("file %s not found - new data base created !\n", filename);
-	else
-		printf("reading file %s\n", filename);
+	printf("file %s not found - new data base created !\n", filename);
 #endif
-
+	fd2 = open(filename, O_CREAT | O_RDWR, S_IREAD | S_IWRITE | S_IEXEC);
+	}
+#ifdef FRANCAIS
+	printf("lecture fichier %s\n", filename);
+#else
+	printf("reading file %s\n", filename);
+#endif
+	
 	return (fd2);
 }
 
@@ -1180,8 +1190,7 @@ void nasa(char *filename)
 				sat.dd[17] = '\0';
 				if (strncmp (sat.dd, "DECODE 2-LINE", 13) == 0)
 					twolinemodel = TRUE;
-				fgets(ligne, LINE, fd);
-				if (feof(fd))
+				if (fgets(ligne, LINE, fd) == NULL) 
 					break;
 				epure(ligne);
 				pointe = strchr(ligne, '1');
@@ -1227,7 +1236,7 @@ void nasa(char *filename)
 				sat.q3 = q3;	/* 1ère dérivée mouvement moyen */
 
 
-				fgets(ligne, LINE, fd);
+				if (fgets(ligne, LINE, fd) != NULL)
 				
 				ligne2valide = crcdix(ligne);
 

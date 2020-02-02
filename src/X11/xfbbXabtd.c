@@ -1,28 +1,24 @@
-   /****************************************************************
+/***********************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+***********************************************************************/
 
 
 #include <stdlib.h>
@@ -30,7 +26,7 @@
 #include <unistd.h>
 #include <ctype.h>
 
-#include <version.h>
+#include <config.h>
 
 static Widget about_dialog = NULL;
 static Widget copy_dialog = NULL;
@@ -79,16 +75,9 @@ char *version (void)
 {
 	static char buffer[20];
 
-#ifdef BETA
-	sprintf (buffer, "%d.%02d%c%d", MAJEUR, MINEUR, LETTRE, BETA);
-#else
-#ifdef LETTRE
-	sprintf (buffer, "%d.%02d%c", MAJEUR, MINEUR, LETTRE);
-#else
-	sprintf (buffer, "%d.%02d", MAJEUR, MINEUR);
-#endif
-#endif
-		return (buffer);
+	sprintf (buffer, "%s", VERSION);
+	
+	return (buffer);
 }
 
 static char *XVersion (int dat)
@@ -246,6 +235,7 @@ int GetConfig (void)
 	int i;
 	int ret = 0;
 	char *home = getenv ("HOME");
+	char filename[256];
 
 	memset(conf, 0, sizeof(conf));
 	for (i = 0 ; i < MAX_CONF ; i++)
@@ -261,32 +251,36 @@ int GetConfig (void)
 		FILE *fptr;
 		char buf[256];
 
-		sprintf (buf, "%s/.xfbbX", home);
-		fptr = fopen (buf, "r");
+		sprintf (filename, "%s/.xfbbX", home);
+		fptr = fopen (filename, "r");
 		if (fptr)
 		{
 			for (i = 0 ; i < MAX_CONF ; i++)
 			{
-				fgets (buf, sizeof(buf), fptr);
+				if (fgets (buf, sizeof(buf), fptr) != NULL)
 				sscanf (buf, "%*s %[^\n]", conf[i].name);
-				fgets (buf, sizeof(buf), fptr);
+				if (fgets (buf, sizeof(buf), fptr) != NULL)
 				sscanf (buf, "%*s %s\n", conf[i].host);
-				fgets (buf, sizeof(buf), fptr);
+				if (fgets (buf, sizeof(buf), fptr) != NULL)
 				sscanf (buf, "%*s %d\n", &conf[i].port);
-				fgets (buf, sizeof(buf), fptr);
+				if (fgets (buf, sizeof(buf), fptr) != NULL)
 				sscanf (buf, "%*s %d\n", &conf[i].mask);
-				fgets (buf, sizeof(buf), fptr);
+				if (fgets (buf, sizeof(buf), fptr) != NULL)
 				sscanf (buf, "%*s %[^\n]", conf[i].pass);
-				fgets (buf, sizeof(buf), fptr);
+				if (fgets (buf, sizeof(buf), fptr) != NULL)
 				sscanf (buf, "%*s %s\n", conf[i].mycall);
 				LabelSetString (Rmt[i], conf[i].name, NULL);
 			}
-			fscanf (fptr, "%*s %d\n", &curconf);
+			if (fscanf (fptr, "%*s %d\n", &curconf) != EOF)
 			if (curconf >= MAX_CONF)
 				curconf = 0;
 				
 			fclose (fptr);
 			ret = 1;
+		}
+		else {
+			sprintf (buf, "Cannot read configuration file '%s' !", filename);
+			MessageBox (60, buf, "Configuration", MB_ICONEXCLAMATION | MB_OK);
 		}
 	}
 
@@ -307,7 +301,7 @@ int PutConfig (void)
 	if (home)
 	{
 		FILE *fptr;
-		char filename[256];
+		char buf[256], filename[256];
 
 		sprintf (filename, "%s/.xfbbX", home);
 		fptr = fopen (filename, "w");
@@ -329,6 +323,10 @@ int PutConfig (void)
 			fprintf (fptr, "curr_c: %d\n", curconf);
 			fclose (fptr);
 			return 1;
+		}
+		else {
+			sprintf (buf, "Cannot write configuration file '%s' !", filename);
+			MessageBox (60, buf, "Configuration", MB_ICONEXCLAMATION | MB_OK);
 		}
 	}
 	return 0;
@@ -481,11 +479,6 @@ void AboutDialog (Widget w, XtPointer client_data, XtPointer call_data)
 	sprintf (buffer,
 			 "xfbbX (Linux version)\n\nVersion %s\n\n"
 			 "Copyright 1986-1998. All rights reserved."
-#ifdef BETA
-			 "\n\n"
-			 "This version is only for test purpose.\n"
-			 "Do not distribute without the author's agreement."
-#endif
 			 "\n",
 			 XVersion (TRUE));
 
@@ -532,9 +525,9 @@ void CopyDialog (Widget w, XtPointer client_data, XtPointer call_data)
 			 "All commercial or professional use is prohibited.\n\n"
 			 "F6FBB (Jean-Paul ROUBELAT) declines any responsibilty\n"
 			 "in the use of XFBB software.\n\n"
-			 "This software is free of charge, but a 100 FF or 20 US $\n"
-			 "(or more) contribution will be appreciated.\n\n",
-			 XVersion (0), date ()
+/*			 "This software is free of charge, but a 100 FF or 20 US $\n"
+			 "(or more) contribution will be appreciated.\n\n",		*/
+			 , XVersion (0), date ()
 		);
 
 	string = StringCreate (buffer);

@@ -1,0 +1,11 @@
+#!/bin/bash
+LIBDIR=@libdir@/fbb
+
+echo
+echo "--- Running epurmess"
+echo
+
+$LIBDIR/tool/epurmess
+ret=$?
+
+exit $ret

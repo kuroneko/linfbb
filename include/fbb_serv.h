@@ -1,28 +1,24 @@
-   /****************************************************************
+/***********************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+***********************************************************************/
 
 /*
  *        SERV.H
@@ -43,21 +39,14 @@
 #endif
 /* #define FORTIFY */
 
-#ifdef __LINUX__
+#ifdef __linux__
 
 #include <sys/vfs.h>
 #include <sys/socket.h>
-#ifdef OLD_AX25
-#include <linux/ax25.h>
-#include <linux/netrom.h>
-#include <linux/rose.h>
-#include <ax25/axutils.h>
-#else
 #include <netax25/ax25.h>
 #include <netrom/netrom.h>
 #include <netrose/rose.h>
 #include <netax25/axlib.h>
-#endif
 /* Bug dans libc ????? <================== */
 #define __NO_CTYPE
 
@@ -151,8 +140,6 @@
 #define ISPRINT(c)	(!iscntrl(c))
 
 #define PRIVATE(type) ((type == 'P') || (type == 'A') || (type == 'T'))
-
-#include "version.h"
 
 #if defined(__FBBDOS__) || defined(__WINDOWS__)
 #include <process.h>
@@ -1463,7 +1450,7 @@ typedef struct
 	void *ptemp;				/* Poiteur pour applis temporaires */
 	unsigned psiz;				/* Taille de l'alloc temporaire */
 	XInfo *Xfwd;				/* Structure pour XForwarding */
-#ifdef __LINUX__
+#ifdef __linux__
 	int to_rzsz[2];				/* Pipe pour la communication avec RZ/SZ */
 	int to_xfbb[2];				/* Pipe pour la communication avec RZ/SZ */
 	int rzsz_pid;

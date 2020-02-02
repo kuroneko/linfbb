@@ -1,31 +1,28 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 #include <serv.h>
 #include <fbb_conf.h>
+#include <config.h>
 
 static int no_init_error = 1;
 
@@ -36,7 +33,7 @@ void err_init (int lig)
 	ShowError ("INIT.SRV", "Error line", lig);
 	fbb_quit (0);
 #endif
-#if defined(__LINUX__)
+#if defined(__linux__)
 	ShowError ("FBB.CONF", "Error line", lig);
 	fbb_quit (0);
 #endif
@@ -60,7 +57,7 @@ static char *test_back_slash (char *chaine, int nolig)
 	
 	strcpy(temp, chaine);
 	
-#ifdef __LINUX__
+#ifdef __linux__
 	if (temp[strlen (temp) - 1] != '/')
 		strcat(temp, "/");
 /*		err_init (nolig); */
@@ -251,11 +248,20 @@ int init_admin (void)
 			return (0);
 	}
 
+#ifdef __linux__
+#ifdef ENGLISH
+	cprintf ("Parameters set-up            \n");
+#else
+	cprintf ("Initialisation des parametres\n");
+#endif
+#else
 #ifdef ENGLISH
 	cprintf ("Parameters set-up            \r\n");
 #else
 	cprintf ("Initialisation des parametres\r\n");
 #endif
+#endif
+
 
 	libere_serveurs ();
 
@@ -273,7 +279,7 @@ int init_admin (void)
 		{
 		case 0:
 			/*	Accept all versions !!
-			sprintf (stemp, "FBB%d.%02d", MAJEUR, MINEUR);
+			sprintf (stemp, "FBB%s", VERSION);
 			if (strncasecmp (stemp, ptr, strlen (stemp)) != 0)
 			{
 #ifdef ENGLISH
@@ -297,7 +303,7 @@ int init_admin (void)
 			ok_init |= (1 << key);
 			break;
 		case 3:
-			strn_cpy (6, qra_locator, ptr);
+			strn_cpy (10, qra_locator, ptr);
 			ok_init |= (1 << key);
 			break;
 		case 4:
@@ -529,7 +535,7 @@ int init_admin (void)
 				nb_jour_val = 1L;
 			break;
 		case 33:
-			strn_cpy (79, wp_line, ptr);
+			strn_cpy (256, wp_line, ptr);
 			break;
 		case 34:
 			n_cpy (8, my_zip, ptr);

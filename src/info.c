@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  *  MODULE INFORMATIONS
@@ -134,7 +130,7 @@ static void docs (void)
 static void retour_docs (void)
 {
 	char *ptr;
-#ifdef __LINUX__
+#ifdef __linux__
 	ptr = strrchr (pvoie->ch_temp, '/');
 #else
 	ptr = strrchr (pvoie->ch_temp, '\\');
@@ -160,7 +156,7 @@ static int selecte (int numero)
 		pdoc = ptete + numero;
 		if (pdoc->dir == 'D')
 		{
-#ifdef __LINUX__
+#ifdef __linux__
 			strcat (pvoie->ch_temp, "/");
 #else
 			strcat (pvoie->ch_temp, "\\");
@@ -169,7 +165,7 @@ static int selecte (int numero)
 		}
 		else
 		{
-#ifdef __LINUX__
+#ifdef __linux__
 			sprintf (s, "%s%s%s", DOCSDIR, pvoie->ch_temp, pdoc->nom);
 #else
 			sprintf (s, "%s%s\\%s", DOCSDIR, pvoie->ch_temp, pdoc->nom);
@@ -200,7 +196,7 @@ static int trie_docs (void)
 
 	pdoc = ptete = (inf *) m_alloue (sizeof (inf) * NBINF);
 
-#ifdef __LINUX__
+#ifdef __linux__
 	sprintf (localdir, "%s%s*.*", DOCSDIR, pvoie->ch_temp);
 #else
 	sprintf (localdir, "%s%s\\*.*", DOCSDIR, pvoie->ch_temp);
@@ -321,7 +317,7 @@ static int open_doc_label (void)
 	char nom_label[MAXLABEL];
 
 	nb_label = 0;
-#ifdef __LINUX__
+#ifdef __linux__
 	sprintf (nom_label, "%s%s@@.LBL", DOCSDIR, pvoie->ch_temp);
 #else
 	sprintf (nom_label, "%s%s\\@@.LBL", DOCSDIR, pvoie->ch_temp);
@@ -360,7 +356,7 @@ static void write_doc_label (void)
 	}
 	++nb;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	n_cpy (LGINF - 1, tmp_label.nom, ptr);
 	sprintf (nom_label, "%s%s%s", DOCSDIR, pvoie->ch_temp, tmp_label.nom);
 #else
@@ -381,7 +377,7 @@ static void write_doc_label (void)
 	}
 	if (nb == 2)
 	{
-#ifdef __LINUX__
+#ifdef __linux__
 		sprintf (nom_label, "%s%s@@.LBL", DOCSDIR, pvoie->ch_temp);
 #else
 		sprintf (nom_label, "%s%s\\@@.LBL", DOCSDIR, pvoie->ch_temp);

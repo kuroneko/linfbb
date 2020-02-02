@@ -1,31 +1,27 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 /* pbdir.c 1993.8.6 */
 
-/*#ifdef __LINUX__
+/*#ifdef __linux__
 #define __a1__ __attribute__ ((packed, aligned(1)))
 #else */
 #define __a1__
@@ -48,11 +44,7 @@
 #include <net/if.h>
 #include <linux/if_ether.h>
 #include <netinet/in.h>
-#ifdef OLD_AX25
-#include <ax25/axconfig.h>
-#else
 #include <netax25/axconfig.h>
-#endif 
 
 #define PFH_MSG 1
 #define PFH_FILE 2
@@ -124,11 +116,7 @@ static void rm_pfh_file (long numero);
 static int add_crc (char *buf, int nb);
 static void snd_pac (char *desti, char *buf, int len, int pid);
 static int rcvkss (void);
-#ifdef OLD_AX25
-static char *ax2ascii (char *call);
-#else
 static char *ax25_ntoaii (char *call);
-#endif 
 
 /*
  *	ax25 -> ascii conversion
@@ -182,7 +170,8 @@ void init_pac (void)
 	if ((fptr = fopen ("init.pac", "r")) == NULL)
 	{
 		pacsat = 0;
-		printf ("No PACSAT satellit protocol configuration file 'init.pac'\n");
+/* removed warning until this protocol is used by future satellites ??? 
+ * printf ("No PACSAT satellit protocol configuration file 'init.pac'\n"); */
 		return;
 	}
 
@@ -911,20 +900,12 @@ static void rcvreq (void)
 		return;
 
 	pid = rkss[HDRSIZE - 1] & 0xff;
-#ifdef OLD_AX25
 	/* Verify if the request is for me */
-	if (strcmp (pac_call, ax2ascii (rkss + 1)) != 0)
-#else
 	if (strcmp (pac_call, ax25_ntoaii (rkss + 1)) != 0)
-#endif 
 	{
 		return;
 	}
-#ifdef OLD_AX25
-	strcpy (callsign, ax2ascii (rkss + 1 + ADRSIZE));
-#else
 	strcpy (callsign, ax25_ntoaii (rkss + 1 + ADRSIZE));
-#endif 
 	del_user (sch_user (callsign));
 	switch (pid)
 	{
@@ -1492,11 +1473,7 @@ static void snd_pac (char *desti, char *buf, int len, int pid)
 
 	if (s == -1)
 	{
-#ifdef OLD_AX25
-		slen = convert_call (pac_call, &src);
-#else
 		slen = ax25_aton (pac_call, &src);
-#endif 
 		call = ax25_config_get_addr (pac_port);
 		if (call == NULL)
 		{
@@ -1504,11 +1481,7 @@ static void snd_pac (char *desti, char *buf, int len, int pid)
 					pac_port);
 			return;
 		}
-#ifdef OLD_AX25
-		convert_call_entry (call, src.fsa_digipeater[0].ax25_call);
-#else
 		ax25_aton_entry (call, src.fsa_digipeater[0].ax25_call);
-#endif 
 		src.fsa_ax25.sax25_ndigis = 1;
 
 		if ((s = socket (AF_AX25, SOCK_DGRAM, pid)) == -1)
@@ -1537,11 +1510,7 @@ static void snd_pac (char *desti, char *buf, int len, int pid)
 		}
 
 	}
-#ifdef OLD_AX25
-	if ((dlen = convert_call (desti, &dst)) == -1)
-#else
 	if ((dlen = ax25_aton (desti, &dst)) == -1)
-#endif 
 	{
 		fprintf (stderr, "beacon: unable to convert '%s'\n", call);
 		return;
@@ -1583,18 +1552,10 @@ static int rcvkss (void)
 	f_rkss = ON;
 	return (lg);
 }
-#ifdef OLD_AX25
-static char *ax2ascii (char *call)
-#else
 static char *ax25_ntoaii (char *call)
-#endif 
 {
 	char *scan;
-#ifdef OLD_AX25	
-	char *ptr = ax2asc ((ax25_address *)call);
-#else
 	char *ptr = _ax25_ntoa ((ax25_address *)call);
-#endif 
 	scan = strrchr (ptr, '-');
 	if ((scan) && (*(scan + 1) == '0'))
 		*scan = '\0';

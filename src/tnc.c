@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  *    MODULE TNC.C : INTERFACE AVEC LE TNC - MODE DUPLEX
@@ -256,7 +252,7 @@ void duplex_tnc (void)
 		{
 			*buffer = '\0';
 			*indd = toupper (*indd);
-#ifndef __LINUX__
+#ifndef __linux__
 			if (p_port[no_port (pvoie->cross_connect)].typort == TYP_MOD)
 			{
 				switch (*indd)
@@ -523,7 +519,7 @@ void duplex_tnc (void)
 					dec (voiecur, 1);
 					dec (voiecur, 1);
 					tnc_cmd (TNC_END, voiecur);
-#ifndef __LINUX__
+#ifndef __linux__
 					if (p_port[no_port (voiecur)].typort == TYP_MOD)
 						re_init_modem (voiecur);
 #endif
@@ -779,7 +775,7 @@ void duplex_tnc (void)
 #ifdef __FBBDOS__
 								send_dos (2, cmde, NULL);
 #endif
-#ifdef __LINUX__							
+#ifdef __linux__							
 								call_nbdos (&cmde, 1, NO_REPORT_MODE, NULL, TOOLDIR, NULL);
 #endif
 							}
@@ -800,7 +796,7 @@ void duplex_tnc (void)
 					break;
 				}
 			}
-#ifndef __LINUX__
+#ifndef __linux__
 			else
 			{					/* BPQ */
 				/* prog_indic(pvoie->cross_connect) ; */
@@ -1110,7 +1106,7 @@ static int ch_canal (int port)
 	if (p_port[port].pvalid == 0)
 		return (-1);
 
-#ifdef __LINUX__
+#ifdef __linux__
 	if (S_LINUX (port))
 	{
 		if (port_free (port) == 0)
@@ -1393,7 +1389,7 @@ void fin_tnc (void)
 
 		svoie[autre_voie]->kiss = -1;
 		svoie[autre_voie]->sta.connect = FALSE;
-#ifndef __LINUX__
+#ifndef __linux__
 		if (p_port[no_port (autre_voie)].typort == TYP_MOD)
 			re_init_modem (autre_voie);
 #endif
@@ -1761,7 +1757,8 @@ static int pactor_cq (void)
 		{
 /* 			sprintf (buffer, "CQ CQ CQ de %s %s %s (%d)\r", callsign, callsign, callsign, NB_CALL - i);*/
 /* Add from DM3TT compilation */
-			sprintf (buffer, "CQ CQ CQ de %s %s %s @ %s (%d)\r", callsign, callsign, callsign, mycall, NB_CALL - i);
+/* Added 'PACTOR' as suggested by G4APL SysOP GB7CIP */			
+			sprintf (buffer, "CQ CQ CQ PACTOR de %s %s %s @ %s (%d)\r", callsign, callsign, callsign, mycall, NB_CALL - i);
 			snd_drv (autre_voie, DATA, buffer, strlen (buffer), NULL);
 			outs (buffer, strlen (buffer));
 		}

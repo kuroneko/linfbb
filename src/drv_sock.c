@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 
  /******************************************************
@@ -43,15 +39,9 @@
 #include <net/if.h>
 #include <linux/if_ether.h>
 #include <netinet/in.h>
-#ifdef OLD_AX25
-#include <ax25/axconfig.h>
-#include <ax25/nrconfig.h>
-#include <ax25/rsconfig.h>
-#else
 #include <netax25/axconfig.h>
 #include <netax25/nrconfig.h>
 #include <netax25/rsconfig.h>
-#endif
 
 union sockaddr_ham
 {
@@ -123,14 +113,9 @@ static int sock_paclen (int);
 static int s_free (scan_t *);
 static int s_status (scan_t *);
 static int name_to_port (char *);
-#ifdef OLD_AX25
-static char *ax25_ntoa (char *, const ax25_address *);
-static char *rose_ntoa (char *, const rose_address *);
-#else
 static char *ax25_ntoaddr (char *, const ax25_address *);
 static char *rose_ntoaddr (char *, const rose_address *);
 static char *rose_ntodnic (char *, const rose_address *);
-#endif
 static void clear_can (int canal);
 
 /*
@@ -216,12 +201,12 @@ int snd_sck (int port, int canal, int cmd, char *buffer, int len, Beacon * ptr)
 int rcv_sck (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header * ui)
 {
 	static int can = 0;
-	int valid;
+/*	int valid;*/
 	int res;
 
 	*cmd = INVCMD;
 
-	valid = 0;
+/*	valid = 0;*/
 
 	/* Test monitoring */
 
@@ -245,7 +230,10 @@ int rcv_sck (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		unsigned addr_len;
 		union sockaddr_ham addr;
 
-		addr_len = sizeof (union sockaddr_ham);
+		memset(&addr, 0x00, sizeof(struct full_sockaddr_ax25));
+
+/*		addr_len = sizeof (union sockaddr_ham);*/
+		addr_len = sizeof (struct full_sockaddr_ax25);
 
 		new = accept (p_port[*port].fd, (struct sockaddr *) &addr, &addr_len);
 		if (new == -1)
@@ -328,7 +316,10 @@ int rcv_sck (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 			union sockaddr_ham addr;
 			int ret;
 
-			addr_len = sizeof (union sockaddr_ham);
+			memset(&addr, 0x00, sizeof(struct full_sockaddr_ax25));
+			
+/*			addr_len = sizeof (union sockaddr_ham);*/
+			addr_len = sizeof (struct full_sockaddr_ax25);
 
 			if (getpeername (scan[can].sock, (struct sockaddr *) &addr, &addr_len) == 0)
 			{
@@ -491,6 +482,8 @@ int opn_sck (int port, int nb)
 		char call[20];
 		int addrlen = 0;
 		union sockaddr_ham addr;
+		
+		memset(&addr, 0x00, sizeof(struct full_sockaddr_ax25));
 
 		sprintf (s, "Open PORT %d COM%d-%d",
 				 port, p_port[port].ccom, p_port[port].ccanal);
@@ -547,17 +540,9 @@ int opn_sck (int port, int nb)
 
 			fprintf (stderr, "CAN_AX25 myscall %s myssid %d\n", mycall, myssid);
 
-#ifdef OLD_AX25
-			convert_call_entry (call, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
-#else
 			ax25_aton_entry (call, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
-#endif
 			p_name = ax25_config_get_addr (p_port[port].name);
-#ifdef OLD_AX25
-			convert_call_entry (p_name, addr.axaddr.fsa_digipeater[0].ax25_call);
-#else
 			ax25_aton_entry (p_name, addr.axaddr.fsa_digipeater[0].ax25_call);
-#endif
 			addrlen = sizeof (struct full_sockaddr_ax25);
 
 			break;
@@ -580,11 +565,7 @@ int opn_sck (int port, int nb)
 
 			p_name = nr_config_get_addr (p_port[port].name);
 			fprintf (stderr, "CAN_NETROM mycall %s myssid %d\n", mycall, myssid);
-#ifdef OLD_AX25
-			convert_call_entry (p_name, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
-#else
 			ax25_aton_entry (p_name, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
-#endif
 			addrlen = sizeof (struct full_sockaddr_ax25);
 
 			break;
@@ -607,20 +588,12 @@ int opn_sck (int port, int nb)
 
 			sprintf (call, "%s-%d", mycall, myssid);
 			fprintf (stderr, "CAN_ROSE mycall %s myssid %d\n", mycall, myssid);
-#ifdef OLD_AX25
-			convert_call_entry (call, addr.rsaddr.srose_call.ax25_call);
-#else
 			ax25_aton_entry (call, addr.rsaddr.srose_call.ax25_call);
-#endif
 			if (is_rsaddr (p_port[port].name))
 				p_name = p_port[port].name;
 			else
 				p_name = rs_config_get_addr (p_port[port].name);
-#ifdef OLD_AX25
-			convert_rose_address (p_name, addr.rsaddr.srose_addr.rose_addr);
-#else
 			rose_aton (p_name, addr.rsaddr.srose_addr.rose_addr);
-#endif
 			addrlen = sizeof (struct sockaddr_rose);
 
 			break;
@@ -747,9 +720,15 @@ static int sock_rcv_ui (int *port, char *buffer, int *plen, ui_header * phead)
 	char *pctl;
 	int b_port;
 	int family;
-	int prevp;
+/*	int prevp;*/
 	char name[80];
 	
+	memset(&sa, 0x00, sizeof(struct sockaddr));
+	memset(&ifr, 0x00, sizeof(struct ifreq));
+	memset(buf, 0, sizeof(buf));
+	memset(temp, 0, sizeof(temp));
+	memset(name, 0, sizeof(name));
+
 	do
 	{
 		b_port = *port;
@@ -936,7 +915,7 @@ static int sock_rcv_ui (int *port, char *buffer, int *plen, ui_header * phead)
 	else
 		phead->pid = 0;
 
-	prevp = b_port;
+/*	prevp = b_port;*/
 	if (b_port == 0)
 	{
 		int bp;
@@ -982,13 +961,9 @@ static int sock_rcv_ui (int *port, char *buffer, int *plen, ui_header * phead)
 
 static int sock_snd_ui (int port, char *chaine, int len, Beacon * beacon)
 {
-#ifdef OLD_AX25
-	char *call[9];
-#else
 	char *calls[10];
 	char callsign[9];
 	char *ptr;
-#endif
 	int dlen;
 	int slen;
 	struct full_sockaddr_ax25 dest;
@@ -996,50 +971,20 @@ static int sock_snd_ui (int port, char *chaine, int len, Beacon * beacon)
 	int i;
 	int nb;
 	int s;
+	
+	memset(&src, 0x00, sizeof(struct full_sockaddr_ax25));
+	memset(&dest, 0x00, sizeof(struct full_sockaddr_ax25));
 
 	nb = 0;
-#ifdef OLD_AX25
-	call[nb] = malloc (AX25_CALLSID);
-	sprintf (call[nb++], "%s-%d", beacon->desti.call, beacon->desti.num);
-#else
 	calls[nb] = malloc (AX25_CALLSID);
 	sprintf (calls[nb++], "%s-%d", beacon->desti.call, beacon->desti.num);
-#endif
 	for (i = 0; i < beacon->nb_digi; i++)
 	{
-#ifdef OLD_AX25
-		call[nb] = malloc (AX25_CALLSID);
-		sprintf (call[nb++], "%s-%d", beacon->digi[i].call, beacon->digi[i].num);
-#else
 		calls[nb] = malloc (AX25_CALLSID);
 		sprintf (calls[nb++], "%s-%d", beacon->digi[i].call, beacon->digi[i].num);
-#endif
 	}
-#ifdef OLD_AX25
-	call[nb] = NULL;
-	if ((dlen = convert_call_arglist (call, &dest)) == -1)
-	{
-		fprintf (stderr, "beacon: unable to convert callsign '%s'\n", call[0]);
-		return 0;
-	}
-	for (i = 0; call[i]; i++)
-	{
-		free (call[i]);
-	}
-	call[0] = malloc (AX25_CALLSID);
-	sprintf (call[0], "%s-%d", mycall, myssid);
-	slen = convert_call (call[0], &src);
-	call[1] = ax25_config_get_addr (p_port[port].name);
-	if (call[1] == NULL)
-	{
-		free (call[0]);
- 		return (0);
-	}
-	convert_call_entry (call[1], src.fsa_digipeater[0].ax25_call);
-	src.fsa_ax25.sax25_ndigis = 1;
-	free (call[0]);
-#else
 	calls[nb] = NULL;
+
 	if ((dlen = ax25_aton_arglist ((const char **)calls, &dest)) == -1)
 	{
 		fprintf (stderr, "beacon: unable to convert callsign '%s'\n", calls[0]);
@@ -1054,7 +999,7 @@ static int sock_snd_ui (int port, char *chaine, int len, Beacon * beacon)
 		return (0);
 	ax25_aton_entry (ptr, src.fsa_digipeater[0].ax25_call);
 	src.fsa_ax25.sax25_ndigis = 1;
-#endif
+
 	if ((s = socket (AF_AX25, SOCK_DGRAM, 0)) == -1)
 	{
 		perror ("beacon: socket");
@@ -1141,15 +1086,13 @@ static int sock_cmd (int port, int canal, char *cmd)
 	}
 	return (1);
 }
-#ifdef OLD_AX25
-static int nr_convert_call (char *address, struct full_sockaddr_ax25 *addr)
-#else
 static int nr_ax25_aton (char *address, struct full_sockaddr_ax25 *addr)
-#endif
 {
 	char buffer[100], *call, *alias;
 	FILE *fp;
 	int addrlen;
+
+	memset(buffer, 0, sizeof(buffer));
 
 	call = address;
 
@@ -1177,11 +1120,7 @@ static int nr_ax25_aton (char *address, struct full_sockaddr_ax25 *addr)
 
 		if (strcmp (address, call) == 0 || strcmp (address, alias) == 0)
 		{
-#ifdef OLD_AX25
-			addrlen = convert_call (call, addr);
-#else
 			addrlen = ax25_aton (call, addr);
-#endif
 			addr->fsa_ax25.sax25_family = AF_NETROM;
 			fclose (fp);
 			return (addrlen == -1) ? -1 : sizeof (struct sockaddr_ax25);
@@ -1194,11 +1133,7 @@ static int nr_ax25_aton (char *address, struct full_sockaddr_ax25 *addr)
 
 	return -1;
 }
-#ifdef OLD_AX25
-static int rs_convert_call (char *address, struct sockaddr_rose *addr)
-#else
 static int rs_ax25_aton (char *address, struct sockaddr_rose *addr)
-#endif
 {
 	char *command, *call, *rsaddr, *digi;
 
@@ -1211,11 +1146,7 @@ static int rs_ax25_aton (char *address, struct sockaddr_rose *addr)
 
 		addr->srose_family = AF_ROSE;
 		addr->srose_ndigis = 0;
-#ifdef OLD_AX25
-		if (convert_call_entry (call, addr->srose_call.ax25_call) == -1)
-#else
 		if (ax25_aton_entry (call, addr->srose_call.ax25_call) == -1)
-#endif
 		{
 			free (command);
 			return -1;
@@ -1242,11 +1173,7 @@ static int rs_ax25_aton (char *address, struct sockaddr_rose *addr)
 			}
 			strcpy (roseaddr + 4, rsaddr);
 		}
-#ifdef OLD_AX25
-		if (convert_rose_address (roseaddr, addr->srose_addr.rose_addr) == -1)
-#else
 		if (rose_aton (roseaddr, addr->srose_addr.rose_addr) == -1)
-#endif
 		{
 			free (command);
 			return -1;
@@ -1256,11 +1183,7 @@ static int rs_ax25_aton (char *address, struct sockaddr_rose *addr)
 		while ((digi = strtok (NULL, " \t\r\n")) != NULL)
 		{
 #if 0
-#ifdef OLD_AX25
-			if (convert_call_entry (digi, addr->srose_digis[addr->srose_ndigis].ax25_call) == -1)
-#else
 			if (ax25_aton_entry (digi, addr->srose_digis[addr->srose_ndigis].ax25_call) == -1)
-#endif
 			{
 				free (command);
 				return -1;
@@ -1268,11 +1191,7 @@ static int rs_ax25_aton (char *address, struct sockaddr_rose *addr)
 			if (++addr->srose_ndigis == 6)
 				break;
 #else
-#ifdef OLD_AX25
-			if (convert_call_entry (digi, addr->srose_digi.ax25_call) == -1)
-#else
 			if (ax25_aton_entry (digi, addr->srose_digi.ax25_call) == -1)
-#endif
 			{
 				free (command);
 				return -1;
@@ -1302,6 +1221,9 @@ static int sock_connect (char *commande, int can)
 	char mycallsign[AX25_CALLSID];
 	int backoff = 0;
 
+	memset(&addr, 0x00, sizeof(struct full_sockaddr_ax25));
+	memset(mycallsign, 0, sizeof(mycallsign));
+
 	if (strcmp(scan[can].source,"") != 0 )
 	{
 		strcpy (mycallsign, scan[can].source);
@@ -1328,13 +1250,8 @@ static int sock_connect (char *commande, int can)
 		addr.axaddr.fsa_ax25.sax25_family = AF_AX25;
 		addr.axaddr.fsa_ax25.sax25_ndigis = 1;
 		p_name = ax25_config_get_addr (p_port[scan[can].port].name);
-#ifdef OLD_AX25
-		convert_call_entry (mycallsign, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
-		convert_call_entry (p_name, addr.axaddr.fsa_digipeater[0].ax25_call);
-#else
 		ax25_aton_entry (mycallsign, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
 		ax25_aton_entry (p_name, addr.axaddr.fsa_digipeater[0].ax25_call);
-#endif
 		addrlen = sizeof (struct full_sockaddr_ax25);
 
 		if (setsockopt (fd, SOL_AX25, AX25_WINDOW, &scan[can].maxframe, sizeof (scan[can].maxframe)) == -1)
@@ -1408,13 +1325,8 @@ static int sock_connect (char *commande, int can)
 		addr.axaddr.fsa_ax25.sax25_family = AF_NETROM;
 		addr.axaddr.fsa_ax25.sax25_ndigis = 1;
 		p_name = nr_config_get_addr (p_port[scan[can].port].name);
-#ifdef OLD_AX25
-		convert_call_entry (p_name, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
-		convert_call_entry (mycallsign, addr.axaddr.fsa_digipeater[0].ax25_call);
-#else
 		ax25_aton_entry (p_name, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
 		ax25_aton_entry (mycallsign, addr.axaddr.fsa_digipeater[0].ax25_call);
-#endif
 		addrlen = sizeof (struct full_sockaddr_ax25);
 
 		/* if (setsockopt (fd, SOL_NETROM, NETROM_PACLEN, &scan[can].paclen, sizeof (scan[can].paclen)) == -1)
@@ -1440,13 +1352,8 @@ static int sock_connect (char *commande, int can)
 			p_name = p_port[scan[can].port].name;
 		else
 			p_name = rs_config_get_addr (p_port[scan[can].port].name);
-#ifdef OLD_AX25
-		convert_rose_address (p_name, addr.rsaddr.srose_addr.rose_addr);
-		convert_call_entry (mycallsign, addr.rsaddr.srose_call.ax25_call);
-#else
 		rose_aton (p_name, addr.rsaddr.srose_addr.rose_addr);
 		ax25_aton_entry (mycallsign, addr.rsaddr.srose_call.ax25_call);
-#endif
 		addrlen = sizeof (struct sockaddr_rose);
 
 		break;
@@ -1481,11 +1388,7 @@ static int sock_connect (char *commande, int can)
 	switch (scan[can].type)
 	{
 	case CAN_AX25:
-#ifdef OLD_AX25
-		if ((addrlen = convert_call (commande, &addr.axaddr)) == -1)
-#else
 		if ((addrlen = ax25_aton (commande, &addr.axaddr)) == -1)
-#endif
 		{
 			close (fd);
 			/* clear_can (can); */
@@ -1495,11 +1398,7 @@ static int sock_connect (char *commande, int can)
 		break;
 
 	case CAN_NETROM:
-#ifdef OLD_AX25
-		if ((addrlen = nr_convert_call (commande, &addr.axaddr)) == -1)
-#else
 		if ((addrlen = nr_ax25_aton (commande, &addr.axaddr)) == -1)
-#endif
 		{
 			close (fd);
 			/* clear_can (can); */
@@ -1509,11 +1408,7 @@ static int sock_connect (char *commande, int can)
 		break;
 
 	case CAN_ROSE:
-#ifdef OLD_AX25
-		if ((addrlen = rs_convert_call (commande, &addr.rsaddr)) == -1)
-#else
 		if ((addrlen = rs_ax25_aton (commande, &addr.rsaddr)) == -1)
-#endif
 		{
 			close (fd);
 			/* clear_can (can); */
@@ -1553,6 +1448,8 @@ static int sock_stat (int canal, stat_ch * ptr)
  */
  	struct ax25_info_struct ax25info; 
  
+	memset(&ax25info, 0x00, sizeof(struct ax25_info_struct));
+
 /*	struct ax25_info_struct_new ax25info;
 */
 	if (scan[canal].sock <= 0)
@@ -1710,49 +1607,6 @@ static int s_free (scan_t * can)
 	return (queue_free);
 }
 
-#ifdef OLD_AX25
-static char *ax25_ntoa (char *peer, const ax25_address * axa)
-{
-	const unsigned char *cp;
-	unsigned char *h = peer;
-	short cnt;
-
-	for (cnt = 0, cp = (char *) axa;; cnt++, cp++)
-	{
-		if (*cp == '\100')		/* Found a PAD char, skip the rest * */
-			cnt = 5;
-		else if (cnt < 6)		/* Callsign * */
-			*h++ = *cp >> 1;
-		else if (cnt == 6)
-		{						/* SSID * */
-			*h++ = '-';
-			if ((*cp & 0x1e) > 19)
-			{
-				*h++ = '1';
-				*h++ = ((*cp & 0x1e) >> 1) + '&';
-			}
-			else
-			{
-				*h++ = ((*cp & 0x1e) >> 1) + '0';
-			}
-			*h = '\0';
-			return peer;
-		}
-	}
-}
-static char *rose_ntoa (char *peer, const rose_address * rsa)
- {
-	sprintf (peer, "%02X%02X%02X", rsa->rose_addr[2],
-			 rsa->rose_addr[3],
-			 rsa->rose_addr[4]);
- 	return peer;
- }
-static char *rose_ntod (char *peer, const rose_address * rsa)
- {
-	sprintf (peer, "%02X%02X", rsa->rose_addr[0], rsa->rose_addr[1]);
- 	return peer;
- }
-#else
 static char *ax25_ntoaddr (char *peer, const ax25_address * axa)
 {
 	strcpy(peer, _ax25_ntoa(axa));
@@ -1771,7 +1625,6 @@ static char *rose_ntodnic (char *peer, const rose_address * rsa)
 	peer[4] = '\0';
 	return peer;
 }
-#endif
 
 static int name_to_port (char *port)
 {
@@ -1798,6 +1651,8 @@ static int sock_connexion (int new, int can, union sockaddr_ham *addr, int *port
 	char Dnic[80];
 	union sockaddr_ham addrham;
 
+	memset(&addrham, 0x00, sizeof(struct full_sockaddr_ax25));
+	
 	scan[can].state = CONNECTED;
 	scan[can].sock = new;
 
@@ -1863,11 +1718,7 @@ static int sock_connexion (int new, int can, union sockaddr_ham *addr, int *port
 		}
 
 		/* Look for informations on the connection */
-#ifdef OLD_AX25
-		ax25_ntoa (User, &addr->axaddr.fsa_ax25.sax25_call);
-#else
 		ax25_ntoaddr (User, &addr->axaddr.fsa_ax25.sax25_call);
-#endif
 		sprintf (buffer, "(%d) CONNECTED to %d:%s", can, p, User);
 
 /*		fprintf (stderr, "(%d) CONNECTED to %d:%s\n", can, p, User);*/
@@ -1881,11 +1732,7 @@ static int sock_connexion (int new, int can, union sockaddr_ham *addr, int *port
 			for (i = 0; i < addr->axaddr.fsa_ax25.sax25_ndigis; i++)
 			{
 				c_digi[0] = ' ';
-#ifdef OLD_AX25
-				ax25_ntoa (c_digi + 1, &addr->axaddr.fsa_digipeater[i]);
-#else
 				ax25_ntoaddr (c_digi + 1, &addr->axaddr.fsa_digipeater[i]);
-#endif
 				strcat (buffer, c_digi);
 			}
 		}
@@ -1901,13 +1748,8 @@ static int sock_connexion (int new, int can, union sockaddr_ham *addr, int *port
 		   } */
 
 		/* Look for informations on the connection */
-#ifdef OLD_AX25
-		ax25_ntoa (User, &addr->axaddr.fsa_ax25.sax25_call);
-		ax25_ntoa (Node, &addr->axaddr.fsa_digipeater[0]);
-#else
 		ax25_ntoaddr (User, &addr->axaddr.fsa_ax25.sax25_call);
 		ax25_ntoaddr (Node, &addr->axaddr.fsa_digipeater[0]);
-#endif
 		sprintf (buffer, "(%d) CONNECTED to %d:%s via %s", can, p, User, Node);
 		
 /*		fprintf (stderr, "(%d) CONNECTED to %d:%s via %s\n", can, p, User, Node);
@@ -1916,15 +1758,9 @@ static int sock_connexion (int new, int can, union sockaddr_ham *addr, int *port
 
 	case CAN_ROSE:
 		/* Look for informations on the connection */
-#ifdef OLD_AX25
-		rose_ntod (Dnic, &addr->rsaddr.srose_addr);
-		rose_ntoa (Node, &addr->rsaddr.srose_addr);
-		ax25_ntoa (User, &addr->rsaddr.srose_call);
-#else
 		rose_ntodnic (Dnic, &addr->rsaddr.srose_addr);
 		rose_ntoaddr (Node, &addr->rsaddr.srose_addr);
 		ax25_ntoaddr (User, &addr->rsaddr.srose_call);
-#endif
 		sprintf (buffer, "(%d) CONNECTED to %d:%s via %s %s", can, p, User, Dnic, Node);
 		
 /*		fprintf (stderr, "(%d) CONNECTED to %d:%s via %s %s\n", can, p, User, Dnic, Node);

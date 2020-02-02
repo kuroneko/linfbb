@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  * TRAIT.C
@@ -334,7 +330,7 @@ static void arret_serveur (char *fich_etat, int typ)
 		}
 		texte (T_TRT + 10);
 		maintenance ();			/* reboot serveur */
-#ifdef __LINUX__
+#ifdef __linux__
 		exit (6);
 #endif
 #ifdef __WINDOWS__
@@ -744,15 +740,23 @@ void finentete (void)
 {
 	char s[80];
 	struct stat bufstat;
-
+	
+	memset(&bufstat, 0x00, sizeof(struct stat));
+	
 	sprintf (s, "LANG\\%s.ENT", nomlang + nlang * LG_LANG);
 	outfich (c_disque (s));
+	
+	fprintf (stderr, "%s\n", c_disque(s));
+	
 	sprintf (s, "LANG\\%s.NEW", nomlang + nlang * LG_LANG);
 	if ((stat (c_disque (s), &bufstat) == 0) && (bufstat.st_ctime != pvoie->finf.newbanner))
 	{
 		pvoie->finf.newbanner = bufstat.st_ctime;
 		outfich (c_disque (s));
 	}
+	
+	fprintf (stderr, "%s\n", c_disque(s));
+	
 	if ((pvoie->ncur->nbmess) && (strcmp (pvoie->ncur->indic, "MODEM") != 0))
 	{
 		if (pvoie->ncur->nbnew)
@@ -814,7 +818,7 @@ int accept_cnx (void)
 
 		*buffer = '\0';
 
-#ifdef __LINUX__
+#ifdef __linux__
 		sprintf (s, "./c_filter %s-%d %d %u %d %d %d",
 				 pvoie->sta.indicatif.call,
 				 pvoie->sta.indicatif.num,
@@ -1134,7 +1138,7 @@ void libere_zones_allouees (int voie)
 	libere_edit (voie);			/* Libere la liste de l'editeur */
 /*  libere_label(voie)        ; Libere les labels de YAPP    */
 	libere_route (voie);		/* Libere les routes rx forward */
-#ifndef __LINUX__
+#ifndef __linux__
 	libere_ymodem (voie, 0);;	/* Libere la liste de fichiers  */
 #endif
 	clear_inbuf (voie);			/* Vide le buffer d'entree      */

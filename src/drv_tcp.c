@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 
  /******************************************************
@@ -220,6 +216,8 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 	int res;
 	int i;
 
+	memset (buf, 0, sizeof (buf));
+	
 	*cmd = INVCMD;
 
 	valid = 0;
@@ -249,6 +247,9 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		int new;
 		unsigned addr_len;
 		struct sockaddr_in sock_addr;
+	
+		memset (&sock_addr, 0x00, sizeof (struct sockaddr_in));
+
 		addr_len = sizeof (sock_addr);
 
 		new = accept (p_port[*port].fd, (struct sockaddr *) &sock_addr, &addr_len);
@@ -301,8 +302,6 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 				{
 					sprintf (buf, "\r\n%s BBS. TELNET Access\r\n\r\n", my_call);
 					write (new, buf, strlen (buf));
-/*					fprintf (stderr, "\n%s BBS. TELNET Access\n\n", my_call);*/
-
 				}
 				else
 				{
@@ -325,7 +324,6 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 				}
 			}
 			sprintf (buf, "Callsign : ");
-/*			fprintf (stderr, "Callsign : ");*/
 
 			write (new, buf, strlen (buf));
 
@@ -348,7 +346,6 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		{
 			sprintf (buffer, "(%d) DISCONNECTED fm TCP", can);
 			
-/*			fprintf (stderr, "(%d) DISCONNECTED fm TCP\n", can);*/
 
 			tport[*port].tcan[can].state = DISCONNECT;
 			clear_can (*port, can);
@@ -364,7 +361,6 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		if (res & TIME_EVENT)
 		{
 			sprintf (buf, "Timeout, disconnected !\r\n");
-/*			fprintf (stderr, "Timeout, disconnected !\n");*/
 	
 			write (tport[*port].tcan[can].sock, buf, strlen (buf));
 			close (tport[*port].tcan[can].sock);
@@ -471,6 +467,8 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 				char *address;
 				unsigned addr_len;
 				struct sockaddr_in sock_addr;
+	
+				memset (&sock_addr, 0x00, sizeof (struct sockaddr_in));
 
 				if (nb)
 				{
@@ -620,7 +618,7 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 
 								sprintf (buf, "Unregistered callsign \"%s\" !\r\n", buffer);
 								write (tport[*port].tcan[can].sock, buf, strlen (buf));
-								sprintf (buf, "For registration send message to SYSOP.\r\n\n", buffer);
+								sprintf (buf, "For registration send message to SYSOP.\r\n\n");
 								write (tport[*port].tcan[can].sock, buf, strlen (buf));
 								sprintf (buf, "Callsign : ");
 								write (tport[*port].tcan[can].sock, buf, strlen (buf));
@@ -760,6 +758,9 @@ int opn_tcp (int port, int nb)
 	char s[80];
 	struct sockaddr_in sock_addr;
 	char *ptr;
+	
+	memset (&sock_addr, 0x00, sizeof (struct sockaddr_in));
+	memset (s, 0, sizeof (s));
 
 	tport[port].sock_ui = -1;
 	
@@ -1086,6 +1087,8 @@ static int tcp_trame (int port, int canal, char *data, int len)
 		case 2:
 			{
 				char buf[80];
+	
+				memset (buf, 0, sizeof (buf));
 
 /*				printf ("%02x...\n", carac);*/
 				switch (tport[port].tcan[canal].ial[1])
@@ -1093,16 +1096,16 @@ static int tcp_trame (int port, int canal, char *data, int len)
 				case WILL:
 					if (carac == TN_LINEMODE)
 					{
-						/* write(tport[port].tcan[canal].sock, buffer, strlen(buffer)); */
+/* 						write(tport[port].tcan[canal].sock, buffer, strlen(buffer)); */
+/*						printf (" -> DONT %02x\n", carac); */
+						sprintf (buf, "%c%c%c", IAC, DONT, carac);
+						write (tport[port].tcan[canal].sock, buf, strlen (buf));
 					}
-					printf (" -> DONT %02x\n", carac);
-					sprintf (buf, "%c%c%c", IAC, DONT, carac);
-					write (tport[port].tcan[canal].sock, buf, strlen (buf));
 					break;
 				case DO:
 					if (carac != TN_ECHO)
 					{
-						printf (" -> WONT %02x\n", carac);
+/*						printf (" -> WONT %02x\n", carac); */
 						sprintf (buf, "%c%c%c", IAC, WONT, carac);
 						write (tport[port].tcan[canal].sock, buf, strlen (buf));
 					}
@@ -1159,6 +1162,10 @@ static int tcp_check_call (int port, int can, char *callsign, char *address)
 		char str[256];
 		char ip[80];
 		char pass[256];
+	
+		memset (str, 0, sizeof (str));
+		memset (ip, 0, sizeof (ip));
+		memset (pass, 0, sizeof (pass));
 
 		fptr = fopen(c_disque("passwd.sys"), "rt");
 		if (fptr)
@@ -1223,6 +1230,8 @@ static int tcp_snd_dt (int port, int canal, char *buffer, int len)
 	char *ptr;
 
 	char buf[600];
+	
+	memset (buf, 0, sizeof (buf));
 
 	if (tport[port].tcan[canal].sock == -1)
 		return (FALSE);
@@ -1299,6 +1308,10 @@ static int tcp_connect (int port, char *commande, int can)
 
 	struct sockaddr_in sock_addr;
 	struct hostent *host;
+	
+	memset (&sock_addr, 0x00, sizeof (struct sockaddr_in));
+	memset (tcp_add, 0, sizeof (tcp_add));
+	memset (indic, 0, sizeof (indic));
 		
 	/* Connection */
 	while (isspace (*commande))
@@ -1446,6 +1459,8 @@ static int s_status (tcan_t * can)
 	fd_set tcp_excep;
 	struct timeval to;
 
+	memset (&to, 0x00, sizeof (struct timeval));
+	
 	if (can->sock <= 0) /* Was -1.  Sock=0 during housekeeping.  Cause of select errors */
 		return (0);
 
@@ -1549,6 +1564,8 @@ static void clear_can (int port, int canal)
 static void read_only_alert (int port, int can)
 {
 	char buf[256];
+		
+	memset (buf, 0, sizeof (buf));
 
 	sprintf (buf, READ_ONLY);
 	write (tport[port].tcan[can].sock, buf, strlen (buf));
@@ -1601,6 +1618,12 @@ static int snd_tcp_ui(int port, char *buffer, int len, Beacon *ptr)
 	char desti[120];
 	int sock_ui;
 	struct sockaddr_in sock_addr;
+	
+	memset (&sock_addr, 0x00, sizeof (struct sockaddr_in));
+		
+	memset (buf, 0, sizeof (buf));
+	memset (call, 0, sizeof (call));
+	memset (desti, 0, sizeof (desti));
 
 	sock_addr.sin_family      = AF_INET;
 	sock_addr.sin_addr.s_addr = INADDR_ANY;
@@ -1660,6 +1683,10 @@ static int rcv_tcp_ui(int port, char *buffer, int *len, ui_header * ui)
 	char buf[1024];
 	char *ptr;
 	char *p;
+
+	memset (&sock_addr, 0x00, sizeof (struct sockaddr_in));
+	memset (&to, 0x00, sizeof (struct timeval));
+	memset (buf, 0, sizeof (buf));
 
 	if (tport[port].sock_ui == -1)
 		return (0);
@@ -1801,4 +1828,3 @@ static int rcv_tcp_ui(int port, char *buffer, int *len, ui_header * ui)
 	*len = lg;
 	return lg;
 }
-

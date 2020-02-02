@@ -1,28 +1,24 @@
-   /****************************************************************
+/***********************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program. If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+***********************************************************************/
 
 #include <serv.h>
 #include <xfbb.h>
@@ -196,11 +192,6 @@ void AboutDialog(Widget w, XtPointer client_data, XtPointer call_data)
   sprintf(buffer, 
 	  "XFBB (Linux version)\n\nVersion %s\n\n"
 	  "Copyright 1986-1996. All rights reserved."
-#ifdef BETA
-	  "\n\n"
-	  "This version is only for test purpose.\n"
-	  "Do not distribute without the author's agreement."
-#endif	  
 	  "\n",
 	  XVersion(TRUE));
 
@@ -548,7 +539,7 @@ void DisplayInfoDialog(int voie)
   
   if (svoie[info_canal]->niv1 == N_YAPP)
     yapp_str(info_canal, str);
-#ifndef __LINUX__
+#ifndef __linux__
   else if (svoie[info_canal]->niv1 == N_MOD)
     xmodem_str(info_canal, str);
 #endif

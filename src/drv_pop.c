@@ -1,28 +1,24 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /******************************
  *
@@ -36,6 +32,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdarg.h>
+#include <string.h>
 
 #include <sys/ioctl.h>
 #include <sys/socket.h>
@@ -90,8 +87,6 @@
 
 #define POP_AUTH_USER	1
 #define POP_AUTH_APOP	2
-
-char *strndup(const char *s, size_t n); 
 
 typedef struct
 {
@@ -269,13 +264,13 @@ int rcv_pop (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 #define LGBUF 252
 	char buf[LGBUF + 2];
 	int can;
-	int valid;
+/*	int valid;*/
 	int res;
 	int i;
 
 	*cmd = INVCMD;
 
-	valid = 0;
+/*	valid = 0;*/
 
 	/* Checks if there is a POP connection */
 	res = 0;
@@ -1392,7 +1387,7 @@ static int pop_snd_dt (int port, int canal, char *buffer, int len)
 	int cr;
 	int head;
 	int nb_lines;
-	int num;
+/*	int num; */
 	char *ptr;
 	char buf[600];
 
@@ -1476,7 +1471,7 @@ static int pop_snd_dt (int port, int canal, char *buffer, int len)
 	{
 		cr = tport[port].tcan[canal].cr;
 		head = tport[port].tcan[canal].head;
-		num = tport[port].tcan[canal].mess_cur;
+/*		num = tport[port].tcan[canal].mess_cur;*/
 		nb_lines = tport[port].tcan[canal].nb_lines;
 
 		for (ptr = buf, i = 0; i < len; i++)

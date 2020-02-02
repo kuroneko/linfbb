@@ -1,34 +1,31 @@
-   /****************************************************************
+/************************************************************************
     Copyright (C) 1986-2000 by
 
     F6FBB - Jean-Paul ROUBELAT
-    6, rue George Sand
-    31120 - Roquettes - France
-	jpr@f6fbb.org
+    jpr@f6fbb.org
 
-    This program is free software; you can redistribute it and/or modify
+    This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
+    the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
-
     You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
     Parts of code have been taken from many other softwares.
     Thanks for the help.
-    ****************************************************************/
+************************************************************************/
 
 /*
  *    MODULE FORWARDING OVERLAY 2
  */
 
 #include <serv.h>
+#include <config.h>
 
 static int tst_line (char *, int);
 static int tst_var (char *);
@@ -43,13 +40,16 @@ char *idnt_fwd (void)
 	*ptr++ = 'B';
 	*ptr++ = 'B';
 	*ptr++ = '-';
-	*ptr++ = '0' + MAJEUR;
+	*ptr++ = '0' + PACKAGE_VERSION_MAJOR;
 	*ptr++ = '.';
-	*ptr++ = '0' + MINEUR / 10;
-	*ptr++ = '0' + MINEUR % 10;
-#ifdef LETTRE
-	*ptr++ = LETTRE;
-#endif
+	*ptr++ = '0' + PACKAGE_VERSION_MINOR;
+	*ptr++ = '.';
+	if (PACKAGE_VERSION_MICRO < 10) {
+		*ptr++ = '0' + PACKAGE_VERSION_MICRO;
+	} else if (PACKAGE_VERSION_MICRO < 100) {
+		*ptr++ = '0' + (PACKAGE_VERSION_MICRO / 10);
+		*ptr++ = '0' + (PACKAGE_VERSION_MICRO % 10);
+	}
 	*ptr++ = '-';
 	*ptr++ = 'A';
 	if (pvoie->prot_fwd & FWD_FBB)
@@ -76,7 +76,7 @@ char *idnt_fwd (void)
 }
 
 
-#ifdef __LINUX__
+#ifdef __linux__
 int nbcan_linux (void)
 {
 	int nbcan = 0;
@@ -234,7 +234,7 @@ int ch_voie (int port, int canal)
 			}
 		}
 	}
-#ifdef __LINUX__
+#ifdef __linux__
 	else if (S_LINUX (port))
 	{
 		if (port_free (port) == 0)
@@ -479,7 +479,7 @@ int connect_station (int voie, int echo, char *ptr)
 	case TYP_FLX:
 		tnc_commande (voie, buffer, SNDCMD);
 		break;
-#ifndef __LINUX__
+#ifndef __linux__
 	case TYP_MOD:				/* MODEM */
 		md_no_echo (voie);
 		svoie[voie]->sta.stat = 1;
@@ -494,7 +494,7 @@ int connect_station (int voie, int echo, char *ptr)
 	case TYP_KAM:				/* KAM */
 		kam_commande (voie, buffer);
 		break;
-#ifdef __LINUX__
+#ifdef __linux__
 	case TYP_SCK:				/* AX25 */
 		tnc_commande (voie, buffer, SNDCMD);
 		break;
@@ -504,7 +504,7 @@ int connect_station (int voie, int echo, char *ptr)
 		sta_drv (voie, CMDE, (void *) &command);
 		break;
 #endif
-#ifdef __LINUX__
+#ifdef __linux__
 	case TYP_TCP:				/* TELNET */
 	case TYP_ETH:				/* ETHER-LINK */
 		tnc_commande (voie, buffer, SNDCMD);
@@ -1154,7 +1154,7 @@ void program_fwd (int affiche, int fwd, typ_pfwd ** ptnc, int voie)
 	char *ptr;
 	typ_pfwd *pcurr, *ptemp;
 
-#ifdef __LINUX__
+#ifdef __linux__
 	typ_pfwd *prev;
 	int done;
 	int nbdos;
@@ -1264,7 +1264,7 @@ void program_fwd (int affiche, int fwd, typ_pfwd ** ptnc, int voie)
 	}
 
 #endif
-#if defined(__LINUX__)
+#if defined(__linux__)
 	prev = NULL;
 	while (pcurr)
 	{

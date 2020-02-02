@@ -1,0 +1,26 @@
+#
+# FBB Set-up file
+#
+version = FBB@package_version@
+
+# Callsign of BBS
+callsign = F6FBB.FMLR.FRA.EU
+
+# SSID of BBS
+ssid = 1
+
+# Qra Locator of BBS
+qraloc = JN03QL
+
+# Qth of BBS
+city = Toulouse
+
+# First name of SYSOP
+name = Jean-Paul
+
+# Callsign of SYSOP
+sysop = F6FBB
+
+#
+# End of fbb.conf file
+#
