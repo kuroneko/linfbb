@@ -1196,7 +1196,7 @@ void nasa(char *filename)
 			if (feof(fd))
 				break;
 				
-				ligne1valide = crcdix(ligne);
+			ligne1valide = crcdix(ligne);
 
 			if (!feof(fd)) 
 			{

@@ -266,7 +266,7 @@ void cataloguer(FILE *fptr, int lignes, char *infos, char *buf2, short inverse)
 /* if (strncasecmp(tampon,"/EX",3) == 0)*/
  if ((strncasecmp(tampon,"/EX",3) == 0) || (strncasecmp(tampon,"NNNN",4) == 0))
 	info_ans = 0; 		/* fin de bulletin ANS */
-	info_satellite = 0;	/* fin du paragraphe du satellite */
+ info_satellite = 0;	/* fin du paragraphe du satellite */
 /* fermeture fichier documentaire satellite */
  fclose(fiche);
 }
@@ -381,7 +381,8 @@ do {
  else {
 	if ((strlen(buf1) + strlen(buf2)) < TAILLE-1) {
 		strcat(buf1," ");
-		strncat(buf1, buf2, strlen(buf2));
+		//strncat(buf1, buf2, strlen(buf2));
+		strncat(buf1, buf2, LINE - strlen(buf1) -1);
 	}
 	strcpy(infos, buf1);
 	strcpy(document, buf3);

@@ -996,7 +996,7 @@ void free_mem (void)
 			mem[meminfo_main][meminfo_free] +
 			mem[meminfo_main][meminfo_buffers] +
 			mem[meminfo_total][meminfo_cached] +
-			mem[meminfo_swap][meminfo_free];
+			mem[meminfo_swap][meminfo_free];	
 	}
 
 	FbbMem (0);
@@ -1320,12 +1320,12 @@ int ind_console (int type, char *chaine)	/* Type : 0 = decimal, 1 = hexa */
 
 void house_keeping (void)
 {
-	long caltemps;
+	//long caltemps;
 
 	save_fic = 1;
 	set_busy ();
-	time (&caltemps);
-	stop_min = minute (caltemps);
+	//time (&caltemps);
+	//stop_min = minute (caltemps);
 	type_sortie = 3;
 }
 

@@ -202,15 +202,16 @@ void mbl_stat (void)
 	sprintf (ligne, "Software FBB Version %s (%s) compiled on %s",
 			 version (), os (), date ());
 	outln (ligne, strlen (ligne));
+	
 	sprintf (ligne,
 			 "Mem Us:%ld  Mem Ok:%ld  Bid:%d  Lang:%d  Ports:%d  Ch:%d  FBB %s  BIN %s",
-
 			 mem_alloue, tot_mem, maxbbid, maxlang, nbport (), NBVOIES - 2,
 			 (fbb_fwd) ? "Ok" : "No",
-			 (bin_fwd) ? "Ok" : "No"
+			 (bin_fwd) ? "Ok" : "No"			 
 		);
 	outln (ligne, strlen (ligne));
 
+/*	
 #ifndef __DPMI16__
 	if (high_memory_type () == XMS)
 	{
@@ -218,7 +219,7 @@ void mbl_stat (void)
 		outln (ligne, strlen (ligne));
 	}
 #endif
-
+*/
 	cr ();
 	occ = 0;
 	tot = 0L;

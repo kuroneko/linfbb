@@ -1,11 +1,28 @@
 #!/bin/bash
-LIBDIR=@libdir@/fbb
+SBIN=`which fbbgetconf`
+SYSOP=`$SBIN sysmail`
+HADD=`$SBIN call`
+MAIL=`$SBIN import`
+DATA=`$SBIN data`
+TOOL=`$SBIN tdir`
 
 echo
 echo "--- Running epurwp"
 echo
 
-$LIBDIR/tool/epurwp 40 90
+cd $DATA
+$TOOL/epurwp 40 90
 ret=$?
+
+T1=`cat $DATA/epurwp.res | head -n 1 | awk '{print $1}'`
+MYTIME=`date -d @$T1`
+
+echo "SP $SYSOP@$HADD" >> $MAIL
+echo "WP MAINT at $HADD" >> $MAIL
+echo $MYTIME >> $MAIL
+sleep 3
+sed -i '1d' $DATA/epurwp.res
+cat $DATA/epurwp.res >> $MAIL
+echo "/EX" >> $MAIL
 
 exit $ret

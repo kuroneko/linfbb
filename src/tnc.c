@@ -167,8 +167,10 @@ void duplex_tnc (void)
 			texte (T_GAT + 1);
 		}
 		else
-		{
-			noport = *indd - '0';
+		{				
+			//noport = *indd - '0';					
+			noport = atoi(indd);		
+			
 			if ((voiecur != CONSOLE) && (noport == no_port (voiecur)))
 			{
 				texte (T_GAT + 6);
@@ -277,7 +279,7 @@ void duplex_tnc (void)
 					texte (T_GAT + 5);
 					ch_niv3 (3);
 					return;
-				case 'P':
+				case 'P':					
 					save_voie = voiecur;
 					pvoie->ch_mon = -1;
 					selvoie (pvoie->cross_connect);
@@ -512,7 +514,7 @@ void duplex_tnc (void)
 					}
 					outln (s, strlen (s));
 					break;
-				case 'P':
+				case 'P':					
 					save_voie = voiecur;
 					pvoie->ch_mon = -1;
 					selvoie (pvoie->cross_connect);

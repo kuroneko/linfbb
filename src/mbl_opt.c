@@ -185,112 +185,53 @@ int affiche_forward (int nobbs)
 	recfwd *prec;
 	lfwd *ptr_fwd = tete_fwd;
 
-	unsigned offset = 0;
-	bloc_mess *bptr = tete_dir;
-	bullist bul;
-
 	pos = 0;
 	noctet = (nobbs - 1) / 8;
 	cmpmsk = 1 << ((nobbs - 1) % 8);
 	ptr = bbs_ptr + (nobbs - 1) * 7;
 
-	if (fast_fwd)
+	while (1)
 	{
-		while (1)
+		if (pos == NBFWD)
 		{
-			if (pos == NBFWD)
-			{
-				ptr_fwd = ptr_fwd->suite;
-				if (ptr_fwd == NULL)
-					break;
-				pos = 0;
-			}
-			prec = &ptr_fwd->fwd[pos];
-			if ((prec->type) && ((nobbs == 0) || (prec->fbbs[noctet] & cmpmsk)))
-			{
-				sprintf (s, "%c %6ld %2d KB ", prec->type, prec->nomess, prec->kb);
-				outs (s, strlen (s));
-				++ok;
-				if (nobbs == 0)
-				{
-					ptr = bbs_ptr;
-					for (i = 0; i < NBMASK; i++)
-					{
-						cmpmsk = '\001';
-						for (j = 0; j < 8; j++)
-						{
-							if (prec->fbbs[i] & cmpmsk)
-							{
-								outs (ptr, len_bbs (ptr));
-								outs (" ", 1);
-							}
-							ptr += 7;
-							cmpmsk <<= 1;
-						}
-					}
-					cr ();
-				}
-				else
-				{
-					outsln (ptr, len_bbs (ptr));
-				}
-			}
-			pos++;
+			ptr_fwd = ptr_fwd->suite;
+			if (ptr_fwd == NULL)
+				break;
+			pos = 0;
 		}
-	}
-	else
-	{
-		ouvre_dir ();
-
-		while (bptr)
+		prec = &ptr_fwd->fwd[pos];
+		if ((prec->type) && ((nobbs == 0) || (prec->fbbs[noctet] & cmpmsk)))
 		{
-			if (bptr->st_mess[offset].noenr)
+			sprintf (s, "%c %6ld %2d KB ", prec->type, prec->nomess, prec->kb);
+			outs (s, strlen (s));
+			++ok;
+			if (nobbs == 0)
 			{
-				read_dir (bptr->st_mess[offset].noenr, &bul);
-
-				if (bul.type)
+				ptr = bbs_ptr;
+				for (i = 0; i < NBMASK; i++)
 				{
-					int kb = (int) (bul.taille >> 10);
-
-					if ((bul.type) && ((nobbs == 0) || (bul.fbbs[noctet] & cmpmsk)))
+					cmpmsk = '\001';
+					for (j = 0; j < 8; j++)
 					{
-						sprintf (s, "%c %6ld %2d KB ", bul.type, bul.numero, kb);
-						outs (s, strlen (s));
-						++ok;
-						if (nobbs == 0)
+						if (prec->fbbs[i] & cmpmsk)
 						{
-							ptr = bbs_ptr;
-							for (i = 0; i < NBMASK; i++)
-							{
-								cmpmsk = '\001';
-								for (j = 0; j < 8; j++)
-								{
-									if (bul.fbbs[i] & cmpmsk)
-									{
-										outs (ptr, len_bbs (ptr));
-										outs (" ", 1);
-									}
-									ptr += 7;
-									cmpmsk <<= 1;
-								}
-							}
-							cr ();
+							outs (ptr, len_bbs (ptr));
+							outs (" ", 1);
 						}
-						else
-						{
-							outsln (ptr, len_bbs (ptr));
-						}
+						ptr += 7;
+						cmpmsk <<= 1;
 					}
 				}
-
+				cr ();
 			}
-			if (++offset == T_BLOC_MESS)
+			else
 			{
-				bptr = bptr->suiv;
-				offset = 0;
+				outsln (ptr, len_bbs (ptr));
 			}
 		}
+		pos++;
 	}
+
 	return (ok);
 }
 
@@ -302,11 +243,11 @@ int bye (void)
 
 /* added by N1URO for URONode, FlexNet, and Xnet command set
     compatability */
- int quit (void)
- {
-         sup_ln (indd);
-         return ((strcmpi (indd, "YE") == 0) || (!ISGRAPH (*indd)));
- }
+int quit (void)
+{
+	sup_ln (indd);
+	return ((strcmpi (indd, "YE") == 0) || (!ISGRAPH (*indd)));
+}
  
 static int len_bbs (char *bbs)
 {

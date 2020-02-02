@@ -195,13 +195,11 @@ int snd_tcp (int port, int canal, int cmd, char *buffer, int len, Beacon * ptr)
 		break;
 
 	case DATA:
-		if (len == 0) {
-/*			fprintf (stderr, "FBB snd_tcp() DATA len = 0 !\n");*/
-			break;
-		}
-		else
+		if (len != 0)
 			ret = tcp_snd_dt (port, canal, buffer, len);
-			break;
+		//else 
+		//	fprintf (stderr, "FBB snd_tcp() DATA len = 0 !\n");*/
+		break;
 	}
 	return (ret);
 }

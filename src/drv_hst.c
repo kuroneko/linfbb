@@ -310,6 +310,7 @@ int opn_hst (int port, int nb)
 	hst_sndcmd (port, 0, (char *) s, 1); */
 	
 	/* All channels callsign */
+	/* Why send the same command twice?  Dave van der Locht 31-01-2020 */
 	sprintf (s, "I %s-%d", mycall, myssid);
 	hst_sndcmd (port, 0, (char *) s, 1);
 	hst_sndcmd (port, 0, (char *) s, 1);

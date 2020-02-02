@@ -23,6 +23,8 @@
 #include <serv.h>
 #include <dirent.h>
 #include <sys/vfs.h>
+#include <limits.h>
+#include <stdio.h>
 
 #undef stat
 
@@ -78,10 +80,14 @@ int getdisk (void)
 
 char *getcurdir (int drive, char *str)
 {
-	char buffer[82];
+	char buffer[PATH_MAX + 1];
+	char* cwd;
 
-	getcwd (buffer, 80);
-	strcpy (str, slash2back (buffer));
+	cwd = getcwd (buffer, PATH_MAX + 1);
+	if( cwd != NULL )
+		strcpy (str, slash2back (buffer));
+	else
+		perror ("getcwd() error");
 	return str;
 }
 

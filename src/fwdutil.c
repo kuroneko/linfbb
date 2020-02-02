@@ -169,7 +169,7 @@ void ins_fwd (bullist * fwd_rec)
 	ptr_fwd = tete_fwd;
 	pos = 0;
 
-	if ((!fast_fwd) || (fwd_rec->numero == 0L))
+	if (fwd_rec->numero == 0L)
 		return;
 
 	if (ptr_fwd == NULL)

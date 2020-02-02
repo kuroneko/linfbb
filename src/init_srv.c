@@ -268,11 +268,12 @@ int init_admin (void)
 	for (key = 0 ; inistr[key] ; key++)
 	{
 		ptr = find_fbb_conf(inistr[key], 0);
-		if (ptr == NULL)
-			ptr = def_fbb_conf(inistr[key]);
+		if (ptr == NULL) {
+			ptr = def_fbb_conf(inistr[key]);		
 			if (ptr == NULL)
 				continue;
-			
+		}
+		
 		fprintf(stderr, "%4s : %s\n", inistr[key], ptr);
 		
 		switch (key)

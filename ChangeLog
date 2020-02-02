@@ -1263,7 +1263,7 @@ the message lookup more robust in the case the themes.sys file changes."
   Update ChangeLog.
 - [r175] Week 53 is first week of the year.
 
-7.0.9 (f6bvp, Dave van der Locht) 
+7.0.9 (F6BVP, Dave van der Locht) 
 [r178]
 - fbblog files renamed from 0 to 52 for week number 
 - fbb log displayed calling executable script /usr/local/bin/fbblog 
@@ -1272,9 +1272,27 @@ the message lookup more robust in the case the themes.sys file changes."
   It happened because the SIGCHILD signal handler was set to SIG_IGN.
   Fixed at the beginning of the main function in xfbbd.c.
 - 7.0.8-beta9 was hanging. xfbbd.c patched.
-  1) Return value of system() is always -1 due to SIGCHLD signal was ignored.
-  2) Added 'fail-safe bypass' in case call_nbdos() couldn't find the command/executable to run.
-  3) Replaced system() with popen() in the call_nbdos() function to fix the problem with 
-  response text from a c_filter not coming through.
+- Return value of system() is always -1 due to SIGCHLD signal was ignored.
+- Added 'fail-safe bypass' in case call_nbdos() couldn't find the 
+  command/executable to run.
+- Replaced system() with popen() in the call_nbdos() function to fix the
+  problem with response text from a c_filter not coming through.
 - PG servers returned errors. Tested by Brian N1URO
+
+*******************************************************************************
+
+SVN 02-02-2020 (Dave van der Locht)
+[r187]
+- Fixed gateway using wrong FROM callsign with outgoing socket connections.
+- Fixed gateway could only use port 1 to 9.
+- New 20_epurmess and 20_epurwp maintenance scripts (N1URO).
+- Fixed pagination issue with ? command, C (remove paging) didn't work.
+- Cleaned obsolete code, fast_fwd was hard set to 1 in init.c but only used 
+  in some 'if' statements. 
+- Corrected satdoc.c line 384 gcc compiler warning (-Wstringop-overflow)
+- Corrected behaviour of /K and /L sysop commands
+- Fixed buffer overflow possibility in ibm.c getcurdir()
+- Corrected several misleading indentations
+- Cleaned code and comments in xfbbd.c
+
 *******************************************************************************

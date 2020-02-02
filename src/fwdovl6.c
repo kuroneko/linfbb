@@ -770,24 +770,21 @@ void clear_fwd (long numero)
 	int pos = 0;
 	lfwd *ptr_fwd = tete_fwd;
 
-	if (fast_fwd)
+	while (1)
 	{
-		while (1)
+		if (pos == NBFWD)
 		{
-			if (pos == NBFWD)
-			{
-				ptr_fwd = ptr_fwd->suite;
-				if (ptr_fwd == NULL)
-					break;
-				pos = 0;
-			}
-			prec = &ptr_fwd->fwd[pos];
-			if ((prec->type) && (prec->nomess == numero))
-			{
-				prec->type = '\0';
+			ptr_fwd = ptr_fwd->suite;
+			if (ptr_fwd == NULL)
 				break;
-			}
-			pos++;
+			pos = 0;
 		}
+		prec = &ptr_fwd->fwd[pos];
+		if ((prec->type) && (prec->nomess == numero))
+		{
+			prec->type = '\0';
+			break;
+		}
+		pos++;
 	}
 }

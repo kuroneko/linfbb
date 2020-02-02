@@ -800,7 +800,7 @@ void selvoie (int voie)
 	}
 	else
 		fbb_error (ERR_CANAL, "Select channel", voie);
-
+	
 	ff ();
 }
 

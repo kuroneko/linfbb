@@ -182,13 +182,11 @@ int snd_sck (int port, int canal, int cmd, char *buffer, int len, Beacon * ptr)
 		break;
 
 	case DATA:
-		if (len == 0) {
-/*			fprintf (stderr, "FBB snd_sck() DATA len == 0 !\n");*/
-			break;
-		}
-		else
+		if (len != 0)
 			ret = sock_snd_dt (canal, buffer, len);
-			break;
+		//else
+			//fprintf (stderr, "FBB snd_sck() DATA len == 0 !\n");			
+		break;		
 
 	case UNPROTO:
 		ret = sock_snd_ui (port, buffer, len, ptr);
@@ -538,7 +536,7 @@ int opn_sck (int port, int nb)
 			addr.axaddr.fsa_ax25.sax25_ndigis = 1;
 			sprintf (call, "%s-%d", mycall, myssid);
 
-			fprintf (stderr, "CAN_AX25 myscall %s myssid %d\n", mycall, myssid);
+			fprintf (stderr, "CAN_AX25 mycall %s myssid %d\n", mycall, myssid);
 
 			ax25_aton_entry (call, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
 			p_name = ax25_config_get_addr (p_port[port].name);
@@ -1049,8 +1047,13 @@ static int sock_snd_dt (int canal, char *buffer, int len)
 }
 
 static int sock_cmd (int port, int canal, char *cmd)
-{
-	strcpy (scan[canal].source, "\0") ;
+{	
+	/* Dave van der Locht 27-01-2020
+	Why clearing scan[canal].source? The second call to this function, after the I command, 
+	forces the gateway to use the BBS's own callsign as FROM address.
+	*/
+	
+	//strcpy (scan[canal].source, "\0") ;
 
 	switch (*cmd++)
 	{
@@ -1077,7 +1080,7 @@ static int sock_cmd (int port, int canal, char *cmd)
 		scan[canal].paclen = p_port[port].pk_t;
 		scan[canal].maxframe = p_port[port].frame;
 		scan[canal].port = port;
-		scan[canal].type = p_port[port].type;
+		scan[canal].type = p_port[port].type;	
 
 		sock_connect (cmd, canal);
 		break;
@@ -1086,6 +1089,7 @@ static int sock_cmd (int port, int canal, char *cmd)
 	}
 	return (1);
 }
+
 static int nr_ax25_aton (char *address, struct full_sockaddr_ax25 *addr)
 {
 	char buffer[100], *call, *alias;
@@ -1133,6 +1137,7 @@ static int nr_ax25_aton (char *address, struct full_sockaddr_ax25 *addr)
 
 	return -1;
 }
+
 static int rs_ax25_aton (char *address, struct sockaddr_rose *addr)
 {
 	char *command, *call, *rsaddr, *digi;

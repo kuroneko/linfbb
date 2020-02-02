@@ -101,7 +101,6 @@ int step_initialisations (int niveau)
 		EditorOff = TRUE;
 		editor_request = 0;
 		errno = 0;
-		fast_fwd = 1;
 		lastaff = -1;
 		reply = 0;
 		snd_io = 0;

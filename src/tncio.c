@@ -500,7 +500,7 @@ void in_buf (int voie, char *buffer, int lgbuf)
 				}
 				if ((*(bufptr->curr->buffer) == 'C') ||
 					(*(bufptr->curr->buffer) == 'c'))
-				{
+				{					
 					if (svoie[voie]->aut_nc)
 						svoie[voie]->dde_int = 3;
 					clear_inbuf (voie);

@@ -1,11 +1,27 @@
 #!/bin/bash
-LIBDIR=@libdir@/fbb
+SBIN=`which fbbgetconf`
+SYSOP=`$SBIN sysmail`
+HADD=`$SBIN call`
+MAIL=`$SBIN import`
+DATA=`$SBIN data`
+TOOL=`$SBIN tdir`
 
 echo
 echo "--- Running epurmess"
 echo
 
-$LIBDIR/tool/epurmess
+$TOOL/epurmess
 ret=$?
+
+T1=`cat $DATA/epurmess.res | head -n 1 | awk '{print $1}'`
+MYTIME=`date -d @$T1`
+
+echo "SP $SYSOP@$HADD" >> $MAIL
+echo "MSG MAINT at $HADD" >> $MAIL
+echo $MYTIME >> $MAIL
+sleep 3
+sed -i '1d' $DATA/epurmess.res
+cat $DATA/epurmess.res >> $MAIL
+echo "/EX" >> $MAIL
 
 exit $ret

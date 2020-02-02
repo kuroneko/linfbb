@@ -299,14 +299,16 @@ static void arret_serveur (char *fich_etat, int typ)
 		house_keeping ();
 		break;
 
-	case 'L':	/* Re-Run */
+	case 'L':	/* Re-Run, wait till all users have disconnected */		
 		texte (T_TRT + 9);
 		save_fic = 1;
 #ifdef __FBBDOS__
 		affich_logo (W_DEFL);
-#endif
-		type_sortie = 2;
+#endif        
+	    time (&caltemps);
+	    stop_min = minute (caltemps);
 		set_busy ();
+		type_sortie = 2;		
 		break;
 
 	case 'M':	/* Immediate Re-run */

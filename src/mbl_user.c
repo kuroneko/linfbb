@@ -62,6 +62,8 @@ int out_help (char *cmde)
 
 	n_cpy (78, command, cmde);
 	cmd = command;
+	
+	pvoie->aut_nc = 1;
 
 	if ((!SYS (pvoie->finf.flags)) && (!LOC (pvoie->finf.flags)) && (P_GUEST (voiecur)))
 	{

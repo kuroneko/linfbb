@@ -45,11 +45,7 @@ int print_fwd (int nobbs, uchar max, uchar old, uchar typ, int data_mode)
 	lfwd *ptr_fwd;
 	rd_list *ptemp = NULL;
 	time_t date = time(NULL) - 3600L * (long)old;
-
-	unsigned offset;
-	bloc_mess *bptr;
-	bullist bul;
-
+	
 	libere_tlist (voiecur);
 
 	noctet = (nobbs - 1) / 8;
@@ -57,125 +53,63 @@ int print_fwd (int nobbs, uchar max, uchar old, uchar typ, int data_mode)
 
 	ouvre_dir ();
 
-	if (fast_fwd)
+	while (pass)
 	{
-		while (pass)
+		pos = 0;
+		ptr_fwd = tete_fwd;
+		while (1)
 		{
-			pos = 0;
-			ptr_fwd = tete_fwd;
-			while (1)
+			aff = 0;
+			if (pos == NBFWD)
 			{
-				aff = 0;
-				if (pos == NBFWD)
+				ptr_fwd = ptr_fwd->suite;
+				if (ptr_fwd == NULL)
+					break;
+				pos = 0;
+			}
+			prec = &ptr_fwd->fwd[pos];
+			if (prec->type)
+			{
+				if (data_ok(prec, data_mode))
 				{
-					ptr_fwd = ptr_fwd->suite;
-					if (ptr_fwd == NULL)
-						break;
-					pos = 0;
-				}
-				prec = &ptr_fwd->fwd[pos];
-				if (prec->type)
-				{
-					if (data_ok(prec, data_mode))
+					if ((prec->fbbs[noctet] & cmpmsk) && (prec->date <= date) && (prec->kb <= max))
 					{
- 						if ((prec->fbbs[noctet] & cmpmsk) && (prec->date <= date) && (prec->kb <= max))
+						if ((prec->type == 'P') || (prec->type == 'A'))
 						{
-							if ((prec->type == 'P') || (prec->type == 'A'))
+							if (pass == 2)
+								aff = 1;
+						}
+						else
+						{
+							if (pass == 1)
+								aff = 1;
+						}
+						if (aff)
+						{
+							if (ptemp)
 							{
-								if (pass == 2)
-									aff = 1;
+								ptemp->suite = (rd_list *) m_alloue (sizeof (rd_list));
+								ptemp = ptemp->suite;
 							}
 							else
 							{
-								if (pass == 1)
-									aff = 1;
+								pvoie->t_list = ptemp = (rd_list *) m_alloue (sizeof (rd_list));
 							}
-							if (aff)
-							{
-								if (ptemp)
-								{
-									ptemp->suite = (rd_list *) m_alloue (sizeof (rd_list));
-									ptemp = ptemp->suite;
-								}
-								else
-								{
-									pvoie->t_list = ptemp = (rd_list *) m_alloue (sizeof (rd_list));
-								}
-								ptemp->suite = NULL;
-								ptemp->nmess = prec->nomess;
-								ptemp->verb = 1;
-								ok = 1;
-							}
+							ptemp->suite = NULL;
+							ptemp->nmess = prec->nomess;
+							ptemp->verb = 1;
+							ok = 1;
 						}
 					}
 				}
-				pos++;
 			}
-			if (typ)
-				break;
-			--pass;
+			pos++;
 		}
+		if (typ)
+			break;
+		--pass;
 	}
-	else
-	{
-		while (pass)
-		{
-
-			offset = 0;
-			bptr = tete_dir;
-
-			while (bptr)
-			{
-				if (bptr->st_mess[offset].noenr)
-				{
-					read_dir (bptr->st_mess[offset].noenr, &bul);
-
-					if (bul.type)
-					{
-						int kb = (int) (bul.taille >> 10);
-
-						if ((bul.fbbs[noctet] & cmpmsk) && (bul.date <= date) && (kb <= max))
-						{
-							if ((bul.type == 'P') || (bul.type == 'A'))
-							{
-								if (pass == 2)
-									aff = 1;
-							}
-							else
-							{
-								if (pass == 1)
-									aff = 1;
-							}
-							if (aff)
-							{
-								if (ptemp)
-								{
-									ptemp->suite = (rd_list *) m_alloue (sizeof (rd_list));
-									ptemp = ptemp->suite;
-								}
-								else
-								{
-									pvoie->t_list = ptemp = (rd_list *) m_alloue (sizeof (rd_list));
-								}
-								ptemp->suite = NULL;
-								ptemp->nmess = bul.numero;
-								ptemp->verb = 1;
-								ok = 1;
-							}
-						}
-					}
-				}
-				if (++offset == T_BLOC_MESS)
-				{
-					bptr = bptr->suiv;
-					offset = 0;
-				}
-			}
-			if (typ)
-				break;
-			--pass;
-		}
-	}
+	
 	ferme_dir ();
 	maj_niv (N_MBL, 16, 0);
 	mess_liste (1);

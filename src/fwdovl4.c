@@ -282,22 +282,19 @@ void sup_fwd (long num, int ok_fwd, uchar nobbs)
 
 	deb_io ();
 
-	if (fast_fwd)
+	while (1)
 	{
-		while (1)
+		if (pos == NBFWD)
 		{
-			if (pos == NBFWD)
-			{
-				ptr_fwd = ptr_fwd->suite;
-				if (ptr_fwd == NULL)
-					break;
-				pos = 0;
-			}
-			prec = &ptr_fwd->fwd[pos];
-			if (prec->nomess == num)
+			ptr_fwd = ptr_fwd->suite;
+			if (ptr_fwd == NULL)
 				break;
-			pos++;
+			pos = 0;
 		}
+		prec = &ptr_fwd->fwd[pos];
+		if (prec->nomess == num)
+			break;
+		pos++;
 	}
 
 	if ((mptr = findmess (num)) != NULL)
@@ -309,8 +306,7 @@ void sup_fwd (long num, int ok_fwd, uchar nobbs)
 			if (nobbs)
 			{
 				/* Bulletin : Marque la BBS */
-				if (fast_fwd)
-					clr_bit_fwd (prec->fbbs, nobbs);
+				clr_bit_fwd (prec->fbbs, nobbs);
 				clr_bit_fwd (bul.fbbs, nobbs);
 				set_bit_fwd (bul.forw, nobbs);
 			}
@@ -338,11 +334,10 @@ void sup_fwd (long num, int ok_fwd, uchar nobbs)
 					--(noeud->nbnew);
 				bul.status = 'F';
 			}
-			if (fast_fwd)
-			{
-				prec->type = '\0';
-				prec->bin = '\0';
-			}
+
+			prec->type = '\0';
+			prec->bin = '\0';
+
 			mode = pvoie->binary;
 			set_binary (voiecur, 1);
 /************** Verifier si pas en cours d'envoi ! *********************/
@@ -366,7 +361,7 @@ void sup_fwd (long num, int ok_fwd, uchar nobbs)
 		write_dir (mptr->noenr, &bul);
 		ferme_dir ();
 	}
-	else if (fast_fwd)
+	else
 	{
 		for (i = 0; i < NBMASK; i++)
 			prec->fbbs[i] = '\0';
@@ -463,9 +458,6 @@ atfwd *attend_fwd (int nobbs, uchar max, uchar old, uchar typ, int data_mode)
 	lfwd *ptr_fwd = tete_fwd;
 	time_t date = time(NULL) - 3600L * (long)old;
 
-	unsigned offset = 0;
-	bloc_mess *bptr = tete_dir;
-	bullist ligne;
 
 	pos = 0;
 	noctet = (nobbs - 1) / 8;
@@ -473,96 +465,46 @@ atfwd *attend_fwd (int nobbs, uchar max, uchar old, uchar typ, int data_mode)
 
 	nbmess.nbpriv = nbmess.nbbul = nbmess.nbkb = 0;
 
-	if (fast_fwd)
+	while (1)
 	{
-		while (1)
+		if (pos == NBFWD)
 		{
-			if (pos == NBFWD)
+			ptr_fwd = ptr_fwd->suite;
+			if (ptr_fwd == NULL)
+				break;
+			pos = 0;
+		}
+		prec = &ptr_fwd->fwd[pos];
+		pos++;
+		if (prec->type)
+		{
+			if ((data_mode == 0) && (prec->bin))
+				continue;
+
+			if ((data_mode == 3) && (!prec->bin))
+				continue;
+
+			if ((data_mode == 2) && (prec->bin) && (!PRIVATE (prec->type)))
+				continue;
+
+			if ((prec->fbbs[noctet] & cmpmsk) && (prec->date <= date) && (prec->kb <= max))
 			{
-				ptr_fwd = ptr_fwd->suite;
-				if (ptr_fwd == NULL)
-					break;
-				pos = 0;
-			}
-			prec = &ptr_fwd->fwd[pos];
-			pos++;
-			if (prec->type)
-			{
-				if ((data_mode == 0) && (prec->bin))
-					continue;
-
-				if ((data_mode == 3) && (!prec->bin))
-					continue;
-
-				if ((data_mode == 2) && (prec->bin) && (!PRIVATE (prec->type)))
-					continue;
-
-				if ((prec->fbbs[noctet] & cmpmsk) && (prec->date <= date) && (prec->kb <= max))
+				if (PRIVATE (prec->type))
 				{
-					if (PRIVATE (prec->type))
-					{
-						++nbmess.nbpriv;
-						ok = 1;
-						nbmess.nbkb += prec->kb;
-					}
-					else if (!(typ & FWD_PRIV))
-					{
-						++nbmess.nbbul;
-						ok = 1;
-						nbmess.nbkb += prec->kb;
-					}
+					++nbmess.nbpriv;
+					ok = 1;
+					nbmess.nbkb += prec->kb;
+				}
+				else if (!(typ & FWD_PRIV))
+				{
+					++nbmess.nbbul;
+					ok = 1;
+					nbmess.nbkb += prec->kb;
 				}
 			}
 		}
 	}
-	else
-	{
-		ouvre_dir ();
 
-		while (bptr)
-		{
-			if (bptr->st_mess[offset].noenr)
-			{
-				read_dir (bptr->st_mess[offset].noenr, &ligne);
-
-				if (ligne.type)
-				{
-					int kb = (int) (ligne.taille >> 10);
-
-					if ((data_mode == 0) && (ligne.bin))
-						;
-
-					else if ((data_mode == 3) && (!ligne.bin))
-						;
-
-					else if ((data_mode == 2) && (ligne.bin) && (!PRIVATE (ligne.type)))
-						;
-
-					else if ((ligne.fbbs[noctet] & cmpmsk) && (ligne.date <= date) && (kb <= max))
-					{
-						if (PRIVATE (ligne.type))
-						{
-							++nbmess.nbpriv;
-							ok = 1;
-							nbmess.nbkb += kb;
-						}
-						else if (!(typ & FWD_PRIV))
-						{
-							++nbmess.nbbul;
-							ok = 1;
-							nbmess.nbkb += kb;
-						}
-					}
-				}
-
-			}
-			if (++offset == T_BLOC_MESS)
-			{
-				bptr = bptr->suiv;
-				offset = 0;
-			}
-		}
-	}
 	return ((ok) ? &nbmess : NULL);
 }
 
@@ -602,207 +544,90 @@ static long t_msg_fwd_suiv (int nobbs, uchar max, uchar old, uchar typ, int voie
 	lfwd *ptr_fwd;
 	time_t date = time(NULL) - 3600L * (long)old;
 
-	unsigned offset = 0;
-	bloc_mess *bptr = tete_dir;
-	bullist bul;
-	bullist sel;
-	int fsel;
-	int skb;
-
 	noctet = (nobbs - 1) / 8;
 	cmpmsk = 1 << ((nobbs - 1) % 8);
 
-	if (fast_fwd)
+	ptr_fwd = tete_fwd;
+	psel = NULL;
+	pos = 0;
+	while (1)
 	{
-		ptr_fwd = tete_fwd;
-		psel = NULL;
-		pos = 0;
-		while (1)
+		if (pos == NBFWD)
 		{
-			if (pos == NBFWD)
+			ptr_fwd = ptr_fwd->suite;
+			if (ptr_fwd == NULL)
+				break;
+			pos = 0;
+		}
+		prec = &ptr_fwd->fwd[pos];
+
+		pos++;
+
+		/* Message en cours d'edition */
+		if ((reply == 4) && (svoie[CONSOLE]->enrcur == prec->nomess))
+			continue;
+
+		if ((data_mode == 0) && (prec->bin))
+			continue;
+
+		if ((data_mode == 3) && (!prec->bin))
+			continue;
+
+		if ((data_mode == 2) && (prec->bin) && (!PRIVATE (prec->type)))
+			continue;
+
+		if (is_egal (prec->nomess))
+		{
+			continue;
+		}
+
+		if ((prec->type) && (prec->fbbs[noctet] & cmpmsk) &&
+			(prec->date <= date) && (prec->kb <= max) && (not_in_bloc (prec->nomess, voie)))
+		{
+
+			if (typ & FWD_SMALL)
 			{
-				ptr_fwd = ptr_fwd->suite;
-				if (ptr_fwd == NULL)
-					break;
-				pos = 0;
-			}
-			prec = &ptr_fwd->fwd[pos];
-
-			pos++;
-
-			/* Message en cours d'edition */
-			if ((reply == 4) && (svoie[CONSOLE]->enrcur == prec->nomess))
-				continue;
-
-			if ((data_mode == 0) && (prec->bin))
-				continue;
-
-			if ((data_mode == 3) && (!prec->bin))
-				continue;
-
-			if ((data_mode == 2) && (prec->bin) && (!PRIVATE (prec->type)))
-				continue;
-
-			if (is_egal (prec->nomess))
-			{
-				continue;
-			}
-
-			if ((prec->type) && (prec->fbbs[noctet] & cmpmsk) &&
-				(prec->date <= date) && (prec->kb <= max) && (not_in_bloc (prec->nomess, voie)))
-			{
-
-				if (typ & FWD_SMALL)
+				if (PRIVATE (prec->type))
 				{
-					if (PRIVATE (prec->type))
+					if ((!psel) || (!PRIVATE (psel->type)) || (psel->kb > prec->kb))
+						psel = prec;
+				}
+				else if ((!(typ & FWD_PRIV)) && ((!psel) || (!PRIVATE (psel->type))))
+				{
+					if ((test == NULL) || (strncmp (test, prec->bbsv, 6) == 0))
 					{
-						if ((!psel) || (!PRIVATE (psel->type)) || (psel->kb > prec->kb))
+						if ((!psel) || (psel->kb > prec->kb))
 							psel = prec;
-					}
-					else if ((!(typ & FWD_PRIV)) && ((!psel) || (!PRIVATE (psel->type))))
-					{
-						if ((test == NULL) || (strncmp (test, prec->bbsv, 6) == 0))
-						{
-							if ((!psel) || (psel->kb > prec->kb))
-								psel = prec;
-						}
 					}
 				}
-				else
+			}
+			else
+			{
+				if (PRIVATE (prec->type))
 				{
-					if (PRIVATE (prec->type))
+					if ((!psel) || (!PRIVATE (psel->type)) || (psel->kb > prec->kb))
+						/* if ((!psel) || (prec->nomess < psel->nomess)) */
+						psel = prec;
+				}
+				else if ((!(typ & FWD_PRIV)) && ((!psel) || (!PRIVATE (psel->type))))
+				{
+					if ((test == NULL) || (strncmp (test, prec->bbsv, 6) == 0))
 					{
-						if ((!psel) || (!PRIVATE (psel->type)) || (psel->kb > prec->kb))
-							/* if ((!psel) || (prec->nomess < psel->nomess)) */
-							psel = prec;
-					}
-					else if ((!(typ & FWD_PRIV)) && ((!psel) || (!PRIVATE (psel->type))))
-					{
-						if ((test == NULL) || (strncmp (test, prec->bbsv, 6) == 0))
+						if ((!psel) || (prec->nomess < psel->nomess))
 						{
-							if ((!psel) || (prec->nomess < psel->nomess))
-							{
-								psel = prec;
-							}
+							psel = prec;
 						}
 					}
 				}
 			}
 		}
-
-		if ((psel) && (typ & FWD_PRIV) && (!PRIVATE (psel->type)))
-			psel = NULL;
-		if ((psel) && (!PRIVATE (psel->type)) && (test) && (strncmp (test, psel->bbsv, 6) != 0))
-			psel = NULL;
-		return ((psel) ? psel->nomess : 0L);
 	}
-	else
-	{
-		fsel = 0;
-		skb = 0;
-		memset (&sel, 0, sizeof (bullist));
 
-		ouvre_dir ();
-
-		while (bptr)
-		{
-			if (bptr->st_mess[offset].noenr)
-			{
-
-				read_dir (bptr->st_mess[offset].noenr, &bul);
-
-
-				if (bul.type)
-				{
-
-					int kb = (int) (bul.taille >> 10);
-
-					if ((reply == 4) && (svoie[CONSOLE]->enrcur == bul.numero))
-						continue;
-
-					if ((data_mode == 0) && (bul.bin))
-						continue;
-
-					if ((data_mode == 3) && (!bul.bin))
-						continue;
-
-					if ((data_mode == 2) && (bul.bin) && (!PRIVATE (bul.type)))
-						continue;
-
-					if (!is_egal (bul.numero))
-					{
-
-						if ((bul.type) && (bul.fbbs[noctet] & cmpmsk) &&
-							(bul.date <= date) && (kb <= max) && (not_in_bloc (bul.numero, voie)))
-						{
-
-							if (typ & FWD_SMALL)
-							{
-								if (PRIVATE (bul.type))
-								{
-									if ((!fsel) || (!PRIVATE (sel.type)) || (skb > kb))
-									{
-										sel = bul;
-										fsel = 1;
-										skb = kb;
-									}
-								}
-								else if ((!(typ & FWD_PRIV)) && ((!fsel) || (!PRIVATE (sel.type))))
-								{
-									if ((test == NULL) || (strncmp (test, bul.bbsv, 6) == 0))
-									{
-										if ((!fsel) || (skb > kb))
-										{
-											sel = bul;
-											fsel = 1;
-											skb = kb;
-										}
-									}
-								}
-							}
-							else
-							{
-								if (PRIVATE (bul.type))
-								{
-									if ((!fsel) || (!PRIVATE (sel.type)) || (skb > kb))
-										/* if ((!psel) || (bul.nomess < psel->nomess)) */
-									{
-										sel = bul;
-										fsel = 1;
-										skb = kb;
-									}
-								}
-								else if ((!(typ & FWD_PRIV)) && ((!fsel) || (!PRIVATE (sel.type))))
-								{
-									if ((test == NULL) || (strncmp (test, bul.bbsv, 6) == 0))
-									{
-										if ((!fsel) || (bul.numero < sel.numero))
-										{
-											sel = bul;
-											fsel = 1;
-											skb = kb;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			if (++offset == T_BLOC_MESS)
-			{
-				bptr = bptr->suiv;
-				offset = 0;
-			}
-		}
-
-
-		if ((typ & FWD_PRIV) && (!PRIVATE (sel.type)))
-			fsel = 0;
-		if ((fsel) && (!PRIVATE (sel.type)) && (test) && (strncmp (test, sel.bbsv, 6) != 0))
-			fsel = 0;
-		return ((fsel) ? sel.numero : 0L);
-	}
+	if ((psel) && (typ & FWD_PRIV) && (!PRIVATE (psel->type)))
+		psel = NULL;	
+	if ((psel) && (!PRIVATE (psel->type)) && (test) && (strncmp (test, psel->bbsv, 6) != 0))
+		psel = NULL;	
+	return ((psel) ? psel->nomess : 0L);
 }
 
 long msg_fwd_suiv (int nobbs, uchar max, uchar old, uchar typ, int voie)

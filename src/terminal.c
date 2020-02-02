@@ -158,8 +158,8 @@ static void writeincom(int mode, t_win *win_in, char *buf, int bytes)
 
 	if (mode & RAWMODE) 
 	{
-	if ((write(STDOUT_FILENO, buf, bytes)) != bytes)
-		fprintf (stderr, "Error writing to STDOUT file %d\n", STDOUT_FILENO);
+		if ((write(STDOUT_FILENO, buf, bytes)) != bytes)
+			fprintf (stderr, "Error writing to STDOUT file %d\n", STDOUT_FILENO);
 		return;
     }
 

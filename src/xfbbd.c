@@ -374,20 +374,17 @@ void WinDebug (char *fmt,...)
  */
 int call_nbdos (char **cmd, int nb_cmd, int mode, char *log, char *xdir, char *data)
 {
-
 	/* Appel DOS */
 	int i;
-	int ExitCode = 0;
+	int retour = 0;
+	FILE *fp;
 
 	char *ptr;
 	char file[256];
 	char buf[256];
 	char dir[256];
 	char arg[256];
-
-	/* semi-column is forbidden for security reasons */
-		
-//	if (log)
+			
 	if (mode)
 		//sprintf (file, " </dev/null >%s 2>&1", back2slash (log));
 		sprintf (file, " </dev/null >%s", back2slash (log));
@@ -396,6 +393,7 @@ int call_nbdos (char **cmd, int nb_cmd, int mode, char *log, char *xdir, char *d
 
 	if (xdir)
 	{
+		/* semi-column is forbidden for security reasons */
 		ptr = strchr(xdir, ';');
 		if (ptr)
 			*ptr = '\0';
@@ -409,58 +407,39 @@ int call_nbdos (char **cmd, int nb_cmd, int mode, char *log, char *xdir, char *d
 	
 	if (data)
 	{
+		/* semi-column is forbidden for security reasons */
 		ptr = strchr(data, ';');
-		if (ptr) {
+		if (ptr)
 			*ptr = '\0';
-			// wrong, if semi-column not found there aren't arguments passed
-			//sprintf (arg, " %s ", data);
-		}		
+				
 		sprintf (arg, " %s ", data);
 	}
 
 	for (i = 0; i < nb_cmd; i++)
-	{
-		FILE *fp;
-		int retour;
-		char cmd_buf[1024];
-		
+	{	
 		/* semi-column is forbidden for security reasons */
 		ptr = strchr(cmd[i], ';');
 		if (ptr)
 			*ptr = '\0';
 
 		sprintf (buf, "%s%s%s%s", dir, cmd[i], arg, file);
-
-/* Dave van der Locht - 17-12-2020
-Replaced system() with popen() to fix issue with filter response text no coming through */
-   
-		//retour = system (buf);
 		
 		fp = popen (buf, "r");
 		if (fp == NULL)
 			printf ("Failed to run command\n" );	
 		else
-			retour = pclose(fp);
-		
-		ExitCode = retour >> 8;			
+			retour = pclose(fp) >> 8;
 		
 		if (verbose) {		
 			printf ("Debug: command = {%s}\n", buf);		
-			printf ("Debug: exit code = %d\n", ExitCode);
+			printf ("Debug: exit code = %d\n", retour);
 		}
 
-		/* fail-safe bypasses */		
-		// if filter executable isn't found ExitCode = 127
-		if (ExitCode == 127)
-			ExitCode = 0;
-		
-/*F6BVP :  Why in FBB Linux system() always return -1 ??? */
-/*Dave van der Locht: It's because the SIGCHLD signal was ignored, added SIGCHLD to line 190 */
-		if (ExitCode == -1)
-			ExitCode = 0;		
-
+		/* fail-safe bypass if filter executable isn't found (exit code 127) */		
+		if (retour == 127)
+			retour = 0;
 	}
-	return (ExitCode);
+	return (retour);
 }
 
 void CompressPosition (int mode, int val, long numero)
