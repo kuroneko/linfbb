@@ -1295,4 +1295,11 @@ SVN 02-02-2020 (Dave van der Locht)
 - Corrected several misleading indentations
 - Cleaned code and comments in xfbbd.c
 
+SVN 15-05-2020 Dave van der Locht)
+[r188]
+- Fixed problem where inbound connections were disconnected after connect
+  with some port types when port in port.sys was higher than 9.
+- Commented debugging printf code in the call_nbdos() function.
+- Changed version number to 7.0.10 for the upcoming release
+
 *******************************************************************************

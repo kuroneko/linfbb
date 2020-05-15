@@ -1338,7 +1338,7 @@ void aff_event (int voie, int event)
 #ifdef ENGLISH
 		"", "Connect  ", "Disconnect ",
 #else
-		"", "Connexion", "D‚connexion",
+		"", "Connexion", "Dï¿½connexion",
 #endif
 	};
 	char s[80];
@@ -1673,9 +1673,11 @@ int con_voie (int voie, char *ptr)
 		if (strtok (NULL, " "))
 		{
 			ptr = strtok (NULL, " ");	/* sta.indicatif */
-			if (*(ptr + 1) == ':')
-			{					/* Connexion DRSI ou BPQ */
-				canal = *ptr - '0';
+                        if (*(ptr + 1) == ':' || *(ptr + 2) == ':')
+			{
+                                canal = atoi (ptr);
+
+                                /* DRSI, HST or BPQ connections */
 				if (DRSI (no_port (voie)))
 				{
 					port = drsi_port (no_port (voie), canal);
@@ -1699,12 +1701,14 @@ int con_voie (int voie, char *ptr)
 				}
 #endif
 #ifdef __linux__
+                                /* Socket connections */
 				else if (S_LINUX (no_port (voie)))
 				{
 					port = linux_port (no_port (voie), canal);
 					svoie[voie]->affport.port = port;
 				}
 #endif
+                                /* Other connections */
 				else
 				{
 					port = no_port (voie);

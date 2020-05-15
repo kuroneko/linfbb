@@ -742,23 +742,21 @@ void finentete (void)
 {
 	char s[80];
 	struct stat bufstat;
-	
+
 	memset(&bufstat, 0x00, sizeof(struct stat));
-	
+
 	sprintf (s, "LANG\\%s.ENT", nomlang + nlang * LG_LANG);
 	outfich (c_disque (s));
-	
-	fprintf (stderr, "%s\n", c_disque(s));
-	
+/*	fprintf (stderr, "%s\n", c_disque(s));*/
+
 	sprintf (s, "LANG\\%s.NEW", nomlang + nlang * LG_LANG);
 	if ((stat (c_disque (s), &bufstat) == 0) && (bufstat.st_ctime != pvoie->finf.newbanner))
 	{
 		pvoie->finf.newbanner = bufstat.st_ctime;
 		outfich (c_disque (s));
 	}
-	
-	fprintf (stderr, "%s\n", c_disque(s));
-	
+/*	fprintf (stderr, "%s\n", c_disque(s));*/
+
 	if ((pvoie->ncur->nbmess) && (strcmp (pvoie->ncur->indic, "MODEM") != 0))
 	{
 		if (pvoie->ncur->nbnew)
