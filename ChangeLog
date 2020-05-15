@@ -1302,4 +1302,8 @@ SVN 15-05-2020 Dave van der Locht)
 - Commented debugging printf code in the call_nbdos() function.
 - Changed version number to 7.0.10 for the upcoming release
 
+[r189]
+- Set SVN file properties accordingly for executable files
+- Placed autogen.sh script back in the SVN repo
+
 *******************************************************************************
