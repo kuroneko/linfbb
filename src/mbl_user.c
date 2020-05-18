@@ -361,20 +361,35 @@ static int user_dump (unsigned masque)
 
 int mbl_jheard (void)
 {
-	if (ISGRAPH (*(indd + 1)))
-		return (1);				/* erreur */
+	int port;
 
-	*indd = toupper (*indd);
-	if (((*indd >= 'A') && (*indd <= 'H')) ||
-		((*indd >= '1') && (*indd <= '8')) ||
-		(*indd == 'K'))
+	if (isdigit (*indd))
 	{
-		j_list (*indd);
+		while (*indd && (isdigit (*indd)))
+		{
+			port = (port * 10) + (*indd - '0');
+			++indd;
+		}
+
+		j_list (port, 0);
 		retour_mbl ();
 		return (0);
 	}
+	else
+	{
+		if (ISGRAPH (*(indd + 1)))
+			return (1);				// erreur
 
-	return (1);					/* erreur */
+		*indd = toupper (*indd);
+		if (((*indd >= 'A') && (*indd <= 'J')) || (*indd == 'K'))	// expanded from H to J to accomodate a little more ports
+		{
+			j_list (0, *indd);
+			retour_mbl ();
+			return (0);
+		}
+	}
+
+	return (1);					// erreur
 }
 
 
@@ -453,6 +468,66 @@ static int heardcmp (const void *a, const void *b)
 }
 
 
+void j_list (int portnum, char portlet)
+{
+	FILE *fptr;
+	char buffer[259];
+	char date[80];
+	char indic[10];
+	int i, port;
+	Heard *pheard;
+
+	if (portnum)
+	{
+		port = portnum;
+		if ((port < 1) || (port >= NBPORT) || (p_port[port].pvalid == 0))
+		{
+			texte (T_ERR + 14);
+			return;
+		}
+
+		pheard = p_port[port].heard;
+		qsort (pheard, NBHEARD, sizeof (Heard), heardcmp);
+		for (i = 0; i < NBHEARD; i++)
+		{
+			if (pheard->last)
+			{
+				pheard->indic.call[6] = '\0';
+				if (pheard->indic.num > 15)
+					pheard->indic.num = 0;
+				sprintf (indic, "%s-%d",
+						 pheard->indic.call, pheard->indic.num);
+				strcpy (date, datheure_mbl (pheard->first));
+				sprintf (buffer, "%-9s  %s  %s",
+						 indic, date, datheure_mbl (pheard->last));
+				outln (buffer, strlen (buffer));
+			}
+			++pheard;
+		}
+
+	}
+	else
+	{
+		incindd ();
+		tester_masque ();
+		if (portlet == 'K')
+			port = '\0';
+		else
+			port = portlet;
+		if ((port) && ((port < 'A') || (port > 'J') || (p_port[port - 'A' + 1].pvalid == 0)))
+		{
+			texte (T_ERR + 14);
+			return;
+		}
+		fptr = ouvre_stats ();
+		fseek (fptr, 0L, 2);
+		pvoie->noenr_menu = ftell (fptr);
+		page_connect (port, fptr);
+		ferme (fptr, 38);
+	}
+}
+
+/*
 void j_list (char type)
 {
 	FILE *fptr;
@@ -512,3 +587,5 @@ void j_list (char type)
 		ferme (fptr, 38);
 	}
 }
+*/ 
+ 

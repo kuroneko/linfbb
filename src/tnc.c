@@ -499,7 +499,8 @@ void duplex_tnc (void)
 					outs (buffer, nb);
 					break;
 				case 'J':
-					j_list ((char) no_port (pvoie->cross_connect) + '0');
+					//j_list ((char) no_port (pvoie->cross_connect) + '0');
+					j_list (no_port (pvoie->cross_connect), 0);
 					break;
 				case 'M':
 					if (pvoie->ch_mon == -1)
@@ -647,7 +648,7 @@ void duplex_tnc (void)
 #ifdef ENGLISH
 							sprintf (buffer, "Yapp receiving %s ...", indd);
 #else
-							sprintf (buffer, "Yapp re‡oit %s ...   ", indd);
+							sprintf (buffer, "Yapp reï¿½oit %s ...   ", indd);
 #endif
 #ifdef __FBBDOS__
 							trait (0, buffer);
@@ -960,7 +961,7 @@ void duplex_tnc (void)
 #ifdef ENGLISH
 							sprintf (buffer, "Yapp receiving %s ...", indd);
 #else
-							sprintf (buffer, "Yapp re‡oit %s ...   ", indd);
+							sprintf (buffer, "Yapp reï¿½oit %s ...   ", indd);
 #endif
 #ifdef __FBBDOS__
 							trait (0, buffer);
@@ -1059,7 +1060,7 @@ void duplex_tnc (void)
 #ifdef ENGLISH
 			sprintf (buffer, "Transfer aborted");
 #else
-			sprintf (buffer, "Transfert arr‚t‚");
+			sprintf (buffer, "Transfert arrï¿½tï¿½");
 #endif
 #ifdef __FBBDOS__
 			trait (-1, buffer);
@@ -1076,7 +1077,7 @@ void duplex_tnc (void)
 #ifdef ENGLISH
 			sprintf (buffer, "Transfer aborted");
 #else
-			sprintf (buffer, "Transfert arr‚t‚");
+			sprintf (buffer, "Transfert arrï¿½tï¿½");
 #endif
 #ifdef __FBBDOS__
 			trait (-1, buffer);

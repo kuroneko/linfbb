@@ -1112,7 +1112,7 @@ extern "C"
 	extern void int86real (int, RSEGS *);
 	extern void interruption (int);
 	extern void io (void);
-	extern void j_list (char);
+	extern void j_list (int, char);
 	extern void k_tasks (void);
 	extern void kernel (void);
 	extern void kill_message (char *);

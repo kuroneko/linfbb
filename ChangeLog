@@ -1295,15 +1295,21 @@ SVN 02-02-2020 (Dave van der Locht)
 - Corrected several misleading indentations
 - Cleaned code and comments in xfbbd.c
 
-SVN 15-05-2020 Dave van der Locht)
+SVN 15-05-2020 (Dave van der Locht)
 [r188]
-- Fixed problem where inbound connections were disconnected after connect
+- Fixed problem where inbound connections were disconnected after connect.
   with some port types when port in port.sys was higher than 9.
 - Commented debugging printf code in the call_nbdos() function.
-- Changed version number to 7.0.10 for the upcoming release
+- Changed version number to 7.0.10 for the upcoming release.
 
 [r189]
-- Set SVN file properties accordingly for executable files
-- Placed autogen.sh script back in the SVN repo
+- Set SVN file properties accordingly for executable files.
+- Placed autogen.sh script back in the SVN repo.
+
+SVN 18-05-2020 (Dave van der Locht)
+[r190]
+- Fixed gateway J command only could show port 1 to 9 heard lists.
+- Fixed mailbox J# command only could handle J1 to J8 (numeric) ports.
+- Extended mailbox J# command (letters) a bit.
 
 *******************************************************************************
