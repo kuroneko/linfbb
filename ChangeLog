@@ -1312,4 +1312,7 @@ SVN 18-05-2020 (Dave van der Locht)
 - Fixed mailbox J# command only could handle J1 to J8 (numeric) ports.
 - Extended mailbox J# command (letters) a bit.
 
+[r191]
+- Detected and corrected some character encoding problems in tnc.c file.
+
 *******************************************************************************

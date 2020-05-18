@@ -648,7 +648,7 @@ void duplex_tnc (void)
 #ifdef ENGLISH
 							sprintf (buffer, "Yapp receiving %s ...", indd);
 #else
-							sprintf (buffer, "Yapp re�oit %s ...   ", indd);
+							sprintf (buffer, "Yapp reçoit %s ...   ", indd);
 #endif
 #ifdef __FBBDOS__
 							trait (0, buffer);
@@ -961,7 +961,7 @@ void duplex_tnc (void)
 #ifdef ENGLISH
 							sprintf (buffer, "Yapp receiving %s ...", indd);
 #else
-							sprintf (buffer, "Yapp re�oit %s ...   ", indd);
+							sprintf (buffer, "Yapp reçoit %s ...   ", indd);
 #endif
 #ifdef __FBBDOS__
 							trait (0, buffer);
@@ -1060,7 +1060,7 @@ void duplex_tnc (void)
 #ifdef ENGLISH
 			sprintf (buffer, "Transfer aborted");
 #else
-			sprintf (buffer, "Transfert arr�t�");
+			sprintf (buffer, "Transfert arrêté");
 #endif
 #ifdef __FBBDOS__
 			trait (-1, buffer);
@@ -1077,7 +1077,7 @@ void duplex_tnc (void)
 #ifdef ENGLISH
 			sprintf (buffer, "Transfer aborted");
 #else
-			sprintf (buffer, "Transfert arr�t�");
+			sprintf (buffer, "Transfert arrêté");
 #endif
 #ifdef __FBBDOS__
 			trait (-1, buffer);
