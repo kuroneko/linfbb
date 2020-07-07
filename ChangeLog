@@ -1315,4 +1315,8 @@ SVN 18-05-2020 (Dave van der Locht)
 [r191]
 - Detected and corrected some character encoding problems in tnc.c file.
 
+SVN 07-07-2020 (Dave van der Locht)
+[r192]
+- Removed autotool generated files from SVN repo.
+
 *******************************************************************************
