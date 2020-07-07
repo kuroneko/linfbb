@@ -1319,4 +1319,7 @@ SVN 07-07-2020 (Dave van der Locht)
 [r192]
 - Removed autotool generated files from SVN repo.
 
+[r193]
+- Accidentally removed Makefile.am. Placed back into SVN repo.
+
 *******************************************************************************
