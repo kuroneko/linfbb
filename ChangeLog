@@ -1322,4 +1322,8 @@ SVN 07-07-2020 (Dave van der Locht)
 [r193]
 - Accidentally removed Makefile.am. Placed back into SVN repo.
 
+SVN 19-10-2020 (Dave van der Locht)
+[r194]
+- Fixed filename not exists error when using YAPP download command (YD).
+
 *******************************************************************************

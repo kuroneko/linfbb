@@ -1414,12 +1414,14 @@ char *nom_yapp (void)
 
 	teste_espace ();
 	n_cpy (MAXPATH, fichier, indd);
+	fichier[strcspn(fichier, "\r")] = 0;	// remove input trailing CR
+	
 	if (!tst_point (fichier))
 		*pvoie->sr_fic = '\0';
 	else
 	{
 #ifdef __linux__
-		strcpy (pvoie->sr_fic, slash2back (tot_path (ch_slash (fichier), pvoie->dos_path)));
+		strcpy (pvoie->sr_fic, back2slash (tot_path (fichier, pvoie->dos_path)));
 #else
 		strcpy (pvoie->sr_fic, tot_path (ch_slash (fichier), pvoie->dos_path));
 #endif
