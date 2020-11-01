@@ -1279,9 +1279,7 @@ the message lookup more robust in the case the themes.sys file changes."
   problem with response text from a c_filter not coming through.
 - PG servers returned errors. Tested by Brian N1URO
 
-*******************************************************************************
-
-SVN 02-02-2020 (Dave van der Locht)
+7.0.10 (Dave van der Locht)
 [r187]
 - Fixed gateway using wrong FROM callsign with outgoing socket connections.
 - Fixed gateway could only use port 1 to 9.
@@ -1294,39 +1292,26 @@ SVN 02-02-2020 (Dave van der Locht)
 - Fixed buffer overflow possibility in ibm.c getcurdir()
 - Corrected several misleading indentations
 - Cleaned code and comments in xfbbd.c
-
-SVN 15-05-2020 (Dave van der Locht)
 [r188]
 - Fixed problem where inbound connections were disconnected after connect.
   with some port types when port in port.sys was higher than 9.
 - Commented debugging printf code in the call_nbdos() function.
-- Changed version number to 7.0.10 for the upcoming release.
-
+- Changed version number to 7.0.10.
 [r189]
 - Set SVN file properties accordingly for executable files.
 - Placed autogen.sh script back in the SVN repo.
-
-SVN 18-05-2020 (Dave van der Locht)
 [r190]
 - Fixed gateway J command only could show port 1 to 9 heard lists.
 - Fixed mailbox J# command only could handle J1 to J8 (numeric) ports.
 - Extended mailbox J# command (letters) a bit.
-
 [r191]
 - Detected and corrected some character encoding problems in tnc.c file.
-
-SVN 07-07-2020 (Dave van der Locht)
 [r192]
 - Removed autotool generated files from SVN repo.
-
 [r193]
 - Accidentally removed Makefile.am. Placed back into SVN repo.
-
-SVN 19-10-2020 (Dave van der Locht)
 [r194]
 - Fixed filename not exists error when using YAPP download command (YD).
-
-SVN 31-10-2020 (Dave van der Locht)
 [r195]
 - Fixed housekeeping routines crashing on several newer Linux distributions.
 - Changed src/Makefile.am, the -fstack-check flag conflicts with
