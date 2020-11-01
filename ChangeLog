@@ -1326,4 +1326,11 @@ SVN 19-10-2020 (Dave van der Locht)
 [r194]
 - Fixed filename not exists error when using YAPP download command (YD).
 
+SVN 31-10-2020 (Dave van der Locht)
+[r195]
+- Fixed housekeeping routines crashing on several newer Linux distributions.
+- Changed src/Makefile.am, the -fstack-check flag conflicts with
+  -fstack-clash-protection which is included by default when GCC is built with
+  stack smashing protection (SSP).
+- Changed README to reflect correct mailing list e-mail address.
 *******************************************************************************

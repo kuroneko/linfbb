@@ -229,15 +229,18 @@ char *back2slash (char *str)
 
 char *test_back_slash (char *chaine)
 {
-	if ((strlen(chaine) == 0)
+	static char temp[256];
+	strcpy(temp, chaine);
+
+	if ((strlen(temp) == 0)
 #ifdef __linux__
-		|| (chaine[strlen (chaine) - 1] != '/'))
-			strcat(chaine, "/");
+		|| (temp[strlen (temp) - 1] != '/'))
+			strcat(temp, "/");
 #else
-		|| (chaine[strlen (chaine) - 1] != '\\'))
-			strcat(chaine, "\\");
+		|| (temp[strlen (temp) - 1] != '\\'))
+			strcat(temp, "\\");
 #endif
-	return (chaine);
+	return (temp);
 }
 
 void err_keyword(char *keyword)
@@ -424,7 +427,7 @@ int main (int ac, char **av)
 		exit (1);
 	}
 	record = 1L;
-	strcpy (mycall, entete.exped);
+	strncpy (mycall, entete.exped, sizeof (mycall));
 
 	while (1)
 	{

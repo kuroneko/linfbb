@@ -88,8 +88,7 @@ xfbbC_SOURCES = md5c.c xfbbC.c
 endif
 
 #AM_CPPFLAGS = -I$(top_srcdir)/include 
-
-AM_CPPFLAGS = -I$(top_srcdir)/include -Wstrict-prototypes -funsigned-char -DPROTOTYPES -fstack-check
+AM_CPPFLAGS = -I$(top_srcdir)/include -Wstrict-prototypes -funsigned-char -DPROTOTYPES
 
 # Need to build stuff in this folder first, before X11, as there are deps in here
 # Check and see if we are going to build the X binaries at all first

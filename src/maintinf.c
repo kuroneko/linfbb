@@ -149,15 +149,18 @@ char *strlwr (char *txt)
 
 char *test_back_slash (char *chaine)
 {
-	if ((strlen(chaine) == 0)
+	static char temp[256];
+	strcpy(temp, chaine);
+
+	if ((strlen(temp) == 0)
 #ifdef __linux__
-		|| (chaine[strlen (chaine) - 1] != '/'))
-			strcat(chaine, "/");
+		|| (temp[strlen (temp) - 1] != '/'))
+			strcat(temp, "/");
 #else
-		|| (chaine[strlen (chaine) - 1] != '\\'))
-			strcat(chaine, "\\");
+		|| (temp[strlen (temp) - 1] != '\\'))
+			strcat(temp, "\\");
 #endif
-	return (chaine);
+	return (temp);
 }
 
 void err_keyword(char *keyword)
