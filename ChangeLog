@@ -1332,3 +1332,5 @@ SVN (Dave van der Locht)		2 November 2020
   warnings regarding unused results (-Wunused-result).
 [r199]
 - pacsat.c Increased pfh buffer sizes by 1 char to account for the null (VE7FET)
+[r200]
+- Changed version number to 7.0.11

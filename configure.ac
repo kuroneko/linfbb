@@ -1,5 +1,5 @@
 AC_PREREQ([2.63])
-AC_INIT(fbb, 7.0.10, f6bvp@free.fr)
+AC_INIT(fbb, 7.0.11, f6bvp@free.fr)
 AC_CONFIG_SRCDIR([src/xfbbd.c])
 AC_CONFIG_HEADERS([config.h])
 
