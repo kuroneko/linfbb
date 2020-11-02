@@ -355,7 +355,8 @@ again:
 				nb = 1+sprintf(datarequest, "%s%s", back2slash(CONFDIR), buffer+4);
 				sprintf(cmd, "ls -oA %s | awk '{ print substr($1,1,1),$4,$8,$5\"-\"$6\"-\"$7 }' > %s 2>&1", datarequest, datafile);
 				printf("system %s\n", cmd);
-				system(cmd);
+				if (system(cmd) < 0)
+					perror("orb_process_data() system command execution error");
 				nb += 1+sprintf(datarequest + nb, "%ld", flength(datafile));
 				send_data(sptr->fd, datafile, datarequest, nb, SVC_DIR);
 			}
@@ -377,7 +378,8 @@ again:
 				nb = 1+sprintf(datarequest, "%s%s", back2slash(CONFDIR), buffer+4);
 				sprintf(cmd, "cp %s %s", datarequest, datafile);
 				printf("system %s\n", cmd);
-				system(cmd);
+				if (system(cmd) < 0)
+					perror("orb_process_data() system command execution error");
 				nb += 1+sprintf(datarequest + nb, "%ld", flength(datafile));
 				send_data(sptr->fd, datafile, datarequest, nb, SVC_RECV);
 			}
@@ -416,7 +418,8 @@ again:
 							close(rcv_fd);
 							sprintf(cmd, "mv %s %s", datafile, datarequest);
 							printf("system %s\n", cmd);
-							system(cmd);
+							if (system(cmd) < 0)
+								perror("orb_process_data() system command execution error");
 							test_fichiers = 1;
 						}
 						header[0] = ORB_DATA;
@@ -662,7 +665,8 @@ again:
 					nb = 1+strlen(datarequest);
 					sprintf(cmd, "cp %s %s", datarequest, datafile);
 					printf("system %s\n", cmd);
-					system(cmd);
+					if (system(cmd) < 0)
+						perror("orb_process_data() system command execution error");
 					nb += 1+sprintf(datarequest + nb, "%ld", flength(datafile));
 					send_data(sptr->fd, datafile, datarequest, nb, SVC_MREQ);
 				}

@@ -142,7 +142,8 @@ static int console_send_file(int sock, char *filename)
 	{
 		buffer[2] = 0;
 		buffer[3] = 0;
-		write(sock, buffer, 4);
+		if (write(sock, buffer, 4) != 4)
+			perror ("console_send_file() socket write error");
 		return errno;
 	}
 		
@@ -153,8 +154,13 @@ static int console_send_file(int sock, char *filename)
 			nb = 0;
 		buffer[2] = nb % 256;
 		buffer[3] = nb >> 8;
-		write(sock, buffer, nb+4);
-		printf("%d data sent\n", nb);
+		//write(sock, buffer, nb+4);
+		if (write(sock, buffer, nb+4) != nb+4) {
+			perror ("console_send_file() socket write error");
+			printf ("%d data NOT sent\n", nb);
+		} else {
+			printf ("%d data sent\n", nb);
+		}
 		if (nb == 0)
 			break;
 	}
@@ -299,7 +305,8 @@ int main (int ac, char *av[])
 	fprintf (stderr, " Ok\n");
 
 	sprintf (buffer, "%d %d %s\n", mask, channel, mycall);
-	write (sock, buffer, strlen (buffer));
+	if (write (sock, buffer, strlen (buffer)) != strlen (buffer))
+		perror ("main() socket write error");
 
 	fprintf (stderr, "Authentication in progress ... ");
 	fflush (stderr);
@@ -318,7 +325,8 @@ int main (int ac, char *av[])
 
 	makekey (key, pass, buffer);
 	strcat (buffer, "\n");
-	write (sock, buffer, strlen (buffer));
+	if (write (sock, buffer, strlen (buffer)) != strlen (buffer))
+		perror ("main() socket write error");
 
 	mode = 0;
 	if (mask & ORB_CONSOLE)
@@ -345,7 +353,8 @@ int main (int ac, char *av[])
 			buffer[2] = len;
 			buffer[3] = 0;
 			strcpy(buffer+4, filename);
-			write(sock, buffer, len+4);
+			if (write (sock, buffer, len+4) != len+4)
+				perror ("main() socket write error");
 			break;
 		case SVC_RECV:
 			fprintf (stderr, "Requesting file %s ...\n\n", filename);
@@ -354,7 +363,8 @@ int main (int ac, char *av[])
 			buffer[2] = len;
 			buffer[3] = 0;
 			strcpy(buffer+4, filename);
-			write(sock, buffer, len+4);
+			if (write (sock, buffer, len+4) != len+4)
+				perror ("main() socket write error");
 			break;
 		case SVC_SEND:
 			fprintf (stderr, "Sending file %s ...\n\n", filename);
@@ -363,7 +373,8 @@ int main (int ac, char *av[])
 			buffer[2] = len;
 			buffer[3] = 0;
 			strcpy(buffer+4, filename);
-			write(sock, buffer, len+4);
+			if (write (sock, buffer, len+4) != len+4)
+				perror ("main() socket write error");
 			console_send_file(sock, filename);
 			break;
 		}
@@ -384,7 +395,8 @@ int main (int ac, char *av[])
 			buffer[1] = SVC_FWD;
 			buffer[2] = len;
 			buffer[3] = 0;
-			write(sock, buffer, len+4);
+			if (write (sock, buffer, len+4) != len+4)
+				perror ("main() socket write error");
 			break;
 		case SVC_DISC:
 			sprintf(buffer+4, "01 F6FBB-1 0");
@@ -395,7 +407,8 @@ int main (int ac, char *av[])
 			buffer[1] = SVC_DISC;
 			buffer[2] = len;
 			buffer[3] = 0;
-			write(sock, buffer, len+4);
+			if (write (sock, buffer, len+4) != len+4)
+				perror ("main() socket write error");
 			break;
 		}
 	}
@@ -545,7 +558,8 @@ int main (int ac, char *av[])
 							write_terminal(ptr, total);
 						else
 #endif
-							write (1, ptr, total);
+							if (write (1, ptr, total) != total)
+								perror ("main() socket write error");
 					}
 					break;
 				case ORB_MSGS:
@@ -604,7 +618,8 @@ int main (int ac, char *av[])
 						else
 						{
 							filelen += total;
-							write(STDOUT_FILENO, buffer, total);
+							if (write(STDOUT_FILENO, buffer, total) != total)
+								perror ("main() socket write error");
 						}
 						fprintf(stderr, "receiving directory %s %d/%d bytes\n", filename, filelen, filetotal);
 						break;
@@ -619,7 +634,8 @@ int main (int ac, char *av[])
 						else
 						{
 							filelen += total;
-							write(STDOUT_FILENO, buffer, total);
+							if (write(STDOUT_FILENO, buffer, total) != total)
+								perror ("main() socket write error");
 						}
 						fprintf(stderr, "receiving file %s %d/%d bytes\n", filename, filelen, filetotal);
 						break;
@@ -637,7 +653,8 @@ int main (int ac, char *av[])
 						else
 						{
 							filelen += total;
-							write(STDOUT_FILENO, buffer, total);
+							if (write(STDOUT_FILENO, buffer, total) != total)
+								perror ("main() socket write error");
 						}
 						if (filetotal)
 							fprintf(stderr, "receiving fwd list %s %d/%d bytes\n", filename, filelen, filetotal);

@@ -89,8 +89,12 @@ static int pty_open (int *pty, struct winsize *winsize)
 		close (*pty);
 		return -1;
 	}
-	(void) chown (line, getuid (), getgid ());
-	(void) chmod (line, 0600);
+
+	if (chown (line, getuid (), getgid ()) != 0)
+		perror ("pty_open() chown error");
+	
+	if (chmod (line, 0600) != 0)
+		perror ("pty_open() chmod error");
 
 	setsid ();					/* will break terminal affiliation */
 	ioctl (tty, TIOCSCTTY, (char *) 0);

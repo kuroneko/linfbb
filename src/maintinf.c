@@ -339,7 +339,8 @@ int main (int ac, char **av)
 			while ((ptr = ptr->suiv) != NULL)
 			{
 				fseek (fichi, ptr->pos * (long) sizeof (buf), 0);
-				fread (&buf, sizeof (buf), 1, fichi);
+				if (fread (&buf, sizeof (buf), 1, fichi) != 1) 
+					perror ("main() error reading file");
 				check (&buf);
 				fwrite (&buf, sizeof (buf), 1, ficho);
 				if ((++i % 10) == 0)

@@ -1263,7 +1263,7 @@ the message lookup more robust in the case the themes.sys file changes."
   Update ChangeLog.
 - [r175] Week 53 is first week of the year.
 
-7.0.9 (F6BVP, Dave van der Locht) 
+7.0.9 (F6BVP, Dave van der Locht) 	26 January 2020
 [r178]
 - fbblog files renamed from 0 to 52 for week number 
 - fbb log displayed calling executable script /usr/local/bin/fbblog 
@@ -1279,7 +1279,7 @@ the message lookup more robust in the case the themes.sys file changes."
   problem with response text from a c_filter not coming through.
 - PG servers returned errors. Tested by Brian N1URO
 
-7.0.10 (Dave van der Locht)
+7.0.10 (Dave van der Locht)			1 November 2020
 [r187]
 - Fixed gateway using wrong FROM callsign with outgoing socket connections.
 - Fixed gateway could only use port 1 to 9.
@@ -1319,3 +1319,14 @@ the message lookup more robust in the case the themes.sys file changes."
   stack smashing protection (SSP).
 - Changed README to reflect correct mailing list e-mail address.
 *******************************************************************************
+
+SVN (Dave van der Locht)		1 November 2020
+[r196] 
+- Copied SVN trunk to tags/7.0.10
+[r197]
+- Merged SVN commits in ChangeLog belonging to 7.0.10 release.
+
+SVN (Dave van der Locht)		2 November 2020
+[r198]
+- Added return value handling several functions to prevent GCC compiler 
+  warnings regarding unused results (-Wunused-result).

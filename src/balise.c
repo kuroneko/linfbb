@@ -265,9 +265,12 @@ void send_balise (int port)
 						break;
 					if ((pos == 0) && (c == '%'))
 					{
-						fscanf (fptr, "%d", &t_balise[port]);
-						t_balise[port] *= 60;
-						fgetc (fptr);
+						if (fscanf (fptr, "%d", &t_balise[port])) {
+							t_balise[port] *= 60;
+							fgetc (fptr);
+						} else {
+							perror ("send_balise() error reading port");
+						}
 					}
 					else if ((pos == 0) && (c == '!'))
 					{
@@ -443,7 +446,7 @@ void broadcast_port (int port, char *chaine)
 
 static char *broadcast_line (long numero)
 {
-	static char sbuffer[90];
+	static char sbuffer[128];
 	char titre[40];
 	bullist bull;
 	bullist *sav;

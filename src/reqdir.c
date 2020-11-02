@@ -121,12 +121,15 @@ int main (int argc, char **argv)
 	if (fptr == NULL)
 		exit (1);
 
-	fgets (buffer, 80, fptr);	/* Read the command line */
+	//fgets (buffer, 80, fptr);	/* Read the command line */
+	if (fgets (buffer, 80, fptr) == NULL)	/* Read the command line */
+		perror("main() error reading command line");
 	sscanf (buffer, "%*s %*s %*s %s\n", sender);
 
 	*dir = *route = '\0';
-	fgets (buffer, 80, fptr);	/* Read the subject */
-
+	if (fgets (buffer, 80, fptr) == NULL)	/* Read the subject */
+		perror("main() error reading subject");
+		
 	i = 0;
 	ptr = buffer;
 	while (*ptr)

@@ -426,14 +426,19 @@ static int rec_tnc_linux (int port)
   if (!car_tnc_linux(port))
     return(-1);
 
-  read(p_com[(int)p_port[port].ccom].comfd, &chr, 1);
+  //read(p_com[(int)p_port[port].ccom].comfd, &chr, 1);
+  if (read(p_com[(int)p_port[port].ccom].comfd, &chr, 1) != 1)
+    perror ("rec_tnc_linux() error reading port");
+  
   return (chr & 0xff);
 }
 
 
 static void send_tnc_linux (int port, int carac)
 {
-  write(p_com[(int)p_port[port].ccom].comfd, &carac, 1);
+  //write(p_com[(int)p_port[port].ccom].comfd, &carac, 1);
+  if (write(p_com[(int)p_port[port].ccom].comfd, &carac, 1))
+    perror ("send_tnc_linux() error writing port");
 }
 
 static int car_tnc_linux(int port)

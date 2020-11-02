@@ -322,7 +322,8 @@ int r_play(char *name)
     }
   
   /* read bytes for WAVE-header */
-  read (fd, (char *)audiobuf, sizeof(WaveHeader));
+  if (read (fd, (char *)audiobuf, sizeof(WaveHeader)) != sizeof(WaveHeader))
+    perror ("r_play() read error");
   
   if (test_wavefile (audiobuf) >= 0)
     {

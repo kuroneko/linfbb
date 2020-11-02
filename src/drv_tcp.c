@@ -269,11 +269,14 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 
 		if (i > tport[*port].nbcan)
 		{
-			write (new, TelnetInit, strlen (TelnetInit));
+			if (write (new, TelnetInit, strlen (TelnetInit)) != strlen (TelnetInit))
+				perror ("rcv_tcp() socket write error");
 
 			/* Impossible d'affecter le canal -> deconnexion */
 			sprintf (buf, "\r\nSorry, no more channels available\r\n\r\n");
-			write (new, buf, strlen (buf));
+			if (write (new, buf, strlen (buf)) != strlen (buf))
+				perror ("rcv_tcp() socket write error");
+
 			close (new);
 		}
 		else
@@ -290,16 +293,19 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 			if (p_port[*port].typort == TYP_ETH)
 			{
 				sprintf (buf, "\r\n%s BBS data access\r\n\r\n", my_call);
-				write (new, buf, strlen (buf));
-			}
+				if (write (new, buf, strlen (buf)) != strlen (buf))
+					perror ("rcv_tcp() socket write error");
+				}
 			else
 			{
-				write (new, TelnetInit, strlen (TelnetInit));
+				if (write (new, TelnetInit, strlen (TelnetInit)) != strlen (TelnetInit))
+					perror ("rcv_tcp() socket write error");
 
 				if ((fptr = fopen (c_disque ("LANG\\TELNET.ENT"), "rt")) == NULL)
 				{
 					sprintf (buf, "\r\n%s BBS. TELNET Access\r\n\r\n", my_call);
-					write (new, buf, strlen (buf));
+					if (write (new, buf, strlen (buf)) != strlen (buf))
+						perror ("rcv_tcp() socket write error");
 				}
 				else
 				{
@@ -316,14 +322,16 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 							buf[nb + 1] = '\0';
 						}
 						ptr = var_txt (buf);
-						write (new, ptr, strlen (ptr));
+						if (write (new, ptr, strlen (ptr)) != strlen (ptr))
+							perror ("rcv_tcp() socket write error");
 					}
 					fclose (fptr);
 				}
 			}
 			sprintf (buf, "Callsign : ");
-
-			write (new, buf, strlen (buf));
+			
+			if (write (new, buf, strlen (buf)) != strlen (buf))
+				perror ("rcv_tcp() socket write error");
 
 			val = p_port[*port].pk_t;
 
@@ -343,7 +351,6 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		if ((tport[*port].tcan[can].sock == -1) && (tport[*port].tcan[can].state != DISCONNECT))
 		{
 			sprintf (buffer, "(%d) DISCONNECTED fm TCP", can);
-			
 
 			tport[*port].tcan[can].state = DISCONNECT;
 			clear_can (*port, can);
@@ -359,8 +366,9 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		if (res & TIME_EVENT)
 		{
 			sprintf (buf, "Timeout, disconnected !\r\n");
-	
-			write (tport[*port].tcan[can].sock, buf, strlen (buf));
+
+			if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+				perror ("rcv_tcp() socket write error");
 			close (tport[*port].tcan[can].sock);
 			clear_can (*port, can);
 			return (FALSE);
@@ -515,7 +523,8 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 					buffer[lg] = '\0';
 					if (strstr(buffer, "allsig"))
 					{
-						write(tport[*port].tcan[can].sock, tport[*port].tcan[can].call, tport[*port].tcan[can].lgcall);
+						if (write(tport[*port].tcan[can].sock, tport[*port].tcan[can].call, tport[*port].tcan[can].lgcall) != tport[*port].tcan[can].lgcall)
+							perror ("rcv_tcp() socket write error");
 						tport[*port].tcan[can].state = CONNECTED;
 						tport[*port].tcan[can].lgcall = 0;
 						return (TRUE);
@@ -543,7 +552,8 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 						{
 							sprintf (buf, "Callsign error, disconnected !\r\n");
 /*							fprintf (stderr, "Callsign error, disconnected !\n");*/
-							write (tport[*port].tcan[can].sock, buf, strlen (buf));
+							if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+								perror ("rcv_tcp() socket write error");
 							close (tport[*port].tcan[can].sock);
 							tport[*port].tcan[can].sock = -1;
 						}
@@ -554,12 +564,13 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 							buffer[20] = '\0';
 							sprintf (buf, "Invalid callsign \"%s\" !\r\n", buffer);
 /*							fprintf (stderr, "Invalid callsign \"%s\" !\n", buffer);*/
-							write (tport[*port].tcan[can].sock, buf, strlen (buf));
+							if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+								perror ("rcv_tcp() socket write error");
+							
 							sprintf (buf, "Callsign : ");
-							
 /*							fprintf (stderr, "Callsign : ");*/
-							
-							write (tport[*port].tcan[can].sock, buf, strlen (buf));
+							if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+								perror ("rcv_tcp() socket write error");
 						}
 						break;
 					case 1:
@@ -588,7 +599,8 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 							else
 							{
 								sprintf (buf, "Password : ");
-								write (tport[*port].tcan[can].sock, buf, strlen (buf));
+								if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+									perror ("rcv_tcp() socket write error");
 								tport[*port].tcan[can].state = WAITINGPASS;
 								tport[*port].tcan[can].nb_try = 0;
 							}
@@ -599,7 +611,8 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 						{
 							sprintf (buf, "Callsign error, disconnected !\r\n");
 /*							fprintf (stderr, "Callsign error, disconnected !\n");*/
-							write (tport[*port].tcan[can].sock, buf, strlen (buf));
+							if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+								perror ("rcv_tcp() socket write error");
 							close (tport[*port].tcan[can].sock);
 							tport[*port].tcan[can].sock = -1;
 						}
@@ -615,11 +628,16 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 								char buf[80];
 
 								sprintf (buf, "Unregistered callsign \"%s\" !\r\n", buffer);
-								write (tport[*port].tcan[can].sock, buf, strlen (buf));
+								if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+									perror ("rcv_tcp() socket write error");
+								
 								sprintf (buf, "For registration send message to SYSOP.\r\n\n");
-								write (tport[*port].tcan[can].sock, buf, strlen (buf));
+								if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+									perror ("rcv_tcp() socket write error");
+								
 								sprintf (buf, "Callsign : ");
-								write (tport[*port].tcan[can].sock, buf, strlen (buf));
+								if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+									perror ("rcv_tcp() socket write error");
 							}
 						}
 						break;
@@ -651,7 +669,9 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 					if (tcp_check_pass (*port, can, buffer))
 					{
 						sprintf (buf, "\r\nLogon Ok. Type NP to change password.\r\n\r\n");
-						write (tport[*port].tcan[can].sock, buf, strlen (buf));
+						if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+							perror ("rcv_tcp() socket write error");
+						
 						sprintf (buffer, "(%d) CONNECTED to %s-%d",
 								 can, tport[*port].tcan[can].callsign.call,
 								 tport[*port].tcan[can].callsign.num);
@@ -675,7 +695,8 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 							else
 							{
 								sprintf (buf, "Password error, disconnected !\r\n");
-								write (tport[*port].tcan[can].sock, buf, strlen (buf));
+								if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+									perror ("rcv_tcp() socket write error");
 								close (tport[*port].tcan[can].sock);
 								tport[*port].tcan[can].sock = -1;
 							}
@@ -684,8 +705,9 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 						{
 							char buf[80];
 
-							sprintf (buf, "Password error !\r\nPassword : ");
-							write (tport[*port].tcan[can].sock, buf, strlen (buf));
+							sprintf (buf, "Password error !\r\nPassword : ");							
+							if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+								perror ("rcv_tcp() socket write error");
 						}
 					}
 					return (FALSE);
@@ -701,7 +723,8 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 					{
 						/* Read-Only mode accepted */
 						sprintf (buf, "\r\nLogon Ok. You have a read-only access.\r\n\r\n");
-						write (tport[*port].tcan[can].sock, buf, strlen (buf));
+						if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+							perror ("rcv_tcp() socket write error");
 						sprintf (buffer, "(%d) READONLY to %s-%d",
 								 can, tport[*port].tcan[can].callsign.call,
 								 tport[*port].tcan[can].callsign.num);
@@ -716,7 +739,8 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 					else
 					{
 						sprintf (buf, "Callsign : ");
-						write (tport[*port].tcan[can].sock, buf, strlen (buf));
+						if (write (tport[*port].tcan[can].sock, buf, strlen (buf)) != strlen (buf))
+							perror ("rcv_tcp() socket write error");
 						tport[*port].tcan[can].state = WAITINGCALL;
 					}
 					break;
@@ -1097,7 +1121,8 @@ static int tcp_trame (int port, int canal, char *data, int len)
 /* 						write(tport[port].tcan[canal].sock, buffer, strlen(buffer)); */
 /*						printf (" -> DONT %02x\n", carac); */
 						sprintf (buf, "%c%c%c", IAC, DONT, carac);
-						write (tport[port].tcan[canal].sock, buf, strlen (buf));
+						if (write (tport[port].tcan[canal].sock, buf, strlen (buf)) != strlen (buf))
+							perror ("tcp_trame() socket write error");
 					}
 					break;
 				case DO:
@@ -1105,7 +1130,8 @@ static int tcp_trame (int port, int canal, char *data, int len)
 					{
 /*						printf (" -> WONT %02x\n", carac); */
 						sprintf (buf, "%c%c%c", IAC, WONT, carac);
-						write (tport[port].tcan[canal].sock, buf, strlen (buf));
+						if (write (tport[port].tcan[canal].sock, buf, strlen (buf)) != strlen (buf))
+							perror ("tcp_trame() socket write error");
 					}
 					break;
 				case WONT:
@@ -1509,7 +1535,9 @@ static int s_status (tcan_t * can)
 					can->state = SENDCALL;
 				else
 					can->state = CONNECTED;
-				write (can->sock, &res, 0);
+				if (write (can->sock, &res, 0) != 0)
+					perror ("s_status() socket write error");
+				
 				res |= EXCEPT_EVENT;
 				can->event = CONN_EVENT;
 			}
@@ -1566,7 +1594,9 @@ static void read_only_alert (int port, int can)
 	memset (buf, 0, sizeof (buf));
 
 	sprintf (buf, READ_ONLY);
-	write (tport[port].tcan[can].sock, buf, strlen (buf));
+	//write (tport[port].tcan[can].sock, buf, strlen (buf));
+	if (write (tport[port].tcan[can].sock, buf, strlen (buf)) != 0)
+		perror ("read_only_alert() socket write error");
 }
 
 /* Copie une ligne dans le buffer */
