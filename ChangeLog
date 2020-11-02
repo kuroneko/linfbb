@@ -1330,3 +1330,5 @@ SVN (Dave van der Locht)		2 November 2020
 [r198]
 - Added return value handling several functions to prevent GCC compiler 
   warnings regarding unused results (-Wunused-result).
+[r199]
+- pacsat.c Increased pfh buffer sizes by 1 char to account for the null (VE7FET)

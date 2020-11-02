@@ -1222,7 +1222,8 @@ struct pfh3
 {
 	unsigned short id __a1__;
 	uchar len __a1__;
-	uchar val[3] __a1__;
+	//uchar val[3] __a1__;
+	uchar val[4] __a1__;	// only used for file_ext in sprintf but there wasn't room for the trailing null
 };
 
 struct pfh4
@@ -1236,7 +1237,8 @@ struct pfh8
 {
 	unsigned short id __a1__;
 	uchar len __a1__;
-	uchar val[8] __a1__;
+	//uchar val[8] __a1__;
+	uchar val[9] __a1__;	// only used for file_name in sprintf but there wasn't room for the trailing null
 };
 
 struct pfh
