@@ -1338,3 +1338,5 @@ SVN (Dave van der Locht)		2 November 2020
 SVN (Dave van der Locht)		3 November 2020
 [r201]
 - Extended xfbbC client local console connect failure message.
+[r202]
+- Added several changes to the README file.

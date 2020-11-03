@@ -1,15 +1,30 @@
 
 These are the sources of xfbbd (daemon version for LINUX) and their utilities.
 
-1/ Compiling xfbbd, xfbbC client and its utilities with 2.6 kernel from source:
+1/ Prerequisite packages
+-------------------------------------------------------------------------------
+In order to compile the Linfbb source you will, at a minimum, require the 
+headers from libax25 to be installed.
+
+This means you either need to:
+
+- install libax25-dev (or equivalent) package through your package manager
+- download, compile, and install libax25 from source from http://www.linux-ax25.org
+- download. compile, and install libax25 from source from https://github.com/ve7fet/linuxax25 (unofficial suite).
+
+If you want ncurses support in the console program, you need to:
+
+- install libcurses5-dev (or equivalent) package through your package manager
+
+2/ Compiling xfbbd, xfbbC client and its utilities from source:
 -------------------------------------------------------------------------------
 To compile and install xfbbd you need to run a session as root
 for writing privilege reasons.
 
-- cd into fbb-70?? directory
+- cd into fbb-7.0.?? directory
 
-*** If you are building from SVN repository code, you may need to 
-*** run "./autogen.sh" first, in order to create the ./configure script.
+*** If you are building from SVN repository code, you need to run
+*** "./autogen.sh" first, in order to create the ./configure script.
 
 Enter the command "./configure" to run the configure script.
 
@@ -29,14 +44,17 @@ Enter the command "make install".
 
 For the first installation start the BBS software using fbb script
 with command:
+
 	fbb
-It will check validity of FBB files tree and create missing files including configuration files.
+
+It will check validity of FBB files tree and create missing files including 
+configuration files.
 
 For next BBS start use fbb.sh script. It is in /usr/local/share/doc/fbb/
 Make it executable (chmod 755 fbb.sh) and move it somewhere on your system to call 
 it automatically on start, or use it manually "fbb.sh start". 
 
-2/ Compiling the xfbbX X11 client from source:
+3/ Compiling the xfbbX X11 client from source:
 ----------------------------------------------
 Building the xfbbX client requires the following libraries to be installed:
 	libx11-dev (provides -lX11)
@@ -52,7 +70,7 @@ automatically (you won't see a warning when running ./configure).
 
 xfbbX is a shell script which creates the resource file and runs xfbbX_cl.
 
-3/ Fixes and evolutions :
+4/ Fixes and evolutions :
 -------------------------
 Please, do not create new versions of code, this will make us impossible
 to maintain and know what is the current version. Instead help us to develop
@@ -68,7 +86,7 @@ Then you will be able to send your fix, evolutions proposals and remarks to
 the mailing list.
 
 
-4/ Running xfbbd :
+5/ Running xfbbd :
 ------------------
 
 Command line options of the fbb script :
@@ -148,7 +166,7 @@ Script directories (by value) :
         5 : sig_segv
         6 : reset
 
-5/ fbb folder tree :
+6/ fbb folder tree :
 --------------------
 
 Special files :
@@ -213,7 +231,7 @@ data tree :
                          \_ mail[0-9]
 
 
-6/ Good luck with "fbb"... 
+7/ Good luck with "fbb"... 
 --------------------------
 
    Jean-Paul ROUBELAT jpr@f6fbb.org
