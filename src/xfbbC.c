@@ -298,7 +298,7 @@ int main (int ac, char *av[])
 
 	if (sock == -1)
 	{
-		fprintf (stderr, "Cannot connect xfbbd\n");
+		fprintf (stderr, "Cannot connect to xfbbd, bbs may be offline. Sysop should check if fbb is running.\n");
 		return 0;
 	}
 

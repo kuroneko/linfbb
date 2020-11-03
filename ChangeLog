@@ -1334,3 +1334,7 @@ SVN (Dave van der Locht)		2 November 2020
 - pacsat.c Increased pfh buffer sizes by 1 char to account for the null (VE7FET)
 [r200]
 - Changed version number to 7.0.11
+
+SVN (Dave van der Locht)		3 November 2020
+[r201]
+- Extended xfbbC client local console connect failure message.
