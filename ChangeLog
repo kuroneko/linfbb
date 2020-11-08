@@ -1340,3 +1340,7 @@ SVN (Dave van der Locht)		3 November 2020
 - Extended xfbbC client local console connect failure message.
 [r202]
 - Added several changes to the README file.
+
+SVN (Dave van der Locht			8 November 2020
+[r203]
+- Fixed problem with console connections when xfbbD is running on a 64 bit OS.
