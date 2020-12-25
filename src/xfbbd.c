@@ -437,7 +437,7 @@ int call_nbdos (char **cmd, int nb_cmd, int mode, char *log, char *xdir, char *d
 
 		/* fail-safe bypass if filter executable isn't found (exit code 127) */		
 		if (retour == 127)
-			retour = 0;
+			retour = -1;
 	}
 	return (retour);
 }

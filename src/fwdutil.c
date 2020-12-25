@@ -275,6 +275,7 @@ int is_held (char *ascfile)
 			if (test_message == 2)
 			{
 				/* M-FILTER is not found ... Will not be called again */
+                fprintf (stderr, "No message filter (M_FILTER) found, FBB skips trying on subsequent messages\n");
 				test_message = 0;
 				break;
 			}

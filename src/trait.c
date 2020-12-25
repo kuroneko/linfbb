@@ -844,6 +844,7 @@ int accept_cnx (void)
 			if (test_connect == 2)
 			{
 				/* premiere fois ... Pas de C_FILTER trouve */
+                fprintf (stderr, "No connection filter (C_FILTER) found, FBB skips trying at subsequent connections\n");
 				test_connect = 0;
 			}
 			else
