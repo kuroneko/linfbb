@@ -1344,3 +1344,9 @@ SVN (Dave van der Locht)
 [r209]
 - Fixed K@ [BBS] command not working correcly when trying to kill message(s) 
   addressed to @BBS where a full H-route is used (entered manually or from WP).
+[r210]
+- Fixed when c_filter or m_filter aren't found the first attempt after FBB 
+  start, they won't be called on subsequent connects or messages.
+[r211]
+- Added extra error handling in drv_sock.c to prevent a segfault loop under
+  some circumstances.

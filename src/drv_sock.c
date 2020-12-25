@@ -539,7 +539,14 @@ int opn_sck (int port, int nb)
 			fprintf (stderr, "CAN_AX25 mycall %s myssid %d\n", mycall, myssid);
 
 			ax25_aton_entry (call, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
-			p_name = ax25_config_get_addr (p_port[port].name);
+            if ((p_name = ax25_config_get_addr (p_port[port].name)) == NULL) 
+            {
+                fprintf (stderr, "opn_sck() invalid port name %s\n", p_port[port].name);
+                close (p_port[port].fd);
+                clear_can (port);
+                return (0);
+            }  
+        
 			ax25_aton_entry (p_name, addr.axaddr.fsa_digipeater[0].ax25_call);
 			addrlen = sizeof (struct full_sockaddr_ax25);
 
@@ -561,7 +568,14 @@ int opn_sck (int port, int nb)
 			addr.axaddr.fsa_ax25.sax25_family = AF_NETROM;
 			addr.axaddr.fsa_ax25.sax25_ndigis = 0;
 
-			p_name = nr_config_get_addr (p_port[port].name);
+            if ((p_name = nr_config_get_addr (p_port[port].name)) == NULL) 
+            {
+                fprintf (stderr, "opn_sck() invalid port name %s\n", p_port[port].name);
+                close (p_port[port].fd);
+                clear_can (port);
+                return (0);
+            }              
+            
 			fprintf (stderr, "CAN_NETROM mycall %s myssid %d\n", mycall, myssid);
 			ax25_aton_entry (p_name, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
 			addrlen = sizeof (struct full_sockaddr_ax25);
@@ -589,8 +603,17 @@ int opn_sck (int port, int nb)
 			ax25_aton_entry (call, addr.rsaddr.srose_call.ax25_call);
 			if (is_rsaddr (p_port[port].name))
 				p_name = p_port[port].name;
-			else
-				p_name = rs_config_get_addr (p_port[port].name);
+			else 
+            {
+                if ((p_name = rs_config_get_addr (p_port[port].name)) == NULL) 
+                {
+                    fprintf (stderr, "opn_sck() invalid port name %s\n", p_port[port].name);
+                    close (p_port[port].fd);
+                    clear_can (port);
+                    return (0);
+                }             
+            }
+            
 			rose_aton (p_name, addr.rsaddr.srose_addr.rose_addr);
 			addrlen = sizeof (struct sockaddr_rose);
 
@@ -1222,7 +1245,7 @@ static int sock_connect (char *commande, int can)
 	/*  int one = debug; */
 	int ioc;
 	union sockaddr_ham addr;
-	char *p_name;
+    char *p_name = NULL;
 	char mycallsign[AX25_CALLSID];
 	int backoff = 0;
 
@@ -1254,7 +1277,14 @@ static int sock_connect (char *commande, int can)
 
 		addr.axaddr.fsa_ax25.sax25_family = AF_AX25;
 		addr.axaddr.fsa_ax25.sax25_ndigis = 1;
-		p_name = ax25_config_get_addr (p_port[scan[can].port].name);
+        if ((p_name = ax25_config_get_addr (p_port[scan[can].port].name)) == NULL) 
+        {
+            fprintf (stderr, "sock_connect() invalid port name %s\n", p_port[scan[can].port].name);
+            close (fd);
+            clear_can (can);
+            return (0);
+        }        
+        
 		ax25_aton_entry (mycallsign, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
 		ax25_aton_entry (p_name, addr.axaddr.fsa_digipeater[0].ax25_call);
 		addrlen = sizeof (struct full_sockaddr_ax25);
@@ -1329,7 +1359,14 @@ static int sock_connect (char *commande, int can)
 
 		addr.axaddr.fsa_ax25.sax25_family = AF_NETROM;
 		addr.axaddr.fsa_ax25.sax25_ndigis = 1;
-		p_name = nr_config_get_addr (p_port[scan[can].port].name);
+        if ((p_name = nr_config_get_addr (p_port[scan[can].port].name)) == NULL) 
+        {
+            fprintf (stderr, "sock_connect() invalid port name %s\n", p_port[scan[can].port].name);
+            close (fd);
+            clear_can (can);
+            return (0);
+        }    
+        
 		ax25_aton_entry (p_name, addr.axaddr.fsa_ax25.sax25_call.ax25_call);
 		ax25_aton_entry (mycallsign, addr.axaddr.fsa_digipeater[0].ax25_call);
 		addrlen = sizeof (struct full_sockaddr_ax25);
@@ -1355,8 +1392,17 @@ static int sock_connect (char *commande, int can)
 		addr.rsaddr.srose_ndigis = 0;
 		if (is_rsaddr (p_port[scan[can].port].name))
 			p_name = p_port[scan[can].port].name;
-		else
-			p_name = rs_config_get_addr (p_port[scan[can].port].name);
+		else 
+        {
+            if ((p_name = rs_config_get_addr (p_port[scan[can].port].name)) == NULL) 
+            {
+                fprintf (stderr, "sock_connect() invalid port name %s\n", p_port[scan[can].port].name);
+                close (fd);
+                clear_can (can);
+                return (0);
+            }   
+        }
+        
 		rose_aton (p_name, addr.rsaddr.srose_addr.rose_addr);
 		ax25_aton_entry (mycallsign, addr.rsaddr.srose_call.ax25_call);
 		addrlen = sizeof (struct sockaddr_rose);
