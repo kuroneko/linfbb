@@ -103,7 +103,7 @@ static int teste_liste (bullist * lbul)
 		}
 		else
 		{
-			if (!strmatch (lbul->bbsv, pvoie->recliste.bbs))
+			if (!strmatch (bbs_via (lbul->bbsv), pvoie->recliste.bbs))
 				return (0);
 		}
 	}
