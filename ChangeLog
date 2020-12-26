@@ -1350,3 +1350,8 @@ SVN (Dave van der Locht)
 [r211]
 - Added extra error handling in drv_sock.c to prevent a segfault loop under
   some circumstances.
+[r212]
+- Fixed tabs in last commit. Missing comment r211: Added extra error handling 
+  in drv_sock.c to prevent a segfault loop under some circumstances.
+[r213]
+- Corrected tabs for changes committed in [r209] and [r210]
