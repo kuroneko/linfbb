@@ -68,14 +68,52 @@ tdir = @libdir@/fbb/tool
 # Path and filename for import file
 import = @localstatedir@/ax25/fbb/mail/mail.in
 
+# Full log gives you a log-file for every week. If you write NO here, no
+# log-file will be made. The log-file will appear in the directory named LOG.
+
 # Full log
 logs = OK
+
+# Next we have Test Mode (NO - OK). If you type OK, the BBS will start, but
+# will not access the TNC(s). Use this the first times, to make sure that
+# everything works fine. When you are sure that all is well, connect the TNC(s)
+# and change this to NO. Restart the FBB, and now the TNCs will be used, as
+# normal.
 
 # Test mode
 test = NO
 
+# Forward type FBB is faster and more efficient than standard MBL-type
+# forward. Use this whenever possible (OK). If you type NO, FBB-type forward
+# will not be allowed.  You may also use a parametre after OK/YES from this
+# list (add the ones you want):
+#  1  : A space is mandatory before the @ in a send message command
+#  2  : The length of the fields of a hierarchical address is not 
+#       tested to be 6 characters
+#  4  : The header line of a message is not truncated to the space before
+#       the 79th character
+#  8  : Header MBL/RLI
+#  16 : If there is no BBS field, the callsign of the BBS is sent to the PMS
+#  32 : Deletes the DATA messages sent to SYSOP
+#  64 : Don't use the BID recovered from headers and use a new one
+#  128: Accepts forwarding only from pre-declared BBS
+#  256: WP Messages are not held.
+#  512: XForwarding protocol has priority on FBB protocol.
+# 1024: Generation of an alternate BID like F6FBB-12345 (for dual BBS site)
+# 2048: Checksum unvalidated on XFwd.
+# 4096: Test of callsigns is less strict.  Allows all "callsign" as long as
+#       they have one figure (0-9) anywhere in the callsign.
+
 # Use (when possible) forward type FBB
 fbbfwd = OK 160
+
+# The same goes for compressed forward. Compressed forward
+# is very much faster, and should always be used. 
+# Parametre after "use compressed forwarding" give the options between 
+# compressed protocols :
+# 1 = FBB compressed forwarding
+# 2 = XFWD compressed forwarding
+# OK 3    allow both FBB and XFWD.
 
 # Use (when possible) compressed forward
 fbbcomp = OK 3
@@ -159,6 +197,28 @@ lifetime = 30
 
 # Zip code of the BBS
 zipcode = 00000
+
+# Here you will give the parameters allowing the list of messages in unproto
+# mode. This list can be interpreted by some terminal softwares (as TPK) and
+# greatly reduce the traffic on the local frequency.
+#
+# The first parameter is the maximum backward number. If a unproto user asks a
+# list which is lower than this number backward, he will be limited to this
+# parameter (IE: if the current message number is 20000 and a user asks the
+# list of the message 15000, he will be then limited to the 19500 if the
+# backward number is 500).
+#
+# The second parameter is the speed of the unproto updates given in seconds.
+# The frames will be sent with this period.
+#
+# The third parametre(s) have this meaning:
+# A = ACK messages
+# V = transit private messages
+# P = end-user private mail
+# M = subject is replaced by stars in private mail
+#     (Bulletins are always displayed)
+# Any unauthorized message will be unproto like
+# #12345 #
 
 # Number of back messages in unproto lists
 unprotoes = 500 5 P
