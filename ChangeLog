@@ -1355,3 +1355,7 @@ SVN (Dave van der Locht)
   in drv_sock.c to prevent a segfault loop under some circumstances.
 [r213]
 - Corrected tabs for changes committed in [r209] and [r210]
+[r214]
+- Added comments for some options in fbbopt.conf.
+[r215]
+- Changed * characters into # in forward.sys to match comment character with other files.
