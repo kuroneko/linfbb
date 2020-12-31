@@ -82,7 +82,7 @@ make_fbb_conf()
 	echo "# The following lines are mandatory"
 	echo "#"
 	echo "version = FBB$VERSION"
-	echo "# Callsign of BBS"
+	echo "# Callsign of BBS including H-route (full hierarchical information)"
 	echo "callsign = $CALL.$ROUTE"
 	echo "# SSID of BBS"
 	echo "ssid = $SSID"
