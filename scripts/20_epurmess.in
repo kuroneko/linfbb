@@ -1,10 +1,10 @@
 #!/bin/bash
-SBIN=`which fbbgetconf`
-SYSOP=`$SBIN sysmail`
-HADD=`$SBIN call`
-MAIL=`$SBIN import`
-DATA=`$SBIN data`
-TOOL=`$SBIN tdir`
+CONF=`@sbindir@/fbbgetconf`
+SYSOP=`$CONF sysmail`
+HADD=`$CONF call`
+MAIL=`$CONF import`
+DATA=`$CONF data`
+TOOL=`$CONF tdir`
 
 echo
 echo "--- Running epurmess"

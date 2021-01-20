@@ -1359,3 +1359,7 @@ SVN (Dave van der Locht)
 - Added comments for some options in fbbopt.conf.
 [r215]
 - Changed * characters into # in forward.sys to match comment character with other files.
+[r216]
+- Clarified callsign setting a bit more in generated fbb.conf file.
+[r217]
+- Changed maintenance scripts to use build system's prefix path.

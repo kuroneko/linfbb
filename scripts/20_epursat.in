@@ -1,7 +1,7 @@
 #!/bin/bash
 BINDIR=@sbindir@
-DATADIR=@localstatedir@/ax25/fbb
-SYSOP='/usr/local/sbin/fbbgetconf sysop'
+DATADIR=`@sbindir@/fbbgetconf data`
+SYSOP=`@sbindir@/fbbgetconf sysop`
 echo
 echo "--- Running satdoc & satupdat"
 echo
