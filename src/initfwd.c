@@ -241,7 +241,7 @@ static int tst_ligne (int c)
 	{
 
 	case 0:					/* Erreur */
-		sprintf (str, "Unknown ommand %c", c_save);
+		sprintf (str, "Unknown command %c", c_save);
 		error_file (str);
 		retour = 1;
 		break;

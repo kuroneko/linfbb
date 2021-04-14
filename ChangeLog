@@ -1363,3 +1363,5 @@ SVN (Dave van der Locht)
 - Clarified callsign setting a bit more in generated fbb.conf file.
 [r217]
 - Changed maintenance scripts to use build system's prefix path.
+[r218]
+- Corrected error message in initfwd.c
