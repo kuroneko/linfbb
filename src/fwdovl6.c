@@ -380,8 +380,15 @@ int scan_com_fwd (void)
 			texte (T_ERR + 6);
 		return (0);
 	}
-
+	
 	/* Prive sur routage de groupe ! */
+	
+	/* Private callsign check removed for bulletins because of problems with sending
+	   to destinations which validate with the private callsign check (eg. 7PLUS@WW)
+	   Other software also doesn't seem to have this check, tested with BPQmail and JNOS. 
+	*/	
+	
+	/*
 	if ((*ptmes->bbsv) && (ptmes->type != 'T') &&
 		(!msg_find (bbs_via (ptmes->bbsv))) && (find (ptmes->desti)))
 	{
@@ -391,6 +398,7 @@ int scan_com_fwd (void)
 			return (0);
 		}
 	}
+	*/
 
 	ptmes->status = 'N';
 	if (*ptmes->bbsv)
