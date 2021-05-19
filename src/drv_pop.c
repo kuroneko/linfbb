@@ -2493,7 +2493,7 @@ static int smtp_rcv_dt(int port, int can, char *buffer, int len)
 			}
 			else
 			{
-				snprintf(str, sizeof(str)-1, "From: %s\r", tport[port].tcan[can].mail_from->address);
+				snprintf(str, sizeof(str)-1, "SMTP mail received, may be 3rd party mail.\rHeaders:\rFrom: %s\r", tport[port].tcan[can].mail_from->address);
 				str[sizeof(str)-1] = 0;
 				add_to_msg(port, can, str);
 			

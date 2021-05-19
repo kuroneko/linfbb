@@ -1368,4 +1368,6 @@ SVN (Dave van der Locht)
 [r219]
 - Removed private callsign check for SB command because of problems with
   sending bulletins to destinations which validate with the private callsign
-  check (eg. 7PLUS@WW) 
+  check (eg. 7PLUS@WW)
+[r220]
+- Added notification in messages received via SMTP
