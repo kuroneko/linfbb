@@ -1371,3 +1371,6 @@ SVN (Dave van der Locht)
   check (eg. 7PLUS@WW)
 [r220]
 - Added notification in messages received via SMTP
+[r221]
+- Changed several files to reflect current maintainer on request of 
+  Bernard F6BVP. He has announced he definately stopped writing code for FBB.

@@ -112,19 +112,20 @@ static char *XVersion (int dat)
 void banner (void)
 {
 	fprintf (stderr,
-			 "*********************************************************\n"
+			 "*************************************************************\n"
 			 "* XFBB Linux daemon version %s PID=%d\n"
 			 "* Copyright F6FBB 1986-1999. All rights reserved.\n"
-			 "* Maintainer since 2000 : Bernard, f6bvp@free.fr\n"
+			 "* Copyright F6BVP 2000-2020. All rights reserved.\n"
+			 "* Maintainer since 2020 : D. van der Locht <dave.is@home.nl>\n"
 			 "*\n"
 			 "* This software is in the public domain. It can be copied\n"
 			 "* or installed for any use abiding by the laws\n"
 			 "* under GNU General Public License\n"
 			 "*\n"
-			 "* F6FBB (Jean-Paul ROUBELAT) and F6BVP (Bernard PIDOUX)\n"
-			 "* decline any responsibilty in the use of XFBB software.\n"
+			 "* The current and previous maintainers decline any\n"
+			 "* responsibilty in the use of XFBB software.\n"
 			 "*\n"
-			 "*********************************************************\n",
+			 "*************************************************************\n",
 			 XVersion (TRUE), getpid ());
 }
 
