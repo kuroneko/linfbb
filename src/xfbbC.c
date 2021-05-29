@@ -142,7 +142,7 @@ static int console_send_file(int sock, char *filename)
 	{
 		buffer[2] = 0;
 		buffer[3] = 0;
-		if (write(sock, buffer, 4) != 4)
+		if (write(sock, buffer, 4) == -1)
 			perror ("console_send_file() socket write error");
 		return errno;
 	}
@@ -154,8 +154,7 @@ static int console_send_file(int sock, char *filename)
 			nb = 0;
 		buffer[2] = nb % 256;
 		buffer[3] = nb >> 8;
-		//write(sock, buffer, nb+4);
-		if (write(sock, buffer, nb+4) != nb+4) {
+		if (write(sock, buffer, nb+4) == -1) {
 			perror ("console_send_file() socket write error");
 			printf ("%d data NOT sent\n", nb);
 		} else {
@@ -305,7 +304,7 @@ int main (int ac, char *av[])
 	fprintf (stderr, " Ok\n");
 
 	sprintf (buffer, "%d %d %s\n", mask, channel, mycall);
-	if (write (sock, buffer, strlen (buffer)) != strlen (buffer))
+	if (write (sock, buffer, strlen (buffer)) == -1)
 		perror ("main() socket write error");
 
 	fprintf (stderr, "Authentication in progress ... ");
@@ -325,7 +324,7 @@ int main (int ac, char *av[])
 
 	makekey (key, pass, buffer);
 	strcat (buffer, "\n");
-	if (write (sock, buffer, strlen (buffer)) != strlen (buffer))
+	if (write (sock, buffer, strlen (buffer)) == -1)
 		perror ("main() socket write error");
 
 	mode = 0;
@@ -353,7 +352,7 @@ int main (int ac, char *av[])
 			buffer[2] = len;
 			buffer[3] = 0;
 			strcpy(buffer+4, filename);
-			if (write (sock, buffer, len+4) != len+4)
+			if (write (sock, buffer, len+4) == -1)
 				perror ("main() socket write error");
 			break;
 		case SVC_RECV:
@@ -363,7 +362,7 @@ int main (int ac, char *av[])
 			buffer[2] = len;
 			buffer[3] = 0;
 			strcpy(buffer+4, filename);
-			if (write (sock, buffer, len+4) != len+4)
+			if (write (sock, buffer, len+4) == -1)
 				perror ("main() socket write error");
 			break;
 		case SVC_SEND:
@@ -373,7 +372,7 @@ int main (int ac, char *av[])
 			buffer[2] = len;
 			buffer[3] = 0;
 			strcpy(buffer+4, filename);
-			if (write (sock, buffer, len+4) != len+4)
+			if (write (sock, buffer, len+4) == -1)
 				perror ("main() socket write error");
 			console_send_file(sock, filename);
 			break;
@@ -395,7 +394,7 @@ int main (int ac, char *av[])
 			buffer[1] = SVC_FWD;
 			buffer[2] = len;
 			buffer[3] = 0;
-			if (write (sock, buffer, len+4) != len+4)
+			if (write (sock, buffer, len+4) == -1)
 				perror ("main() socket write error");
 			break;
 		case SVC_DISC:
@@ -407,7 +406,7 @@ int main (int ac, char *av[])
 			buffer[1] = SVC_DISC;
 			buffer[2] = len;
 			buffer[3] = 0;
-			if (write (sock, buffer, len+4) != len+4)
+			if (write (sock, buffer, len+4) == -1)
 				perror ("main() socket write error");
 			break;
 		}
@@ -558,7 +557,7 @@ int main (int ac, char *av[])
 							write_terminal(ptr, total);
 						else
 #endif
-							if (write (1, ptr, total) != total)
+							if (write (1, ptr, total) == -1)
 								perror ("main() socket write error");
 					}
 					break;
@@ -618,7 +617,7 @@ int main (int ac, char *av[])
 						else
 						{
 							filelen += total;
-							if (write(STDOUT_FILENO, buffer, total) != total)
+							if (write(STDOUT_FILENO, buffer, total) == -1)
 								perror ("main() socket write error");
 						}
 						fprintf(stderr, "receiving directory %s %d/%d bytes\n", filename, filelen, filetotal);
@@ -634,7 +633,7 @@ int main (int ac, char *av[])
 						else
 						{
 							filelen += total;
-							if (write(STDOUT_FILENO, buffer, total) != total)
+							if (write(STDOUT_FILENO, buffer, total) == -1)
 								perror ("main() socket write error");
 						}
 						fprintf(stderr, "receiving file %s %d/%d bytes\n", filename, filelen, filetotal);
@@ -653,7 +652,7 @@ int main (int ac, char *av[])
 						else
 						{
 							filelen += total;
-							if (write(STDOUT_FILENO, buffer, total) != total)
+							if (write(STDOUT_FILENO, buffer, total) == -1)
 								perror ("main() socket write error");
 						}
 						if (filetotal)

@@ -1374,3 +1374,5 @@ SVN (Dave van der Locht)
 [r221]
 - Changed several files to reflect current maintainer on request of 
   Bernard F6BVP. He has announced he definately stopped writing code for FBB.
+[r222]
+- Changed read/write functions return value handling added in [r198].

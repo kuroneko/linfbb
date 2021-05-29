@@ -303,7 +303,7 @@ int rcv_pop (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		{
 			/* If cannot assign the channel, then disconnect. */
 			sprintf (buf, "-ERR FBB POP3 server at %s - No free channel!\r\n", mycall);
-			if (write (new, buf, strlen (buf)) != strlen (buf))
+			if (write (new, buf, strlen (buf)) == -1)
 				perror("rcv_pop() socket write error");
 			close (new);
 		}
@@ -321,7 +321,7 @@ int rcv_pop (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 				getpid(), time(NULL), mypath);
 			sprintf (buf, "+OK FBB POP3 server ready %s\r\n", 
 				tport[*port].tcan[i].md5string);
-			if (write (new, buf, strlen (buf)) != strlen (buf))
+			if (write (new, buf, strlen (buf)) == -1)
 				perror("rcv_pop() socket write error");
 			
 			val = p_port[*port].pk_t;
@@ -361,7 +361,7 @@ int rcv_pop (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		{
 			/* If cannot assign the channel, then disconnects. */
 			sprintf (buf, "421 FBB SMTP server at %s - No free channel!\r\n", mypath);
-			if (write (new, buf, strlen (buf)) != strlen(buf))
+			if (write (new, buf, strlen (buf)) == -1)
 				perror("rcv_pop() socket write error");
 			close (new);
 		}
@@ -378,7 +378,7 @@ int rcv_pop (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 
 /* 			sprintf (buf, "220 FBB SMTP server ready at %s\r\n", mypath); */
 			sprintf (buf, "220 FBB ESMTP server ready at %s\r\n", mypath);
-			if (write (new, buf, strlen (buf)) != strlen(buf))
+			if (write (new, buf, strlen (buf)) == -1)
 				perror("rcv_pop() socket write error");
 
 			val = p_port[*port].pk_t;
@@ -417,7 +417,7 @@ int rcv_pop (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		{
 			/* If cannot assign the channel, then disconnect. */
 			sprintf (buf, "400 FBB NNTP server at %s - No free channel!\r\n", mypath);
-			if (write (new, buf, strlen (buf)) != strlen(buf))
+			if (write (new, buf, strlen (buf)) == -1)
 				perror("rcv_pop() socket write error");
 			close (new);
 		}
@@ -433,7 +433,7 @@ int rcv_pop (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 
 
 			sprintf (buf, "201 FBB NNTP server ready at %s\r\n", mypath);
-			if (write (new, buf, strlen (buf)) != strlen(buf))
+			if (write (new, buf, strlen (buf)) == -1)
 				perror("rcv_pop() socket write error");
 
 			val = p_port[*port].pk_t;
@@ -1551,7 +1551,7 @@ static int pop_send(int port, int canal, char *fmt, ...)
 		//if (1) I think it's best not to touch encoding.  Firefox can read and send 850 if needed.  This conversion just causes things to break
 		//		ibm_to_ansi(buf, strlen(buf));
 				
-		if (write (tport[port].tcan[canal].sock, buf, strlen (buf)) != strlen (buf))
+		if (write (tport[port].tcan[canal].sock, buf, strlen (buf)) == -1)
 			perror("pop_send() socket write error");
 		free(buf);	
 		return 1;
@@ -2302,7 +2302,7 @@ static int smtp_reply(int port, int can, int next, int num, char *fmt, ...)
 		va_end (argptr);
 
 		strcat(buf, "\r\n");
-		if (write (tport[port].tcan[can].sock, buf, strlen (buf)) != strlen(buf))
+		if (write (tport[port].tcan[can].sock, buf, strlen (buf)) == -1)
 			perror("rcv_pop() socket write error");
 
 		return 1;
