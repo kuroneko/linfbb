@@ -202,7 +202,7 @@ void k_tasks (void)
 		init_buf_swap ();
 		init_buf_rej ();
 		load_themes ();
-		test_message = 2;
+		through_mfilter = 1;
 	}
 
 	if ((caltemps / 60) != timeprec)

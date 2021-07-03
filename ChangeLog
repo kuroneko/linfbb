@@ -1376,3 +1376,7 @@ SVN (Dave van der Locht)
   Bernard F6BVP. He has announced he definately stopped writing code for FBB.
 [r222]
 - Changed read/write functions return value handling added in [r198].
+[r223]
+- Fixed failing duplicate message check on messages killed or archived by m_filter.
+- Corrected storing incorrect message number in wfbid.sys for held messages.
+

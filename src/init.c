@@ -104,7 +104,7 @@ int step_initialisations (int niveau)
 		lastaff = -1;
 		reply = 0;
 		snd_io = 0;
-		test_message = 2;
+		through_mfilter = 1;
 		h_screen = 25;
 		bid_ptr = NULL;
 		log_ptr = NULL;

@@ -246,11 +246,13 @@ int is_held (char *ascfile)
 
 	long numess = ptmes->numero;
 
-	if (test_message)
+	/* Invoke M_FILTER when found */
+	if (through_mfilter)
 	{
 		int ret = -1;
-
+		
 		/* Ecrire les infos ptmes dans le record 0 de DIRMES.SYS */
+		/*
 		ptmes->numero = nomess;
 
 		ouvre_dir ();
@@ -258,6 +260,7 @@ int is_held (char *ascfile)
 		ferme_dir ();
 
 		ptmes->numero = numess;
+		*/
 
 #ifdef __linux__
 		sprintf (s, "./m_filter %s %c %s %s %d",
@@ -272,13 +275,10 @@ int is_held (char *ascfile)
 		switch (ret)
 		{
 		case -1:
-			if (test_message == 2)
-			{
-				/* M-FILTER is not found ... Will not be called again */
-				fprintf (stderr, "No message filter (M_FILTER) found, FBB skips trying on subsequent messages\n");
-				test_message = 0;
-				break;
-			}
+			/* M_FILTER is not found ... Will not be called again */
+			fprintf (stderr, "No message filter (M_FILTER) found, FBB skips trying on subsequent messages\n");
+			through_mfilter = 0;
+			break;
 		case 1:				/* Kill */
 			for (i = 0; i < NBMASK; i++)
 				ptmes->fbbs[i] = ptmes->forw[i] = '\0';
@@ -301,13 +301,12 @@ int is_held (char *ascfile)
 		}
 
 		if (status)
-		{
 			ptmes->status = status;
-		}
-	}
 
-	if (test_message == 2)
-		test_message = 1;
+		/* With K or A status set by M_FILTER also store bid for later dupe checks */
+		if (((status == 'K') || (status == 'A')) && *ptmes->bid)
+			w_bid ();
+	}
 
 	if ((hold_wp ()) && ((pvoie->msg_held) || (status == 'H') || (hold (ptmes))))
 	{
@@ -316,6 +315,8 @@ int is_held (char *ascfile)
 		++nb_hold;
 		if (*ptmes->bid)
 		{
+			// held messages get in a separate list, don't store bid with wrong message number but use 0 instead
+			ptmes->numero = 0;
 			w_bid ();
 		}
 		if ((FOR (pvoie->mode)) && ((nobbs = n_bbs (pvoie->sta.indicatif.call)) != 0))

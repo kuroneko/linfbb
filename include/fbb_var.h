@@ -154,7 +154,7 @@ PUBLIC int ems_aut;				/* Autorise l'utilisation d'EMS */
 PUBLIC int internal_int;		/* Interruption interne du drsi */
 PUBLIC int tf_int;				/* Interruption interne du tfpcx */
 PUBLIC int bpq_deconnect;		/* Mode de deconnexion du BPQ */
-PUBLIC int test_message;		/* Procedure de test message */
+PUBLIC int through_mfilter;		/* Procedure de test message */
 PUBLIC int NBVOIES;				/* Nombre de voies allouees */
 PUBLIC int balbul;				/* Indicatifs bulletins dans la balise */
 PUBLIC unsigned def_mask;		/* Masque par defaut a la 1ere connexion */
