@@ -461,7 +461,7 @@ static int tst_mes_ems (int mode, bullist * ptmes)
 
 	while (read_rej (record, &rej))
 	{
-		if (rej.mode == mode)
+		if (strchr(rej.mode, mode))
 		{
 			taille = (long) rej.size * 1000L;
 			retour = (
@@ -472,15 +472,24 @@ static int tst_mes_ems (int mode, bullist * ptmes)
 						 (strmatch (ptmes->bid, rej.bid)) &&
 						 (ptmes->taille >= taille)
 				);
-			if (retour)
-				break;
 
+			if (retour)
+			{
+				if (rej.mode[0] == '!') 
+				{
+					retour = 0;
+					break;
+				}
+				else
+					break;
+			}
 		}
 		++record;
 
 	}
 	return (retour);
 }
+
 
 static int tst_mes (int mode, bullist * ptmes)
 {
@@ -504,20 +513,36 @@ static int tst_mes (int mode, bullist * ptmes)
 		{
 			sscanf (chaine, "%s %s %s %s %s %s %ld",
 					smode, type, exped, via, desti, bid, &taille);
-			if (toupper (*smode) != mode)
-				continue;
 
-			taille *= 1000;
-			retour = (
-						 ((type[0] == '*') || (type[0] == ptmes->type)) &&
-						 (strmatch (ptmes->exped, exped)) &&
-						 (strmatch (bbs_via (ptmes->bbsv), via)) &&
-						 (strmatch (ptmes->desti, desti)) &&
-						 (strmatch (ptmes->bid, bid)) &&
-						 (ptmes->taille >= taille)
-				);
-			if (retour)
-				break;
+			char *s = smode;
+			while (*s) {
+				*s = toupper((unsigned char) *s);
+				s++;
+			}
+
+			if (strchr(smode, mode))
+			{
+				taille *= 1000;
+				retour = (
+							 ((type[0] == '*') || (type[0] == ptmes->type)) &&
+							 (strmatch (ptmes->exped, exped)) &&
+							 (strmatch (bbs_via (ptmes->bbsv), via)) &&
+							 (strmatch (ptmes->desti, desti)) &&
+							 (strmatch (ptmes->bid, bid)) &&
+							 (ptmes->taille >= taille)
+					);
+
+				if (retour)
+				{
+					if (smode[0] == '!')
+					{
+						retour = 0;
+						break;
+					}
+					else 
+						break;
+				}
+			}
 		}
 		return (retour);
 	}

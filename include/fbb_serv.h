@@ -616,10 +616,9 @@ typedef struct
 Desc;
 
 /* Structure de REJET/HOLD */
-
 typedef struct
 {
-	char mode;
+	char mode[3];
 	char type;
 	char exped[7];
 	char via[7];

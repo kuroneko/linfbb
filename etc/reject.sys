@@ -1,59 +1,31 @@
 #
-# Fichier de rejets
-# 
-# Dans l'ordre, et a partir de la 1ere colonne :
-# Type, expediteur, routage, destinataire, taille maximale acceptee
+# File for rejecting messages.
 #
-# L'* et le ? peuvent se substituer aux caracteres (syntaxe MS-DOS)
+# The first letter of each valid line specifies the action:
+# R = Reject     : The message will not be received
+# H = Hold       : The message will be received but held until a sysop reviews
+# L = Local Hold : Only messages created on this BBS will be held
 #
-# A partir du 2-05-92
+# For specific exclusions or whitelisting an exclamation mark can be used
+# in front of the action. Exclusion rules MUST be placed before other matching
+# rules as processing is done from top to bottom.
 #
-# Type Exp    Via     Pour    BID      MaxLg
-#-------------------------------------------
+# Example, EXHOLD@TEST bulletins will NOT be held, all others to @TEST will
+# be held.
+#
+# !H B   *      TEST   EXHOLD  *        0
+# H  B   *      TEST   *       *        0
+#
+# This will hold all bulletins to @TEST except for EXHOLD@TEST.
+#
+# Fields: Type, from, @BBS, to, BID, maximum size
+#
+# * and ? can be used as wildcards (as in MS-DOS)
+#
+# Type From   @BBS    To      BID        MaxSize:
+#------------------------------------------------
+R B    TOTO   ALL     TATA    *          0
+R B    *      *       VENTE   *          0
+R B    *      VENTE   *       *          0
+H *    P1RAT  *       *       *          0
 L B    *      *       *       *          0
-H *    *      *       HUMOUR  *          0
-H *    F1BBI  *       *       *          0
-#H *    F6HED  *       *       *          0
-#H *    F6CDD  *       *       *          0
-#H *    *      *       F6CDD   *          0
-H *    F5OJL  *       *       *          0
-H B    G3RJM  *       *       *          0
-H B    F1VY   *       *       *          0
-H B    F6AOK  *       *       *          0
-H B    F6CDX  *       *       *          0
-H B    F6CVM  *       *       *          0
-H B    F6IQF  *       *       *          0
-H *    EA5EC  *       *       *          0
-H *    *      *       *       *_F*5SV    0
-H *    EB5HST *       *       *          0
-H *    FD1SLQ *       SYSOP   *          0
-H *    DL0SS  *       *       *          0
-H *    F5PJE  *       *       *          0
-H *    VE3RZX *       *       *          0
-H B    *      *       CB      *          0
-H B    I0PMW  *       *       *          0
-#
-R B    *      EA      *       *          0
-R B    *      AF      *       *          0
-R B    *      NEWSUU  *       *          0
-R *    *      FRANCA  VENTE*  *          0
-R *    *      FRANCA  ACHAT*  *          0
-R *    FXXXX  *       *       *          0
-R *    FILTER *       *       *          0
-#R B	*	EU	*	*	0
-#R B	*	FRA	*	*	0
-#R B	*	FRANCA	*	*	0
-#R B	*	WW	*	*	0
-R *    ALB#*  *       *       *          0
-R *    FRA#*  *       *       *          0
-R *    GER#*  *       *       *          0
-R *    PPN#*  *       *       *          0
-R *    POL#*  *       *       *          0
-R *    POR#*  *       *       *          0
-R *    PWR#*  *       *       *          0
-R *    TIP#*  *       *       *          0
-R *    AP1BOX *       *       *          0
-H *    @@@#*  *       *       *          0
-H *    FE6FBB *       *       *          0
-H B    *      USA       *       *          0
-#

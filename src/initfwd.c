@@ -63,32 +63,11 @@ static File file[MAX_NIVEAU];
 
 static void error_file (char *str)
 {
-	char wtexte[256];
-
-	deb_io ();
 #ifdef ENGLISH
-	if (operationnel)
-	{
-		sprintf (wtexte, "\r\nError in file %s line %d   : %s\r\n\a",
-				 file[niveau].name, file[niveau].nolig, str);
-		if (w_mask & W_FILE)
-			mess_warning (admin, "*** FILE ERROR ***    ", wtexte);
-	}
-	sprintf (wtexte, "Error in file %s line %d  : %s",
-			 file[niveau].name, file[niveau].nolig, str);
+	fprintf (stderr, "*** FILE ERROR *** in file %s line %d  : %s\n", file[niveau].name, file[niveau].nolig, str);
 #else
-	if (operationnel)
-	{
-		sprintf (wtexte, "\r\nErreur fichier %s ligne %d : %s\r\n\a",
-				 file[niveau].name, file[niveau].nolig, str);
-		if (w_mask & W_FILE)
-			mess_warning (admin, "*** ERREUR FICHIER ***", wtexte);
-	}
-	sprintf (wtexte, "Erreur fichier %s ligne %d : %s",
-			 file[niveau].name, file[niveau].nolig, str);
+	fprintf (stderr, "*** ERREUR FICHIER *** dans fichier %s ligne %d : %s\n", file[niveau].name, file[niveau].nolig, str);
 #endif
-	fin_io ();
-	win_message (5, wtexte);
 }
 
 #ifdef __FBBDOS__
@@ -669,7 +648,7 @@ static void init_buf_rej_ems (void)
 
 	FILE *fp;
 	int c;
-	char mode;
+	char mode[3];
 	char type;
 	char com_buf[80];
 	char exped[80];
@@ -701,14 +680,26 @@ static void init_buf_rej_ems (void)
 			c = *com_buf;
 			if ((c == '#') || (c == '\0'))
 				continue;
-			if (sscanf (com_buf, "%c %c %s %s %s %s %d",
-						&mode, &type, exped, route, desti, bid, &size) != 7)
+			if (sscanf (com_buf, "%s %c %s %s %s %s %d",
+						mode, &type, exped, route, desti, bid, &size) != 7)
 			{
 				error_file ("bad number of fields");
 			}
-			if ((mode != 'H') && (mode != 'R') && (mode != 'L'))
-				error_file ("bad mode (H, R or L)");
-			rej.mode = toupper (mode);
+
+			// convert mode to upper case
+			char *s = mode;
+			while (*s) {
+				*s = toupper((unsigned char) *s);
+				s++;
+			}
+
+			if ((strcmp(mode, "H") != 0) && (strcmp(mode, "R") != 0) && (strcmp(mode, "L") != 0)
+				&& (strcmp(mode, "!H") != 0) && (strcmp(mode, "!R") != 0) && (strcmp(mode, "!L") !=0)) 
+			{
+				error_file ("bad mode (H, R, L or !H, !R, !L)");
+			}
+
+			strn_cpy (2, rej.mode, mode);
 			rej.type = toupper (type);
 			rej.size = size;
 			strn_cpy (6, rej.exped, exped);
@@ -722,7 +713,7 @@ static void init_buf_rej_ems (void)
 
 		/* Invalide les anciens records */
 
-		rej.mode = '\0';
+		rej.mode[0] = '\0';
 		while (record < old_record_nb)
 		{
 			write_rej (record, &rej);

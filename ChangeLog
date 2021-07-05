@@ -1379,4 +1379,7 @@ SVN (Dave van der Locht)
 [r223]
 - Fixed failing duplicate message check on messages killed or archived by m_filter.
 - Corrected storing incorrect message number in wfbid.sys for held messages.
-
+[r224]
+- Added feature to use whitelisting or excluding rules in reject.sys.
+- Fixed error display/logging when parsing reject.sys at startup.
+- Changed example reject.sys file.
