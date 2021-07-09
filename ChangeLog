@@ -1383,3 +1383,5 @@ SVN (Dave van der Locht)
 - Added feature to use whitelisting or excluding rules in reject.sys.
 - Fixed error display/logging when parsing reject.sys at startup.
 - Changed example reject.sys file.
+[r225]
+- Corrected file paths in README.

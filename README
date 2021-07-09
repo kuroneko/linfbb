@@ -9,8 +9,9 @@ headers from libax25 to be installed.
 This means you either need to:
 
 - install libax25-dev (or equivalent) package through your package manager
-- download, compile, and install libax25 from source from http://www.linux-ax25.org
-- download. compile, and install libax25 from source from https://github.com/ve7fet/linuxax25 (unofficial suite).
+- download, compile, and install libax25 from source from one of these sources:
+http://www.linux-ax25.org (official suite)
+https://github.com/ve7fet/linuxax25 (unofficial suite).
 
 If you want ncurses support in the console program, you need to:
 
@@ -177,6 +178,10 @@ binaries :
 ----------
 /usr/local/sbin
 
+documentation :
+---------------
+/usr/local/share/doc/fbb
+
 configuration tree :
 --------------------
 /usr/local/etc/ax25/fbb
@@ -211,7 +216,6 @@ utilities tree :
 data tree :
 -----------
 /usr/local/var/ax25/fbb
-                      |\_ docs
                       |
                       |\_ log
                       |
@@ -228,7 +232,7 @@ data tree :
                       |      \_ mail[0-9]
                       |
                        \_ binmail
-                         \_ mail[0-9]
+                             \_ mail[0-9]                             
 
 
 7/ Good luck with "fbb"... 
