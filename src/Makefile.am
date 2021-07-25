@@ -33,11 +33,11 @@ maintinf_SOURCES = maintinf.c fbb_conf.c
 noinst_LIBRARIES = libxfbbd.a
 
 libxfbbd_a_SOURCES = arbre.c autobin.c balise.c bidexms.c conf.c\
-                console.c date.c devio.c dos_1.c dos_dir.c\
+		console.c date.c devio.c dos_1.c dos_dir.c\
 		driver.c drv_aea.c drv_ded.c drv_hst.c drv_kam.c\
 		drv_mod.c drv_pop.c drv_sock.c drv_tcp.c edit.c\
 		ems.c error.c exec_pg.c fbb_conf.c fbb_orb.c\
-                fortify.c forward.c fwdovl1.c fwdovl2.c fwdovl3.c\
+		fortify.c forward.c fwdovl1.c fwdovl2.c fwdovl3.c\
 		fwdovl4.c fwdovl5.c fwdovl6.c fwdovl7.c fwdutil.c\
 		gesfic.c ibm.c info.c init.c init_srv.c\
 		init_tnc.c initfwd.c initport.c k_tasks.c kernel.c\
@@ -46,10 +46,10 @@ libxfbbd_a_SOURCES = arbre.c autobin.c balise.c bidexms.c conf.c\
 		mbl_opt.c mbl_prn.c mbl_read.c mbl_rev.c mbl_stat.c\
 		mbl_sys.c mbl_user.c mblutil.c md5c.c modem.c\
 		nomenc.c nouvfwd.c pac_crc.c pacsat.c qraloc.c\
-                redist.c rx25.c serv.c serveur.c statis.c themes.c\
-		tnc.c tncio.c trait.c trajec.c trajovl.c variable.c\
-                warning.c watchdog.c waveplay.c wp.c wp_mess.c\
-                wpserv.c xfwd.c xmodem.c yapp.c
+		redist.c rx25.c serv.c serveur.c statis.c sysinfo.c\
+		themes.c tnc.c tncio.c trait.c trajec.c trajovl.c\
+		variable.c warning.c watchdog.c waveplay.c wp.c\
+		wp_mess.c wpserv.c xfwd.c xmodem.c yapp.c
 
 # We want to build fbb_conf.c on the fly to substitute in default paths
 nodist_libxfbbd_a_SOURCES = fbb_conf.c

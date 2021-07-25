@@ -1388,3 +1388,5 @@ SVN (Dave van der Locht)
 [r226]
 - Fixed status command (%) output, now showing correct memory values.
 - Added uptime and load average to status command (%) output.
+[r227]
+- Changed some build system files to add sysinfo files.

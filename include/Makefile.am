@@ -18,5 +18,6 @@ EXTRA_DIST = \
 	ufortify.h\
 	terminal.h\
 	xfbb.h\
-	yapp.h
+	yapp.h\
+	sysinfo.h
 
