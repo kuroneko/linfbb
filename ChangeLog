@@ -1385,3 +1385,6 @@ SVN (Dave van der Locht)
 - Changed example reject.sys file.
 [r225]
 - Corrected file paths in README.
+[r226]
+- Fixed status command (%) output, now showing correct memory values.
+- Added uptime and load average to status command (%) output.

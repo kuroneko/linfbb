@@ -912,7 +912,7 @@ static char buf[1000];
 #define MAX_ROW 3				/* these are a little liberal for flexibility */
 #define MAX_COL 7
 
-unsigned **meminfo (void)
+unsigned **meminfo_old (void)
 {
 	static unsigned *row[MAX_ROW + 1];	/* row pointers */
 	static unsigned num[MAX_ROW * MAX_COL];		/* number storage */
@@ -985,7 +985,7 @@ void free_mem (void)
 {
 	unsigned **mem;
 
-	if (!(mem = meminfo ()) || mem[meminfo_main][meminfo_total] == 0)
+	if (!(mem = meminfo_old ()) || mem[meminfo_main][meminfo_total] == 0)
 	{
 		/* cannot normalize mem usage */
 		tot_mem = 0L;

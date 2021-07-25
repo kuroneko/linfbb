@@ -21,6 +21,7 @@
 ************************************************************************/
 
 #include <serv.h>
+#include <sysinfo.h>
 
 /*
  * Module status BBS
@@ -186,7 +187,7 @@ static int sort_function (const void *a, const void *b)
 
 void mbl_stat (void)
 {
-	int i;
+	int i, j, k, l;
 	int ok;
 	int voie;
 	char call[20];
@@ -197,34 +198,64 @@ void mbl_stat (void)
 	int reste;
 	int machine;
 	long temps = time (NULL);
+	char *mem;
+	char *p;
+	unsigned int memtotal, memfree, buffers, cached, swaptotal, swapfree, sreclaimable, memavailable = 0;
+	char kb[3];
+	#define MAX_ROW 30
+	char memo[MAX_ROW][17];				/* memory field label */
+	unsigned int value[MAX_ROW];		/* amount of memory   */
+	int upminutes, uphours, updays;
+	double uptime_secs, idle_secs;
+	double av[3];
 
 	cr ();
-	sprintf (ligne, "Software FBB Version %s (%s) compiled on %s",
+	sprintf (ligne, "LinFBB version %s (%s) compiled on %s",
 			 version (), os (), date ());
 	outln (ligne, strlen (ligne));
-	
 	sprintf (ligne,
-			 "Mem Us:%ld  Mem Ok:%ld  Bid:%d  Lang:%d  Ports:%d  Ch:%d  FBB %s  BIN %s",
-			 mem_alloue, tot_mem, maxbbid, maxlang, nbport (), NBVOIES - 2,
+			 "Bid:%d  Lang:%d  Ports:%d  Ch:%d  FBB %s  BIN %s",
+			  maxbbid, maxlang, nbport (), NBVOIES - 2,
 			 (fbb_fwd) ? "Ok" : "No",
-			 (bin_fwd) ? "Ok" : "No"			 
-		);
+			 (bin_fwd) ? "Ok" : "No"
+		);	
 	outln (ligne, strlen (ligne));
-
-/*	
-#ifndef __DPMI16__
-	if (high_memory_type () == XMS)
-	{
-		sprintf (ligne, "Free XMS memory = %u KB", xms_free ());
-		outln (ligne, strlen (ligne));
-	}
-#endif
-*/
 	cr ();
 	occ = 0;
 	tot = 0L;
 
-	sprintf (ligne, "Available disks : ");
+	uptime (&uptime_secs, &idle_secs);
+	updays = (int) uptime_secs / (60 * 60 * 24);
+	upminutes = (int) uptime_secs / 60;
+	uphours = upminutes / 60;
+	uphours = uphours % 24;
+	upminutes = upminutes % 60;
+
+	sprintf (ligne, "Uptime         : ");
+	out (ligne, strlen (ligne));
+
+	if (updays)
+	{
+		sprintf (ligne, "%d day%s, ", updays, (updays != 1) ? "s" : "");
+		out (ligne, strlen (ligne));
+	}
+
+	if (uphours) 
+	{
+		sprintf (ligne, "%d hour%s ", uphours, (uphours != 1) ? "s" : "");
+		out (ligne, strlen (ligne));
+	}
+
+	sprintf (ligne, "%d minute%s", upminutes, (upminutes != 1) ? "s" : "");
+	out (ligne, strlen (ligne));
+	cr ();
+
+	loadavg (&av[0], &av[1], &av[2]);
+	sprintf (ligne, "Load average   : %.2f, %.2f, %.2f", av[0], av[1], av[2]);
+	out (ligne, strlen (ligne));
+	cr ();
+
+	sprintf (ligne, "Available disks: ");
 	out (ligne, strlen (ligne));
 	for (i = 0; i < 8; i++)
 	{
@@ -237,40 +268,75 @@ void mbl_stat (void)
 	cr ();
 	cr ();
 
-	sprintf (ligne, "%s", typ_exms ());
-	outln (ligne, strlen (ligne));
-	cr ();
-	if (*ligne != 'N')
+	if (strlen ((mem = meminfo ())) == 0 )
+		fprintf (stderr, "mbl_stat() Cannot get memory information !\n");
+	else
 	{
-		for (i = 0; i < NB_EMS; i++)
+		p = mem;
+		j = 0;
+		
+		for (i=0; i < MAX_ROW && *p; i++)
 		{
-			if (t_ems[i].flag == 0)
-				continue;
-			ok = 0;
-			if (desc[i].tot_bloc)
+			value[i] = 0;
+			l = sscanf(p, "%s%n", memo[i], &k);
+			p += k;
+			memo[i][16] = '\0';
+			while(*p && !isdigit(*p)) p++;
 			{
-				sprintf (ligne, "     %s : %2d page(s) (%3ld KB)",
-					  t_ems[i].ctype, desc[i].tot_bloc, desc[i].size >> 10);
-				occ += desc[i].tot_bloc;
-				tot += desc[i].size;
-				ok = 1;
+				l = sscanf(p, "%u%n", &value[i], &k);
+				p += k;
+				if (*p == '\n' || l < 1)
+				break;
+				l = sscanf(p, "%s%n", kb, &k);
+				p += k;
 			}
-			else
-			{
-				if ((i != HROUTE) || ((i == HROUTE) && (!EMS_WPG_OK ())))
-				{
-					sprintf (ligne, "     %s : Unused", t_ems[i].ctype);
-					ok = 1;
-				}
-			}
-			if (ok)
-				outln (ligne, strlen (ligne));
 		}
-		sprintf (ligne, "   Total :%3d page(s) (%3ld KB)", occ, tot >> 10);
+
+		for (i = 0; i < MAX_ROW; i++)
+		{
+			if (!strcmp(memo[i], "MemTotal:"))
+				memtotal = value[i];
+			if (!strcmp(memo[i], "MemFree:"))
+				memfree = value[i];
+			if (!strcmp(memo[i], "Buffers:"))
+				buffers = value[i];
+			if (!strcmp(memo[i], "Cached:"))
+				cached = value[i];
+			if (!strcmp(memo[i], "SwapTotal:"))
+				swaptotal = value[i];
+			if (!strcmp(memo[i], "SwapFree:"))
+				swapfree = value[i];
+			if (!strcmp(memo[i], "SReclaimable:"))
+				sreclaimable = value[i];
+			if (!strcmp(memo[i], "MemAvailable:"))	// MemAvailable only in meminfo from kernel 3.16 and up
+				memavailable = value[i];
+		}
+
+		sprintf (ligne, "MiB Mem : %7.1f total, %7.1f free, %7.1f used, %7.1f buff/cache", 
+				((double)memtotal/1024),
+				((double)memfree/1024),
+				((double)((memtotal-memfree)-(buffers+cached+sreclaimable))/1024),
+				(((double)buffers+cached+sreclaimable))/1024);
+		outln (ligne, strlen (ligne));
+
+		if (memavailable > 0) {
+			sprintf (ligne, "MiB Swap: %7.1f total, %7.1f free, %7.1f used, %7.1f avail Mem", 
+					((double)swaptotal/1024),
+					((double)swapfree/1024),
+					((double)(swaptotal-swapfree)/1024),
+					((double)memavailable/1024));
+		} else {
+			sprintf (ligne, "MiB Swap: %7.1f total, %7.1f free, %7.1f used", 
+					((double)swaptotal/1024),
+					((double)swapfree/1024),
+					((double)(swaptotal-swapfree)/1024));
+		}
 		outln (ligne, strlen (ligne));
 		cr ();
 	}
 
+	sprintf (ligne, "Channel usage:");
+	outln (ligne, strlen (ligne));
 	sprintf (ligne,
 			 "Ch Callsign  N1 N2 N3   Cnect Cmput T-Out  Used Status     Buf Freq"
 		);
