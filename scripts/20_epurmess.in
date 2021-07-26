@@ -1,5 +1,5 @@
 #!/bin/bash
-CONF=`@sbindir@/fbbgetconf`
+CONF='@sbindir@/fbbgetconf'
 SYSOP=`$CONF sysmail`
 HADD=`$CONF call`
 MAIL=`$CONF import`

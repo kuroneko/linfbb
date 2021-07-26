@@ -1390,3 +1390,5 @@ SVN (Dave van der Locht)
 - Added uptime and load average to status command (%) output.
 [r227]
 - Changed some build system files to add sysinfo files.
+[r228]
+- Fixed maintenance scripts not working after SVN commit r217.
