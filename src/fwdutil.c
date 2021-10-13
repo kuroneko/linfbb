@@ -250,9 +250,8 @@ int is_held (char *ascfile)
 	if (through_mfilter)
 	{
 		int ret = -1;
-		
+
 		/* Ecrire les infos ptmes dans le record 0 de DIRMES.SYS */
-		/*
 		ptmes->numero = nomess;
 
 		ouvre_dir ();
@@ -260,7 +259,6 @@ int is_held (char *ascfile)
 		ferme_dir ();
 
 		ptmes->numero = numess;
-		*/
 
 #ifdef __linux__
 		sprintf (s, "./m_filter %s %c %s %s %d",

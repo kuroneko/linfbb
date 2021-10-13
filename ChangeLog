@@ -1392,3 +1392,5 @@ SVN (Dave van der Locht)
 - Changed some build system files to add sysinfo files.
 [r228]
 - Fixed maintenance scripts not working after SVN commit r217.
+[r229]
+- Fixed issue where FBB kills wrong message with M_FILTER used after SVN r223.
