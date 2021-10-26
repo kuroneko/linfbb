@@ -1318,9 +1318,8 @@ the message lookup more robust in the case the themes.sys file changes."
   -fstack-clash-protection which is included by default when GCC is built with
   stack smashing protection (SSP).
 - Changed README to reflect correct mailing list e-mail address.
-*******************************************************************************
 
-SVN (Dave van der Locht)
+7.0.11 (Dave van der Locht)			26 October 2021
 [r196] 
 - Copied SVN trunk to tags/7.0.10
 [r197]
