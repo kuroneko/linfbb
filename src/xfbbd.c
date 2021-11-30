@@ -200,7 +200,7 @@ int main (int ac, char **av)
 	{
 		if (strcmp (av[ng], "-h") == 0)
 		{
-			fprintf (stderr, "usage : xfbbd [-v] [-p port | -s service]\n");
+			fprintf (stderr, "usage : xfbbd [-v] [-p port | -s service] [-a] [-i]\n");
 			return (0);
 		}
 		else if (strcmp (av[ng], "-V") == 0)

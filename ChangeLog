@@ -1393,3 +1393,13 @@ the message lookup more robust in the case the themes.sys file changes."
 - Fixed maintenance scripts not working after SVN commit r217.
 [r229]
 - Fixed issue where FBB kills wrong message with M_FILTER used after SVN r223.
+
+
+SVN (Dave van der Locht)			30 November 2021
+[r230]
+- Modified changelog to reflect 7.0.11 release.
+[r231]
+- Copied SVN trunk to tags/7.0.11
+[r232]
+- Fixed xfbbd usage output didn't show -a argument which allows monitoring
+  of outgoing frames as wel as incoming ones for socket connections.
