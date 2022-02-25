@@ -404,8 +404,8 @@ fbb_conf()
 fbb_end()
 {
 	echo "Received TERM signal"
-	echo "killproc -TERM $FBB"
-	killproc -TERM $FBB
+	echo "pkill --signal 15 --full $FBB $FBB_PARAM"
+	pkill --signal 15 --full "$FBB $FBB_PARAM"
 	exit 1
 }
 
