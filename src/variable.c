@@ -37,6 +37,7 @@ char *strdate (long temps)
 
 	df ("strdate", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	if (vlang == -1)
 		*jour = '\0';
@@ -61,6 +62,7 @@ char *strdt (long temps)
 
 	df ("strdt", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	sprintf (cdate, "%02d/%02d/%02d %02d:%02d",
 			 sdate->tm_mday,
@@ -78,6 +80,7 @@ static char *date_heure_fbb (long temps)
 
 	df ("data_heure_fbb", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	sprintf (cdate, "%02d%02d/%02d%02d",
 			 sdate->tm_mon + 1, sdate->tm_mday,
@@ -94,6 +97,7 @@ char *date_mbl (long temps)
 
 	df ("data_mbl", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	sprintf (cdate, "%02d%02d%02d", sdate->tm_year % 100, sdate->tm_mon + 1, sdate->tm_mday);
 	ff ();
@@ -108,6 +112,7 @@ char *heure_mbl (long temps)
 
 	df ("heure_mbl", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	sprintf (cdate, "%02d%02d", sdate->tm_hour, sdate->tm_min);
 	ff ();
@@ -123,6 +128,7 @@ static char *date_mbl_new (long temps)
 
 	df ("date_mbl_new", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	if (vlang == -1)
 		*mois = '\0';
@@ -144,6 +150,7 @@ static char *annee_mbl (long temps)
 
 	df ("annee_mbl", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	sprintf (cdate, "%02d", sdate->tm_year % 100);
 	ff ();
@@ -170,6 +177,7 @@ char *strheure (long temps)
 
 	df ("str_heure", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	sprintf (cdate, "%02d:%02d", sdate->tm_hour, sdate->tm_min);
 	ff ();
@@ -183,6 +191,7 @@ int jour (long temps)
 
 	df ("jour", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	ff ();
 	return (sdate->tm_wday);
@@ -195,6 +204,7 @@ int nojour (long temps)
 
 	df ("nojour", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	ff ();
 	return (sdate->tm_mday);
@@ -219,6 +229,7 @@ int gmt_heure (long temps)
 
 	df ("heure", 2);
 
+	time(&temps);
 	sdate = gmtime (&temps);
 	ff ();
 	return (sdate->tm_hour);
@@ -231,6 +242,7 @@ int minute (long temps)
 
 	df ("minute", 2);
 
+	time(&temps);
 	sdate = localtime (&temps);
 	ff ();
 	return (sdate->tm_min);
