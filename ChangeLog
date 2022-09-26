@@ -1405,5 +1405,3 @@ SVN (Dave van der Locht)			30 November 2021
   of outgoing frames as wel as incoming ones for socket connections.
 [r233]
 - Changed killproc usage in fbb shell script to pkill.
-[r234]
-- Fixed issue where xfbbd might crash when using J# command (F6BVP).
