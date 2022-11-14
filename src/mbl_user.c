@@ -364,15 +364,12 @@ int mbl_jheard (void)
 	int port;
 
 	if (isdigit (*indd))
-	{	
-		if ((*indd & 0xF) == 0)
-			return (1);
-
+	{
 		port = 0;
-		
+
 		while (*indd && (isdigit (*indd)))
-		{			
-			port = (port * 10) + (*indd & 0xF);			
+		{
+			port = (port * 10) + (*indd & 0xF);
 			++indd;
 		}
 
@@ -381,7 +378,7 @@ int mbl_jheard (void)
 		return (0);
 	}
 	else
-	{		
+	{
 		if (ISGRAPH (*(indd + 1)))
 			return (1);				// erreur
 
@@ -520,7 +517,7 @@ void j_list (int portnum, char portlet)
 			port = '\0';
 		else
 			port = portlet;
-		if ((port) && ((port < 'A') || (port > 'J') || (p_port[port - 'A' + 1].pvalid == 0)))
+		if ((port < 'A') || (port > 'J') || (p_port[port - 'A' + 1].pvalid == 0))
 		{
 			texte (T_ERR + 14);
 			return;
