@@ -1395,7 +1395,7 @@ the message lookup more robust in the case the themes.sys file changes."
 - Fixed issue where FBB kills wrong message with M_FILTER used after SVN r223.
 
 
-SVN (Dave van der Locht)			30 November 2021
+SVN (Dave van der Locht)			14 November 2022
 [r230]
 - Modified changelog to reflect 7.0.11 release.
 [r231]
@@ -1405,3 +1405,5 @@ SVN (Dave van der Locht)			30 November 2021
   of outgoing frames as wel as incoming ones for socket connections.
 [r233]
 - Changed killproc usage in fbb shell script to pkill.
+[r236]
+- Fixed J command where 'incorrect port' was shown with numeric parameters.
