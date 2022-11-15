@@ -1409,3 +1409,6 @@ SVN (Dave van der Locht)			14 November 2022
 - Fixed J command where 'incorrect port' was shown with numeric parameters.
 [r237]
 - Fixed J command incorrect error message when entering (invalid) port 0.
+[r238]
+- Modified README to inform about deprecation and future removal of the X11 
+  utilities.

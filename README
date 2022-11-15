@@ -19,6 +19,7 @@ If you want ncurses support in the console program, you need to:
 
 2/ Compiling xfbbd, xfbbC client and its utilities from source:
 -------------------------------------------------------------------------------
+
 To compile and install xfbbd you need to run a session as root
 for writing privilege reasons.
 
@@ -57,6 +58,13 @@ it automatically on start, or use it manually "fbb.sh start".
 
 3/ Compiling the xfbbX X11 client from source:
 ----------------------------------------------
+LinFBB's X11 support has been stopped and the X11 utilities will be removed 
+from LinFBB. This is because the utilities were a preliminary project of F6FBB 
+and currently heavily depricated. They will be replaced by a cross-plaform 
+graphical user interface. If you despite want the X11 utilities to be built, 
+you can read on but be warned there might be compile or runtime errors which
+won't be resolved.
+
 Building the xfbbX client requires the following libraries to be installed:
 	libx11-dev (provides -lX11)
 	libxt-dev (provides -lXt)
