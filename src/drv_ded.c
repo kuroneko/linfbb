@@ -65,6 +65,8 @@ int rcv_ded (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 
 	valid = 0;
 
+	usleep(10000);		/* wait 10 msec to allow interrupt and avoid CPU overload */
+
 	deb_io ();
 	code = recv_ded (*port, can, &lgbuf, buffer);
 	fin_io ();

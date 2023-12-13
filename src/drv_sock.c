@@ -215,7 +215,7 @@ int rcv_sck (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		return (1);
 	}
 
-	usleep(50000);		/* wait 50 msec to allow interrupt and avoid CPU overload */
+	usleep(10000);		/* wait 10 msec to allow interrupt and avoid CPU overload */
 	
 	/* Test connection */
 	scan[0].sock = p_port[*port].fd;

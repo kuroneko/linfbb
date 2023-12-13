@@ -228,7 +228,7 @@ int rcv_tcp (int *port, int *canal, int *cmd, char *buffer, int *len, ui_header 
 		return 1;
 	}
 	
-	usleep(50000);		/* wait 50 msec to allow interrupt and avoid CPU overload */
+	usleep(10000);		/* wait 10 msec to allow interrupt and avoid CPU overload */
 
 	/* Teste s'il y a une connection */
 	tport[*port].tcan[0].sock = p_port[*port].fd;

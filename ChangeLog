@@ -1412,3 +1412,6 @@ SVN (Dave van der Locht)			14 November 2022
 [r238]
 - Modified README to inform about deprecation and future removal of the X11 
   utilities.
+[r239]
+- Fixed problem where high CPU usage was seen when using one or more DED ports.
+- Equalized usleep() value to 10msec in other drivers receive functions.
