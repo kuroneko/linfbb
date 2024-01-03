@@ -2,7 +2,7 @@ A AMSAT
 #
   P @
 #
-  c @localstatedir@/ax25/fbb/sat/amsat.txt
+  c @FBB_INSTALL_FULL_STATEDIR@/sat/amsat.txt
 #
   B SAT
   F SAT

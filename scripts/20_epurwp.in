@@ -1,28 +1,30 @@
 #!/bin/bash
-CONF='@sbindir@/fbbgetconf'
-SYSOP=`$CONF sysmail`
-HADD=`$CONF call`
-MAIL=`$CONF import`
-DATA=`$CONF data`
-TOOL=`$CONF tdir`
+CONF='@CMAKE_INSTALL_FULL_SBINDIR@/fbbgetconf'
+SYSOP="$("$CONF" sysmail)"
+HADD="$("$CONF" cal)"
+MAIL="$("$CONF" import)"
+DATA="$("$CONF" data)"
+TOOL="$("$CONF" tdir)"
 
 echo
 echo "--- Running epurwp"
 echo
 
-cd $DATA
-$TOOL/epurwp 40 90
+cd "$DATA" || exit 1
+"$TOOL/epurwp" 40 90
 ret=$?
 
-T1=`cat $DATA/epurwp.res | head -n 1 | awk '{print $1}'`
-MYTIME=`date -d @$T1`
+T1="$(head -n 1 "$DATA/epurwp.res" | awk '{print $1}')"
+MYTIME="$(date -d "@$T1")"
 
-echo "SP $SYSOP@$HADD" >> $MAIL
-echo "WP MAINT at $HADD" >> $MAIL
-echo $MYTIME >> $MAIL
+{
+  echo "SP $SYSOP@$HADD"
+  echo "WP MAINT at $HADD"
+  echo "$MYTIME"
+} >> "$MAIL"
 sleep 3
-sed -i '1d' $DATA/epurwp.res
-cat $DATA/epurwp.res >> $MAIL
-echo "/EX" >> $MAIL
+sed -i '1d' "$DATA/epurwp.res"
+cat "$DATA/epurwp.res" >> "$MAIL"
+echo "/EX" >> "$MAIL"
 
 exit $ret

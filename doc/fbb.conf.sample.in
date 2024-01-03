@@ -1,7 +1,7 @@
 #
 # FBB Set-up file
 #
-# default is @sysconfdir@/ax25/fbb/fbb.conf
+# default is @FBB_INSTALL_FULL_CONFDIR@/fbb.conf
 #
 # may be changed using the $FBBCONF environment variable
 #
@@ -12,7 +12,7 @@
 # The following lines are mandatory
 #
 
-version = FBB@package_version@
+version = FBB@fbb_VERSION@
 
 # Callsign of BBS with hierarchical information
 callsign = F6FBB.FMLR.FRA.EU
@@ -66,40 +66,40 @@ server = REQDIR  reqdir     Directory request
 #
 
 # Directory of data files
-data = @localstatedir@/ax25/fbb
+data = @FBB_INSTALL_FULL_STATEDIR@
 
 # Directory of config files
-config = @sysconfdir@/ax25/fbb
+config = @FBB_INSTALL_FULL_CONFDIR@
 
 # Directory of message files
-messages = @localstatedir@/ax25/fbb/mail
+messages = @FBB_INSTALL_FULL_STATEDIR@/mail
 
 # Directory of compressed files
-compressed = @localstatedir@/ax25/fbb/binmail
+compressed = @FBB_INSTALL_FULL_STATEDIR@/binmail
 
 # Directory of users
-fbbdos = *,*,@localstatedir@/ax25/fbb/fbbdos,*,*,*,*,*
+fbbdos = *,*,@FBB_INSTALL_FULL_STATEDIR@/fbbdos,*,*,*,*,*
 
 # Directory of YAPP files
-yapp = @localstatedir@/ax25/fbb/fbbdos/yapp
+yapp = @FBB_INSTALL_FULL_STATEDIR@/fbbdos/yapp
 
 # Directory of documentation files
-docs = @localstatedir@/ax25/fbb/docs
+docs = @FBB_INSTALL_FULL_STATEDIR@/docs
 
 # Directory of the pg programs
-pg = @libdir@/fbb/pg
+pg = @FBB_INSTALL_FULL_PKGLIBDIR@/pg
 
 # Directory of the filter programs
-fdir = @libdir@/fbb/filter
+fdir = @FBB_INSTALL_FULL_PKGLIBDIR@/filter
 
 # Directory of the server programs
-sdir = @libdir@/fbb/server
+sdir = @FBB_INSTALL_FULL_PKGLIBDIR@/server
 
 # Directory of the tool programs (fbbdos, forward, cron...)
-tdir = @libdir@/fbb/tool
+tdir = @FBB_INSTALL_FULL_PKGLIBDIR@/tool
 
 # Path and filename for import file
-import = @localstatedir@/ax25/fbb/mail/mail.in
+import = @FBB_INSTALL_FULL_STATEDIR@/mail/mail.in
 
 # Full log
 logs = OK

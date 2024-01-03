@@ -25,21 +25,21 @@
 #include <ctype.h>
 #include <string.h>
 
-#define FBBCONFFILE "@sysconfdir@/ax25/fbb/fbb.conf"
+#define FBBCONFFILE "@FBB_INSTALL_FULL_CONFDIR@/fbb.conf"
 
 
 /* Default values for the fbb.conf file */
 
 static char *defstr[] = {
-	"conf",	"@sysconfdir@/ax25/fbb",
-	"data",	"@localstatedir@/ax25/fbb",
-	"mess",	"@localstatedir@/ax25/fbb/mail",
-	"comp",	"@localstatedir@/ax25/fbb/binmail",
-	"fbbd",	"*,*,@localstatedir@/ax25/fbb/fbbdos,*,*,*,*,*",
-	"yapp",	"@localstatedir@/ax25/fbb/fbbdos/yapp",
-	"docs",	"@docdir@",
+	"conf",	"@FBB_INSTALL_FULL_CONFDIR@",
+	"data",	"@FBB_INSTALL_FULL_STATEDIR@",
+	"mess",	"@FBB_INSTALL_FULL_STATEDIR@/mail",
+	"comp",	"@FBB_INSTALL_FULL_STATEDIR@/binmail",
+	"fbbd",	"*,*,@FBB_INSTALL_FULL_STATEDIR@/fbbdos,*,*,*,*,*",
+	"yapp",	"@FBB_INSTALL_FULL_STATEDIR@/fbbdos/yapp",
+	"docs",	"@CMAKE_INSTALL_FULL_DOCDIR@",
 	"sysm", "",
-	"impo",	"@localstatedir@/ax25/fbb/mail/mail.in",
+	"impo",	"@FBB_INSTALL_FULL_STATEDIR@/mail/mail.in",
 	"logs",	"OK",
 	"test",	"NO",
 	"fbbf",	"OK 160",
@@ -62,10 +62,10 @@ static char *defstr[] = {
 	"unpr",	"500 5 P",
 	"upba",	"",
 	"dwba",	"",
-	"pg",	"@libdir@/fbb/pg",
-	"fdir",	"@libdir@/fbb/filter",
-	"sdir",	"@libdir@/fbb/server",
-	"tdir",	"@libdir@/fbb/tool",
+	"pg",	"@FBB_INSTALL_FULL_PKGLIBDIR@/pg",
+	"fdir",	"@FBB_INSTALL_FULL_PKGLIBDIR@/filter",
+	"sdir",	"@FBB_INSTALL_FULL_PKGLIBDIR@/server",
+	"tdir",	"@FBB_INSTALL_FULL_PKGLIBDIR@/tool",
 	"poph",	"",
 	NULL
 };

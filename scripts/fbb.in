@@ -1,15 +1,15 @@
 #!/bin/bash
-FBBCONF=@sysconfdir@/ax25/fbb
-CONFDIR=@sysconfdir@/ax25/fbb
-DATADIR=@localstatedir@/ax25/fbb
-FBBDIR=@localstatedir@/ax25/fbb
-LIBDIR=@libdir@/fbb
-SBINDIR=@sbindir@
-DOCDIR=@docdir@
+FBBCONF="@FBB_INSTALL_FULL_CONFDIR@"
+CONFDIR="@FBB_INSTALL_FULL_CONFDIR@"
+DATADIR="@FBB_INSTALL_FULL_STATEDIR@"
+FBBDIR="@FBB_INSTALL_FULL_STATEDIR@"
+LIBDIR="@FBB_INSTALL_FULL_PKGLIBDIR@"
+SBINDIR="@CMAKE_INSTALL_FULL_SBINDIR@"
+DOCDIR="@CMAKE_INSTALL_FULL_DOCDIR@"
 
-DOSDIR=$DATADIR/fbbdos
-MAILIN=$FBBDIR/mail/mail.in
-FBB=$SBINDIR/xfbbd
+DOSDIR="$DATADIR/fbbdos"
+MAILIN="$FBBDIR/mail/mail.in"
+FBB="$SBINDIR/xfbbd"
 
 FBBLOG=/dev/null
 # Parse localtime configuration, keeps standard/daylight savings time intact.
@@ -25,17 +25,17 @@ export CONFDIR DATADIR FBBDIR LIBDIR SBINDIR DOSDIR FBB MAILIN FBBLOG TZ
 # declare -a gives sometime problems...
 # declare -a PORT_NAME NB_CH PORT_FREQ
 
-VERSION=@package_version@
+VERSION="@fbb_VERSION@"
 
 # run batches from the housekeeping directory
 housekeeping()
 {
 	echo "Running $1"
-	if [ -d $LIBDIR/script/$1 ] ; then
-		for i in $LIBDIR/script/$1/*; do
+	if [ -d "$LIBDIR/script/$1" ] ; then
+		for i in "$LIBDIR/script/$1/"*; do
     		test -x "$i" || continue
 			echo "  script = $i"
-			$i
+			"$i"
 		done
 	fi
 }
@@ -43,25 +43,25 @@ housekeeping()
 # send a mail to sysop
 segv()
 {
-	MAIL_IN=`fbbgetconf import`
-	SYSOP=`fbbgetconf sysop`
-	cat << EOF >> $MAIL_IN
+	MAIL_IN="$(fbbgetconf import)"
+	SYSOP="$(fbbgetconf sysop)"
+	cat << EOF >> "$MAIL_IN"
 SP $SYSOP
 Segmentation error
-FBB gave a segmentation violation on `date`
+FBB gave a segmentation violation on $(date)
 /EX
 EOF
 }
 		
 replace()
 {
-	if [ ! -f $1 ] ; then
+	if [ ! -f "$1" ] ; then
 		return 0
 	else
-		echo -n "file `basename $1` already exists. Replace (Y/N) ? "
+		echo -n "file $(basename "$1") already exists. Replace (Y/N) ? "
 		read REP
-		if [ "$REP" = "N" -o "$REP" = "n" ] ; then
-	   		return 1
+		if [ "$REP" = "N" ] || [ "$REP" = "n" ] ; then
+      return 1
 		else
 			return 0
 		fi
@@ -73,7 +73,7 @@ make_fbb_conf()
 	echo "#"
 	echo "# FBB Set-up file"
 	echo "#"
-	echo "# default is @sysconfdir@/ax25/fbb/fbb.conf"
+	echo "# default is @FBB_INSTALL_FULL_CONFDIR@/fbb.conf"
 	echo "#"
 	echo "# may be changed using the $FBBCONF environment variable"
 	echo "#"
@@ -197,7 +197,7 @@ get_fbb_conf()
 	echo ""
 	echo -n "Configuration files does not exist. Create them (Y/N) ?"
 	read REP
-	if [ "$REP" = "N" -o "$REP" = "n" ] ; then
+	if [ "$REP" = "N" ] || [ "$REP" = "n" ] ; then
 		echo "Cannot run FBB without conf files"
 	   	exit 0
 	fi
@@ -232,19 +232,19 @@ get_fbb_conf()
 			echo -n "Correct (Y/N) ? "
 			read REP
 
-			if [ "$REP" = "Y" -o "$REP" = "y" ] ; then
+			if [ "$REP" = "Y" ] || [ "$REP" = "y" ] ; then
 				break 2
-			elif [ "$REP" = "N" -o "$REP" = "n" ] ; then
-		    	break 1
+			elif [ "$REP" = "N" ] || [ "$REP" = "n" ] ; then
+        break 1
 			fi
 		done
 	done
 	
 	# Create fbb.conf file
 	# mandatory part
-	make_fbb_conf > $FBBCONF/fbb.conf
+	make_fbb_conf > "$FBBCONF/fbb.conf"
 	# append optional part
-	cat $FBBCONF/fbbopt.conf >> $FBBCONF/fbb.conf
+	cat "$FBBCONF/fbbopt.conf" >> "$FBBCONF/fbb.conf"
 }
 
 make_port_fbb()
@@ -254,17 +254,17 @@ make_port_fbb()
 	echo "# FBB$VERSION"
 	echo "#"
 	echo "#Ports TNCs"
-	echo " 1     $(( $NUMPORT - 1 ))"
+	echo " 1     $(( NUMPORT - 1 ))"
 	echo "#"
 	echo "#Com Interface Adress (Hex) Baud"
 	echo " 1   9         0            9600"
 	echo "#"
 	echo "#TNC NbCh Com MultCh Pacln Maxfr NbFwd MxBloc M/P-Fwd Mode  Freq"
 	echo " 0   0    0   0      0     0     0     0      00/01   ----  File-fwd."
-	while [ $NB -lt $NUMPORT ] ; do
+	while [ "$NB" -lt "$NUMPORT" ] ; do
 		printf " %-2s  %-2s   1   %-6s 250   2     1     10     00/15   XUWYL %s\n"\
-			$NB ${NB_CH[$NB]} ${PORT_NAME[$NB]} ${PORT_FREQ[$NB]}
-		NB=$(( $NB + 1 ))
+			$NB "${NB_CH[$NB]}" "${PORT_NAME[$NB]}" "${PORT_FREQ[$NB]}"
+		NB=$(( NB + 1 ))
 	done
 	echo "#"
 	echo "# End of file."
@@ -273,14 +273,14 @@ make_port_fbb()
 
 get_fbb_port()
 {
-	if replace $CONFDIR/port.sys ; then
+	if replace "$CONFDIR/port.sys" ; then
 
 		NUMPORT=1
 
 		while true ; do
 			while true ; do
 				echo
-				echo -n "Name of the port #$NUMPORT as named in @sysconfdir@/ax25/axports (<CR> to end) : "
+				echo -n "Name of the port #$NUMPORT as named in @CMAKE_INSTALL_FULL_SYSCONFDIR@/ax25/axports (<CR> to end) : "
 				read REP
 				if [ -z "$REP" ] ; then
 					break;
@@ -292,7 +292,7 @@ get_fbb_port()
 				echo -n "Frequency [ex. 145]                                  : "
 				read REP
 				PORT_FREQ[$NUMPORT]=$REP
-				NUMPORT=$(( $NUMPORT + 1 ))
+				NUMPORT=$(( NUMPORT + 1 ))
 			done
 
 			NB=1
@@ -300,7 +300,7 @@ get_fbb_port()
 			echo
 			while [ $NB -lt $NUMPORT ] ; do
 				echo "Port $NB on axports ${PORT_NAME[$NB]} (${NB_CH[$NB]} channels) Freq=${PORT_FREQ[$NB]}"
-				NB=$(( $NB + 1 ))
+				NB=$(( NB + 1 ))
 			done
 
 			while true ; do
@@ -308,29 +308,31 @@ get_fbb_port()
 				echo -n "Correct (Y/N) ? "
 				read REP
 
-				if [ "$REP" = "Y" -o "$REP" = "y" ] ; then
+				if [ "$REP" = "Y" ] || [ "$REP" = "y" ] ; then
 					break 2
-				elif [ "$REP" = "N" -o "$REP" = "n" ] ; then
-		    		break 1
+				elif [ "$REP" = "N" ] || [ "$REP" = "n" ] ; then
+          break 1
 				fi
 			done
 		done
 
 		# Create port.sys file
 		echo "Creating port.sys ... Ok"
-		make_port_fbb > $CONFDIR/port.sys
+		make_port_fbb > "$CONFDIR/port.sys"
 
 		# Create beaconN.sys files
 		NB=1
-		while [ $NB -lt $NUMPORT ] ; do
-			FILE=$CONFDIR/beacon$NB.sys
-			if replace $FILE ; then
+		while [ "$NB" -lt "$NUMPORT" ] ; do
+			FILE="$CONFDIR/beacon$NB.sys"
+			if replace "$FILE" ; then
 				echo "Creating beacon$NB.sys ... Ok"
-				echo "% 15"   > $FILE
-				echo "! MAIL" >> $FILE
-				echo "\$d \$Tz Mailbox \$O-\$o (LINUX version)" >> $FILE
+				{
+          echo "% 15"
+          echo "! MAIL"
+          echo "\$d \$Tz Mailbox \$O-\$o (LINUX version)"
+				} > $FILE
 			fi
-			NB=$(( $NB + 1 ))
+			NB=$(( NB + 1 ))
 		done
 
 	fi
@@ -338,7 +340,7 @@ get_fbb_port()
 
 check_dir()
 {
-	if [ ! -d $1 ] ; then
+	if [ ! -d "$1" ] ; then
 		echo
 		echo "Error : directory $1 does not exist."
 		echo "FBB software was not correctly installed or configured"
@@ -351,35 +353,35 @@ fbb_tree()
 {
 	echo -n "Checking fbb tree."
 
-	check_dir $CONFDIR
-	check_dir $CONFDIR/lang
+	check_dir "$CONFDIR"
+	check_dir "$CONFDIR/lang"
 	echo -n "."
 
-	check_dir $DATADIR
-	check_dir $DATADIR/mail
+	check_dir "$DATADIR"
+	check_dir "$DATADIR/mail"
 	for n in 0 1 2 3 4 5 6 7 8 9 ; do
-		check_dir $DATADIR/mail/mail$n
+		check_dir "$DATADIR/mail/mail$n"
 	done
 	echo -n "."
 
-	check_dir $DATADIR/binmail
+	check_dir "$DATADIR/binmail"
 	for n in 0 1 2 3 4 5 6 7 8 9 ; do
-		check_dir $DATADIR/binmail/mail$n
+		check_dir "$DATADIR/binmail/mail$n"
 	done
 	echo -n "."
 
-	check_dir $DATADIR/oldmail
-	check_dir $DOCDIR
-	check_dir $DATADIR/log
-	check_dir $DATADIR/sat
-	check_dir $DATADIR/wp
-	check_dir $DOSDIR
-	check_dir $DOSDIR/yapp
-	check_dir $LIBDIR/pg
-	check_dir $LIBDIR/filter
-	check_dir $LIBDIR/server
-	check_dir $LIBDIR/script
-	check_dir $LIBDIR/tool
+	check_dir "$DATADIR/oldmail"
+	check_dir "$DOCDIR"
+	check_dir "$DATADIR/log"
+	check_dir "$DATADIR/sat"
+	check_dir "$DATADIR/wp"
+	check_dir "$DOSDIR"
+	check_dir "$DOSDIR/yapp"
+	check_dir "$LIBDIR/pg"
+	check_dir "$LIBDIR/filter"
+	check_dir "$LIBDIR/server"
+	check_dir "$LIBDIR/script"
+	check_dir "$LIBDIR/tool"
 	
 	echo " Ok"
 }
@@ -388,11 +390,11 @@ fbb_conf()
 {
 	echo "Checking fbb configuration :"
 	if [ -x $FBB ] ; then
-		cd $FBBDIR
+		cd "$FBBDIR" || exit 1
 		$FBB -i
 		if [ $? -ne 2 ] ; then
 			echo "Configuration error ! Giving up."
-			echo "Please read file @localstatedir@/ax25/fbb/ERROR.SYS"
+			echo "Please read file @FBB_INSTALL_FULL_STATEDIR@/ERROR.SYS"
 			exit 1
 		fi
 	else
@@ -437,20 +439,20 @@ fbb_return()
 		exit 0
 		;;
 	*)	echo "Unknown return value $1"
-		housekeeping error_return $ret
+		housekeeping error_return "$ret"
 		;;
 	esac
 }
 
 fbb_loop()
 {
-	PATH=$LIBDIR/tool:$SBINDIR:$PATH
+	PATH="$LIBDIR/tool:$SBINDIR:$PATH"
 	export PATH
 	trap fbb_end TERM
 
 	while true ; do
 
-		cd $FBBDIR
+		cd "$FBBDIR" || exit 1
 
 		$FBB $FBB_PARAM &
 		wait $!
@@ -470,10 +472,10 @@ fbb_run()
 		echo " (none)"
 	fi
 	
-	if [ $FBB_FG -eq 1 ] ; then
+	if [ "$FBB_FG" -eq 1 ] ; then
 		echo "Running XFBB in foreground mode ^C to abort"
 		sleep 5
-		echo "Starting XFBB (pwd = `pwd`)..."
+		echo "Starting XFBB (pwd = $(pwd))..."
 		fbb_loop > $FBBLOG 2>&1
 	else
 		echo "Running XFBB in background mode ^C to abort"
@@ -481,7 +483,7 @@ fbb_run()
 		FBB_BACKGROUND=1
 		export FBB_BACKGROUND
 		echo "Starting XFBB (pwd = `pwd`)..."
-		(cd $LOCALDIR ; $MY_SHELL $FBB_PARAM > $FBBLOG 2>&1 & )
+		( cd "$LOCALDIR" && "$MY_SHELL" $FBB_PARAM > "$FBBLOG" 2>&1 & )
 		exit 0
 	fi
 }
@@ -504,7 +506,7 @@ fbb_opt()
 	RUN_BG=0
 	FBB_SILENT=0
 
-	while [ $# -gt 0 ]; do
+	while [ "$#" -gt 0 ]; do
 		case "$1" in
 		-h)
 			fbb_help
@@ -536,28 +538,28 @@ LOCALDIR=`pwd`
 
 # Looking for fbb.conf locations
 if [ ! -f $FBBCONF/fbb.conf ] ; then
-	cd $FBBCONF
+	cd "$FBBCONF" || exit 1
 	cd ../
 	if [ -f fbb.conf ] ; then
-	cp fbb.conf $FBBCONF
+	  cp fbb.conf $FBBCONF
 	else
-	get_fbb_conf
+	  get_fbb_conf
 	fi
 fi
 
 # Check if exists epurmess.ini file. If not create it
-if [ ! -f $FBBCONF/epurmess.ini ] ; then
-	if replace $CONFDIR/epurmess.ini ; then
-		make_epurmess_ini > $CONFDIR/epurmess.ini
+if [ ! -f "$FBBCONF/epurmess.ini" ] ; then
+	if replace "$CONFDIR/epurmess.ini" ; then
+		make_epurmess_ini > "$CONFDIR/epurmess.ini"
 	fi
 fi
 
-if [ ! -f $FBBCONF/port.sys ] ; then
+if [ ! -f "$FBBCONF/port.sys" ] ; then
 	get_fbb_port
 fi
 
-fbb_opt $*
-if [ $FBB_SILENT -eq 1 ] ; then
+fbb_opt "$@"
+if [ "$FBB_SILENT" -eq 1 ] ; then
 	fbb_tree > /dev/null 2>&1
 	fbb_conf > /dev/null 2>&1
 	fbb_run  > /dev/null 2>&1

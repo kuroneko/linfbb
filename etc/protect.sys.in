@@ -10,6 +10,6 @@
 # path MUST be LINUX ABSOLUTE path (starting with a "/")
 #
 
-@localstatedir@/ax25/fbb/fbbdos/readonly
+@FBB_INSTALL_FULL_STATEDIR@/fbbdos/readonly
 
 

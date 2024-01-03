@@ -1415,3 +1415,9 @@ SVN (Dave van der Locht)			14 November 2022
 [r239]
 - Fixed problem where high CPU usage was seen when using one or more DED ports.
 - Equalized usleep() value to 10msec in other drivers receive functions.
+
+(Git history begins here)
+[2024-01-03]
+- Convert from automake to cmake.
+- Fix installation to allow to fit non-system install paths
+  (such as /opt/fbb or /srv/fbb)

@@ -7,11 +7,11 @@
 
 #
 # Directory of xfbbX software
-XFBBXDIR=`dirname $0`
+XFBBXDIR="$(dirname "$0")"
 
 #
 # Add local PATH
-PATH=$XFBBXDIR:$PATH
+PATH="$XFBBXDIR:$PATH"
 
 #
 # Temporary resource files
@@ -25,10 +25,9 @@ XFBBX=xfbbX_cl
 # Prepares the resources
 #
 
-[ ! -d $XAPPLRESDIR ] && mkdir $XAPPLRESDIR
-[ ! -d $XAPPLRESDIR/bitmaps ] && mkdir $XAPPLRESDIR/bitmaps
+mkdir -p "$XAPPLRESDIR/bitmaps"
 
-cat > $XAPPLRESDIR/xfbbX <<EOF
+cat > "$XAPPLRESDIR/xfbbX" <<EOF
 
 xfbb*background:			#c0c0c0
 
@@ -135,7 +134,7 @@ xfbb*background:			#c0c0c0
 EOF
 
 
-cat > $XAPPLRESDIR/bitmaps/allchan.xpm <<EOF
+cat > "$XAPPLRESDIR/bitmaps/allchan.xpm" <<EOF
 /* XPM */
 static char * allchan_xpm[] = {
 /* width height num_colors chars_per_pixel */
@@ -169,7 +168,7 @@ static char * allchan_xpm[] = {
 EOF
 
 
-cat > $XAPPLRESDIR/bitmaps/allchn_u.xpm <<EOF
+cat > "$XAPPLRESDIR/bitmaps/allchn_u.xpm" <<EOF
 /* XPM */
 static char *allchn_u[] = {
 /* width height num_colors chars_per_pixel */
@@ -202,7 +201,7 @@ static char *allchn_u[] = {
 };
 EOF
 
-cat > $XAPPLRESDIR/bitmaps/console.xpm <<EOF
+cat > "$XAPPLRESDIR/bitmaps/console.xpm" <<EOF
 /* XPM */
 static char *console[] = {
 /* width height num_colors chars_per_pixel */
@@ -238,7 +237,7 @@ static char *console[] = {
 EOF
 
 
-cat > $XAPPLRESDIR/bitmaps/consol_u.xpm <<EOF
+cat > "$XAPPLRESDIR/bitmaps/consol_u.xpm" <<EOF
 /* XPM */
 static char *consol_u[] = {
 /* width height num_colors chars_per_pixel */
@@ -272,7 +271,7 @@ static char *consol_u[] = {
 EOF
 
 
-cat > $XAPPLRESDIR/bitmaps/monitor.xpm <<EOF
+cat > "$XAPPLRESDIR/bitmaps/monitor.xpm" <<EOF
 /* XPM */
 static char *monitor[] = {
 /* width height num_colors chars_per_pixel */
@@ -306,7 +305,7 @@ static char *monitor[] = {
 EOF
 
 
-cat > $XAPPLRESDIR/bitmaps/monit_u.xpm <<EOF
+cat > "$XAPPLRESDIR/bitmaps/monit_u.xpm" <<EOF
 /* XPM */
 static char *monit_u[] = {
 /* width height num_colors chars_per_pixel */
@@ -340,7 +339,7 @@ static char *monit_u[] = {
 EOF
 
 
-cat > $XAPPLRESDIR/bitmaps/help.xpm <<EOF
+cat > "$XAPPLRESDIR/bitmaps/help.xpm" <<EOF
 /* XPM */
 static char *help[] = {
 /* width height num_colors chars_per_pixel */
@@ -375,7 +374,7 @@ static char *help[] = {
 EOF
 
 
-cat > $XAPPLRESDIR/bitmaps/help_u.xpm <<EOF
+cat > "$XAPPLRESDIR/bitmaps/help_u.xpm" <<EOF
 /* XPM */
 static char *help_u[] = {
 /* width height num_colors chars_per_pixel */
@@ -408,11 +407,9 @@ static char *help_u[] = {
 };
 EOF
 
-PARAM=$*
-
-$XFBBX $PARAM 
+"$XFBBX" "$@"
 ret=$?
 
-rm -r $XAPPLRESDIR
+rm -r "$XAPPLRESDIR"
 
 exit $ret

@@ -96,13 +96,13 @@ static Widget CallDialog;
 static int histo_pos;
 static char history[NB_HISTO][82];
 
-int SEND = 0;
-int RECV = 2;
-int INDIC = 3;
-int UI = 4;
-int CONS = 5;
-int FOND_VOIE = 6;
-int HEADER = 2;
+static const int SEND = 0;
+static const int RECV = 2;
+static const int INDIC = 3;
+static const int UI = 4;
+static const int CONS = 5;
+static const int FOND_VOIE = 6;
+static const int HEADER = 2;
 
 void alloc_buffer (int numero, int nblig);
 

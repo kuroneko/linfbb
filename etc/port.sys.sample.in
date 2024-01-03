@@ -1,7 +1,7 @@
 # BBS sample port file
-# To be located in @sysconfdir@/ax25/fbb/port.sys
+# To be located in @FBB_INSTALL_FULL_CONFDIR@/port.sys
 #
-# @package_string@ 
+# @PROJECT_NAME@ @PROJECT_VERSION@
 #
 # Number of Com Ports (not including Com 0) and TNCs
   2      5

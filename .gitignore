@@ -1,0 +1,16 @@
+/build*
+/cmake-build*
+# supress automake outputs.
+/autom4te.cache
+Makefile
+Makefile.in
+/config.h.in
+/config.sub
+/configure
+/config.guess
+/compile
+/ar-lib
+/aclocal.m4
+/depcomp
+/install-sh
+/missing

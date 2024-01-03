@@ -17,16 +17,16 @@ link=${base#*[SK][0-9][0-9]}
 
 test $link = $base && START_FBB=yes
 test "$START_FBB" = yes || exit 0
-test -x @sbindir@/fbb || exit 0
+test -x @CMAKE_INSTALL_FULL_SBINDIR@/fbb || exit 0
 
 return="Done"
 case "$1" in
 start)
 	echo "Starting FBB daemon "
-	if [ -f @sysconfdir@/ax25/fbb/fbb.conf ] ; then
-		@sbindir@/fbb -s -l /var/log/fbb.log || return=$rc_failed
+	if [ -f @FBB_INSTALL_FULL_CONFDIR@/fbb.conf ] ; then
+		@CMAKE_INSTALL_FULL_SBINDIR@/fbb -s -l /var/log/fbb.log || return=$rc_failed
 	else
-		echo  "@sysconfdir@/ax25/fbb/fbb.conf file not found"
+		echo  "@FBB_INSTALL_FULL_CONFDIR@/fbb.conf file not found"
 		return="Failed"
 	fi
 	echo  " $1 $return"

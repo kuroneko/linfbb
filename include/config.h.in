@@ -1,0 +1,10 @@
+#ifndef FBB_CONFIG_H
+#define FBB_CONFIG_H
+
+#define VERSION "@fbb_VERSION@"
+
+#define PACKAGE_VERSION_MAJOR @fbb_VERSION_MAJOR@
+#define PACKAGE_VERSION_MINOR @fbb_VERSION_MINOR@
+#define PACKAGE_VERSION_MICRO @fbb_VERSION_PATCH@
+
+#endif /* #ifndef FBB_CONFIG_H */

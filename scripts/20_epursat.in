@@ -1,23 +1,26 @@
 #!/bin/bash
-BINDIR=@sbindir@
-DATADIR=`@sbindir@/fbbgetconf data`
-SYSOP=`@sbindir@/fbbgetconf sysop`
+BINDIR='@CMAKE_INSTALL_FULL_SBINDIR@'
+DATADIR="$('@CMAKE_INSTALL_FULL_SBINDIR@/fbbgetconf' data)"
+SYSOP="$('@CMAKE_INSTALL_FULL_SBINDIR@/fbbgetconf' sysop)"
 echo
 echo "--- Running satdoc & satupdat"
 echo
 
-if [ -e $DATADIR/sat/amsat.txt ];
-    then
-	cd $DATADIR/sat
-	echo -e "sp $SYSOP\r\nSATDOC results\r\n" > $DATADIR/satdoc.res
-	$BINDIR/satdoc amsat.txt >> $DATADIR/satdoc.res
-	$BINDIR/satdoc -i amsat.txt >> $DATADIR/satdoc.res
-	echo -e "\r\n/ex\r\n" >> $DATADIR/satdoc.res
+if [ -e "$DATADIR/sat/amsat.txt" ]; then
+	cd "$DATADIR/sat" || exit 1
+	{
+	echo -e "sp $SYSOP\r\nSATDOC results\r\n"
+	"$BINDIR/satdoc" amsat.txt
+	"$BINDIR/satdoc" -i amsat.txt
+	echo -e "\r\n/ex\r\n"
+	} > "$DATADIR/satdoc.res"
 #	cat $DATADIR/satdoc.res >> $DATADIR/mail/mail.in
-	echo -e "sp $SYSOP\r\nSATUPDAT results\r\n" > $DATADIR/satupdat.res
-	$BINDIR/satupdat amsat.txt /n /d60 >> $DATADIR/satupdat.res
-	$BINDIR/satupdat amsat.txt /a /d60 >> $DATADIR/satupdat.res
-	echo -e "\r\n/ex\r\n" >> $DATADIR/satupdat.res
+  {
+    echo -e "sp $SYSOP\r\nSATUPDAT results\r\n"
+    "$BINDIR/satupdat" amsat.txt /n /d60
+    "$BINDIR/satupdat" amsat.txt /a /d60
+    echo -e "\r\n/ex\r\n"
+  } > "$DATADIR/satupdat.res"
 # 	cat $DATADIR/satupdat.res >> $DATADIR/mail/mail.in
 	rm amsat.txt
 fi
